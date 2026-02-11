@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>رحلة حول العالم - لعبة الجغرافيا</title>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Lora:wght@400;700&family=Cairo:wght@400;700;900&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+        --black: #0a0a0a;
+        --dark-gray: #1a1a1a;
+        --medium-gray: #2a2a2a;
+        --blue: #1e3a8a;
+        --light-blue: #3b82f6;
+        --gold: #FFD700;
+        --dark-gold: #B8860B;
+        --bright-gold: #FFA500;
+        --text-light: #e5e5e5;
+    }
+    
+    body {
+        font-family: 'Cairo', 'Lora', 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', serif;
+        background: linear-gradient(135deg, #000000 0%, #0f172a 50%, #1e293b 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+        direction: rtl;
+    }
+    
+    /* Decorative background elements */
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(30, 58, 138, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+        animation: rotate 60s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    /* Header with vintage travel poster style */
+    header {
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(26, 26, 26, 0.95));
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3), 0 0 60px rgba(59, 130, 246, 0.2);
+        margin-bottom: 40px;
+        border: 4px solid var(--gold);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: repeating-linear-gradient(
+            90deg,
+            var(--gold) 0px,
+            var(--gold) 20px,
+            var(--light-blue) 20px,
+            var(--light-blue) 40px,
+            var(--dark-gold) 40px,
+            var(--dark-gold) 60px
+        );
+    }
+    
+    h1 {
+        font-family: 'Amatic SC', cursive;
+        font-size: 72px;
+        color: var(--gold);
+        text-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.8),
+            3px 3px 0px var(--dark-gold), 
+            5px 5px 0px var(--light-blue),
+            0 0 40px rgba(255, 215, 0, 0.5);
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+        animation: titleFloat 3s ease-in-out infinite;
+    }
+    
+    @keyframes titleFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .subtitle {
+        font-size: 24px;
+        color: var(--light-blue);
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+    }
+    
+    .score-board {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+    
+    .stat {
+        background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
+        padding: 15px 30px;
+        border-radius: 50px;
+        border: 3px solid var(--gold);
+        box-shadow: 
+            0 5px 15px rgba(0,0,0,0.5),
+            0 0 20px rgba(255, 215, 0, 0.3),
+            inset 0 1px 2px rgba(255, 215, 0, 0.1);
+        transform: rotate(-2deg);
+        transition: all 0.3s;
+    }
+    
+    .stat:nth-child(2) { 
+        transform: rotate(2deg);
+        border-color: var(--light-blue);
+    }
+    .stat:nth-child(3) { 
+        transform: rotate(-1deg); 
+    }
+    
+    .stat:hover {
+        transform: rotate(0deg) scale(1.05);
+        box-shadow: 
+            0 8px 25px rgba(0,0,0,0.7),
+            0 0 30px rgba(255, 215, 0, 0.5);
+    }
+    
+    .stat-label {
+        font-size: 14px;
+        color: var(--text-light);
+        opacity: 0.8;
+        font-weight: 700;
+    }
+    
+    .stat-value {
+        font-size: 32px;
+        font-weight: 900;
+        color: var(--gold);
+        font-family: 'Amatic SC', cursive;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    }
+    
+    /* Game modes */
+    .game-modes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .mode-card {
+        background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
+        padding: 30px;
+        border-radius: 15px;
+        border: 4px solid var(--blue);
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.5),
+            0 0 20px rgba(30, 58, 138, 0.2),
+            inset 0 1px 2px rgba(255, 215, 0, 0.05);
+    }
+    
+    .mode-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .mode-card:hover::before {
+        left: 100%;
+    }
+    
+    .mode-card:hover {
+        transform: translateY(-10px) rotate(1deg);
+        box-shadow: 
+            0 20px 40px rgba(0,0,0,0.7),
+            0 0 40px rgba(255, 215, 0, 0.4);
+        border-color: var(--gold);
+    }
+    
+    .mode-icon {
+        font-size: 64px;
+        margin-bottom: 15px;
+        display: block;
+        font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+        animation: bounce 2s ease-in-out infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .mode-card:nth-child(2) .mode-icon { animation-delay: 0.2s; }
+    .mode-card:nth-child(3) .mode-icon { animation-delay: 0.4s; }
+    .mode-card:nth-child(4) .mode-icon { animation-delay: 0.6s; }
+    
+    .mode-title {
+        font-size: 28px;
+        color: var(--gold);
+        margin-bottom: 10px;
+        font-weight: 900;
+        font-family: 'Cairo', sans-serif;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    
+    .mode-desc {
+        font-size: 16px;
+        color: var(--text-light);
+        line-height: 1.5;
+        opacity: 0.9;
+    }
+    
+    /* Game area */
+    .game-area {
+        display: none;
+        background: linear-gradient(135deg, var(--black), var(--dark-gray));
+        padding: 40px;
+        border-radius: 20px;
+        border: 5px solid var(--gold);
+        box-shadow: 
+            0 20px 60px rgba(0,0,0,0.8),
+            0 0 60px rgba(255, 215, 0, 0.3),
+            inset 0 2px 4px rgba(255, 215, 0, 0.1);
+        position: relative;
+    }
+    
+    .game-area.active {
+        display: block;
+        animation: slideIn 0.5s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .question-container {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .flag-display {
+        width: 280px;
+        height: 180px;
+        margin: 0 auto 30px;
+        border-radius: 15px;
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.8),
+            0 0 40px rgba(255, 215, 0, 0.3),
+            inset 0 2px 4px rgba(255, 215, 0, 0.2);
+        border: 5px solid var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 120px;
+        line-height: 1;
+        font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', 'Twemoji Mozilla', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
+        animation: flagReveal 0.6s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .flag-display span {
+        position: relative;
+        z-index: 10;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: optimizeLegibility;
+    }
+    
+    .flag-display::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,215,0,0.2) 50%, transparent 70%);
+        animation: shine 3s infinite;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    @keyframes shine {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    @keyframes flagReveal {
+        from {
+            transform: scale(0.5) rotateY(90deg);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1) rotateY(0deg);
+            opacity: 1;
+        }
+    }
+    
+    .question-text {
+        font-size: 32px;
+        color: var(--gold);
+        font-weight: 700;
+        margin-bottom: 30px;
+        font-family: 'Cairo', sans-serif;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+    
+    .map-display {
+        width: 100%;
+        max-width: 500px;
+        height: 350px;
+        margin: 0 auto 30px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, var(--blue), #1e40af);
+        border: 5px solid var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 180px;
+        font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.8),
+            0 0 40px rgba(59, 130, 246, 0.3),
+            inset 0 2px 4px rgba(255, 215, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .map-display::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 215, 0, 0.05) 10px,
+            rgba(255, 215, 0, 0.05) 11px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 215, 0, 0.05) 10px,
+            rgba(255, 215, 0, 0.05) 11px
+        );
+    }
+    
+    .answers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .answer-btn {
+        background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
+        border: 4px solid var(--light-blue);
+        padding: 25px;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-light);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Cairo', sans-serif;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 5px 20px rgba(0,0,0,0.5),
+            0 0 15px rgba(59, 130, 246, 0.2),
+            inset 0 1px 2px rgba(255, 215, 0, 0.05);
+    }
+    
+    .answer-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 215, 0, 0.15);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .answer-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .answer-btn:hover {
+        transform: scale(1.05);
+        border-color: var(--gold);
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.7),
+            0 0 30px rgba(255, 215, 0, 0.4);
+    }
+    
+    .answer-btn:active {
+        transform: scale(0.98);
+    }
+    
+    .answer-btn.correct {
+        background: linear-gradient(135deg, #4CAF50, #81C784);
+        border-color: #2E7D32;
+        animation: correctPulse 0.6s;
+    }
+    
+    .answer-btn.incorrect {
+        background: linear-gradient(135deg, #f44336, #e57373);
+        border-color: #c62828;
+        animation: shake 0.5s;
+    }
+    
+    .answer-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    @keyframes correctPulse {
+        0%, 100% { transform: scale(1); }
+        25% { transform: scale(1.1) rotate(2deg); }
+        75% { transform: scale(1.1) rotate(-2deg); }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-15px) rotate(-3deg); }
+        75% { transform: translateX(15px) rotate(3deg); }
+    }
+    
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+        color: var(--black);
+        border: none;
+        padding: 18px 40px;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Cairo', sans-serif;
+        box-shadow: 
+            0 8px 20px rgba(0,0,0,0.6),
+            0 0 30px rgba(255, 215, 0, 0.4),
+            inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 12px 30px rgba(0,0,0,0.8),
+            0 0 40px rgba(255, 215, 0, 0.6);
+    }
+    
+    .btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, var(--light-blue), var(--blue));
+        color: white;
+        box-shadow: 
+            0 8px 20px rgba(0,0,0,0.6),
+            0 0 30px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-secondary:hover {
+        box-shadow: 
+            0 12px 30px rgba(0,0,0,0.8),
+            0 0 40px rgba(59, 130, 246, 0.6);
+    }
+    
+    /* Results screen */
+    .results {
+        display: none;
+        text-align: center;
+        padding: 50px 30px;
+        background: linear-gradient(135deg, var(--black), var(--dark-gray));
+        border-radius: 20px;
+        border: 5px solid var(--gold);
+        box-shadow: 
+            0 20px 60px rgba(0,0,0,0.9),
+            0 0 60px rgba(255, 215, 0, 0.4),
+            inset 0 2px 4px rgba(255, 215, 0, 0.1);
+    }
+    
+    .results.active {
+        display: block;
+        animation: slideIn 0.5s ease-out;
+    }
+    
+    .results h2 {
+        font-family: 'Amatic SC', cursive;
+        font-size: 64px;
+        color: var(--gold);
+        margin-bottom: 30px;
+        text-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.8),
+            2px 2px 0px var(--dark-gold);
+    }
+    
+    .trophy {
+        font-size: 120px;
+        margin-bottom: 30px;
+        display: inline-block;
+        animation: trophySpin 2s ease-in-out infinite;
+    }
+    
+    @keyframes trophySpin {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        25% { transform: rotate(-10deg) scale(1.1); }
+        75% { transform: rotate(10deg) scale(1.1); }
+    }
+    
+    .result-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+    }
+    
+    .result-stat {
+        background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
+        padding: 25px;
+        border-radius: 15px;
+        border: 3px solid var(--light-blue);
+        transform: rotate(-1deg);
+        box-shadow: 
+            0 5px 15px rgba(0,0,0,0.5),
+            0 0 20px rgba(59, 130, 246, 0.2),
+            inset 0 1px 2px rgba(255, 215, 0, 0.05);
+    }
+    
+    .result-stat:nth-child(2) { 
+        transform: rotate(1deg);
+        border-color: var(--gold);
+    }
+    .result-stat:nth-child(3) { 
+        transform: rotate(-2deg); 
+    }
+    
+    .result-label {
+        font-size: 16px;
+        color: var(--text-light);
+        margin-bottom: 10px;
+        font-weight: 700;
+        opacity: 0.9;
+    }
+    
+    .result-value {
+        font-size: 48px;
+        font-family: 'Amatic SC', cursive;
+        color: var(--gold);
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    }
+    
+    .message {
+        font-size: 28px;
+        color: var(--light-blue);
+        margin: 30px 0;
+        font-weight: 700;
+        font-family: 'Cairo', sans-serif;
+        text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+    }
+    
+    /* Feedback overlay */
+    .feedback {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 80px;
+        font-weight: 900;
+        color: var(--gold);
+        text-shadow: 
+            0 0 30px rgba(255, 215, 0, 1),
+            3px 3px 0px var(--dark-gold), 
+            5px 5px 20px rgba(0,0,0,0.8);
+        z-index: 1000;
+        pointer-events: none;
+        font-family: 'Amatic SC', cursive;
+    }
+    
+    .feedback.show {
+        animation: feedbackPop 1s ease-out;
+    }
+    
+    @keyframes feedbackPop {
+        0% {
+            transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            opacity: 0;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0) rotate(180deg);
+            opacity: 0;
+        }
+    }
+    
+    .hidden {
+        display: none !important;
+    }
+    
+    /* Progress bar */
+    .progress-bar {
+        height: 12px;
+        background: rgba(26, 26, 26, 0.8);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        border: 2px solid var(--gold);
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.3),
+            inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--blue), var(--light-blue), var(--gold));
+        border-radius: 20px;
+        transition: width 0.5s ease-out;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+        h1 { font-size: 48px; }
+        .mode-title { font-size: 24px; }
+        .question-text { font-size: 24px; }
+        .answer-btn { font-size: 18px; padding: 20px; }
+        .flag-display { width: 200px; height: 130px; font-size: 80px; }
+        .map-display { height: 250px; font-size: 120px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🌍 رحلة حول العالم</h1>
+        <div class="subtitle">اكتشف دول العالم بطريقة ممتعة!</div>
+        <div class="score-board">
+            <div class="stat">
+                <div class="stat-label">النقاط</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">الدول المكتشفة</div>
+                <div class="stat-value" id="discovered">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">الدقة</div>
+                <div class="stat-value" id="accuracy">100%</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="game-modes" id="gameModes">
+        <div class="mode-card" onclick="startGame('flags')">
+            <span class="mode-icon">🚩</span>
+            <div class="mode-title">اكتشف الأعلام</div>
+            <div class="mode-desc">تعرف على أعلام الدول من جميع أنحاء العالم</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('capitals')">
+            <span class="mode-icon">🏛️</span>
+            <div class="mode-title">عواصم العالم</div>
+            <div class="mode-desc">اختبر معرفتك بعواصم الدول المختلفة</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('continents')">
+            <span class="mode-icon">🗺️</span>
+            <div class="mode-title">القارات</div>
+            <div class="mode-desc">حدد القارة التي تنتمي إليها كل دولة</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('mixed')">
+            <span class="mode-icon">🎯</span>
+            <div class="mode-title">التحدي الكامل</div>
+            <div class="mode-desc">اختبار شامل يجمع جميع الأنماط</div>
+        </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <div class="question-container">
+            <div id="visualDisplay"></div>
+            <div class="question-text" id="questionText">ما هي هذه الدولة؟</div>
+        </div>
+        
+        <div class="answers-grid" id="answersGrid"></div>
+        
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="returnToMenu()">القائمة الرئيسية</button>
+        </div>
+    </div>
+
+    <div class="results" id="results">
+        <h2>انتهت الرحلة!</h2>
+        <div class="trophy" id="trophyIcon">🏆</div>
+        <div class="result-stats">
+            <div class="result-stat">
+                <div class="result-label">النقاط النهائية</div>
+                <div class="result-value" id="finalScore">0</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-label">إجابات صحيحة</div>
+                <div class="result-value" id="finalCorrect">0/10</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-label">نسبة النجاح</div>
+                <div class="result-value" id="finalAccuracy">0%</div>
+            </div>
+        </div>
+        <div class="message" id="resultMessage">رائع جداً!</div>
+        <div class="controls">
+            <button class="btn" onclick="restartGame()">العب مرة أخرى</button>
+            <button class="btn btn-secondary" onclick="returnToMenu()">القائمة الرئيسية</button>
+        </div>
+    </div>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<script>
+// Game data
+const countries = {
+    'مصر': { flag: '🇪🇬', capital: 'القاهرة', continent: 'أفريقيا' },
+    'السعودية': { flag: '🇸🇦', capital: 'الرياض', continent: 'آسيا' },
+    'الإمارات': { flag: '🇦🇪', capital: 'أبوظبي', continent: 'آسيا' },
+    'الأردن': { flag: '🇯🇴', capital: 'عمّان', continent: 'آسيا' },
+    'المغرب': { flag: '🇲🇦', capital: 'الرباط', continent: 'أفريقيا' },
+    'العراق': { flag: '🇮🇶', capital: 'بغداد', continent: 'آسيا' },
+    'سوريا': { flag: '🇸🇾', capital: 'دمشق', continent: 'آسيا' },
+    'لبنان': { flag: '🇱🇧', capital: 'بيروت', continent: 'آسيا' },
+    'الكويت': { flag: '🇰🇼', capital: 'الكويت', continent: 'آسيا' },
+    'قطر': { flag: '🇶🇦', capital: 'الدوحة', continent: 'آسيا' },
+    'البحرين': { flag: '🇧🇭', capital: 'المنامة', continent: 'آسيا' },
+    'عُمان': { flag: '🇴🇲', capital: 'مسقط', continent: 'آسيا' },
+    'اليمن': { flag: '🇾🇪', capital: 'صنعاء', continent: 'آسيا' },
+    'فلسطين': { flag: '🇵🇸', capital: 'القدس', continent: 'آسيا' },
+    'السودان': { flag: '🇸🇩', capital: 'الخرطوم', continent: 'أفريقيا' },
+    'الجزائر': { flag: '🇩🇿', capital: 'الجزائر', continent: 'أفريقيا' },
+    'تونس': { flag: '🇹🇳', capital: 'تونس', continent: 'أفريقيا' },
+    'ليبيا': { flag: '🇱🇾', capital: 'طرابلس', continent: 'أفريقيا' },
+    'الصومال': { flag: '🇸🇴', capital: 'مقديشو', continent: 'أفريقيا' },
+    'موريتانيا': { flag: '🇲🇷', capital: 'نواكشوط', continent: 'أفريقيا' },
+    'جيبوتي': { flag: '🇩🇯', capital: 'جيبوتي', continent: 'أفريقيا' },
+    'جزر القمر': { flag: '🇰🇲', capital: 'موروني', continent: 'أفريقيا' },
+    'أمريكا': { flag: '🇺🇸', capital: 'واشنطن', continent: 'أمريكا الشمالية' },
+    'كندا': { flag: '🇨🇦', capital: 'أوتاوا', continent: 'أمريكا الشمالية' },
+    'المكسيك': { flag: '🇲🇽', capital: 'مكسيكو سيتي', continent: 'أمريكا الشمالية' },
+    'البرازيل': { flag: '🇧🇷', capital: 'برازيليا', continent: 'أمريكا الجنوبية' },
+    'الأرجنتين': { flag: '🇦🇷', capital: 'بوينس آيرس', continent: 'أمريكا الجنوبية' },
+    'فرنسا': { flag: '🇫🇷', capital: 'باريس', continent: 'أوروبا' },
+    'ألمانيا': { flag: '🇩🇪', capital: 'برلين', continent: 'أوروبا' },
+    'إيطاليا': { flag: '🇮🇹', capital: 'روما', continent: 'أوروبا' },
+    'إسبانيا': { flag: '🇪🇸', capital: 'مدريد', continent: 'أوروبا' },
+    'بريطانيا': { flag: '🇬🇧', capital: 'لندن', continent: 'أوروبا' },
+    'روسيا': { flag: '🇷🇺', capital: 'موسكو', continent: 'أوروبا' },
+    'تركيا': { flag: '🇹🇷', capital: 'أنقرة', continent: 'آسيا' },
+    'اليابان': { flag: '🇯🇵', capital: 'طوكيو', continent: 'آسيا' },
+    'الصين': { flag: '🇨🇳', capital: 'بكين', continent: 'آسيا' },
+    'الهند': { flag: '🇮🇳', capital: 'نيودلهي', continent: 'آسيا' },
+    'أستراليا': { flag: '🇦🇺', capital: 'كانبرا', continent: 'أوقيانوسيا' },
+    'نيوزيلندا': { flag: '🇳🇿', capital: 'ويلينغتون', continent: 'أوقيانوسيا' },
+    'جنوب أفريقيا': { flag: '🇿🇦', capital: 'بريتوريا', continent: 'أفريقيا' },
+    'نيجيريا': { flag: '🇳🇬', capital: 'أبوجا', continent: 'أفريقيا' },
+    'كينيا': { flag: '🇰🇪', capital: 'نيروبي', continent: 'أفريقيا' },
+    'إثيوبيا': { flag: '🇪🇹', capital: 'أديس أبابا', continent: 'أفريقيا' },
+    'تايلاند': { flag: '🇹🇭', capital: 'بانكوك', continent: 'آسيا' },
+    'ماليزيا': { flag: '🇲🇾', capital: 'كوالالمبور', continent: 'آسيا' },
+    'إندونيسيا': { flag: '🇮🇩', capital: 'جاكرتا', continent: 'آسيا' },
+    'باكستان': { flag: '🇵🇰', capital: 'إسلام أباد', continent: 'آسيا' },
+    'إيران': { flag: '🇮🇷', capital: 'طهران', continent: 'آسيا' },
+    'أفغانستان': { flag: '🇦🇫', capital: 'كابول', continent: 'آسيا' }
+};
+
+const continents = ['أفريقيا', 'آسيا', 'أوروبا', 'أمريكا الشمالية', 'أمريكا الجنوبية', 'أوقيانوسيا'];
+
+let gameState = {
+    mode: '',
+    score: 0,
+    currentQuestion: 0,
+    correctAnswers: 0,
+    totalQuestions: 10,
+    questions: [],
+    countriesDiscovered: new Set()
+};
+
+function startGame(mode) {
+    gameState = {
+        mode: mode,
+        score: 0,
+        currentQuestion: 0,
+        correctAnswers: 0,
+        totalQuestions: 10,
+        questions: generateQuestions(mode),
+        countriesDiscovered: new Set()
+    };
+    
+    document.getElementById('gameModes').classList.add('hidden');
+    document.getElementById('gameArea').classList.add('active');
+    document.getElementById('results').classList.remove('active');
+    
+    updateStats();
+    showQuestion();
+}
+
+function generateQuestions(mode) {
+    const questions = [];
+    const countryNames = Object.keys(countries);
+    const usedCountries = new Set();
+    
+    for (let i = 0; i < gameState.totalQuestions; i++) {
+        let questionType = mode;
+        if (mode === 'mixed') {
+            const types = ['flags', 'capitals', 'continents'];
+            questionType = types[Math.floor(Math.random() * types.length)];
+        }
+        
+        // Pick a random country
+        let country;
+        do {
+            country = countryNames[Math.floor(Math.random() * countryNames.length)];
+        } while (usedCountries.has(country) && usedCountries.size < countryNames.length);
+        
+        usedCountries.add(country);
+        
+        const question = createQuestion(questionType, country);
+        questions.push(question);
+    }
+    
+    return questions;
+}
+
+function createQuestion(type, country) {
+    const countryData = countries[country];
+    const allCountries = Object.keys(countries);
+    
+    let question = {
+        type: type,
+        country: country,
+        correctAnswer: '',
+        answers: []
+    };
+    
+    if (type === 'flags') {
+        question.visual = countryData.flag;
+        question.text = 'ما اسم هذه الدولة؟';
+        question.correctAnswer = country;
+        question.visualType = 'flag';
+        
+        // Generate wrong answers
+        const options = [country];
+        while (options.length < 4) {
+            const wrong = allCountries[Math.floor(Math.random() * allCountries.length)];
+            if (!options.includes(wrong)) options.push(wrong);
+        }
+        question.answers = shuffle(options);
+        
+    } else if (type === 'capitals') {
+        question.visual = '🏛️';
+        question.text = `ما هي عاصمة ${country}؟`;
+        question.correctAnswer = countryData.capital;
+        question.visualType = 'map';
+        
+        // Generate wrong answers
+        const options = [countryData.capital];
+        while (options.length < 4) {
+            const wrong = allCountries[Math.floor(Math.random() * allCountries.length)];
+            const wrongCapital = countries[wrong].capital;
+            if (!options.includes(wrongCapital)) options.push(wrongCapital);
+        }
+        question.answers = shuffle(options);
+        
+    } else if (type === 'continents') {
+        question.visual = countryData.flag;
+        question.text = `في أي قارة تقع ${country}؟`;
+        question.correctAnswer = countryData.continent;
+        question.visualType = 'flag';
+        
+        // Generate wrong answers from different continents
+        const options = [countryData.continent];
+        const otherContinents = continents.filter(c => c !== countryData.continent);
+        while (options.length < 4 && otherContinents.length > 0) {
+            const wrong = otherContinents.splice(Math.floor(Math.random() * otherContinents.length), 1)[0];
+            options.push(wrong);
+        }
+        question.answers = shuffle(options);
+    }
+    
+    return question;
+}
+
+function shuffle(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+// Flag drawing functions
+function drawFlag(ctx, countryKey, width, height) {
+    ctx.clearRect(0, 0, width, height);
+    
+    switch(countryKey) {
+        case 'مصر':
+            // Red, White, Black horizontal stripes with eagle
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Gold eagle symbol
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🦅', width / 2, height / 2 + 10);
+            break;
+            
+        case 'السعودية':
+            // Green with white shahada and sword
+            ctx.fillStyle = '#165E33';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('لا إله إلا الله محمد رسول الله', width / 2, height / 2 - 10);
+            // Sword
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.2, height * 0.65);
+            ctx.lineTo(width * 0.8, height * 0.65);
+            ctx.stroke();
+            break;
+            
+        case 'الإمارات':
+            // Red, Green, White, Black
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#00732F';
+            ctx.fillRect(width / 3, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 3, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(width / 3, 2 * height / 3, width, height / 3);
+            break;
+            
+        case 'الأردن':
+            // Black, White, Green stripes with red triangle and white star
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#007A3D';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Red triangle
+            ctx.fillStyle = '#CE1126';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 2, height / 2);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            // White star
+            drawStar(ctx, width / 4, height / 2, 15, 7, 0.5, '#FFFFFF');
+            break;
+            
+        case 'المغرب':
+            // Red with green pentagram
+            ctx.fillStyle = '#C1272D';
+            ctx.fillRect(0, 0, width, height);
+            drawStar(ctx, width / 2, height / 2, 35, 5, 0.382, '#006233');
+            break;
+            
+        case 'العراق':
+            // Red, White, Black with Takbir
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            ctx.fillStyle = '#007A3D';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('الله أكبر', width / 2, height / 2 + 8);
+            break;
+            
+        case 'سوريا':
+            // Red, White, Black with two green stars
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            drawStar(ctx, width / 3, height / 2, 12, 5, 0.5, '#007A3D');
+            drawStar(ctx, 2 * width / 3, height / 2, 12, 5, 0.5, '#007A3D');
+            break;
+            
+        case 'لبنان':
+            // Red, White (with cedar), Red
+            ctx.fillStyle = '#ED1C24';
+            ctx.fillRect(0, 0, width, height / 4);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 4, width, height / 2);
+            ctx.fillStyle = '#ED1C24';
+            ctx.fillRect(0, 3 * height / 4, width, height / 4);
+            // Green cedar
+            ctx.fillStyle = '#00A651';
+            ctx.font = 'bold 50px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🌲', width / 2, height / 2 + 15);
+            break;
+            
+        case 'الكويت':
+            // Green, White, Red with black trapezoid
+            ctx.fillStyle = '#007A3D';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Black trapezoid
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 3, height / 4);
+            ctx.lineTo(width / 3, 3 * height / 4);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            break;
+            
+        case 'قطر':
+            // Maroon and white with serrated line
+            ctx.fillStyle = '#8D1B3D';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width / 3, height);
+            // Serrated edge
+            ctx.fillStyle = '#8D1B3D';
+            const teeth = 9;
+            ctx.beginPath();
+            ctx.moveTo(width / 3, 0);
+            for (let i = 0; i < teeth; i++) {
+                const y1 = (i * height) / teeth;
+                const y2 = ((i + 0.5) * height) / teeth;
+                const y3 = ((i + 1) * height) / teeth;
+                ctx.lineTo(width / 2, y2);
+                ctx.lineTo(width / 3, y3);
+            }
+            ctx.lineTo(width, height);
+            ctx.lineTo(width, 0);
+            ctx.fill();
+            break;
+            
+        case 'البحرين':
+            // White and red with serrated line
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width / 3, height);
+            // Serrated edge
+            ctx.fillStyle = '#CE1126';
+            const teethB = 5;
+            ctx.beginPath();
+            ctx.moveTo(width / 3, 0);
+            for (let i = 0; i < teethB; i++) {
+                const y1 = (i * height) / teethB;
+                const y2 = ((i + 0.5) * height) / teethB;
+                const y3 = ((i + 1) * height) / teethB;
+                ctx.lineTo(width / 2, y2);
+                ctx.lineTo(width / 3, y3);
+            }
+            ctx.lineTo(width, height);
+            ctx.lineTo(width, 0);
+            ctx.fill();
+            break;
+            
+        case 'عُمان':
+            // White, Red, Green with red bar
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height / 2);
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, height / 2, width, height / 2);
+            ctx.fillStyle = '#007A3D';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Red bar on left
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width / 4, height);
+            break;
+            
+        case 'اليمن':
+            // Red, White, Black
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            break;
+            
+        case 'فلسطين':
+            // Black, White, Green with red triangle
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#007A3D';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Red triangle
+            ctx.fillStyle = '#CE1126';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 2, height / 2);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            break;
+            
+        case 'السودان':
+            // Red, White, Black with green triangle
+            ctx.fillStyle = '#D21034';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Green triangle
+            ctx.fillStyle = '#007A3D';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 2, height / 2);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            break;
+            
+        case 'الجزائر':
+            // Green and white with red star and crescent
+            ctx.fillStyle = '#006233';
+            ctx.fillRect(0, 0, width / 2, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 2, 0, width / 2, height);
+            // Red crescent and star
+            ctx.fillStyle = '#D21034';
+            drawCrescent(ctx, width / 2, height / 2, 30, 25);
+            drawStar(ctx, width / 2 + 15, height / 2, 12, 5, 0.5, '#D21034');
+            break;
+            
+        case 'تونس':
+            // Red with white circle containing red crescent and star
+            ctx.fillStyle = '#E70013';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 50, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#E70013';
+            drawCrescent(ctx, width / 2, height / 2, 25, 20);
+            drawStar(ctx, width / 2 + 10, height / 2, 10, 5, 0.5, '#E70013');
+            break;
+            
+        case 'ليبيا':
+            // Red, Black, Green with white crescent and star
+            ctx.fillStyle = '#E70013';
+            ctx.fillRect(0, 0, width, height / 4);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, height / 4, width, height / 2);
+            ctx.fillStyle = '#239E46';
+            ctx.fillRect(0, 3 * height / 4, width, height / 4);
+            // White crescent and star
+            drawCrescent(ctx, width / 2, height / 2, 25, 20, '#FFFFFF');
+            drawStar(ctx, width / 2 + 10, height / 2, 10, 5, 0.5, '#FFFFFF');
+            break;
+            
+        case 'الصومال':
+            // Light blue with white star
+            ctx.fillStyle = '#4189DD';
+            ctx.fillRect(0, 0, width, height);
+            drawStar(ctx, width / 2, height / 2, 35, 5, 0.5, '#FFFFFF');
+            break;
+            
+        case 'موريتانيا':
+            // Green with gold crescent and star
+            ctx.fillStyle = '#006233';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#D01C1F';
+            ctx.fillRect(0, 0, width, height / 5);
+            ctx.fillRect(0, 4 * height / 5, width, height / 5);
+            drawCrescent(ctx, width / 2, height / 2 + 10, 35, 30, '#FFD700');
+            drawStar(ctx, width / 2, height / 2 - 10, 15, 5, 0.5, '#FFD700');
+            break;
+            
+        case 'جيبوتي':
+            // Light blue and green with white triangle and red star
+            ctx.fillStyle = '#6AB2E7';
+            ctx.fillRect(0, 0, width, height / 2);
+            ctx.fillStyle = '#12AD2B';
+            ctx.fillRect(0, height / 2, width, height / 2);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 2, height / 2);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            drawStar(ctx, width / 5, height / 2, 12, 5, 0.5, '#D7141A');
+            break;
+            
+        case 'جزر القمر':
+            // Yellow, White, Red, Blue with green triangle and crescent/stars
+            ctx.fillStyle = '#FFD100';
+            ctx.fillRect(0, 0, width, height / 4);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 4, width, height / 4);
+            ctx.fillStyle = '#EE2A35';
+            ctx.fillRect(0, height / 2, width, height / 4);
+            ctx.fillStyle = '#3B5BA7';
+            ctx.fillRect(0, 3 * height / 4, width, height / 4);
+            ctx.fillStyle = '#3A9E5A';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width / 2, height / 2);
+            ctx.lineTo(0, height);
+            ctx.fill();
+            drawCrescent(ctx, width / 5, height / 2, 20, 16, '#FFFFFF');
+            break;
+            
+        case 'أمريكا':
+            // Red and white stripes with blue canton and stars
+            for (let i = 0; i < 13; i++) {
+                ctx.fillStyle = i % 2 === 0 ? '#B22234' : '#FFFFFF';
+                ctx.fillRect(0, (i * height) / 13, width, height / 13);
+            }
+            ctx.fillStyle = '#3C3B6E';
+            ctx.fillRect(0, 0, width * 0.4, height * 0.54);
+            // White stars
+            ctx.fillStyle = '#FFFFFF';
+            for (let row = 0; row < 9; row++) {
+                const starsInRow = row % 2 === 0 ? 6 : 5;
+                for (let col = 0; col < starsInRow; col++) {
+                    const x = (width * 0.4 / (starsInRow + 1)) * (col + 1);
+                    const y = (height * 0.54 / 10) * (row + 0.5);
+                    drawStar(ctx, x, y, 4, 2, 0.5, '#FFFFFF');
+                }
+            }
+            break;
+            
+        case 'كندا':
+            // Red, White, Red with maple leaf
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(0, 0, width / 4, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 4, 0, width / 2, height);
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(3 * width / 4, 0, width / 4, height);
+            // Maple leaf
+            ctx.fillStyle = '#FF0000';
+            ctx.font = 'bold 60px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🍁', width / 2, height / 2 + 15);
+            break;
+            
+        case 'المكسيك':
+            // Green, White, Red with coat of arms
+            ctx.fillStyle = '#006847';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 3, 0, width / 3, height);
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(2 * width / 3, 0, width / 3, height);
+            // Eagle symbol
+            ctx.fillStyle = '#8B4513';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🦅', width / 2, height / 2 + 10);
+            break;
+            
+        case 'البرازيل':
+            // Green with yellow diamond and blue circle
+            ctx.fillStyle = '#009B3A';
+            ctx.fillRect(0, 0, width, height);
+            // Yellow diamond
+            ctx.fillStyle = '#FEDF00';
+            ctx.beginPath();
+            ctx.moveTo(width / 2, height * 0.1);
+            ctx.lineTo(width * 0.9, height / 2);
+            ctx.lineTo(width / 2, height * 0.9);
+            ctx.lineTo(width * 0.1, height / 2);
+            ctx.closePath();
+            ctx.fill();
+            // Blue circle
+            ctx.fillStyle = '#002776';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 35, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+            
+        case 'الأرجنتين':
+            // Light blue, White, Light blue with sun
+            ctx.fillStyle = '#74ACDF';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#74ACDF';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Sun
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('☀', width / 2, height / 2 + 10);
+            break;
+            
+        case 'فرنسا':
+            // Blue, White, Red vertical
+            ctx.fillStyle = '#0055A4';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 3, 0, width / 3, height);
+            ctx.fillStyle = '#EF4135';
+            ctx.fillRect(2 * width / 3, 0, width / 3, height);
+            break;
+            
+        case 'ألمانيا':
+            // Black, Red, Gold horizontal
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#DD0000';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#FFCE00';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            break;
+            
+        case 'إيطاليا':
+            // Green, White, Red vertical
+            ctx.fillStyle = '#009246';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 3, 0, width / 3, height);
+            ctx.fillStyle = '#CE2B37';
+            ctx.fillRect(2 * width / 3, 0, width / 3, height);
+            break;
+            
+        case 'إسبانيا':
+            // Red, Yellow (with coat of arms), Red
+            ctx.fillStyle = '#AA151B';
+            ctx.fillRect(0, 0, width, height / 4);
+            ctx.fillStyle = '#F1BF00';
+            ctx.fillRect(0, height / 4, width, height / 2);
+            ctx.fillStyle = '#AA151B';
+            ctx.fillRect(0, 3 * height / 4, width, height / 4);
+            break;
+            
+        case 'بريطانيا':
+            // Union Jack
+            ctx.fillStyle = '#012169';
+            ctx.fillRect(0, 0, width, height);
+            // White diagonal cross
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = height * 0.1;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width, height);
+            ctx.moveTo(width, 0);
+            ctx.lineTo(0, height);
+            ctx.stroke();
+            // Red diagonal cross
+            ctx.strokeStyle = '#C8102E';
+            ctx.lineWidth = height * 0.06;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(width, height);
+            ctx.moveTo(width, 0);
+            ctx.lineTo(0, height);
+            ctx.stroke();
+            // White vertical and horizontal
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = height * 0.16;
+            ctx.beginPath();
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+            // Red vertical and horizontal
+            ctx.strokeStyle = '#C8102E';
+            ctx.lineWidth = height * 0.1;
+            ctx.beginPath();
+            ctx.moveTo(width / 2, 0);
+            ctx.lineTo(width / 2, height);
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+            break;
+            
+        case 'روسيا':
+            // White, Blue, Red
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#0039A6';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#D52B1E';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            break;
+            
+        case 'تركيا':
+            // Red with white crescent and star
+            ctx.fillStyle = '#E30A17';
+            ctx.fillRect(0, 0, width, height);
+            drawCrescent(ctx, width * 0.4, height / 2, 35, 28, '#FFFFFF');
+            drawStar(ctx, width * 0.55, height / 2, 18, 9, 0.5, '#FFFFFF');
+            break;
+            
+        case 'اليابان':
+            // White with red circle
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#BC002D';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 40, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+            
+        case 'الصين':
+            // Red with yellow stars
+            ctx.fillStyle = '#DE2910';
+            ctx.fillRect(0, 0, width, height);
+            // Large star
+            drawStar(ctx, width * 0.25, height * 0.25, 20, 10, 0.5, '#FFDE00');
+            // Small stars
+            drawStar(ctx, width * 0.4, height * 0.15, 8, 4, 0.5, '#FFDE00');
+            drawStar(ctx, width * 0.45, height * 0.22, 8, 4, 0.5, '#FFDE00');
+            drawStar(ctx, width * 0.45, height * 0.32, 8, 4, 0.5, '#FFDE00');
+            drawStar(ctx, width * 0.4, height * 0.39, 8, 4, 0.5, '#FFDE00');
+            break;
+            
+        case 'الهند':
+            // Orange, White, Green with blue wheel
+            ctx.fillStyle = '#FF9933';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#138808';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Blue wheel
+            ctx.strokeStyle = '#000080';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 20, 0, Math.PI * 2);
+            ctx.stroke();
+            for (let i = 0; i < 24; i++) {
+                const angle = (i * Math.PI) / 12;
+                ctx.beginPath();
+                ctx.moveTo(width / 2, height / 2);
+                ctx.lineTo(width / 2 + 20 * Math.cos(angle), height / 2 + 20 * Math.sin(angle));
+                ctx.stroke();
+            }
+            break;
+            
+        case 'أستراليا':
+            // Blue with Union Jack and stars
+            ctx.fillStyle = '#012169';
+            ctx.fillRect(0, 0, width, height);
+            // Simplified Union Jack (quarter size)
+            const ujWidth = width * 0.5;
+            const ujHeight = height * 0.5;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(ujWidth * 0.4, 0, ujWidth * 0.2, ujHeight);
+            ctx.fillRect(0, ujHeight * 0.4, ujWidth, ujHeight * 0.2);
+            // Large star
+            drawStar(ctx, width * 0.25, height * 0.75, 15, 7, 0.5, '#FFFFFF');
+            // Southern Cross
+            drawStar(ctx, width * 0.7, height * 0.3, 10, 5, 0.5, '#FFFFFF');
+            drawStar(ctx, width * 0.8, height * 0.4, 8, 4, 0.5, '#FFFFFF');
+            drawStar(ctx, width * 0.75, height * 0.6, 10, 5, 0.5, '#FFFFFF');
+            drawStar(ctx, width * 0.85, height * 0.65, 8, 4, 0.5, '#FFFFFF');
+            drawStar(ctx, width * 0.65, height * 0.5, 8, 4, 0.5, '#FFFFFF');
+            break;
+            
+        case 'نيوزيلندا':
+            // Blue with Union Jack and red stars
+            ctx.fillStyle = '#00247D';
+            ctx.fillRect(0, 0, width, height);
+            // Simplified Union Jack
+            const nzUjWidth = width * 0.5;
+            const nzUjHeight = height * 0.5;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(nzUjWidth * 0.4, 0, nzUjWidth * 0.2, nzUjHeight);
+            ctx.fillRect(0, nzUjHeight * 0.4, nzUjWidth, nzUjHeight * 0.2);
+            // Southern Cross (red)
+            drawStar(ctx, width * 0.7, height * 0.35, 10, 5, 0.5, '#CC142B');
+            drawStar(ctx, width * 0.8, height * 0.5, 8, 4, 0.5, '#CC142B');
+            drawStar(ctx, width * 0.75, height * 0.65, 10, 5, 0.5, '#CC142B');
+            drawStar(ctx, width * 0.85, height * 0.7, 8, 4, 0.5, '#CC142B');
+            break;
+            
+        case 'جنوب أفريقيا':
+            // Horizontal Y-shape flag
+            ctx.fillStyle = '#007A4D';
+            ctx.fillRect(0, 0, width, height);
+            // Red stripe
+            ctx.fillStyle = '#DE3831';
+            ctx.fillRect(0, 0, width, height * 0.4);
+            // Blue stripe
+            ctx.fillStyle = '#002395';
+            ctx.fillRect(0, height * 0.6, width, height * 0.4);
+            // Y-shape (simplified)
+            ctx.fillStyle = '#FFB612';
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width * 0.4, height * 0.2);
+            ctx.lineTo(width, height * 0.2);
+            ctx.lineTo(width, height * 0.35);
+            ctx.lineTo(width * 0.45, height * 0.5);
+            ctx.lineTo(width, height * 0.65);
+            ctx.lineTo(width, height * 0.8);
+            ctx.lineTo(width * 0.4, height * 0.8);
+            ctx.closePath();
+            ctx.fill();
+            break;
+            
+        case 'نيجيريا':
+            // Green, White, Green
+            ctx.fillStyle = '#008751';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(width / 3, 0, width / 3, height);
+            ctx.fillStyle = '#008751';
+            ctx.fillRect(2 * width / 3, 0, width / 3, height);
+            break;
+            
+        case 'كينيا':
+            // Black, Red (white borders), Green with shield
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height * 0.25);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height * 0.25, width, height * 0.05);
+            ctx.fillStyle = '#BB0000';
+            ctx.fillRect(0, height * 0.3, width, height * 0.4);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height * 0.7, width, height * 0.05);
+            ctx.fillStyle = '#006600';
+            ctx.fillRect(0, height * 0.75, width, height * 0.25);
+            // Shield symbol
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 30px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🛡', width / 2, height / 2 + 10);
+            break;
+            
+        case 'إثيوبيا':
+            // Green, Yellow, Red with blue circle and emblem
+            ctx.fillStyle = '#009639';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FEDD00';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#CE1126';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Blue circle
+            ctx.fillStyle = '#0F47AF';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 35, 0, Math.PI * 2);
+            ctx.fill();
+            // Yellow star
+            drawStar(ctx, width / 2, height / 2, 20, 10, 0.5, '#FEDD00');
+            break;
+            
+        case 'تايلاند':
+            // Red, White, Blue, White, Red
+            ctx.fillStyle = '#ED1C24';
+            ctx.fillRect(0, 0, width, height / 6);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 6, width, height / 6);
+            ctx.fillStyle = '#241D4F';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 2 * height / 3, width, height / 6);
+            ctx.fillStyle = '#ED1C24';
+            ctx.fillRect(0, 5 * height / 6, width, height / 6);
+            break;
+            
+        case 'ماليزيا':
+            // Red and white stripes with blue canton and star/crescent
+            for (let i = 0; i < 14; i++) {
+                ctx.fillStyle = i % 2 === 0 ? '#CC0001' : '#FFFFFF';
+                ctx.fillRect(0, (i * height) / 14, width, height / 14);
+            }
+            ctx.fillStyle = '#010066';
+            ctx.fillRect(0, 0, width * 0.5, height * 0.5);
+            drawCrescent(ctx, width * 0.25, height * 0.25, 18, 14, '#FFCC00');
+            drawStar(ctx, width * 0.3, height * 0.25, 12, 6, 0.5, '#FFCC00');
+            break;
+            
+        case 'إندونيسيا':
+            // Red and White
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(0, 0, width, height / 2);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 2, width, height / 2);
+            break;
+            
+        case 'باكستان':
+            // Green with white bar and star/crescent
+            ctx.fillStyle = '#01411C';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, width / 4, height);
+            drawCrescent(ctx, width * 0.6, height / 2, 35, 28, '#FFFFFF');
+            drawStar(ctx, width * 0.7, height / 2, 18, 9, 0.5, '#FFFFFF');
+            break;
+            
+        case 'إيران':
+            // Green, White, Red with emblem
+            ctx.fillStyle = '#239F40';
+            ctx.fillRect(0, 0, width, height / 3);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, height / 3, width, height / 3);
+            ctx.fillStyle = '#DA0000';
+            ctx.fillRect(0, 2 * height / 3, width, height / 3);
+            // Red emblem
+            ctx.fillStyle = '#DA0000';
+            ctx.font = 'bold 40px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('☪', width / 2, height / 2 + 10);
+            break;
+            
+        case 'أفغانستان':
+            // Black, Red, Green vertical
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width / 3, height);
+            ctx.fillStyle = '#D32011';
+            ctx.fillRect(width / 3, 0, width / 3, height);
+            ctx.fillStyle = '#007A36';
+            ctx.fillRect(2 * width / 3, 0, width / 3, height);
+            break;
+            
+        default:
+            // Default flag (simple tricolor)
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#FFD700';
+            ctx.font = 'bold 24px Cairo';
+            ctx.textAlign = 'center';
+            ctx.fillText(countryKey, width / 2, height / 2);
+    }
+}
+
+function drawStar(ctx, cx, cy, outerRadius, innerRadius, ratio, color) {
+    const points = 5;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < points * 2; i++) {
+        const radius = i % 2 === 0 ? outerRadius : outerRadius * ratio;
+        const angle = (i * Math.PI) / points - Math.PI / 2;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
+function drawCrescent(ctx, cx, cy, outerRadius, innerRadius, color = '#FFFFFF') {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = ctx.canvas.parentElement.style.backgroundColor || '#000000';
+    // Get the background color from parent
+    const computedStyle = window.getComputedStyle(ctx.canvas.parentElement);
+    const bgColor = computedStyle.backgroundColor;
+    if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
+        ctx.fillStyle = bgColor;
+    } else {
+        // Extract background from gradient if needed
+        const flagBg = ctx.getImageData(cx + 5, cy, 1, 1).data;
+        ctx.fillStyle = `rgb(${flagBg[0]}, ${flagBg[1]}, ${flagBg[2]})`;
+    }
+    ctx.beginPath();
+    ctx.arc(cx + 8, cy - 3, innerRadius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function showQuestion() {
+    const question = gameState.questions[gameState.currentQuestion];
+    
+    // Update progress bar
+    const progress = ((gameState.currentQuestion + 1) / gameState.totalQuestions) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    
+    // Update question text
+    document.getElementById('questionText').textContent = question.text;
+    
+    // Show visual
+    const visualDisplay = document.getElementById('visualDisplay');
+    if (question.visualType === 'flag') {
+        // Create canvas for flag
+        visualDisplay.innerHTML = `
+            <div class="flag-display">
+                <canvas id="flagCanvas" width="250" height="170"></canvas>
+            </div>`;
+        
+        // Draw the flag
+        setTimeout(() => {
+            const canvas = document.getElementById('flagCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                drawFlag(ctx, question.country, 250, 170);
+            }
+        }, 10);
+    } else {
+        visualDisplay.innerHTML = `<div class="map-display">${question.visual}</div>`;
+    }
+    
+    // Create answer buttons
+    const answersGrid = document.getElementById('answersGrid');
+    answersGrid.innerHTML = '';
+    
+    question.answers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(answer);
+        answersGrid.appendChild(btn);
+    });
+}
+
+function checkAnswer(selectedAnswer) {
+    const question = gameState.questions[gameState.currentQuestion];
+    const isCorrect = selectedAnswer === question.correctAnswer;
+    const buttons = document.querySelectorAll('.answer-btn');
+    
+    // Disable all buttons
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === question.correctAnswer) {
+            btn.classList.add('correct');
+        } else if (btn.textContent === selectedAnswer && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    // Update game state
+    if (isCorrect) {
+        gameState.correctAnswers++;
+        gameState.score += 100;
+        gameState.countriesDiscovered.add(question.country);
+        showFeedback('رائع! 🎉');
+    } else {
+        showFeedback('حاول مرة أخرى! 💪');
+    }
+    
+    updateStats();
+    
+    // Move to next question
+    setTimeout(() => {
+        gameState.currentQuestion++;
+        if (gameState.currentQuestion < gameState.totalQuestions) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }, 1500);
+}
+
+function showFeedback(message) {
+    const feedback = document.getElementById('feedback');
+    feedback.textContent = message;
+    feedback.classList.remove('show');
+    void feedback.offsetWidth; // Force reflow
+    feedback.classList.add('show');
+}
+
+function updateStats() {
+    document.getElementById('score').textContent = gameState.score;
+    document.getElementById('discovered').textContent = gameState.countriesDiscovered.size;
+    
+    const accuracy = gameState.currentQuestion === 0 ? 100 : 
+        Math.round((gameState.correctAnswers / gameState.currentQuestion) * 100);
+    document.getElementById('accuracy').textContent = accuracy + '%';
+}
+
+function showResults() {
+    document.getElementById('gameArea').classList.remove('active');
+    document.getElementById('results').classList.add('active');
+    
+    const accuracy = Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100);
+    
+    document.getElementById('finalScore').textContent = gameState.score;
+    document.getElementById('finalCorrect').textContent = `${gameState.correctAnswers}/${gameState.totalQuestions}`;
+    document.getElementById('finalAccuracy').textContent = accuracy + '%';
+    
+    // Set trophy and message based on performance
+    let trophy = '🏆';
+    let message = '';
+    
+    if (accuracy === 100) {
+        trophy = '🏆';
+        message = 'مثالي! أنت خبير جغرافيا حقيقي!';
+    } else if (accuracy >= 80) {
+        trophy = '🥇';
+        message = 'ممتاز! مستكشف عالمي رائع!';
+    } else if (accuracy >= 60) {
+        trophy = '🥈';
+        message = 'جيد جداً! استمر في الاستكشاف!';
+    } else if (accuracy >= 40) {
+        trophy = '🥉';
+        message = 'لا بأس! الرحلة طويلة!';
+    } else {
+        trophy = '🌟';
+        message = 'استمر في التعلم! كل رحلة تبدأ بخطوة!';
+    }
+    
+    document.getElementById('trophyIcon').textContent = trophy;
+    document.getElementById('resultMessage').textContent = message;
+}
+
+function restartGame() {
+    startGame(gameState.mode);
+}
+
+function returnToMenu() {
+    document.getElementById('gameModes').classList.remove('hidden');
+    document.getElementById('gameArea').classList.remove('active');
+    document.getElementById('results').classList.remove('active');
+    
+    // Reset stats
+    gameState.countriesDiscovered.clear();
+    updateStats();
+}
+</script>
+</body>
+</html>

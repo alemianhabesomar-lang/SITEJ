@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المقالات الحصرية | Educore</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES (مطابقة للصفحة الرئيسية) --- */
+        :root {
+            /* Navy Blue Palette */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+            
+            --danger: #ff4d4d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        .shape-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(155, 180, 208, 0.25) 0%, transparent 70%);
+            top: 35%;
+            left: 45%;
+            animation-delay: -20s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(-120px, -80px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* --- NAVIGATION (مطابقة للصفحة الرئيسية) --- */
+        nav.top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 70px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-blue);
+            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
+            transition: all 0.5s ease;
+        }
+
+        nav.top-bar.scrolled {
+            padding: 14px 70px;
+            background: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.4));
+        }
+
+        .burger {
+            cursor: pointer;
+            width: 38px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2000;
+            transition: transform 0.3s ease;
+        }
+
+        .burger:hover {
+            transform: scale(1.1);
+        }
+
+        .line {
+            width: 100%;
+            height: 3.5px;
+            background: var(--gradient-blue-glow);
+            border-radius: 6px;
+            transition: all 0.5s ease;
+            box-shadow: 0 2px 10px var(--shadow-blue);
+        }
+
+        /* --- SIDE NAVIGATION --- */
+        .side-nav {
+            height: 100%;
+            width: 400px;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            right: -400px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
+            backdrop-filter: blur(35px);
+            border-left: 3px solid var(--accent-blue);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: right 0.7s ease;
+            padding: 35px 30px;
+            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
+        }
+
+        .side-nav.active {
+            right: 0;
+        }
+
+        .side-nav h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .side-nav a {
+            padding: 20px 22px;
+            text-decoration: none;
+            font-size: 1.15rem;
+            color: var(--text-navy);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            transition: all 0.5s ease;
+            border-radius: 15px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .side-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
+            transition: width 0.6s ease;
+            z-index: 0;
+        }
+
+        .side-nav a:hover::before {
+            width: 100%;
+        }
+
+        .side-nav a > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .side-nav a i {
+            width: 35px;
+            color: var(--accent-blue);
+            text-align: center;
+            font-size: 1.4rem;
+            transition: all 0.5s ease;
+        }
+
+        .side-nav a:hover {
+            color: var(--navy-dark);
+            background: var(--glass-strong);
+            transform: translateX(-12px);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .side-nav a:hover i {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .close-btn {
+            text-align: left;
+            cursor: pointer;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+            transition: all 0.5s ease;
+            font-size: 2rem;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: #ee5a6f;
+        }
+
+        #overlay-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 41, 66, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 2500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        #overlay-bg.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 150px;
+            padding-bottom: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 40px rgba(74, 144, 226, 0.3));
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero p {
+            color: var(--text-gray);
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- ARTICLES GRID --- */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 5%;
+            padding-bottom: 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--border-blue);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.6s ease-out backwards;
+            box-shadow: 0 8px 25px rgba(26, 41, 66, 0.08);
+        }
+
+        .article-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 50px rgba(74, 144, 226, 0.3);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 2px solid var(--border-blue);
+            transition: all 0.5s ease;
+        }
+
+        .article-card:hover .article-image {
+            transform: scale(1.1);
+        }
+
+        .article-content {
+            padding: 25px;
+            flex-grow: 1;
+        }
+
+        .article-tag {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .article-content h3 {
+            margin-bottom: 15px;
+            color: var(--text-navy);
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .article-content p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .read-more {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .read-more:hover {
+            gap: 15px;
+            color: var(--navy-dark);
+        }
+
+        /* --- ADD ARTICLE BUTTON --- */
+        .add-article-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--shadow-blue);
+            border: none;
+            z-index: 900;
+            transition: transform 0.3s;
+        }
+
+        .add-article-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 35px var(--shadow-glow);
+        }
+
+        /* --- DELETE BUTTON --- */
+        .delete-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 77, 77, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 2px solid var(--accent-blue);
+            border-radius: 20px;
+            padding: 40px;
+            z-index: 2600;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 50px rgba(26, 41, 66, 0.3);
+        }
+
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal h2 {
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .modal input,
+        .modal textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: rgba(232, 238, 245, 0.5);
+            border: 2px solid var(--border-blue);
+            color: var(--text-navy);
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .modal input:focus,
+        .modal textarea:focus {
+            border-color: var(--accent-blue);
+            background: rgba(232, 238, 245, 0.8);
+        }
+
+        .save-btn {
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow-glow);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 2px solid var(--accent-blue);
+            background: linear-gradient(180deg, rgba(26, 41, 66, 0.98) 0%, rgba(10, 22, 40, 1) 100%);
+            padding: 30px;
+            text-align: center;
+            color: var(--blue-lightest);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav.top-bar {
+                padding: 18px 30px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                padding: 20px 4%;
+            }
+
+            .side-nav {
+                width: 340px;
+                right: -340px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="top-bar" id="navbar">
+        <a href="index.html" class="logo">EDUCORE</a>
+        <div class="burger" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+
+    <!-- Overlay -->
+    <div id="overlay-bg" onclick="closeAll()"></div>
+
+    <!-- Sidebar -->
+    <nav class="side-nav" id="sideNav">
+        <div class="close-btn" onclick="toggleMenu()">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <h2>القائمة الملكية</h2>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+            <li><a href="videos.html"><i class="fas fa-play-circle"></i> الفيديوهات التعليمية</a></li>
+            <li><a href="articals.html"><i class="fas fa-feather-alt"></i> المقالات الحصرية</a></li>
+            <li><a href="games.html"><i class="fas fa-chess"></i> ساحة الألعاب</a></li>
+            <li><a href="exams.html"><i class="fas fa-pen-fancy"></i> مركز الاختبارات</a></li>
+            <li><a href="sign language hub.html"><i class="fas fa-sign-language"></i> مركز لغة الاشارة</a></li>
+            <li><a href="AI.html"><i class="fas fa-robot"></i> المساعد الذكي</a></li>
+            <li><a href="partys.html"><i class="fas fa-microphone-alt"></i> الغرف الصوتية</a></li>
+            <li><a href="marks.html"><i class="fas fa-trophy"></i> بوابة النتائج</a></li>
+            <li><a href="questions.html"><i class="fas fa-comment-dots"></i> قسم الاستفسارات</a></li>
+            <li><a href="support.html"><i class="fas fa-shield-halved"></i> حقوق النشر</a></li>
+            <li id="logoutBtn" class="hidden"><a href="#" onclick="logout()" style="color:#ff6b6b"><i class="fas fa-power-off"></i> تسجيل خروج</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>المدونة الملكية</h1>
+        <p>حيث تُكتب المعرفة بماء الذهب</p>
+    </section>
+
+    <!-- Add Article Button -->
+    <button class="add-article-btn" id="addBtn" onclick="openModal()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Articles Grid -->
+    <div class="articles-grid" id="articlesGrid"></div>
+
+    <!-- Add Article Modal -->
+    <div class="modal" id="articleModal">
+        <h2><i class="fas fa-feather-alt"></i> تدوين مقال جديد</h2>
+        <input type="text" id="artTitle" placeholder="عنوان المقال">
+        <input type="text" id="artTag" placeholder="التصنيف">
+        <input type="text" id="artImg" placeholder="رابط الصورة (URL)">
+        <textarea id="artDesc" rows="5" placeholder="اكتب محتوى المقال هنا..."></textarea>
+        <button class="save-btn" onclick="saveArticle()">نشر في EDUCORE</button>
+        <p onclick="closeAll()" style="text-align:center; margin-top:15px; cursor:pointer; color:var(--text-gray);">إلغاء</p>
+    </div>
+
+    <!-- Read Article Modal -->
+    <div class="modal" id="readModal">
+        <h2 id="readTitle"></h2>
+        <span class="article-tag" id="readTag" style="text-align:center;"></span>
+        <div style="width:100%; height:250px; background-size:cover; background-position:center; margin: 15px 0; border-radius:10px; border:2px solid var(--accent-blue);" id="readImg"></div>
+        <div id="readDesc" style="max-height: 400px; overflow-y: auto; line-height:1.8; color:var(--text-navy); padding-right:10px; white-space: pre-wrap;"></div>
+        <p onclick="closeAll()" style="text-align:center; margin-top:20px; cursor:pointer; color:var(--accent-blue); font-weight:600;">إغلاق</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 EDUCORE ACADEMY. All Rights Reserved.
+    </footer>
+
+    <script>
+        const currentUserRole = 'admin';
+
+        // Complete 12 Articles with Full Content
+        const defaultArticles = [
+            {id: 1, tag: "ذكاء اصطناعي", title: "مستقبل التعليم الرقمي", desc: "كيف يغير الذكاء الاصطناعي وجه التعليم في العالم العربي؟ نحن نناقش الأدوات الجديدة وكيفية الاستفادة منها.\n\nالتعليم التقليدي يعاني من التحديات: حجرات مكتظة، عدم تخصيص التعليم، نقص الموارد. الذكاء الاصطناعي يحل هذه المشاكل.\n\nتطبيقات الذكاء الاصطناعي:\n1. التعلم المخصص - محتوى خاص لكل طالب\n2. المساعدون الذكيون - روبوتات 24/7\n3. التقييم الآلي - تصحيح فوري\n4. التنبؤ بالأداء - تحديد المتعثرين\n5. إنشاء محتوى - محتوى جذاب\n\nالإمارات والسعودية ومصر تستثمر بكثافة. التحديات: الخصوصية، تدريب المعلمين، التكاليف، البنية التحتية.\n\nالمستقبل واعد! سوق التعليم الذكي سينمو 25% سنوياً. المعلمون لن يختفوا، بل يصبحون موجهين.", img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=500&q=60"},
+            {id: 2, tag: "تطوير الذات", title: "عقلية النجاح", desc: "الفرق بين الناجحين والحالمين هو العمل المستمر. اكتشف استراتيجيات النخبة.\n\nعقلية النجاح ليست موهبة، بل عادة تُكتسب. الناجحون يشتركون في صفات:\n\n1. الإيمان بالإمكانيات - قدراتك قابلة للتطوير\n2. الاصرار - لا تستسلم\n3. إدارة الوقت - الوقت أثمن من المال\n4. التركيز على الأهداف - وضوح وسعي مستمر\n5. التعلم المستمر - اقرأ واستمع وتعلم\n\nاستراتيجيات عملية:\n\nالعادات الصباحية: استيقظ مبكراً، مارس رياضة، تأمل، حدد أهدافك.\n\nتقنية بومودورو: 25 دقيقة عمل + 5 دقائق راحة = إنتاجية عالية.\n\nقانون 80/20: 80% من النتائج من 20% من الجهود. ركز على المهم.\n\nالمحاسبية: اعمل مع شريك يحاسبك = 95% احتمالية نجاح.\n\nتجنب: عدم وضوح الأهداف، التأجيل، الاستسلام، عدم الاهتمام بالصحة النفسية.\n\nالنجاح رحلة وليس وجهة. استمتع بالعملية!", img: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=60"},
+            {id: 3, tag: "البرمجة", title: "تعلم Python من الصفر", desc: "برمجة سهلة وممتعة! Python أسهل لغة برمجة للمبتدئين.\n\nلماذا Python؟\nالكود قريب من الإنجليزية الطبيعية. جملها بسيطة وواضحة.\n\nاستخدامات Python:\n- تحليل البيانات والإحصاء\n- الذكاء الاصطناعي والتعلم الآلي\n- تطوير تطبيقات ويب\n- أتمتة المهام\n- تطوير الألعاب\n- الحوسبة العلمية\n\nالمزايا:\n1. البساطة - كود سهل\n2. المرونة - استخدامات متعددة\n3. مكتبات قوية - NumPy, Pandas, Django\n4. مجتمع كبير - ملايين المبرمجين\n5. طلب وظيفي - وظائف براتب عالي\n\nأساسيات:\nالمتغيرات: name = \"أحمد\", age = 25\nأنواع البيانات: Strings, Integers, Floats, Booleans, Lists\n\nالحلقات والشروط:\nif age >= 18:\n    print(\"بالغ\")\nelse:\n    print(\"قاصر\")\n\nمشاريع للمبتدئين: حاسبة، لعبة تخمين، تطبيق مهام، توقع طقس.\n\nخطوات البدء:\n1. حمّل Python\n2. استخدم VS Code\n3. ابدأ بمشاريع بسيطة\n4. مارس يومياً\n5. شارك على GitHub", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=500&q=60"},
+            {id: 4, tag: "الرياضيات", title: "الجبر الخطي وتطبيقاته", desc: "فهم أساسيات الجبر الخطي وتطبيقاته العملية.\n\nما هو الجبر الخطي؟\nفرع رياضيات يتعامل مع المتجهات والمصفوفات والمعادلات الخطية.\n\nالمفاهيم:\n\nالمتجهات (Vectors):\nمجموعة أرقام بها اتجاه وحجم. [3, 4] متجه.\nتمثل: القوى، السرعات، الأوضاع.\n\nالمصفوفات (Matrices):\nجدول أرقام:\n[1 2 3]\n[4 5 6]\n\nتستخدم لحل أنظمة معادلات معقدة ومعالجة صور.\n\nالعمليات:\n1. جمع المتجهات: [1,2] + [3,4] = [4,6]\n2. الضرب العددي: [2,3] × 2 = [4,6]\n3. الضرب النقطي: 1×3 + 2×4 = 11\n\nالتطبيقات:\n1. رسومات 3D - ألعاب وأفلام\n2. معالجة صور - تكبير وتصغير\n3. الذكاء الاصطناعي - شبكات عصبية\n4. الفيزياء - حساب القوى والطاقة\n5. الاقتصاد - نماذج اقتصادية\n6. الهندسة الكهربائية - دوائل كهربائية\n\nلماذا تعلمها؟\n- أساس الرياضيات التطبيقية\n- ضروري للبيانات والذكاء الاصطناعي\n- تحسن مهارات حل المشاكل\n- فرص وظيفية متعددة", img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=500&q=60"},
+            {id: 5, tag: "العلوم", title: "الفيزياء الكمومية للمبتدئين", desc: "رحلة في عالم الذرات. اكتشف أسرار الطاقة والمادة.\n\nمقدمة:\nالفيزياء الكمومية عالم غريب حيث القواعد تتحطم. جزيئات في مكانين معاً!\n\nالفرق مع الكلاسيكية:\n\nالكلاسيكية:\n- موقع وسرعة محددة\n- سبب ونتيجة واضحة\n- تحكم أشياء كبيرة\n\nالكمومية:\n- جزيئات بطريقة مختلفة\n- عدم اليقين أساسي\n- الاحتمالات تحكم كل شيء\n\nالمبادئ:\n\n1. مبدأ عدم التأكد:\nلا يمكن قياس الموقع والسرعة بدقة معاً.\n\n2. الموجية - الجسيمية:\nالإلكترونات والفوتونات موجات وجزيئات!\n\n3. التشابك الكمومي:\nجسيمان يرتبطان بطريقة غريبة على بعد.\n\n4. مبدأ التراكب:\nجسيم في حالات متعددة معاً حتى القياس.\n\nالقط المجنون (Schrödinger):\nقط في صندوق - حي وميت معاً حتى الفتح!\n\nالتطبيقات:\n1. الحاسوب الكمومي - سرعة فائقة\n2. الليزر - خصائص كمومية\n3. الإلكترونيات - شرائح الكمبيوتر\n4. الطب - التصوير الطبي\n5. الطاقة النووية - انقسام الذرات\n\nالخلاصة: غريبة جميلة وقوية!", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=60"},
+            {id: 6, tag: "اللغة الإنجليزية", title: "نصائح لإتقان الانجليزية", desc: "تحسن مهاراتك في الاستماع والتحدث والكتابة والقراءة.\n\nلماذا؟\n80% من المحتوى الرقمي بالإنجليزية. ضرورية في العلم والتقنة.\n\nالمهارات الأربع:\n\n1. الاستماع:\n- استمع لموسيقى\n- شاهد أفلاماً\n- استمع لبودكاست\n- اسأل: من؟ عن ماذا؟\n\n2. القراءة:\n- اقرأ قصصاً قصيرة\n- لا تستخدم قاموس لكل كلمة\n- اقرأ بصوت عالٍ\n- اقرأ أخبار ومدونات\n\n3. التحدث:\n- تحدث مع نفسك\n- انضم لمجموعات محادثة\n- سجل صوتك\n- لا تخف من أخطاء\n- ركز على الثقة\n\n4. الكتابة:\n- اكتب يومياً\n- رسائل بريد\n- تعليقات وسائل تواصل\n- اطلب مراجعة\n\nتحسن المفردات:\n1. تعلم كلمات ذات صلة معاً\n2. استخدم التكرار المتباعد\n3. الكلمات الشائعة أولاً\n4. اقرأ بسياق\n5. قاموس إنجليزي-إنجليزي\n\nخطة تعلم:\nالشهر 1: 500 كلمة، استمع 15 دقيقة\nالشهر 2: محادثات بسيطة، قصص قصيرة\nالشهر 3: ثقة أعلى، مقالات حقيقية", img: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=500&q=60"},
+            {id: 7, tag: "التاريخ", title: "الحضارة الإسلامية الذهبية", desc: "إنجازات الحضارة الإسلامية العظيمة في العلوم والفنون.\n\nالفترة: القرن 8-14 ميلادي.\n\nمراكز الحضارة:\n\n1. بغداد:\nتأسست 762 - أعظم مدن العالم\nمركز ثقافة وعلم بلا منازع\n\n2. قرطبة (الأندلس):\n\"عروس الأندلس\"\nأكثر مدن أوروبا تقدماً\n\n3. دمشق والقاهرة:\nمراكز تجارية وعلمية\n\nالإنجازات:\n\n1. الرياضيات:\n- اخترعوا الصفر كرقم!\n- \"الأرقام العربية\" التي نستخدمها\n- الخوارزمي - الخوارزمية\n- تطور الجبر\n\n2. الطب:\n- الرازي - مؤسس طب الأطفال\n- ابن سينا - كتاب القانون 500 سنة!\n- جراحة متقدمة\n- مستشفيات بنظام تخصصات\n\n3. الفيزياء:\n- ابن الهيثم - طبيعة الضوء\n- اخترع الكاميرا المظلمة\n\n4. الكيمياء:\n- الكندي والرازي مؤسسون\n- كلمة \"كيمياء\" عربية الأصل\n\n5. الفلك والجغرافيا:\n- خرائط دقيقة\n- حسابات حركة الكواكب\n\nالمؤسسات:\n- بيت الحكمة ببغداد - أعظم مكتبة\n- الأزهر بالقاهرة - أقدم جامعة حية!\n- المدرسة النظامية - أول جامعة حقيقية\n\nالترجمات:\nأرسطو وأفلاطون ترجموا للعربية.\nبدونها، كنا فقدنا هذا التراث!\n\nالتأثير العالمي:\n- تأثير كبير على أوروبا\n- علماء أوروبيون درسوا هنا\n- كلمات إنجليزية من عربي:\nAlgebra, Algorithm, Zero, Alcohol, Coffee", img: "https://images.unsplash.com/photo-1604580864964-0e3fa4949100?auto=format&fit=crop&w=500&q=60"},
+            {id: 8, tag: "الصحة والعافية", title: "نمط الحياة الصحي", desc: "سر الحياة الصحية السعيدة - تغذية، رياضة، صحة نفسية.\n\nالركائز الثلاث:\n1. التغذية الصحيحة\n2. الرياضة والحركة\n3. الصحة النفسية والعقلية\n\nالعناصر الغذائية:\n\n1. الكربوهيدرات - مصدر الطاقة\nنوعان: بسيطة ومعقدة\nاختر المعقدة\n\n2. البروتينات - بناء العضلات\nمصادر: دجاج، سمك، بيض، عدس\n\n3. الدهون - ليست كلها سيئة!\nصحية: زيت زيتون، أسماك دهنية\n\n4. الفيتامينات والمعادن\nحديد، كالسيوم، فيتامينات\n\n5. الألياف - صحة الجهاز الهضمي\nخضار وفاكهة وحبوب كاملة\n\nقواعد التغذية:\n\n1. حجم الأكلة:\nنصف الطبق خضار\nربع بروتين\nربع كربوهيدرات\n\n2. أوقات الأكل:\n3 وجبات رئيسية + خفيفات\nلا تتخطى الفطور\n\n3. السوائل:\n8-10 أكواب ماء يومياً\nقلل السكريات والقهوة\n\nالرياضة:\n\nالفوائد:\n- صحة القلب\n- قوة العضلات\n- تحسين المزاج\n- تقليل التوتر\n- نوم أفضل\n\nأنواع:\n1. Cardio - 150 دقيقة أسبوعياً\n2. تمارين قوة - مرتين أسبوعياً\n3. مرونة - يوجا واستطالة\n\nالصحة النفسية:\n\n- تأمل 10 دقائق يومياً\n- 7-9 ساعات نوم\n- وقت مع الأحباء\n- قلل وسائل التواصل\n- هوايات وأنشطة\n- لا تخجل من الاستشارة النفسية\n\nابدأ الآن باختيارات صغيرة يومية!", img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=500&q=60"},
+            {id: 9, tag: "الاقتصاد", title: "أساسيات الاستثمار", desc: "إدارة أموالك والاستثمار الذكي لمستقبل مضمون.\n\nلماذا الاستثمار؟\nالمال وحده لا ينمو. التضخم يأكل قيمته.\n\nمبادئ أساسية:\n\n1. الفائدة المركبة:\nالفائدة على الفائدة!\n1000 دولار بـ 10% سنوياً:\nسنة 1: 1100\nسنة 10: 2594\nسنة 30: 17449\n\n2. المخاطرة والعائد:\nعائد أعلى = مخاطرة أعلى\nعائد آمن = عائد منخفض\n\n3. التنويع\nلا تضع كل أموالك في سلة\n\n4. البدء المبكر\nابدأ الآن حتى بمبالغ صغيرة\nالوقت أهم من المبلغ\n\nأنواع الاستثمارات:\n\n1. الأسهم (Stocks)\nملكية نسبة من شركة\nعائد 8-12% سنوياً\n\n2. السندات (Bonds)\nقرض تعطيه للحكومة\nعائد 3-5% سنوياً\nأكثر أماناً\n\n3. العقارات\nشراء أرض أو بيت\nإيجار أو بيع\nعائد 6-10%\n\n4. الصناديق المشتركة\nتجميع أموال وإدارة مهنية\nعائد 7-10%\n\n5. الصناديق المتداولة (ETFs)\nتداول مثل الأسهم\nعائد 7-10%\n\n6. المشاريع الصغيرة\nعائد غير محدود\n\nخطة للمبتدئين:\n\n1. صندوق الطوارئ - 3-6 أشهر نفقات\n\n2. حدد أهدافك:\nمتى تحتاج المال؟\nتحملك للمخاطر؟\n\n3. ابدأ بالاستثمار\nحساب استثمار\nمبلغ منتظم شهري\n\n4. مراجعة منتظمة\nكل 6 أشهر\nأعد التوازن\n\nأخطاء تجنبها:\n- الاستثمار بدون تخطيط\n- المتاجرة السريعة\n- أموال مقترضة\n- عدم التنويع\n- الخوف والجشع\n- عدم الاستثمار\n\nابدأ اليوم!", img: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=500&q=60"},
+            {id: 10, tag: "الفن والتصميم", title: "أساسيات التصميم الجرافيكي", desc: "مبادئ التصميم الجميل والاحترافي وأدوات التصميم الحديثة.\n\nما هو التصميم الجرافيكي؟\nفن دمج الكلمات والصور والألوان لنقل رسالة جميلة وفعالة.\n\nلماذا التصميم مهم؟\n90% من معلومات الدماغ بصرية\nالتصميم الجيد يحسن الفهم 80%\n\nالمبادئ الأساسية:\n\n1. التوازن (Balance)\nتماثلي: رسمي وهادئ\nغير تماثلي: ديناميكي\n\n2. التأكيد (Emphasis)\nاجعل المهم واضحاً\nحجم أو لون مختلف\n\n3. التسلسل الهرمي\nترتيب حسب الأهمية\n\n4. الحركة\nتوجيه انتباه المشاهد\n\n5. الوحدة\nتصميم متماسك\n\n6. الألوان\nدافئة: حيوية وطاقة\nباردة: هدوء وثقة\n\n7. التيبوغرافي (الخطوط)\nSerif: احترافية تقليدية\nSans-serif: نظيفة عصرية\nScript: جميلة لكن صعبة\n\n8. المحاذاة\nيسار، وسط، يمين\n\n9. التباعد\nالمساحات البيضاء مهمة!\n\n10. التكرار\nتكرار عناصر ينسجم التصميم\n\nأنواع التصاميم:\n1. الهوية - شعار وألوان\n2. الويب - واجهات المستخدم\n3. الطباعة - ملصقات وكتيبات\n4. التعبئة - صناديق وملصقات\n5. الحركة - فيديو ورسوم\n\nأدوات احترافية:\nAdobe Creative Suite (Photoshop, Illustrator)\nFigma, Sketch\n\nأدوات مجانية:\nCanva, GIMP, Inkscape, Piktochart\n\nخطوات التصميم:\n1. الفهم - الهدف والمشاهد\n2. البحث - تصاميم مشابهة\n3. المسودات - أفكار سريعة\n4. الاختيار والتطوير\n5. التنقيح\n6. الإنتاج النهائي\n\nأخطاء شائعة:\n- إفراط في الزخارف\n- ألوان سيئة\n- خطوط كثيرة\n- تجاهل المسافات\n- عدم الاختبار\n\nابدأ الآن!", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=500&q=60"},
+            {id: 11, tag: "الريادة", title: "كيف تبني مشروعك الناجح", desc: "خطوات عملية لتحويل فكرتك لمشروع ناجح ومربح.\n\nلماذا ريادة الأعمال؟\n- الحرية والاستقلالية\n- تحقيق حلمك\n- خدمة العملاء\n- التأثير على المجتمع\n\nصفات رائد الأعمال:\n- الجرأة: تقبل المخاطرة\n- الإصرار: لا تستسلم\n- الإبداع: حلول جديدة\n- العزيمة: محفز قوي\n- المرونة: تتكيف\n- الفضول: تتعلم\n\nمراحل بناء المشروع:\n\nالمرحلة 1: اختبار الفكرة\n\n1. اكتشف مشكلة:\nمشكلة تثير غضبك\nكم شخص يعاني؟\nهل الناس يدفعون للحل؟\n\n2. ابحث عن السوق:\nهل السوق موجود؟\nكم حجمه؟\nمن المنافسون؟\n\n3. اختبر الفكرة:\nنسخة بسيطة (MVP)\nاعرضها على 10-20 شخص\n\nالمرحلة 2: بناء المنتج\n\n1. قيمتك المضافة:\nلماذا يختار الناس منتجك؟\nالفرق عن المنافسين؟\n\n2. منتج بسيط:\nالناقص أفضل من المعدوم\nطلب تغذية راجعة\n\n3. الجودة:\nاختبر جيداً\nتأكد من الرضا\n\nالمرحلة 3: التسويق والمبيعات\n\n1. عملاؤك:\nمن المثالي؟\nأين يقضي وقته؟\n\n2. استراتيجية:\nتسويق رقمي\nوسائل تواصل\nمحتوى قيم\n\n3. العلاقات:\nكن صادقاً\nاستمع\nبناء مجتمع\n\nالمرحلة 4: النمو\n\n1. قياس الأداء\n2. تحسين مستمر\n3. توسع وأسواق جديدة\n\nالتحديات:\n- تمويل: ابدأ بأموالك\n- فريق: ابدأ وحدك\n- منافسة: تميز واجعلهم سعداء\n- إرهاق: خذ راحة\n\nنصائح:\n1. ركز على حل المشكلة\n2. قريب من العملاء\n3. ابدأ بسيط\n4. احط نفسك بناس محفزين\n5. اقرأ وتعلم\n6. لا تخاف من الأخطاء\n7. استمتع برحلتك!\n\nابدأ اليوم!", img: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=500&q=60"},
+            {id: 12, tag: "الثقافة", title: "الأدب العربي الحديث", desc: "أعمال الكتاب العرب وتأثيرهم على المشهد الثقافي العالمي.\n\nأهم الأدباء:\n\n1. نجيب محفوظ:\nأول عربي يفوز بنوبل للآداب (1988)\nرواية \"الثلاثية\"\nحياة الشعب المصري بعمق\n\n2. محمود درويش:\nشاعر فلسطيني عظيم\nشعر الألم والأمل\nديوان \"أعرابيات\"\n\n3. أحلام مستغانمي:\nروائية جزائرية\n\"ذاكرة في الجسد\"\nحب وتاريخ سياسي\n\n4. غسان كنفاني:\nروائي فلسطيني\n\"رجال في الشمس\"\nاغتراب واللاجئين\n\nالأنواع الأدبية:\n\n1. الرواية\nاستكشاف النفس البشرية\nروايات واقعية وسحرية\nنقد اجتماعي وسياسي\n\n2. الشعر\nتطور من التقليدي للحديث\nشعر حر بدون قيود\nتعبير أحاسيس داخلية\n\n3. القصة القصيرة\nفن حديث\nلحظات من الحياة\n\n4. المقالة\nرأي ونقد\nحوار فكري\n\nالمواضيع الرئيسية:\n\n1. الهوية والانتماء\nمن أنا؟\nعلاقتي بأرضي وشعبي\n\n2. الحب والعلاقات\nعلاقات إنسانية معقدة\nحب في السياق الاجتماعي\n\n3. السياسة والاجتماع\nنقد الأنظمة\nدور الفرد في المجتمع\n\n4. الغربة واللاجئين\nمعاناة النزوح\nفقدان الوطن\n\n5. الحرية والقيود\nصراع مع القيود\nبحث عن الحرية\n\nالتأثير العالمي:\n\n1. ترجمة للغات العالمية\n2. تأثير على الأدب العالمي\n3. فهم ثقافة عربية\n4. جسور تواصل شرق وغرب\n\nكتب موصى بها:\n1. \"الثلاثية\" - محفوظ\n2. \"رجال في الشمس\" - كنفاني\n3. \"ذاكرة في الجسد\" - مستغانمي\n4. قصائد درويش\n\nكيف تستمتع:\n1. اقرأ روايات\n2. اقرأ قصصاً\n3. ادرس شعراً\n4. احضر أمسيات\n5. ناقش مع آخرين\n6. اكتب انطباعاتك\n\nالخلاصة:\nالأدب العربي نافذة على روح الشعب. اقرأ واستمتع واستكشف!\n\nقراءة الأدب محادثة مع النفس والعالم.", img: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=500&q=60"}
+        ];
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        window.onload = function() {
+            checkPermissions();
+            localStorage.removeItem('educore_articles');
+            loadArticles();
+        };
+
+        function checkPermissions() {
+            const allowedRoles = ['admin', 'teacher', 'owner'];
+            if (allowedRoles.includes(currentUserRole)) {
+                document.getElementById('addBtn').style.display = 'flex';
+            }
+        }
+
+        function loadArticles() {
+            let savedArticles = JSON.parse(localStorage.getItem('educore_articles'));
+            if (!savedArticles) {
+                savedArticles = defaultArticles;
+                localStorage.setItem('educore_articles', JSON.stringify(savedArticles));
+            }
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+            savedArticles.forEach((art, index) => {
+                setTimeout(() => renderArticle(art), index * 50);
+            });
+        }
+
+        function renderArticle(art) {
+            const grid = document.getElementById('articlesGrid');
+            const allowedRoles = ['admin', 'teacher', 'owner'];
+            const deleteHtml = allowedRoles.includes(currentUserRole) 
+                ? `<div class="delete-btn" onclick="deleteArticle(${art.id}, event)"><i class="fas fa-trash"></i></div>` 
+                : '';
+
+            const html = `
+                <article class="article-card" id="art-${art.id}">
+                    ${deleteHtml}
+                    <div class="article-image" style="background-image: url('${art.img}');"></div>
+                    <div class="article-content">
+                        <span class="article-tag">${art.tag}</span>
+                        <h3>${art.title}</h3>
+                        <p>${art.desc.substring(0, 100)}...</p>
+                        <a class="read-more" onclick="openReadModal(${art.id})">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
+                    </div>
+                </article>
+            `;
+            grid.insertAdjacentHTML('beforeend', html);
+        }
+
+        function saveArticle() {
+            const title = document.getElementById('artTitle').value;
+            const tag = document.getElementById('artTag').value;
+            const img = document.getElementById('artImg').value || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=500';
+            const desc = document.getElementById('artDesc').value;
+
+            if(!title || !desc) {
+                alert("يرجى إكمال البيانات");
+                return;
+            }
+
+            const newArt = { id: Date.now(), title, tag, img, desc };
+            let articles = JSON.parse(localStorage.getItem('educore_articles')) || [];
+            articles.push(newArt);
+            localStorage.setItem('educore_articles', JSON.stringify(articles));
+
+            renderArticle(newArt);
+            closeAll();
+            
+            document.getElementById('artTitle').value = '';
+            document.getElementById('artTag').value = '';
+            document.getElementById('artImg').value = '';
+            document.getElementById('artDesc').value = '';
+        }
+
+        function deleteArticle(id, event) {
+            event.stopPropagation();
+            if(confirm("هل أنت متأكد من الحذف؟")) {
+                let articles = JSON.parse(localStorage.getItem('educore_articles'));
+                articles = articles.filter(art => art.id !== id);
+                localStorage.setItem('educore_articles', JSON.stringify(articles));
+
+                const card = document.getElementById(`art-${id}`);
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.8)';
+                setTimeout(() => card.remove(), 300);
+            }
+        }
+
+        function toggleMenu() {
+            const sideNav = document.getElementById('sideNav');
+            const overlay = document.getElementById('overlay-bg');
+            sideNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function openModal() {
+            document.getElementById('articleModal').classList.add('active');
+            document.getElementById('overlay-bg').classList.add('active');
+        }
+
+        function openReadModal(id) {
+            const articles = JSON.parse(localStorage.getItem('educore_articles'));
+            const art = articles.find(a => a.id === id);
+            if (!art) return;
+
+            document.getElementById('readTitle').innerText = art.title;
+            document.getElementById('readTag').innerText = art.tag;
+            document.getElementById('readImg').style.backgroundImage = `url('${art.img}')`;
+            document.getElementById('readDesc').innerText = art.desc;
+
+            document.getElementById('readModal').classList.add('active');
+            document.getElementById('overlay-bg').classList.add('active');
+        }
+
+        function closeAll() {
+            document.getElementById('sideNav').classList.remove('active');
+            document.getElementById('articleModal').classList.remove('active');
+            document.getElementById('readModal').classList.remove('active');
+            document.getElementById('overlay-bg').classList.remove('active');
+        }
+        
+        function logout() {
+            alert("Logging out...");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educore - المنصة الإسلامية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            /* Navy Blue Palette */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            --accent-gold: #d4af37;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', 'Arial', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 200px;
+        }
+
+        /* Fix for body scroll lock */
+        body.no-scroll {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(-120px, -80px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav.top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 70px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-blue);
+            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.top-bar.scrolled {
+            padding: 14px 70px;
+            background: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo-container:hover {
+            transform: scale(1.08) translateY(-2px);
+        }
+
+        .logo-container:active {
+            transform: scale(0.95);
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px var(--shadow-blue);
+            animation: logoGlow 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(15px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        .logo-icon i {
+            font-size: 1.6rem;
+            color: var(--white-pure);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 10px 30px var(--shadow-blue);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 15px 45px var(--shadow-glow);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                opacity: 0.6;
+                filter: blur(15px);
+            }
+            50% { 
+                opacity: 0.9;
+                filter: blur(20px);
+            }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.3));
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-blue-glow);
+            transition: width 0.4s ease;
+        }
+
+        .logo-container:hover .logo::after {
+            width: 100%;
+        }
+
+        .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        /* --- NAV ACTIONS --- */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            background: var(--glass-light);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .notification-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px) rotate(5deg);
+            box-shadow: 0 10px 25px var(--shadow-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .notification-btn:active {
+            transform: scale(0.85);
+        }
+
+        .notification-btn i {
+            color: var(--accent-blue);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover i {
+            animation: bellRing 0.5s ease;
+        }
+
+        @keyframes bellRing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(-15deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+            animation: badgePulse 2.5s infinite;
+            box-shadow: 0 4px 15px rgba(238, 90, 111, 0.5);
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 4px 15px rgba(238, 90, 111, 0.5);
+            }
+            50% { 
+                transform: scale(1.15); 
+                box-shadow: 0 6px 20px rgba(238, 90, 111, 0.7);
+            }
+        }
+
+        /* --- BURGER MENU --- */
+        .burger {
+            cursor: pointer;
+            width: 38px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2000;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .burger:hover {
+            transform: scale(1.1);
+        }
+
+        .burger:hover .line {
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        .burger:active {
+            transform: scale(0.9);
+        }
+
+        .line {
+            width: 100%;
+            height: 3.5px;
+            background: var(--gradient-blue-glow);
+            border-radius: 6px;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 10px var(--shadow-blue);
+        }
+
+        .burger.active .line:nth-child(1) {
+            transform: rotate(45deg) translate(11px, 11px);
+            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
+        }
+
+        .burger.active .line:nth-child(2) {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .burger.active .line:nth-child(3) {
+            transform: rotate(-45deg) translate(11px, -11px);
+            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
+        }
+
+        /* --- SIDE NAVIGATION --- */
+        .side-nav {
+            height: 100%;
+            width: 400px;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            right: -400px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border-left: 3px solid var(--accent-blue);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: right 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 35px 30px;
+            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
+        }
+
+        .side-nav::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-track {
+            background: rgba(26, 41, 66, 0.05);
+            border-radius: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-thumb {
+            background: var(--gradient-blue-glow);
+            border-radius: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-navy-soft);
+        }
+
+        .side-nav.active {
+            right: 0;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--border-blue);
+        }
+
+        .nav-header h2 {
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: var(--accent-blue);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass-light);
+        }
+        
+        .close-btn:hover {
+            color: #ee5a6f;
+            transform: rotate(90deg) scale(1.2);
+            background: rgba(238, 90, 111, 0.1);
+        }
+
+        .close-btn:active {
+            transform: rotate(90deg) scale(0.9);
+        }
+
+        /* User Profile in Sidebar */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 25px;
+            background: var(--glass-medium);
+            border: 2px solid var(--border-blue);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-blue-glow);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .user-profile:hover::before {
+            opacity: 1;
+        }
+
+        .user-profile:hover {
+            background: var(--glass-strong);
+            transform: translateX(-8px);
+            box-shadow: 0 8px 30px var(--shadow-blue);
+        }
+
+        .user-profile:active {
+            transform: scale(0.98);
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-blue-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white-pure);
+            border: 3px solid var(--white-pure);
+            box-shadow: 0 8px 25px var(--shadow-blue);
+            transition: all 0.4s ease;
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 35px var(--shadow-glow);
+        }
+
+        .user-info h3 {
+            color: var(--text-navy);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .user-info p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .side-nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 8px;
+        }
+
+        .side-nav a {
+            padding: 20px 22px;
+            text-decoration: none;
+            font-size: 1.15rem;
+            color: var(--text-navy);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 15px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .side-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
+            transition: width 0.6s ease;
+            z-index: 0;
+        }
+
+        .side-nav a:hover::before {
+            width: 100%;
+        }
+
+        .side-nav a:active::before {
+            width: 100%;
+        }
+
+        .side-nav a > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .side-nav a i {
+            width: 35px;
+            color: var(--accent-blue);
+            text-align: center;
+            font-size: 1.4rem;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .side-nav a:hover {
+            color: var(--navy-dark);
+            background: var(--glass-strong);
+            transform: translateX(-12px);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .side-nav a:hover i {
+            transform: scale(1.3) rotate(10deg);
+            filter: drop-shadow(0 0 15px var(--accent-blue));
+        }
+
+        .side-nav a:active {
+            transform: scale(0.98);
+        }
+
+        #logoutBtn {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid rgba(238, 90, 111, 0.2);
+        }
+
+        #logoutBtn a {
+            color: #ee5a6f;
+        }
+
+        #logoutBtn a i {
+            color: #ee5a6f;
+        }
+
+        #logoutBtn a:hover {
+            background: rgba(238, 90, 111, 0.15);
+            color: #d63447;
+        }
+
+        #logoutBtn a:hover i {
+            color: #d63447;
+        }
+
+        /* --- OVERLAY --- */
+        #overlay-bg {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 41, 66, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 2500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        #overlay-bg.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* --- NAVIGATION TABS --- */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 120px 20px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            padding: 16px 40px;
+            border: 2px solid var(--accent-blue);
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--accent-blue);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(74, 144, 226, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-btn.active {
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            box-shadow: 0 12px 35px var(--shadow-blue);
+            border-color: transparent;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.3);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* --- TOP BAR --- */
+        .controls-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(26, 41, 66, 0.12);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid var(--border-blue);
+            position: relative;
+            z-index: 9;
+            margin-bottom: 30px;
+        }
+
+        select {
+            padding: 14px 25px;
+            border-radius: 15px;
+            border: 2px solid var(--accent-blue);
+            background: var(--white-pure);
+            color: var(--text-navy);
+            cursor: pointer;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.15);
+            min-width: 200px;
+        }
+
+        select:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            border-color: var(--accent-light-blue);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent-light-blue);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        /* --- SURAH INFO PANEL --- */
+        .surah-info-panel {
+            max-width: 900px;
+            margin: 30px auto;
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--border-blue);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 25px rgba(26, 41, 66, 0.08);
+        }
+
+        .info-box:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(74, 144, 226, 0.25);
+            border-color: var(--accent-blue);
+        }
+
+        .info-box label {
+            display: block;
+            color: var(--text-gray);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .info-box span {
+            display: block;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+
+        /* --- MAIN CARD --- */
+        .quran-card {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 30px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 20px 60px rgba(26, 41, 66, 0.15);
+            min-height: 300px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .quran-card:hover {
+            box-shadow: 0 25px 70px rgba(74, 144, 226, 0.25);
+        }
+
+        /* --- SECTION TITLE --- */
+        .section-title {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            text-align: center;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 4px 20px rgba(74, 144, 226, 0.2));
+        }
+
+        /* --- CONTENT AREA --- */
+        .content-area {
+            line-height: 2.8;
+            text-align: justify;
+            direction: rtl;
+            color: var(--text-navy);
+        }
+
+        .content-area p {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        /* --- AYAH STYLING --- */
+        .ayah {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            padding: 12px 18px;
+            color: var(--text-navy);
+            display: inline;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border-radius: 10px;
+            line-height: 3;
+        }
+
+        .ayah:hover {
+            background: rgba(74, 144, 226, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .ayah small {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            background: var(--gradient-blue-glow) !important;
+            color: var(--white-pure) !important;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5) !important;
+            display: inline-block;
+            padding: 8px 20px !important;
+            border-radius: 15px;
+            transform: scale(1.05);
+        }
+
+        .highlight small {
+            color: var(--white-pure) !important;
+        }
+
+        /* --- HADITH DISPLAY --- */
+        .hadith-display {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            padding: 30px;
+            color: var(--text-navy);
+            text-align: center;
+            line-height: 2.5;
+            background: var(--glass-light);
+            border-radius: 20px;
+            border: 2px solid var(--border-blue);
+        }
+
+        .hadith-ref-box {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-top: 25px;
+            display: block;
+            text-align: center;
+            border-top: 2px solid var(--border-blue);
+            padding-top: 20px;
+            font-weight: 700;
+        }
+
+        /* --- AUDIO PLAYER --- */
+        .player-fixed {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(180deg, rgba(26, 41, 66, 0.98) 0%, rgba(10, 22, 40, 1) 100%);
+            padding: 25px;
+            border-top: 3px solid var(--accent-blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 999;
+            box-shadow: 0 -10px 40px rgba(26, 41, 66, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        #playStatus {
+            color: var(--accent-light-blue);
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        audio {
+            width: 90%;
+            max-width: 800px;
+            height: 50px;
+            border-radius: 25px;
+            outline: none;
+        }
+
+        /* Custom audio player styling for better cross-browser support */
+        audio::-webkit-media-controls-enclosure {
+            border-radius: 25px;
+            background-color: rgba(74, 144, 226, 0.2);
+        }
+
+        audio::-webkit-media-controls-panel {
+            background: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            border-radius: 25px;
+        }
+
+        /* --- UTILITY CLASSES --- */
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- LOADING SCREEN --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2942 0%, #3d5a7f 30%, #b8c9dc 70%, #ffffff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            font-family: 'Cairo', serif;
+            font-size: 4rem;
+            background: var(--gradient-white-navy);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            margin-bottom: 40px;
+            animation: logoFloat 2s ease-in-out infinite;
+            letter-spacing: 5px;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { 
+                transform: translateY(0px) scale(1);
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.05);
+            }
+        }
+
+        .loader-spinner {
+            width: 90px;
+            height: 90px;
+            border: 6px solid rgba(74, 144, 226, 0.2);
+            border-top-color: var(--accent-blue);
+            border-right-color: var(--accent-light-blue);
+            border-radius: 50%;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            box-shadow: 0 0 30px rgba(74, 144, 226, 0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            margin-top: 35px;
+            color: var(--white-pure);
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            animation: textPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* --- ERROR MESSAGE --- */
+        .error-message {
+            background: rgba(238, 90, 111, 0.1);
+            border: 2px solid #ee5a6f;
+            color: #d63447;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+            margin: 20px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav.top-bar {
+                padding: 18px 30px;
+            }
+
+            nav.top-bar.scrolled {
+                padding: 14px 30px;
+            }
+
+            .nav-actions {
+                gap: 15px;
+            }
+
+            .notification-btn {
+                width: 44px;
+                height: 44px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-tagline {
+                font-size: 0.65rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .logo-icon i {
+                font-size: 1.3rem;
+            }
+
+            .nav-tabs {
+                padding: 100px 15px 20px;
+                gap: 12px;
+            }
+
+            .nav-btn {
+                padding: 12px 25px;
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .quran-card {
+                padding: 30px 20px;
+                margin: 20px 15px;
+            }
+
+            .ayah {
+                font-size: 1.5rem;
+                line-height: 2.5;
+            }
+
+            .hadith-display {
+                font-size: 1.6rem;
+                padding: 20px;
+                line-height: 2.2;
+            }
+
+            .surah-info-panel {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 0 15px;
+            }
+
+            audio {
+                width: 95%;
+                height: 45px;
+            }
+
+            .side-nav {
+                width: 340px;
+                right: -340px;
+            }
+
+            .side-nav a {
+                font-size: 1rem;
+                padding: 18px 20px;
+            }
+
+            select {
+                min-width: 150px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .player-fixed {
+                padding: 20px 15px;
+            }
+
+            #playStatus {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-bottom: 180px;
+            }
+
+            .logo {
+                font-size: 1.3rem;
+                letter-spacing: 1px;
+            }
+
+            .logo-tagline {
+                font-size: 0.6rem;
+                letter-spacing: 1.5px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .ayah {
+                font-size: 1.3rem;
+                padding: 10px 15px;
+                line-height: 2.3;
+            }
+
+            .hadith-display {
+                font-size: 1.4rem;
+                padding: 15px;
+                line-height: 2;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
+
+            .nav-btn i {
+                font-size: 0.9rem;
+            }
+
+            .loader-logo {
+                font-size: 2.5rem;
+            }
+
+            .side-nav {
+                width: 300px;
+                right: -300px;
+                padding: 25px 20px;
+            }
+
+            .nav-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .user-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .user-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .user-info p {
+                font-size: 0.85rem;
+            }
+
+            select {
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+
+            .controls-bar {
+                padding: 20px 15px;
+            }
+
+            .quran-card {
+                padding: 25px 15px;
+            }
+        }
+
+        /* Additional mobile fixes */
+        @media (max-width: 360px) {
+            .nav-actions {
+                gap: 10px;
+            }
+
+            .notification-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .burger {
+                width: 34px;
+                height: 28px;
+            }
+
+            .side-nav {
+                width: 280px;
+                right: -280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+</div>
+
+<!-- Loading Screen -->
+<div class="loader" id="loader">
+    <div class="loader-logo">Educore</div>
+    <div class="loader-spinner"></div>
+    <div class="loader-text">جاري التحميل...</div>
+</div>
+
+<!-- Navigation Bar -->
+<nav class="top-bar" id="navbar">
+    <div class="logo-container" onclick="window.location.href='index.html'">
+        <div class="logo-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="logo-text">
+            <div class="logo">EDUCORE</div>
+            <div class="logo-tagline">منصة التعليم المتكاملة</div>
+        </div>
+    </div>
+    
+    <div class="nav-actions">
+        <div class="notification-btn" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+        
+        <div class="burger" id="burgerMenu">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </div>
+</nav>
+
+<!-- Side Navigation -->
+<div class="side-nav" id="sideNav">
+    <div class="nav-header">
+        <h2>القائمة الرئيسية</h2>
+        <div class="close-btn" id="closeBtn">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="user-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="user-info">
+            <h3>مرحباً بك</h3>
+            <p>الطالب المميز</p>
+        </div>
+    </div>
+
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i> الفيديوهات التعليمية</a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i> المقالات الحصرية</a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i> ساحة الألعاب</a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i> مركز الاختبارات</a></li>
+        <li><a href="books.html"><i class="fas fa-book"></i> المكتبة الدراسية</a></li>
+        <li><a href="sign-language-hub.html"><i class="fas fa-hands"></i> مركز لغة الإشارة</a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i> اسلاميات</a></li>
+        <li><a href="https://siraj.moe.gov.jo/" target="_blank" rel="noopener"><i class="fas fa-robot"></i> المساعد الذكي</a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i> الغرف الصوتية</a></li>
+        <li><a href="marks.html"><i class="fas fa-trophy"></i> بوابة النتائج</a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i> قسم الاستفسارات</a></li>
+        <li><a href="family.html"><i class="fas fa-user-shield"></i> توعية في الرقابة الابوية</a></li>
+        <li><a href="support.html"><i class="fas fa-shield-alt"></i> حقوق النشر</a></li>
+        <li id="logoutBtn"><a href="#" onclick="logout(); return false;"><i class="fas fa-power-off"></i> تسجيل خروج</a></li>
+    </ul>
+</div>
+
+<!-- Overlay -->
+<div id="overlay-bg"></div>
+
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+    <button class="nav-btn active" onclick="switchSection('quran', this)">
+        <i class="fas fa-book-quran"></i> القرآن الكريم
+    </button>
+    <button class="nav-btn" onclick="switchSection('hadith', this)">
+        <i class="fas fa-scroll"></i> الأحاديث النبوية
+    </button>
+</div>
+
+<!-- Quran Controls -->
+<div id="quranBar" class="controls-bar">
+    <select id="surahSelect" aria-label="اختر السورة"><option value="">اختر السورة...</option></select>
+    <select id="readerSelect" aria-label="اختر القارئ"><option value="">جاري تحميل القراء...</option></select>
+</div>
+
+<!-- Hadith Controls -->
+<div id="hadithBar" class="controls-bar hidden">
+    <select id="hadithSelect" onchange="showSingleHadith()" aria-label="اختر رقم الحديث">
+        <option value="">اختر رقم الحديث (1-100)...</option>
+    </select>
+</div>
+
+<!-- Surah Info Panel -->
+<div class="surah-info-panel" id="infoPanel">
+    <div class="info-box">
+        <label>النوع</label>
+        <span id="infoType">-</span>
+    </div>
+    <div class="info-box">
+        <label>عدد الآيات</label>
+        <span id="infoAyat">-</span>
+    </div>
+</div>
+
+<!-- Main Content Card -->
+<div class="quran-card">
+    <div class="section-title" id="mainTitle">القرآن الكريم</div>
+    <div id="mainContent" class="content-area">
+        <p>يرجى اختيار القسم المفضل لديك</p>
+    </div>
+</div>
+
+<!-- Audio Player -->
+<div class="player-fixed" id="audioPlayer">
+    <div id="playStatus">جاهز للاستماع</div>
+    <audio id="mainAudio" controls preload="metadata" aria-label="مشغل الصوت">
+        متصفحك لا يدعم تشغيل الصوت
+    </audio>
+</div>
+
+<script>
+    'use strict';
+
+    // DOM Elements
+    const mainContent = document.getElementById('mainContent');
+    const mainTitle = document.getElementById('mainTitle');
+    const surahSelect = document.getElementById('surahSelect');
+    const readerSelect = document.getElementById('readerSelect');
+    const hadithSelect = document.getElementById('hadithSelect');
+    const mainAudio = document.getElementById('mainAudio');
+    const loader = document.getElementById('loader');
+    const burgerMenu = document.getElementById('burgerMenu');
+    const sideNav = document.getElementById('sideNav');
+    const closeBtn = document.getElementById('closeBtn');
+    const overlayBg = document.getElementById('overlay-bg');
+    const navbar = document.getElementById('navbar');
+    const infoPanel = document.getElementById('infoPanel');
+
+    // State
+    let currentAyat = [];
+    let currentAyahIndex = 0;
+
+    // Hide loader after page loads
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            loader.classList.add('hidden');
+        }, 1500);
+    });
+
+    // Navbar scroll effect
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        lastScrollTop = scrollTop;
+    }, { passive: true });
+
+    // Function to toggle menu
+    function toggleMenu() {
+        const isActive = sideNav.classList.contains('active');
+        
+        if (isActive) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+
+    function openMenu() {
+        burgerMenu.classList.add('active');
+        sideNav.classList.add('active');
+        overlayBg.classList.add('active');
+        document.body.classList.add('no-scroll');
+    }
+
+    function closeMenu() {
+        burgerMenu.classList.remove('active');
+        sideNav.classList.remove('active');
+        overlayBg.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+
+    // Burger menu toggle
+    burgerMenu.addEventListener('click', toggleMenu);
+
+    // Close button
+    closeBtn.addEventListener('click', closeMenu);
+
+    // Overlay click
+    overlayBg.addEventListener('click', closeMenu);
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sideNav.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+
+    // Notification function
+    function showNotifications() {
+        alert('ليس لديك إشعارات جديدة في الوقت الحالي');
+    }
+
+    // Logout function
+    function logout() {
+        if(confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+            // Clear any stored data
+            sessionStorage.clear();
+            localStorage.removeItem('userSession');
+            
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+        return false;
+    }
+
+    // قائمة الـ 100 حديث
+    const hundredHadiths = [
+        { text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.", ref: "رواه البخاري ومسلم" },
+        { text: "بني الإسلام على خمس: شهادة أن لا إله إلا الله وأن محمداً رسول الله، وإقام الصلاة، وإيتاء الزكاة، والحج، وصوم رمضان.", ref: "رواه البخاري ومسلم" },
+        { text: "من كان يؤمن بالله واليوم الآخر فليقل خيراً أو ليصمت.", ref: "رواه البخاري ومسلم" },
+        { text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.", ref: "رواه البخاري ومسلم" },
+        { text: "المسلم من سلم المسلمون من لسانه ويده.", ref: "رواه البخاري" },
+        { text: "من سلك طريقاً يلتمس فيه علماً سهل الله له به طريقاً إلى الجنة.", ref: "رواه مسلم" },
+        { text: "خيركم من تعلم القرآن وعلمه.", ref: "رواه البخاري" },
+        { text: "اتق الله حيثما كنت، وأتبع السيئة الحسنة تمحها، وخالق الناس بخلق حسن.", ref: "رواه الترمذي" },
+        { text: "الطهور شطر الإيمان.", ref: "رواه مسلم" },
+        { text: "والكلمة الطيبة صدقة.", ref: "رواه البخاري ومسلم" },
+        { text: "تبسمك في وجه أخيك لك صدقة.", ref: "رواه الترمذي" },
+        { text: "لا يدخل الجنة من كان في قلبه مثقال ذرة من كبر.", ref: "رواه مسلم" },
+        { text: "يسروا ولا تعسروا، وبشروا ولا تنفروا.", ref: "رواه البخاري" },
+        { text: "أحب الأعمال إلى الله أدومها وإن قل.", ref: "رواه البخاري ومسلم" },
+        { text: "من غشنا فليس منا.", ref: "رواه مسلم" },
+        { text: "آية المنافق ثلاث: إذا حدث كذب، وإذا وعد أخلف، وإذا اؤتمن خان.", ref: "رواه البخاري" },
+        { text: "الحياء لا يأتي إلا بخير.", ref: "رواه البخاري ومسلم" },
+        { text: "من صلى علي واحدة صلى الله عليه بها عشراً.", ref: "رواه مسلم" },
+        { text: "الدال على الخير كفاعله.", ref: "رواه الترمذي" },
+        { text: "ما زال جبريل يوصيني بالجار حتى ظننت أنه سيورثه.", ref: "رواه البخاري" },
+        { text: "أكمل المؤمنين إيماناً أحسنهم خلقاً.", ref: "رواه الترمذي" },
+        { text: "كل مسكر حرام.", ref: "رواه مسلم" },
+        { text: "من يرد الله به خيراً يفقهه في الدين.", ref: "رواه البخاري" },
+        { text: "سباب المسلم فسوق وقتاله كفر.", ref: "رواه البخاري ومسلم" },
+        { text: "اليد العليا خير من اليد السفلى.", ref: "رواه البخاري" },
+        { text: "من لا يرحم لا يُرحم.", ref: "رواه البخاري ومسلم" },
+        { text: "من بنى مسجداً لله بنى الله له بيتاً في الجنة.", ref: "رواه البخاري" },
+        { text: "الظلم ظلمات يوم القيامة.", ref: "رواه البخاري ومسلم" },
+        { text: "من فطر صائماً كان له مثل أجره.", ref: "رواه الترمذي" },
+        { text: "الصلاة نور، والصدقة برهان، والصبر ضياء.", ref: "رواه مسلم" },
+        { text: "كلكم راع وكلكم مسؤول عن رعيته.", ref: "رواه البخاري ومسلم" },
+        { text: "لا تغضب ولك الجنة.", ref: "رواه البخاري" },
+        { text: "إذا قامت الساعة وفي يد أحدكم فسيلة فليغرسها.", ref: "رواه أحمد" },
+        { text: "أطيب الكسب عمل الرجل بيده.", ref: "رواه ابن ماجه" },
+        { text: "اتقوا النار ولو بشق تمرة.", ref: "رواه البخاري" },
+        { text: "من قرأ حرفاً من كتاب الله فله به حسنة.", ref: "رواه الترمذي" },
+        { text: "ركعتا الفجر خير من الدنيا وما فيها.", ref: "رواه مسلم" },
+        { text: "اللهم بارك لأمتي في بكورها.", ref: "رواه أبو داود" },
+        { text: "إن الله جميل يحب الجمال.", ref: "رواه مسلم" },
+        { text: "لا يلدغ المؤمن من جحر واحد مرتين.", ref: "رواه البخاري ومسلم" },
+        { text: "طلب العلم فريضة على كل مسلم.", ref: "رواه ابن ماجه" },
+        { text: "من صام رمضان إيماناً واحتساباً غفر له ما تقدم من ذنبه.", ref: "رواه البخاري ومسلم" },
+        { text: "المرء مع من أحب.", ref: "رواه البخاري ومسلم" },
+        { text: "سبعة يظلهم الله في ظله يوم لا ظل إلا ظله...", ref: "رواه البخاري ومسلم" },
+        { text: "نعمتان مغبون فيهما كثير من الناس: الصحة والفراغ.", ref: "رواه البخاري" },
+        { text: "لا ضرر ولا ضرار.", ref: "رواه ابن ماجه" },
+        { text: "استوصوا بالنساء خيراً.", ref: "رواه البخاري" },
+        { text: "الدنيا سجن المؤمن وجنة الكافر.", ref: "رواه مسلم" },
+        { text: "الصيام جنة.", ref: "رواه البخاري ومسلم" },
+        { text: "من قال سبحان الله وبحمده في يوم مائة مرة حطت خطاياه وإن كانت مثل زبد البحر.", ref: "رواه البخاري ومسلم" },
+        { text: "كلمتان خفيفتان على اللسان، ثقيلتان في الميزان، حبيبتان إلى الرحمن: سبحان الله وبحمده، سبحان الله العظيم.", ref: "رواه البخاري" },
+        { text: "إياكم والظن، فإن الظن أكذب الحديث.", ref: "رواه البخاري ومسلم" },
+        { text: "من كان يؤمن بالله واليوم الآخر فليكرم ضيفه.", ref: "رواه البخاري ومسلم" },
+        { text: "البِرُّ حُسْنُ الخُلُقِ، وَالإِثْمُ ما حاكَ في نَفْسِكَ وَكَرِهْتَ أنْ يَطَّلِعَ عليه النَّاسُ.", ref: "رواه مسلم" },
+        { text: "إن الله لا ينظر إلى صوركم وأموالكم، ولكن ينظر إلى قلوبكم وأعمالكم.", ref: "رواه مسلم" },
+        { text: "داووا مرضاكم بالصدقة.", ref: "رواه السيوطي" },
+        { text: "الدعاء هو العبادة.", ref: "رواه الترمذي" },
+        { text: "أفضل الذكر لا إله إلا الله.", ref: "رواه الترمذي" },
+        { text: "التائب من الذنب كمن لا ذنب له.", ref: "رواه ابن ماجه" },
+        { text: "من ستر مسلماً ستره الله في الدنيا والآخرة.", ref: "رواه مسلم" },
+        { text: "ليس الشديد بالصُّرَعَة، إنما الشديد الذي يملك نفسه عند الغضب.", ref: "رواه البخاري ومسلم" },
+        { text: "بشر المشائين في الظلم إلى المساجد بالنور التام يوم القيامة.", ref: "رواه الترمذي" },
+        { text: "ما نقصت صدقة من مال.", ref: "رواه مسلم" },
+        { text: "من تصبح بسبع تمرات عجوة لم يضره ذلك اليوم سم ولا سحر.", ref: "رواه البخاري" },
+        { text: "خير الأصحاب عند الله خيرهم لصاحبه.", ref: "رواه الترمذي" },
+        { text: "حق المسلم على المسلم خمس: رد السلام، وعيادة المريض، واتباع الجنائز، وإجابة الدعوة، وتشميت العاطس.", ref: "رواه البخاري ومسلم" },
+        { text: "أنا وكافل اليتيم في الجنة هكذا (وأشار بالسبابة والوسطى).", ref: "رواه البخاري" },
+        { text: "من قام ليلة القدر إيماناً واحتساباً غفر له ما تقدم من ذنبه.", ref: "رواه البخاري ومسلم" },
+        { text: "اجتنبوا السبع الموبقات.", ref: "رواه البخاري ومسلم" },
+        { text: "من أحب أن يبسط له في رزقه، وينسأ له في أثره، فليصل رحمه.", ref: "رواه البخاري ومسلم" },
+        { text: "الدين النصيحة.", ref: "رواه مسلم" },
+        { text: "أعطوا الأجير أجره قبل أن يجف عرقه.", ref: "رواه ابن ماجه" },
+        { text: "كل أمتي معافى إلا المجاهرين.", ref: "رواه البخاري" },
+        { text: "إن الله رفيق يحب الرفق في الأمر كله.", ref: "رواه البخاري" },
+        { text: "ما ملأ آدمي وعاءً شراً من بطنه.", ref: "رواه الترمذي" },
+        { text: "من لزم الاستغفار جعل الله له من كل هم فرجاً ومن كل ضيق مخرجاً.", ref: "رواه أبو داود" },
+        { text: "عينان لا تمسهما النار: عين بكت من خشية الله وعين باتت تحرس في سبيل الله.", ref: "رواه الترمذي" },
+        { text: "لأن يحتطب أحدكم حزمة على ظهره خير له من أن يسأل أحداً.", ref: "رواه البخاري" },
+        { text: "من غدا إلى المسجد أو راح أعد الله له في الجنة نزلاً كلما غدا أو راح.", ref: "رواه البخاري ومسلم" },
+        { text: "اتقوا دعوة المظلوم فإنها ليس بينها وبين الله حجاب.", ref: "رواه البخاري" },
+        { text: "مفتاح الجنة الصلاة.", ref: "رواه أحمد" },
+        { text: "أفضل الصدقة صدقة في رمضان.", ref: "رواه الترمذي" },
+        { text: "من يضمن لي ما بين لحييه وما بين رجليه أضمن له الجنة.", ref: "رواه البخاري" },
+        { text: "من سأل الله الشهادة بصدق بلغه الله منازل الشهداء وإن مات على فراشه.", ref: "رواه مسلم" },
+        { text: "إن الصدق يهدي إلى البر وإن البر يهدي إلى الجنة.", ref: "رواه البخاري" },
+        { text: "لا يتمنى أحدكم الموت لضر نزل به.", ref: "رواه البخاري" },
+        { text: "من سمّع سمّع الله به، ومن يرائي يرائي الله به.", ref: "رواه البخاري" },
+        { text: "اللهم إني أعوذ بك من علم لا ينفع.", ref: "رواه مسلم" },
+        { text: "الحلال بين والحرام بين.", ref: "رواه البخاري ومسلم" },
+        { text: "كل مولود يولد على الفطرة.", ref: "رواه البخاري ومسلم" },
+        { text: "من قرأ سورة الكهف في يوم الجمعة أضاء له من النور ما بين الجمعتين.", ref: "رواه النسائي" },
+        { text: "أقرب ما يكون العبد من ربه وهو ساجد.", ref: "رواه مسلم" },
+        { text: "إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم ينتفع به، أو ولد صالح يدعو له.", ref: "رواه مسلم" },
+        { text: "عليكم بالسواك فإنه مطهرة للفم مرضاة للرب.", ref: "رواه النسائي" },
+        { text: "من تشبه بقوم فهو منهم.", ref: "رواه أبو داود" },
+        { text: "كن في الدنيا كأنك غريب أو عابر سبيل.", ref: "رواه البخاري" },
+        { text: "رغم أنفه، ثم رغم أنفه، ثم رغم أنفه، قيل: من يا رسول الله؟ قال: من أدرك أبويه عند الكبر أحدهما أو كليهما فلم يدخل الجنة.", ref: "رواه مسلم" },
+        { text: "لا تسبوا الأموات فإنهم قد أفضوا إلى ما قدموا.", ref: "رواه البخاري" },
+        { text: "بشروا ولا تنفروا.", ref: "رواه مسلم" },
+        { text: "من دل على خير فله مثل أجر فاعله.", ref: "رواه مسلم" }
+    ];
+
+    // تعبئة قائمة الأحاديث بالأرقام 1-100
+    function initHadithOptions() {
+        hadithSelect.innerHTML = '<option value="">اختر رقم الحديث (1-100)...</option>';
+        
+        for(let i = 0; i < hundredHadiths.length; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.text = `الحديث رقم (${i + 1})`;
+            hadithSelect.appendChild(opt);
+        }
+    }
+
+    function switchSection(section, btn) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if(section === 'quran') {
+            document.getElementById('quranBar').classList.remove('hidden');
+            document.getElementById('hadithBar').classList.add('hidden');
+            document.getElementById('audioPlayer').classList.remove('hidden');
+            infoPanel.style.display = 'none';
+            mainTitle.innerText = "القرآن الكريم";
+            mainContent.innerHTML = "<p>اختر سورة للبدء</p>";
+        } else {
+            document.getElementById('quranBar').classList.add('hidden');
+            document.getElementById('hadithBar').classList.remove('hidden');
+            document.getElementById('audioPlayer').classList.add('hidden');
+            infoPanel.style.display = 'none';
+            mainTitle.innerText = "الأحاديث النبوية الشريفة";
+            mainContent.innerHTML = "<p>يرجى اختيار رقم الحديث من القائمة بالأعلى</p>";
+        }
+    }
+
+    function showSingleHadith() {
+        const index = hadithSelect.value;
+        if(index === "") {
+            mainContent.innerHTML = "<p>يرجى اختيار رقم الحديث من القائمة بالأعلى</p>";
+            return;
+        }
+
+        const h = hundredHadiths[index];
+        mainContent.innerHTML = `
+            <div class="hadith-display">
+                <div style="margin-bottom:25px; font-size:1.3em; color:var(--accent-blue); font-weight:700;">الحديث رقم (${parseInt(index) + 1})</div>
+                "${h.text}"
+                <div class="hadith-ref-box">${h.ref}</div>
+            </div>
+        `;
+    }
+
+    async function initQuran() {
+        try {
+            const [sRes, rRes] = await Promise.all([
+                fetch('https://api.alquran.cloud/v1/surah'),
+                fetch('https://api.alquran.cloud/v1/edition?format=audio&language=ar&type=versebyverse')
+            ]);
+            
+            if (!sRes.ok || !rRes.ok) {
+                throw new Error('فشل الاتصال بخادم القرآن الكريم');
+            }
+            
+            const sData = await sRes.json();
+            const rData = await rRes.json();
+
+            // Clear and populate surah select
+            surahSelect.innerHTML = '<option value="">اختر السورة...</option>';
+            
+            sData.data.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.number; 
+                opt.text = s.name;
+                opt.dataset.type = s.revelationType === 'Meccan' ? 'مكية' : 'مدنية';
+                opt.dataset.count = s.numberOfAyahs;
+                surahSelect.appendChild(opt);
+            });
+
+            // Clear and populate reader select
+            readerSelect.innerHTML = '<option value="ar.alafasy">مشاري العفاسي</option>';
+            
+            rData.data.forEach(r => { 
+                if(r.identifier !== 'ar.alafasy') {
+                    const opt = document.createElement('option');
+                    opt.value = r.identifier;
+                    opt.text = r.name;
+                    readerSelect.appendChild(opt);
+                }
+            });
+            
+        } catch(error) { 
+            console.error('خطأ في تحميل القرآن:', error);
+            mainContent.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 15px;"></i>
+                    <p>حدث خطأ في تحميل البيانات. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.</p>
+                </div>
+            `; 
+        }
+    }
+
+    async function loadSurah() {
+        const sNum = surahSelect.value;
+        const reader = readerSelect.value;
+        
+        if (!sNum || !reader) return;
+
+        try {
+            const sel = surahSelect.options[surahSelect.selectedIndex];
+            document.getElementById('infoType').innerText = sel.dataset.type;
+            document.getElementById('infoAyat').innerText = sel.dataset.count;
+            infoPanel.style.display = 'grid';
+
+            // Show loading message
+            mainContent.innerHTML = "<p>جاري تحميل السورة...</p>";
+
+            const res = await fetch(`https://api.alquran.cloud/v1/surah/${sNum}/${reader}`);
+            
+            if (!res.ok) {
+                throw new Error('فشل تحميل السورة');
+            }
+            
+            const data = await res.json();
+            currentAyat = data.data.ayahs;
+            
+            mainContent.innerHTML = currentAyat.map((a, i) => 
+                `<span class="ayah" id="ayah-${i}" onclick="playAyah(${i})">${a.text} <small>﴿${a.numberInSurah}﴾</small></span>`
+            ).join(' ');
+            
+            playAyah(0);
+        } catch (error) {
+            console.error('خطأ في تحميل السورة:', error);
+            mainContent.innerHTML = `
+                <div class="error-message">
+                    <p>حدث خطأ في تحميل السورة. يرجى المحاولة مرة أخرى.</p>
+                </div>
+            `;
+        }
+    }
+
+    function playAyah(index) {
+        if (index >= currentAyat.length) {
+            document.getElementById('playStatus').innerText = 'انتهت السورة';
+            return;
+        }
+        
+        currentAyahIndex = index;
+        
+        // Remove highlight from all ayahs
+        document.querySelectorAll('.ayah').forEach(el => el.classList.remove('highlight'));
+        
+        // Highlight current ayah
+        const active = document.getElementById(`ayah-${index}`);
+        if(active) { 
+            active.classList.add('highlight'); 
+            active.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+        }
+        
+        // Play audio
+        mainAudio.src = currentAyat[index].audio;
+        mainAudio.play().catch(error => {
+            console.error('خطأ في تشغيل الصوت:', error);
+            document.getElementById('playStatus').innerText = 'خطأ في تشغيل الصوت';
+        });
+        
+        document.getElementById('playStatus').innerText = `الآية ${currentAyat[index].numberInSurah}`;
+    }
+
+    // Audio ended event
+    mainAudio.addEventListener('ended', () => {
+        playAyah(currentAyahIndex + 1);
+    });
+
+    // Audio error event
+    mainAudio.addEventListener('error', (e) => {
+        console.error('خطأ في الصوت:', e);
+        document.getElementById('playStatus').innerText = 'خطأ في تحميل الصوت';
+    });
+
+    // Surah select change event
+    surahSelect.addEventListener('change', loadSurah);
+    
+    // Reader select change event
+    readerSelect.addEventListener('change', loadSurah);
+    
+    // Initialize on load
+    try {
+        initQuran();
+        initHadithOptions();
+    } catch (error) {
+        console.error('خطأ في التهيئة:', error);
+    }
+</script>
+</body>
+</html>

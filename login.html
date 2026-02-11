@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | Educore</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;800&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES (MATCHING INDEX) --- */
+        :root {
+            --bg-dark: #020205; 
+            --bg-blue-tint: #0a1128; 
+            --gold-metallic: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --gold-flat: #d4af37;
+            --text-white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: radial-gradient(circle at center, var(--bg-blue-tint), var(--bg-dark));
+            color: var(--text-white);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- BACK ARROW --- */
+        .back-home {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: var(--gold-flat);
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: var(--glass);
+            border-radius: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .back-home:hover {
+            background: var(--gold-metallic);
+            color: #000;
+            transform: translateX(-5px);
+        }
+
+        /* --- STAGE & ANIMATIONS --- */
+        .stage {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .character-svg {
+            position: absolute;
+            width: 150px;
+            bottom: 60%;
+            animation: characterAction 3s ease-in-out forwards;
+        }
+
+        @keyframes characterAction {
+            0% { transform: translateX(-200px) scale(0); opacity: 0; }
+            20% { transform: translateX(0) scale(1); opacity: 1; }
+            40% { transform: rotate(-20deg); }
+            50% { transform: rotate(10deg); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px); }
+        }
+
+        /* --- LOGIN CARD --- */
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+            z-index: 20;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+        }
+
+        .card-appear {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        h2 { 
+            background: var(--gold-metallic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px; 
+            font-size: 2rem; 
+            font-weight: 800;
+        }
+        
+        input, select {
+            width: 100%; 
+            padding: 14px; 
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.07); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px; 
+            color: white; 
+            text-align: center; 
+            outline: none;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--gold-flat);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        select option { background: var(--bg-dark); color: white; }
+
+        /* --- THE BUTTON --- */
+        .btn-gold {
+            width: 100%; 
+            padding: 16px; 
+            margin-top: 20px;
+            background: var(--gold-metallic);
+            border: none; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #000;
+            box-shadow: 0 5px 15px rgba(191, 149, 63, 0.3);
+        }
+
+        /* --- LAUGH BUBBLE --- */
+        #laugh-bubble {
+            position: absolute;
+            background: #fff;
+            color: #d32f2f;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        #laugh-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%; left: 50%;
+            margin-left: -5px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        .toggle-link { 
+            color: var(--gold-flat); 
+            cursor: pointer; 
+            margin-top: 20px; 
+            display: block; 
+            font-size: 0.95rem; 
+            text-decoration: none;
+        }
+        .toggle-link:hover { text-decoration: underline; color: #fff; }
+
+        .hidden { display: none; }
+
+        /* Briefcase Animation */
+        .briefcase {
+            position: absolute;
+            font-size: 60px;
+            opacity: 0;
+            z-index: 10;
+        }
+        .briefcase-anim {
+            animation: throwBriefcase 3s ease-in-out forwards;
+        }
+
+        @keyframes throwBriefcase {
+            0%, 45% { opacity: 0; transform: translate(-20px, 0) rotate(0); }
+            50% { opacity: 1; transform: translate(0, 0) rotate(0); }
+            65% { transform: translate(150px, -100px) rotate(360deg); }
+            80% { transform: translate(0, 200px) rotate(720deg) scale(1.5); opacity: 1; }
+            100% { transform: translate(0, 200px) scale(0); opacity: 0; }
+        }
+
+        /* --- BETA MODAL STYLES (GOLD ADDITION) --- */
+        #betaModal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: var(--bg-blue-tint);
+            color: var(--text-white);
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 25px;
+            border: 2px solid var(--gold-flat);
+            text-align: right;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+        }
+        .modal-header h3 {
+            background: var(--gold-metallic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+        .warning-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        .warning-box li { list-style: none; margin-bottom: 10px; font-size: 0.95rem; }
+        .warning-box li span { color: var(--gold-flat); margin-left: 10px; }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            color: var(--gold-flat);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div id="betaModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>تنبيه – إطلاق تجريبي</h3>
+        </div>
+        <p style="color: #ccc; line-height: 1.6;">EDUCORE ما يزال في مرحلة التجربة.   قد تقع بعض الاخطاء     .</p>
+        <div class="warning-box">
+            <ul>
+                <li><span>⚠️</span> تصاميم الصفحات و المعدات تحت التعديل و من الممكن ان تكون العديد من الالوان او التصميمات غير متناسقة </li>
+                <li><span>🔒</span>انتبه على معلوماتك ولا تشاركها مع اي شخص </li>
+                <li><span>📝</span> اذا رأيت اي مشكلة من فضلك شاركها مع مشرفيننا في قسم الاستفسارات</li>
+            </ul>
+        </div>
+        <label class="checkbox-container">
+            <input type="checkbox" id="understandCheck" style="width: 18px; height: 18px;">
+            فهمت أن هذه نسخة تجريبية وقد تحتوي أخطاء.
+        </label>
+        <div style="display: flex; gap: 10px;">
+            <button id="startBtn" disabled class="btn-gold" style="flex: 2; margin-top: 0; opacity: 0.4; cursor: not-allowed;">موافق – ابدأ</button>
+            <button onclick="window.close()" style="flex: 1; background: transparent; color: #777; border: 1px solid #444; border-radius: 12px; cursor: pointer;">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<div class="stage">
+    <svg class="character-svg" viewBox="0 0 200 200">
+        <circle cx="100" cy="50" r="30" fill="#d4af37" /> 
+        <path d="M100 80 L100 150 M100 100 L60 130 M100 100 L140 80" stroke="#d4af37" stroke-width="8" stroke-linecap="round"/> 
+        <path d="M100 150 L70 190 M100 150 L130 190" stroke="#d4af37" stroke-width="8" stroke-linecap="round"/> 
+    </svg>
+
+    <div class="briefcase briefcase-anim">💼</div>
+
+    <div class="login-card" id="mainCard">
+        <h2 id="formTitle">دخول الصرح</h2>
+        
+        <div id="regFields" class="hidden">
+            <input type="text" id="fullName" placeholder="الاسم الحقيقي الكامل">
+            <input type="text" id="nick" placeholder="الاسم المستعار (اللقب)">
+            
+            <select id="grade">
+                <option value="" disabled selected>اختر الصف الدراسي</option>
+                <script>
+                    for(let i=1; i<=12; i++) {
+                        document.write(`<option value="${i}">الصف ${i == 12 ? 'الثاني عشر (توجيهي)' : i}</option>`);
+                    }
+                </script>
+            </select>
+
+            <select id="role">
+                <option value="student" selected>رتبة: طالب</option>
+                <option value="teacher">رتبة: معلم</option>
+            </select>
+        </div>
+
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        
+        <div style="position: relative; margin-top: 10px;">
+            <div id="laugh-bubble">يرجى ملء الفراغات !</div>
+            <button class="btn-gold" id="submitBtn">تأكيد الدخول</button>
+        </div>
+        
+        <span class="toggle-link" id="toggleAuth">ليس لديك حساب؟ يشرفنا انضمامك إلينا</span>
+    </div>
+</div>
+
+<script type="module">
+    // --- Firebase Logic (Keep as is) ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+        authDomain: "eliteacademy-37bfc.firebaseapp.com",
+        projectId: "eliteacademy-37bfc",
+        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+        messagingSenderId: "203080953628",
+        appId: "1:203080953628:web:69efebccc336b79f0554d9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // --- نافذة التنبيه Logic ---
+    const betaModal = document.getElementById('betaModal');
+    const understandCheck = document.getElementById('understandCheck');
+    const startBtn = document.getElementById('startBtn');
+
+    understandCheck.onchange = () => {
+        startBtn.disabled = !understandCheck.checked;
+        startBtn.style.opacity = understandCheck.checked ? "1" : "0.4";
+        startBtn.style.cursor = understandCheck.checked ? "pointer" : "not-allowed";
+    };
+
+    startBtn.onclick = () => {
+        betaModal.style.opacity = "0";
+        setTimeout(() => betaModal.style.display = "none", 400);
+    };
+
+    // --- بقية كودك الأصلي تماماً ---
+    const submitBtn = document.getElementById('submitBtn');
+    const emailInput = document.getElementById('email');
+    const passInput = document.getElementById('pass');
+    const fullNameInput = document.getElementById('fullName');
+    const laughBubble = document.getElementById('laugh-bubble');
+    const regFields = document.getElementById('regFields');
+    const toggleAuth = document.getElementById('toggleAuth');
+
+    let isRegister = false;
+
+    const isFormInvalid = () => {
+        if (isRegister) {
+            return emailInput.value.trim() === "" || 
+                   passInput.value.trim() === "" || 
+                   fullNameInput.value.trim() === "" || 
+                   document.getElementById('grade').value === "";
+        }
+        return emailInput.value.trim() === "" || passInput.value.trim() === "";
+    };
+
+    submitBtn.addEventListener('mouseover', function() {
+        if (isFormInvalid()) {
+            const x = Math.random() * 200 - 100; 
+            const y = Math.random() * 80 - 40;
+            this.style.transform = `translate(${x}px, ${y}px)`;
+            laughBubble.style.opacity = "1";
+            laughBubble.style.transform = `translateX(-50%) translate(${x}px, ${y}px)`;
+        }
+    });
+
+    const resetBtn = () => {
+        if (!isFormInvalid()) {
+            submitBtn.style.transform = `translate(0, 0)`;
+            laughBubble.style.opacity = "0";
+        }
+    };
+
+    [emailInput, passInput, fullNameInput].forEach(el => el.addEventListener('input', resetBtn));
+
+    setTimeout(() => {
+        document.getElementById('mainCard').classList.add('card-appear');
+    }, 2500); 
+
+    toggleAuth.onclick = () => {
+        isRegister = !isRegister;
+        regFields.classList.toggle('hidden', !isRegister);
+        document.getElementById('formTitle').innerText = isRegister ? "انضمام لـ EDUCORE" : "دخول الصرح";
+        toggleAuth.innerText = isRegister ? "لديك حساب؟ سجل دخولك" : "ليس لديك حساب؟ انضم إلينا";
+        resetBtn();
+    };
+
+    submitBtn.onclick = async () => {
+        if(isFormInvalid()) return;
+        const email = emailInput.value;
+        const pass = passInput.value;
+        try {
+            if (isRegister) {
+                const nick = document.getElementById('nick').value;
+                const name = fullNameInput.value;
+                const grade = document.getElementById('grade').value;
+                const role = document.getElementById('role').value;
+                const res = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, "users", res.user.uid), { 
+                    fullName: name,
+                    nickname: nick, 
+                    grade: grade,
+                    role: role, 
+                    email: email,
+                    joinedAt: new Date()
+                });
+                alert("تم تسجيلك بنجاح في EDUCORE!");
+            } else {
+                await signInWithEmailAndPassword(auth, email, pass);
+            }
+            window.location.href = "index.html";
+        } catch (err) {
+            alert("حدث خطأ: " + err.message);
+        }
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,3205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educore | Pro Admin Engine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Navy Blue Palette - متناسق مع الصفحة الرئيسية */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            --accent-success: #23a559;
+            --accent-danger: #ed4245;
+            --accent-warning: #fee75c;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+            
+            /* Gold Gradient for Back Button */
+            --gold-metallic: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Cairo', 'Tajawal', 'Segoe UI', sans-serif;
+        }
+
+        body { 
+            background: linear-gradient(180deg, #0a1628 0%, #1a2942 50%, #233554 100%);
+            background-attachment: fixed;
+            color: var(--white-pure); 
+            height: 100vh; 
+            display: flex; 
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.1;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(135, 206, 235, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(100px, -100px) scale(1.1) rotate(90deg); }
+            50% { transform: translate(-50px, 50px) scale(0.9) rotate(180deg); }
+            75% { transform: translate(-120px, -80px) scale(1.05) rotate(270deg); }
+        }
+
+        /* --- 1. شريط السيرفرات --- */
+        .srv-rail { 
+            width: 80px; 
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px 0; 
+            gap: 12px; 
+            border-left: 2px solid var(--border-blue);
+            z-index: 200;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* BACK BUTTON - Black & Metallic Gold */
+        .back-node {
+            width: 52px; 
+            height: 52px; 
+            border-radius: 50%;
+            background: #000;
+            border: 2.5px solid #b38728; 
+            color: #d4af37; 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(179, 135, 40, 0.3);
+            position: relative;
+        }
+
+        .back-node::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: var(--gold-metallic);
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(10px);
+            transition: opacity 0.4s ease;
+        }
+
+        .back-node:hover::before {
+            opacity: 0.6;
+        }
+
+        .back-node:hover {
+            background: var(--gold-metallic);
+            color: #000; 
+            border-color: #fff;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+            border-radius: 15px;
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .back-node:active {
+            transform: scale(0.95);
+        }
+
+        .rail-separator { 
+            width: 45px; 
+            height: 2px; 
+            background: var(--border-blue);
+            border-radius: 2px; 
+            margin-bottom: 8px;
+        }
+
+        .srv-node { 
+            width: 52px; 
+            height: 52px; 
+            border-radius: 50%; 
+            background: var(--navy-medium);
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            border: 2px solid transparent;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .srv-node::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-blue-glow);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .srv-node:hover::before,
+        .srv-node.active::before {
+            opacity: 0.2;
+        }
+
+        .srv-node:hover, 
+        .srv-node.active { 
+            border-radius: 18px; 
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px var(--shadow-glow);
+            transform: translateX(-5px) scale(1.1);
+        }
+
+        .srv-node:active {
+            transform: scale(0.95);
+        }
+
+        .srv-node i {
+            font-size: 1.5rem;
+            color: var(--white-pure);
+            z-index: 1;
+        }
+
+        .add-btn { 
+            color: var(--accent-success);
+            border: 2.5px dashed var(--accent-success);
+            background: rgba(35, 165, 89, 0.1);
+        }
+
+        .add-btn:hover {
+            background: rgba(35, 165, 89, 0.2);
+            border-style: solid;
+        }
+
+        .srv-context-menu {
+            position: absolute;
+            background: rgba(26, 41, 66, 0.98);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-blue);
+            border-radius: 12px;
+            padding: 8px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            min-width: 200px;
+        }
+
+        .srv-context-menu.active {
+            display: block;
+        }
+
+        .context-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white-soft);
+            font-size: 0.95rem;
+        }
+
+        .context-item:hover {
+            background: var(--glass-medium);
+            transform: translateX(-4px);
+        }
+
+        .context-item.danger {
+            color: var(--accent-danger);
+        }
+
+        .context-item.danger:hover {
+            background: rgba(237, 66, 69, 0.15);
+        }
+
+        /* --- 2. الشريط الجانبي --- */
+        .sidebar { 
+            width: 280px; 
+            background: rgba(17, 34, 64, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex; 
+            flex-direction: column; 
+            border-left: 2px solid var(--border-blue);
+            z-index: 190;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .srv-header { 
+            padding: 28px 22px; 
+            font-weight: 900; 
+            border-bottom: 2px solid var(--border-blue);
+            font-size: 1.25rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(26, 41, 66, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .srv-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-blue-glow);
+        }
+
+        .srv-header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .srv-action-btn {
+            width: 32px;
+            height: 32px;
+            background: var(--glass-light);
+            border: 1.5px solid var(--border-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--accent-blue);
+        }
+
+        .srv-action-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px) rotate(5deg);
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        .srv-action-btn:active {
+            transform: scale(0.9);
+        }
+
+        .chn-box { 
+            flex: 1; 
+            padding: 20px; 
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) transparent;
+        }
+
+        .chn-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chn-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chn-box::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .chn-head { 
+            font-size: 0.8rem; 
+            color: var(--text-light);
+            text-transform: uppercase; 
+            margin: 25px 0 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .chn-head i { 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+        }
+
+        .chn-head i:hover { 
+            transform: scale(1.3) rotate(90deg);
+            filter: drop-shadow(0 0 10px var(--accent-blue));
+        }
+
+        .chn-link { 
+            padding: 12px 14px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            color: var(--blue-lighter);
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            gap: 12px; 
+            margin-bottom: 6px; 
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .chn-link::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--accent-blue);
+            border-radius: 3px;
+            transition: height 0.3s ease;
+        }
+
+        .chn-link:hover::before,
+        .chn-link.active::before {
+            height: 70%;
+        }
+
+        .chn-link:hover, 
+        .chn-link.active { 
+            background: var(--glass-medium);
+            color: var(--white-pure);
+            transform: translateX(-5px);
+        }
+
+        .chn-link:active {
+            transform: scale(0.98);
+        }
+
+        .chn-link-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .chn-link i {
+            font-size: 1.2rem;
+        }
+
+        .chn-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chn-link:hover .chn-actions {
+            opacity: 1;
+        }
+
+        .chn-action-icon {
+            padding: 6px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .chn-action-icon:hover {
+            background: var(--glass-strong);
+            transform: scale(1.1);
+        }
+
+        .chn-action-icon.danger:hover {
+            background: rgba(237, 66, 69, 0.2);
+            color: var(--accent-danger);
+        }
+
+        /* User Panel at Bottom */
+        .user-panel {
+            padding: 18px;
+            background: rgba(10, 22, 40, 0.9);
+            border-top: 2px solid var(--border-blue);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar-small {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gradient-blue-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 0 15px var(--shadow-blue);
+        }
+
+        .user-info-small {
+            flex: 1;
+        }
+
+        .user-info-small h4 {
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .user-info-small p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .user-status {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            border: 2px solid var(--navy-darkest);
+            box-shadow: 0 0 10px var(--accent-success);
+            animation: statusPulse 2s infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* --- 3. المنطقة الرئيسية --- */
+        .main { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background: rgba(35, 53, 84, 0.4);
+            backdrop-filter: blur(10px);
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            padding: 20px 30px;
+            background: rgba(17, 34, 64, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--border-blue);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header-icon {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+        .chat-header-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .chat-header-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-action-btn {
+            width: 38px;
+            height: 38px;
+            background: var(--glass-light);
+            border: 1.5px solid var(--border-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--accent-blue);
+        }
+
+        .header-action-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px) rotate(10deg);
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        /* --- 4. واجهة الهولوغرام --- */
+        #voice-view { 
+            display: none; 
+            height: 100%; 
+            width: 100%; 
+            position: absolute; 
+            inset: 0; 
+            align-items: center; 
+            justify-content: center; 
+            flex-direction: column; 
+            background: radial-gradient(circle at center, #1a2942 0%, #0a1628 100%);
+            z-index: 100;
+        }
+
+        #canvas { 
+            position: absolute; 
+            inset: 0; 
+            width: 100%; 
+            height: 100%; 
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .hologram-rings { 
+            position: absolute; 
+            width: 350px; 
+            height: 350px; 
+            border: 2px solid var(--accent-blue);
+            border-radius: 50%; 
+            opacity: 0.25;
+            animation: pulse 2.5s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes pulse { 
+            0% { transform: scale(0.8); opacity: 0.5; } 
+            100% { transform: scale(1.6); opacity: 0; } 
+        }
+
+        .v-interface { 
+            z-index: 110; 
+            text-align: center; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 25px;
+        }
+
+        .v-avatar { 
+            width: 180px; 
+            height: 180px; 
+            border-radius: 50%; 
+            background: rgba(74, 144, 226, 0.2);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 5rem; 
+            position: relative; 
+            border: 3px solid var(--accent-blue);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 60px rgba(74, 144, 226, 0.4);
+            z-index: 5;
+        }
+
+        .v-avatar::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            background: var(--gradient-blue-glow);
+            border-radius: 50%;
+            opacity: 0.3;
+            filter: blur(20px);
+            animation: avatarGlow 3s infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        #v-room-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-white-navy);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+        }
+
+        .v-participants {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .participant {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-blue-glow);
+            border: 2px solid var(--white-pure);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 5px 20px var(--shadow-blue);
+            position: relative;
+        }
+
+        .participant.speaking::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border: 2px solid var(--accent-success);
+            border-radius: 50%;
+            animation: speaking 0.5s infinite;
+        }
+
+        @keyframes speaking {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+        
+        .edu-controls { 
+            position: absolute; 
+            bottom: 50px; 
+            display: flex; 
+            gap: 15px; 
+            z-index: 150;
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 18px 30px; 
+            border-radius: 60px; 
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .ctrl-btn { 
+            width: 55px; 
+            height: 55px; 
+            border-radius: 50%; 
+            border: none; 
+            background: var(--glass-medium);
+            color: var(--white-pure);
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .ctrl-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-blue-glow);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ctrl-btn:hover::before {
+            opacity: 0.3;
+        }
+
+        .ctrl-btn:hover { 
+            background: var(--glass-strong);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px var(--shadow-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.9);
+        }
+
+        .ctrl-btn.active { 
+            background: var(--accent-blue);
+            box-shadow: 0 0 30px var(--shadow-glow);
+        }
+
+        .ctrl-btn.danger { 
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .ctrl-btn.danger:hover {
+            background: #d63447;
+            box-shadow: 0 10px 30px rgba(237, 66, 69, 0.5);
+        }
+
+        .ctrl-btn i {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 5. اللوح والشاشة --- */
+        #wb-container { 
+            position: absolute; 
+            width: 85%; 
+            height: 75%; 
+            background: var(--white-pure);
+            border-radius: 20px; 
+            display: none; 
+            z-index: 140; 
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 3px solid var(--accent-blue);
+        }
+
+        canvas#whiteboard { 
+            width: 100%; 
+            height: 100%; 
+            cursor: crosshair;
+        }
+
+        .wb-toolbar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+            background: rgba(26, 41, 66, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .wb-btn {
+            width: 42px;
+            height: 42px;
+            border: none;
+            background: var(--glass-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+        }
+
+        .wb-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        .wb-btn.active {
+            background: var(--accent-blue);
+            color: var(--white-pure);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 6px;
+            padding: 8px;
+            background: rgba(10, 22, 40, 0.95);
+            border-radius: 10px;
+            position: absolute;
+            top: 70px;
+            right: 15px;
+            display: none;
+            border: 2px solid var(--border-blue);
+        }
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+            border-color: var(--white-pure);
+        }
+        
+        #chat-view { 
+            display: flex; 
+            flex-direction: column; 
+            height: 100%;
+        }
+
+        .msg-list { 
+            flex: 1; 
+            padding: 30px; 
+            overflow-y: auto;
+            display: flex; 
+            flex-direction: column; 
+            gap: 18px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) transparent;
+        }
+
+        .msg-list::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .msg-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .msg-list::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 10px;
+        }
+
+        .msg { 
+            display: flex; 
+            gap: 14px; 
+            animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .msg:hover {
+            background: var(--glass-light);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .avatar { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%;
+            background: var(--gradient-blue-glow);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 800;
+            flex-shrink: 0;
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 4px 15px var(--shadow-blue);
+        }
+
+        .msg-content {
+            flex: 1;
+        }
+
+        .msg-content h4 {
+            margin-bottom: 6px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .msg-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .msg-content p {
+            color: var(--blue-lightest);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .input-wrap { 
+            background: rgba(17, 34, 64, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 18px 25px; 
+            border-radius: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 18px; 
+            margin: 20px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-wrap input { 
+            background: var(--glass-light);
+            border: 1.5px solid var(--border-blue);
+            color: var(--white-pure);
+            flex: 1; 
+            outline: none;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-wrap input:focus {
+            background: var(--glass-medium);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px var(--shadow-blue);
+        }
+
+        .input-wrap input::placeholder {
+            color: var(--text-light);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-action-btn {
+            width: 42px;
+            height: 42px;
+            background: var(--glass-light);
+            border: 1.5px solid var(--border-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--accent-blue);
+        }
+
+        .input-action-btn:hover {
+            background: var(--accent-blue);
+            color: var(--white-pure);
+            transform: translateY(-3px) rotate(5deg);
+            box-shadow: 0 6px 20px var(--shadow-glow);
+        }
+
+        .input-action-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* الشاشة */
+        #screen-box { 
+            width: 75%; 
+            height: 55%; 
+            background: #000;
+            border: 3px solid var(--accent-blue);
+            display: none; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            z-index: 115;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain;
+        }
+
+        /* Modal */
+        .modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-box { 
+            background: linear-gradient(135deg, rgba(26, 41, 66, 0.98) 0%, rgba(17, 34, 64, 0.98) 100%);
+            backdrop-filter: blur(30px);
+            padding: 40px; 
+            border-radius: 25px; 
+            width: 420px;
+            max-width: 90%;
+            text-align: center; 
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.7);
+            animation: modalSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-box h2 {
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            background: var(--gradient-white-navy);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #srv-img-sec {
+            margin: 25px 0;
+        }
+
+        #p-img-preview {
+            width: 90px;
+            height: 90px;
+            background: var(--glass-medium);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            border: 3px dashed var(--accent-blue);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 2rem;
+            color: var(--accent-blue);
+        }
+
+        #p-img-preview:hover {
+            transform: scale(1.1) rotate(5deg);
+            border-style: solid;
+            box-shadow: 0 10px 30px var(--shadow-glow);
+        }
+
+        .modal-box input[type="text"],
+        .modal-box textarea {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            background: var(--glass-light);
+            border: 2px solid var(--border-blue);
+            color: var(--white-pure);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .modal-box input[type="text"]:focus,
+        .modal-box textarea:focus {
+            outline: none;
+            background: var(--glass-medium);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 25px var(--shadow-blue);
+        }
+
+        .modal-box textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .m-btn { 
+            width: 100%; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 12px; 
+            color: var(--white-pure);
+            font-weight: 700;
+            cursor: pointer; 
+            margin-bottom: 12px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .m-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .m-btn:active {
+            transform: scale(0.98);
+        }
+
+        .m-btn-primary {
+            background: var(--gradient-blue-glow);
+        }
+
+        .m-btn-primary:hover {
+            box-shadow: 0 8px 30px var(--shadow-glow);
+        }
+
+        .m-btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--border-blue);
+        }
+
+        .m-btn-secondary:hover {
+            background: var(--glass-light);
+            color: var(--white-pure);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, rgba(26, 41, 66, 0.98) 0%, rgba(17, 34, 64, 0.98) 100%);
+            backdrop-filter: blur(30px);
+            padding: 18px 30px;
+            border-radius: 15px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification.success {
+            border-color: var(--accent-success);
+        }
+
+        .notification.error {
+            border-color: var(--accent-danger);
+        }
+
+        /* Loading Spinner */
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loader-spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(74, 144, 226, 0.2);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .srv-rail {
+                width: 70px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .srv-node,
+            .back-node {
+                width: 46px;
+                height: 46px;
+            }
+
+            .modal-box {
+                width: 90%;
+                padding: 30px 20px;
+            }
+
+            .chat-header {
+                padding: 15px 20px;
+            }
+
+            .msg-list {
+                padding: 20px;
+            }
+
+            .input-wrap {
+                margin: 15px;
+                padding: 12px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+    </div>
+
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-box">
+            <h2 id="modal-title">إضافة جديد</h2>
+            <div id="srv-img-sec" style="display:none">
+                <div id="p-img-preview" onclick="document.getElementById('f-in').click()">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <input type="file" id="f-in" hidden accept="image/*" onchange="handleSrvImg(this)">
+            </div>
+            <input type="text" id="modal-input" placeholder="اكتب الاسم هنا...">
+            <textarea id="modal-desc" placeholder="الوصف (اختياري)..." style="display:none"></textarea>
+            <button class="m-btn m-btn-primary" onclick="processModal()">✓ تأكيد</button>
+            <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إلغاء</button>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="srv-context-menu" id="contextMenu">
+        <div class="context-item" onclick="editServer()">
+            <i class="fas fa-edit"></i> تعديل السيرفر
+        </div>
+        <div class="context-item" onclick="inviteToServer()">
+            <i class="fas fa-user-plus"></i> دعوة أعضاء
+        </div>
+        <div class="context-item" onclick="serverSettings()">
+            <i class="fas fa-cog"></i> إعدادات السيرفر
+        </div>
+        <div class="context-item danger" onclick="deleteServer()">
+            <i class="fas fa-trash"></i> حذف السيرفر
+        </div>
+    </div>
+
+    <div class="srv-rail">
+        <div class="back-node" onclick="goBack()" title="رجوع للصفحة الرئيسية">
+            <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="rail-separator"></div>
+
+        <div class="srv-node active" onclick="location.reload()" title="الصفحة الرئيسية">
+            <i class="fas fa-home"></i>
+        </div>
+        <div id="srv-list" style="display:contents"></div>
+        <div class="srv-node add-btn" onclick="openModal('SRV')" title="إضافة سيرفر جديد">
+            <i class="fas fa-plus"></i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="srv-header">
+            <span id="active-srv-name">Educore Server</span>
+            <div class="srv-header-actions">
+                <div class="srv-action-btn" onclick="serverSettings()" title="إعدادات">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="srv-action-btn" onclick="inviteToServer()" title="دعوة">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
+        <div class="chn-box">
+            <div class="chn-head">
+                <span><i class="fas fa-hashtag"></i> القنوات النصية</span> 
+                <i class="fas fa-plus-circle" onclick="openModal('TEXT')"></i>
+            </div>
+            <div id="text-chn-list"></div>
+            
+            <div class="chn-head">
+                <span><i class="fas fa-volume-up"></i> غرف الهولوغرام</span> 
+                <i class="fas fa-plus-circle" onclick="openModal('VOICE')"></i>
+            </div>
+            <div id="voice-chn-list"></div>
+        </div>
+        
+        <div class="user-panel">
+            <div class="user-avatar-small">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info-small">
+                <h4>أنت</h4>
+                <p>متصل</p>
+            </div>
+            <div class="user-status"></div>
+        </div>
+    </div>
+
+    <main class="main">
+        <!-- Voice View -->
+        <div id="voice-view">
+            <div class="hologram-rings"></div>
+            <canvas id="canvas"></canvas>
+            
+            <div id="screen-box">
+                <video id="v-screen" autoplay playsinline></video>
+            </div>
+
+            <div id="wb-container">
+                <canvas id="whiteboard"></canvas>
+                <div class="wb-toolbar">
+                    <button class="wb-btn active" onclick="setWbTool('pen')" title="قلم">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="wb-btn" onclick="setWbTool('eraser')" title="ممحاة">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                    <button class="wb-btn" onclick="toggleColorPicker()" title="الألوان">
+                        <i class="fas fa-palette"></i>
+                    </button>
+                    <button class="wb-btn" onclick="clearWB()" title="مسح الكل">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="wb-btn" onclick="toggleBoard()" title="إغلاق">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="color-picker" id="colorPicker">
+                    <div class="color-option" style="background: #000" onclick="setColor('#000')"></div>
+                    <div class="color-option" style="background: #f00" onclick="setColor('#f00')"></div>
+                    <div class="color-option" style="background: #0f0" onclick="setColor('#0f0')"></div>
+                    <div class="color-option" style="background: #00f" onclick="setColor('#00f')"></div>
+                    <div class="color-option" style="background: #ff0" onclick="setColor('#ff0')"></div>
+                </div>
+            </div>
+
+            <div class="v-interface">
+                <div class="v-avatar" id="v-glow">
+                    <i class="fas fa-microphone-lines"></i>
+                </div>
+                <h1 id="v-room-title">Educore Voice</h1>
+                <div class="v-participants" id="participants"></div>
+                
+                <div class="edu-controls">
+                    <button class="ctrl-btn active" id="btn-mic" onclick="toggleMic()" title="ميكروفون">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="ctrl-btn" id="btn-video" onclick="toggleVideo()" title="كاميرا">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="ctrl-btn" id="btn-screen" onclick="toggleScreen()" title="مشاركة الشاشة">
+                        <i class="fas fa-desktop"></i>
+                    </button>
+                    <button class="ctrl-btn" id="btn-board" onclick="toggleBoard()" title="السبورة">
+                        <i class="fas fa-chalkboard-user"></i>
+                    </button>
+                    <button class="ctrl-btn" id="btn-hand" onclick="raiseHand()" title="رفع اليد">
+                        <i class="fas fa-hand"></i>
+                    </button>
+                    <button class="ctrl-btn danger" onclick="exitVoice()" title="مغادرة">
+                        <i class="fas fa-phone-slash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div id="chat-view">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="chat-header-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="chat-header-info">
+                        <h3 id="current-channel-name">عام</h3>
+                        <p id="channel-topic">مرحباً بك في القناة العامة</p>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <div class="header-action-btn" onclick="toggleMembers()" title="الأعضاء">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="header-action-btn" onclick="searchMessages()" title="بحث">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="header-action-btn" onclick="channelSettings()" title="إعدادات القناة">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="msg-list" id="msg-screen"></div>
+            
+            <div class="input-wrap">
+                <input type="text" id="chat-in" placeholder="أرسل رسالة إلى #عام..." onkeypress="if(event.key === 'Enter') sendMsg()">
+                <div class="input-actions">
+                    <div class="input-action-btn" onclick="startVoiceRecording()" title="تسجيل صوتي" id="voice-record-btn">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="input-action-btn" onclick="addGif()" title="إضافة GIF">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="input-action-btn" onclick="addSticker()" title="ملصقات">
+                        <i class="fas fa-icons"></i>
+                    </div>
+                    <div class="input-action-btn" onclick="attachFile()" title="إرفاق ملف">
+                        <i class="fas fa-paperclip"></i>
+                    </div>
+                    <div class="input-action-btn" onclick="addEmoji()" title="إيموجي">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <div class="input-action-btn" onclick="sendMsg()" title="إرسال">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('educore_db')) || [];
+        let curSrvIdx = 0, curChnIdx = 0, tempImg = "", modalMode = "";
+        let audioCtx, analyser, dataArray, animId, microphoneStream, screenStream, videoStream;
+        let drawing = false, wbTool = 'pen', wbColor = '#000';
+        let contextMenuTarget = null;
+
+        // Initialize
+        if(db.length === 0) {
+            db.push({ 
+                name: 'Educore Server', 
+                img: '', 
+                description: 'السيرفر الرئيسي للتعليم',
+                textChns: [
+                    {name:'عام', topic: 'المحادثات العامة', msgs:[]},
+                    {name:'الإعلانات', topic: 'آخر الأخبار والتحديثات', msgs:[]},
+                    {name:'المساعدة', topic: 'اطلب المساعدة هنا', msgs:[]}
+                ], 
+                voiceChns: [
+                    {name:'الغرفة الرئيسية', description: 'غرفة صوتية عامة'},
+                    {name:'دراسة جماعية', description: 'للدراسة والتعاون'}
+                ]
+            });
+            save();
+        }
+
+        // Image Handler
+        function handleSrvImg(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempImg = e.target.result;
+                    const preview = document.getElementById('p-img-preview');
+                    preview.style.backgroundImage = `url(${tempImg})`;
+                    preview.innerHTML = "";
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Modal Functions
+        function openModal(mode) {
+            modalMode = mode;
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modal-title');
+            const imgSec = document.getElementById('srv-img-sec');
+            const desc = document.getElementById('modal-desc');
+            
+            modal.style.display = 'flex';
+            document.getElementById('modal-input').value = "";
+            desc.value = "";
+            
+            if(mode === 'SRV') {
+                title.textContent = '✨ إنشاء سيرفر جديد';
+                imgSec.style.display = 'block';
+                desc.style.display = 'block';
+                desc.placeholder = 'وصف السيرفر (اختياري)...';
+            } else if(mode === 'TEXT') {
+                title.textContent = '# إضافة قناة نصية';
+                imgSec.style.display = 'none';
+                desc.style.display = 'block';
+                desc.placeholder = 'موضوع القناة (اختياري)...';
+            } else if(mode === 'VOICE') {
+                title.textContent = '🎤 إضافة غرفة صوتية';
+                imgSec.style.display = 'none';
+                desc.style.display = 'block';
+                desc.placeholder = 'وصف الغرفة (اختياري)...';
+            }
+        }
+
+        function closeModal() { 
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('p-img-preview').style.backgroundImage = '';
+            document.getElementById('p-img-preview').innerHTML = '<i class="fas fa-plus"></i>';
+            tempImg = "";
+        }
+        
+        function processModal() {
+            const val = document.getElementById('modal-input').value.trim();
+            const desc = document.getElementById('modal-desc').value.trim();
+            
+            if(!val) {
+                showNotification('⚠️ الرجاء إدخال اسم صحيح', 'error');
+                return;
+            }
+            
+            if(modalMode === 'SRV') {
+                db.push({ 
+                    name: val, 
+                    img: tempImg, 
+                    description: desc || 'سيرفر جديد',
+                    textChns: [{name:'عام', topic: 'المحادثات العامة', msgs:[]}], 
+                    voiceChns: [{name:'الغرفة الرئيسية', description: 'غرفة صوتية عامة'}] 
+                });
+                showNotification('✓ تم إنشاء السيرفر بنجاح', 'success');
+                tempImg = "";
+            } else if(modalMode === 'TEXT') {
+                db[curSrvIdx].textChns.push({ name: val, topic: desc || 'قناة جديدة', msgs: [] });
+                showNotification('✓ تم إضافة القناة النصية', 'success');
+            } else if(modalMode === 'VOICE') {
+                db[curSrvIdx].voiceChns.push({ name: val, description: desc || 'غرفة صوتية جديدة' });
+                showNotification('✓ تم إضافة الغرفة الصوتية', 'success');
+            }
+            
+            save(); 
+            render(); 
+            closeModal();
+        }
+
+        // Notification
+        function showNotification(message, type = 'success') {
+            const notif = document.getElementById('notification');
+            notif.textContent = message;
+            notif.className = `notification ${type}`;
+            notif.classList.add('show');
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        // Save to LocalStorage
+        function save() { 
+            localStorage.setItem('educore_db', JSON.stringify(db));
+        }
+
+        // Voice Functions
+        async function startVoice(name, description) {
+            switchUI('VOICE');
+            document.getElementById('v-room-title').innerText = name;
+            showNotification(`🎤 انضممت إلى ${name}`, 'success');
+            
+            // Add sample participants
+            const participants = document.getElementById('participants');
+            participants.innerHTML = `
+                <div class="participant speaking">أ</div>
+                <div class="participant">ب</div>
+                <div class="participant">ج</div>
+            `;
+            
+            try {
+                microphoneStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                const source = audioCtx.createMediaStreamSource(microphoneStream);
+                source.connect(analyser);
+                analyser.fftSize = 64;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                drawVoice();
+                document.getElementById('btn-mic').classList.add('active');
+            } catch(e) { 
+                showNotification('⚠️ يرجى السماح بالوصول للميكروفون', 'error');
+            }
+        }
+
+        function drawVoice() {
+            animId = requestAnimationFrame(drawVoice);
+            analyser.getByteFrequencyData(dataArray);
+            
+            const cvs = document.getElementById('canvas');
+            const ctx = cvs.getContext('2d');
+            cvs.width = window.innerWidth; 
+            cvs.height = window.innerHeight;
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+            
+            let sum = 0;
+            const barWidth = cvs.width / dataArray.length;
+            
+            dataArray.forEach((v, i) => {
+                sum += v;
+                const barHeight = (v / 255) * cvs.height * 0.7;
+                const x = i * barWidth;
+                const y = cvs.height - barHeight;
+                
+                const gradient = ctx.createLinearGradient(0, y, 0, cvs.height);
+                gradient.addColorStop(0, 'rgba(74, 144, 226, 0.8)');
+                gradient.addColorStop(1, 'rgba(135, 206, 235, 0.3)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth - 2, barHeight);
+            });
+            
+            const avgVolume = sum / dataArray.length;
+            document.getElementById('v-glow').style.boxShadow = `0 0 ${avgVolume}px rgba(74, 144, 226, 0.8)`;
+        }
+
+        function toggleMic() {
+            const btn = document.getElementById('btn-mic');
+            if(microphoneStream) {
+                const tracks = microphoneStream.getAudioTracks();
+                tracks.forEach(track => {
+                    track.enabled = !track.enabled;
+                    if(track.enabled) {
+                        btn.classList.add('active');
+                        btn.innerHTML = '<i class="fas fa-microphone"></i>';
+                        showNotification('🎤 تم تشغيل الميكروفون', 'success');
+                    } else {
+                        btn.classList.remove('active');
+                        btn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                        showNotification('🔇 تم كتم الميكروفون', 'success');
+                    }
+                });
+            }
+        }
+
+        async function toggleVideo() {
+            const btn = document.getElementById('btn-video');
+            if(!videoStream) {
+                try {
+                    videoStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    // You can add video display here
+                    btn.classList.add('active');
+                    showNotification('📹 تم تشغيل الكاميرا', 'success');
+                } catch(e) {
+                    showNotification('⚠️ تعذر الوصول للكاميرا', 'error');
+                }
+            } else {
+                videoStream.getTracks().forEach(t => t.stop());
+                videoStream = null;
+                btn.classList.remove('active');
+                showNotification('📹 تم إيقاف الكاميرا', 'success');
+            }
+        }
+
+        async function toggleScreen() {
+            const v = document.getElementById('v-screen');
+            const box = document.getElementById('screen-box');
+            const btn = document.getElementById('btn-screen');
+            
+            if(!screenStream) {
+                try {
+                    screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                    v.srcObject = screenStream;
+                    box.style.display = 'block';
+                    btn.classList.add('active');
+                    showNotification('🖥️ تم مشاركة الشاشة', 'success');
+                    
+                    screenStream.getVideoTracks()[0].onended = () => {
+                        toggleScreen();
+                    };
+                } catch(e) { 
+                    showNotification('⚠️ تم إلغاء مشاركة الشاشة', 'error');
+                }
+            } else {
+                screenStream.getTracks().forEach(t => t.stop());
+                screenStream = null;
+                box.style.display = 'none';
+                btn.classList.remove('active');
+                showNotification('🖥️ تم إيقاف مشاركة الشاشة', 'success');
+            }
+        }
+
+        function toggleBoard() {
+            const container = document.getElementById('wb-container');
+            const btn = document.getElementById('btn-board');
+            const isShown = container.style.display === 'block';
+            
+            container.style.display = isShown ? 'none' : 'block';
+            if(!isShown) {
+                setupWB();
+                btn.classList.add('active');
+                showNotification('📝 تم فتح السبورة', 'success');
+            } else {
+                btn.classList.remove('active');
+                showNotification('📝 تم إغلاق السبورة', 'success');
+            }
+        }
+
+        function raiseHand() {
+            const btn = document.getElementById('btn-hand');
+            btn.classList.toggle('active');
+            if(btn.classList.contains('active')) {
+                showNotification('✋ تم رفع اليد', 'success');
+            } else {
+                showNotification('✋ تم إنزال اليد', 'success');
+            }
+        }
+
+        // Whiteboard
+        function setupWB() {
+            const wb = document.getElementById('whiteboard');
+            const wctx = wb.getContext('2d');
+            wb.width = wb.offsetWidth; 
+            wb.height = wb.offsetHeight;
+            
+            wb.onmousedown = (e) => {
+                drawing = true;
+                wctx.beginPath();
+                wctx.moveTo(e.offsetX, e.offsetY);
+            };
+            
+            wb.onmouseup = () => { 
+                drawing = false;
+            };
+            
+            wb.onmousemove = (e) => {
+                if(!drawing) return;
+                wctx.lineWidth = wbTool === 'eraser' ? 25 : 3;
+                wctx.strokeStyle = wbTool === 'eraser' ? 'white' : wbColor;
+                wctx.lineCap = 'round';
+                wctx.lineJoin = 'round';
+                wctx.lineTo(e.offsetX, e.offsetY);
+                wctx.stroke();
+            };
+
+            // Touch support
+            wb.ontouchstart = (e) => {
+                e.preventDefault();
+                drawing = true;
+                const touch = e.touches[0];
+                const rect = wb.getBoundingClientRect();
+                wctx.beginPath();
+                wctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            };
+
+            wb.ontouchend = () => {
+                drawing = false;
+            };
+
+            wb.ontouchmove = (e) => {
+                e.preventDefault();
+                if(!drawing) return;
+                const touch = e.touches[0];
+                const rect = wb.getBoundingClientRect();
+                wctx.lineWidth = wbTool === 'eraser' ? 25 : 3;
+                wctx.strokeStyle = wbTool === 'eraser' ? 'white' : wbColor;
+                wctx.lineCap = 'round';
+                wctx.lineJoin = 'round';
+                wctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                wctx.stroke();
+            };
+        }
+
+        function setWbTool(tool) {
+            wbTool = tool;
+            document.querySelectorAll('.wb-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+
+        function toggleColorPicker() {
+            const picker = document.getElementById('colorPicker');
+            picker.style.display = picker.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function setColor(color) {
+            wbColor = color;
+            wbTool = 'pen';
+            document.getElementById('colorPicker').style.display = 'none';
+        }
+
+        function clearWB() {
+            const wb = document.getElementById('whiteboard');
+            wb.getContext('2d').clearRect(0, 0, wb.width, wb.height);
+            showNotification('🗑️ تم مسح السبورة', 'success');
+        }
+
+        // Render
+        function render() {
+            const sList = document.getElementById('srv-list'); 
+            sList.innerHTML = "";
+            
+            db.forEach((s, i) => {
+                const node = document.createElement('div');
+                node.className = `srv-node ${curSrvIdx === i ? 'active' : ''}`;
+                node.title = s.name;
+                
+                if(s.img) {
+                    node.style.backgroundImage = `url('${s.img}')`;
+                } else {
+                    node.innerHTML = `<i class="fas fa-server"></i>`;
+                }
+                
+                node.onclick = (e) => { 
+                    if(e.button === 0) {
+                        curSrvIdx = i; 
+                        curChnIdx = 0; 
+                        render();
+                    }
+                };
+                
+                node.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    showContextMenu(e, i);
+                };
+                
+                sList.appendChild(node);
+            });
+
+            if(db[curSrvIdx]) {
+                const s = db[curSrvIdx];
+                document.getElementById('active-srv-name').innerText = s.name;
+                
+                // Text Channels
+                const tList = document.getElementById('text-chn-list'); 
+                tList.innerHTML = "";
+                s.textChns.forEach((c, i) => {
+                    const div = document.createElement('div');
+                    div.className = `chn-link ${curChnIdx === i ? 'active' : ''}`;
+                    div.innerHTML = `
+                        <div class="chn-link-content">
+                            <i class="fas fa-hashtag"></i> ${c.name}
+                        </div>
+                        <div class="chn-actions">
+                            <i class="fas fa-edit chn-action-icon" onclick="editChannel(${i}, 'text')" title="تعديل"></i>
+                            <i class="fas fa-trash chn-action-icon danger" onclick="deleteChannel(${i}, 'text')" title="حذف"></i>
+                        </div>
+                    `;
+                    div.onclick = (e) => {
+                        if(!e.target.classList.contains('chn-action-icon')) {
+                            curChnIdx = i; 
+                            switchUI('CHAT'); 
+                            render();
+                        }
+                    };
+                    tList.appendChild(div);
+                });
+
+                // Voice Channels
+                const vList = document.getElementById('voice-chn-list'); 
+                vList.innerHTML = "";
+                s.voiceChns.forEach((v, i) => {
+                    const div = document.createElement('div');
+                    div.className = `chn-link`;
+                    div.innerHTML = `
+                        <div class="chn-link-content">
+                            <i class="fas fa-volume-up"></i> ${v.name}
+                        </div>
+                        <div class="chn-actions">
+                            <i class="fas fa-edit chn-action-icon" onclick="editChannel(${i}, 'voice')" title="تعديل"></i>
+                            <i class="fas fa-trash chn-action-icon danger" onclick="deleteChannel(${i}, 'voice')" title="حذف"></i>
+                        </div>
+                    `;
+                    div.onclick = (e) => {
+                        if(!e.target.classList.contains('chn-action-icon')) {
+                            startVoice(v.name, v.description);
+                        }
+                    };
+                    vList.appendChild(div);
+                });
+                
+                loadMsgs();
+            }
+        }
+
+        // Delete Channel
+        function deleteChannel(idx, type) {
+            event.stopPropagation();
+            const channelName = type === 'text' ? 
+                db[curSrvIdx].textChns[idx].name : 
+                db[curSrvIdx].voiceChns[idx].name;
+            
+            if(confirm(`هل أنت متأكد من حذف ${type === 'text' ? 'القناة' : 'الغرفة'} "${channelName}"؟`)) {
+                if(type === 'text') {
+                    db[curSrvIdx].textChns.splice(idx, 1);
+                    if(curChnIdx >= db[curSrvIdx].textChns.length) {
+                        curChnIdx = Math.max(0, db[curSrvIdx].textChns.length - 1);
+                    }
+                } else {
+                    db[curSrvIdx].voiceChns.splice(idx, 1);
+                }
+                save();
+                render();
+                showNotification(`✓ تم حذف ${type === 'text' ? 'القناة' : 'الغرفة'} بنجاح`, 'success');
+            }
+        }
+
+        // Edit Channel
+        function editChannel(idx, type) {
+            event.stopPropagation();
+            const channel = type === 'text' ? 
+                db[curSrvIdx].textChns[idx] : 
+                db[curSrvIdx].voiceChns[idx];
+            
+            const newName = prompt(`تعديل اسم ${type === 'text' ? 'القناة' : 'الغرفة'}:`, channel.name);
+            if(newName && newName.trim()) {
+                channel.name = newName.trim();
+                save();
+                render();
+                showNotification('✓ تم التعديل بنجاح', 'success');
+            }
+        }
+
+        // Context Menu
+        function showContextMenu(e, srvIdx) {
+            const menu = document.getElementById('contextMenu');
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+            menu.classList.add('active');
+            contextMenuTarget = srvIdx;
+            
+            document.addEventListener('click', hideContextMenu);
+        }
+
+        function hideContextMenu() {
+            document.getElementById('contextMenu').classList.remove('active');
+            document.removeEventListener('click', hideContextMenu);
+        }
+
+        function editServer() {
+            const srv = db[contextMenuTarget];
+            const newName = prompt('تعديل اسم السيرفر:', srv.name);
+            if(newName && newName.trim()) {
+                srv.name = newName.trim();
+                save();
+                render();
+                showNotification('✓ تم تعديل السيرفر', 'success');
+            }
+        }
+
+        function deleteServer() {
+            if(contextMenuTarget === 0) {
+                showNotification('⚠️ لا يمكن حذف السيرفر الرئيسي', 'error');
+                return;
+            }
+            
+            const srv = db[contextMenuTarget];
+            if(confirm(`هل أنت متأكد من حذف السيرفر "${srv.name}"؟\nسيتم حذف جميع القنوات والرسائل!`)) {
+                db.splice(contextMenuTarget, 1);
+                if(curSrvIdx >= db.length) {
+                    curSrvIdx = db.length - 1;
+                }
+                save();
+                render();
+                showNotification('✓ تم حذف السيرفر', 'success');
+            }
+        }
+
+        function inviteToServer() {
+            const srv = db[curSrvIdx];
+            const inviteCode = Math.random().toString(36).substring(7).toUpperCase();
+            const inviteLink = `https://educore.com/invite/${inviteCode}`;
+            
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            modalBox.innerHTML = `
+                <h2>📨 دعوة أعضاء إلى ${srv.name}</h2>
+                <div style="margin: 25px 0;">
+                    <div style="background: var(--glass-medium); padding: 20px; border-radius: 15px; border: 2px solid var(--accent-blue); margin-bottom: 20px;">
+                        <p style="color: var(--text-light); margin-bottom: 10px; font-size: 0.9rem;">رابط الدعوة:</p>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="text" value="${inviteLink}" id="invite-link" readonly style="flex: 1; background: var(--navy-dark); border: 2px solid var(--border-blue); padding: 12px; border-radius: 10px; color: var(--white-pure); font-size: 0.95rem;">
+                            <button onclick="copyInviteLink()" style="padding: 12px 20px; background: var(--accent-blue); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 700; transition: all 0.3s;">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 15px; color: var(--white-soft);">أو شارك عبر:</h4>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button onclick="shareVia('whatsapp')" style="flex: 1; min-width: 120px; padding: 12px; background: #25D366; border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                                <i class="fab fa-whatsapp"></i> واتساب
+                            </button>
+                            <button onclick="shareVia('telegram')" style="flex: 1; min-width: 120px; padding: 12px; background: #0088cc; border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                                <i class="fab fa-telegram"></i> تيليجرام
+                            </button>
+                            <button onclick="shareVia('email')" style="flex: 1; min-width: 120px; padding: 12px; background: var(--accent-blue); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 600; transition: all 0.3s;">
+                                <i class="fas fa-envelope"></i> إيميل
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(74, 144, 226, 0.1); padding: 15px; border-radius: 10px; border-right: 4px solid var(--accent-blue);">
+                        <p style="font-size: 0.85rem; color: var(--blue-lighter);">
+                            <i class="fas fa-info-circle"></i> هذا الرابط صالح للاستخدام لمدة 7 أيام ولا يحتوي على حد أقصى للاستخدامات
+                        </p>
+                    </div>
+                </div>
+                
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function copyInviteLink() {
+            const link = document.getElementById('invite-link');
+            link.select();
+            document.execCommand('copy');
+            showNotification('✓ تم نسخ رابط الدعوة', 'success');
+        }
+        
+        function shareVia(platform) {
+            const link = document.getElementById('invite-link').value;
+            const srv = db[curSrvIdx];
+            const text = `انضم إلى سيرفر ${srv.name} على Educore!`;
+            
+            let url;
+            switch(platform) {
+                case 'whatsapp':
+                    url = `https://wa.me/?text=${encodeURIComponent(text + '\n' + link)}`;
+                    break;
+                case 'telegram':
+                    url = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+                    break;
+                case 'email':
+                    url = `mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(link)}`;
+                    break;
+            }
+            
+            window.open(url, '_blank');
+            showNotification(`✓ تم فتح ${platform}`, 'success');
+        }
+
+        function serverSettings() {
+            const srv = db[curSrvIdx];
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            modalBox.innerHTML = `
+                <h2>⚙️ إعدادات السيرفر</h2>
+                <div style="text-align: right; margin: 25px 0;">
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--blue-lighter); font-weight: 600;">اسم السيرفر:</label>
+                        <input type="text" id="srv-name-edit" value="${srv.name}" style="width: 100%; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--blue-lighter); font-weight: 600;">وصف السيرفر:</label>
+                        <textarea id="srv-desc-edit" style="width: 100%; min-height: 80px; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; font-family: inherit; resize: vertical;">${srv.description || ''}</textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--blue-lighter); font-weight: 600;">صورة السيرفر:</label>
+                        <div style="display: flex; gap: 15px; align-items: center;">
+                            <div style="width: 80px; height: 80px; background: var(--glass-medium); border-radius: 50%; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; border: 2px solid var(--accent-blue);" id="srv-img-preview-edit" ${srv.img ? `style="background-image: url(${srv.img})"` : ''}>
+                                ${!srv.img ? '<i class="fas fa-image" style="font-size: 1.5rem; color: var(--text-light);"></i>' : ''}
+                            </div>
+                            <button onclick="document.getElementById('srv-img-input-edit').click()" style="padding: 10px 20px; background: var(--accent-blue); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-upload"></i> تغيير الصورة
+                            </button>
+                            <input type="file" id="srv-img-input-edit" hidden accept="image/*" onchange="handleServerImageEdit(this)">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; background: var(--glass-light); padding: 15px; border-radius: 10px; border: 2px solid var(--border-blue);">
+                        <h4 style="margin-bottom: 12px; color: var(--white-soft);">إعدادات متقدمة:</h4>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer;">
+                            <input type="checkbox" id="srv-public" ${srv.isPublic ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">سيرفر عام (يمكن لأي شخص الانضمام)</span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer;">
+                            <input type="checkbox" id="srv-verified" ${srv.isVerified ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">سيرفر موثق <i class="fas fa-check-circle" style="color: var(--accent-blue);"></i></span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="srv-notifications" ${srv.notifications !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">تفعيل الإشعارات</span>
+                        </label>
+                    </div>
+                    
+                    <div style="background: rgba(237, 66, 69, 0.1); padding: 15px; border-radius: 10px; border-right: 4px solid var(--accent-danger);">
+                        <h4 style="color: var(--accent-danger); margin-bottom: 8px;">منطقة خطر</h4>
+                        <button onclick="deleteServerFromSettings()" style="width: 100%; padding: 12px; background: var(--accent-danger); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 700;">
+                            <i class="fas fa-trash"></i> حذف السيرفر نهائياً
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="m-btn m-btn-primary" onclick="saveServerSettings()">✓ حفظ التغييرات</button>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إلغاء</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        let tempServerImg = null;
+        
+        function handleServerImageEdit(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempServerImg = e.target.result;
+                    document.getElementById('srv-img-preview-edit').style.backgroundImage = `url(${tempServerImg})`;
+                    document.getElementById('srv-img-preview-edit').innerHTML = '';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function saveServerSettings() {
+            const srv = db[curSrvIdx];
+            srv.name = document.getElementById('srv-name-edit').value.trim() || srv.name;
+            srv.description = document.getElementById('srv-desc-edit').value.trim();
+            srv.isPublic = document.getElementById('srv-public').checked;
+            srv.isVerified = document.getElementById('srv-verified').checked;
+            srv.notifications = document.getElementById('srv-notifications').checked;
+            
+            if(tempServerImg) {
+                srv.img = tempServerImg;
+                tempServerImg = null;
+            }
+            
+            save();
+            render();
+            closeModal();
+            showNotification('✓ تم حفظ الإعدادات بنجاح', 'success');
+        }
+        
+        function deleteServerFromSettings() {
+            if(curSrvIdx === 0) {
+                showNotification('⚠️ لا يمكن حذف السيرفر الرئيسي', 'error');
+                return;
+            }
+            
+            if(confirm('⚠️ هل أنت متأكد تماماً؟\nسيتم حذف السيرفر وجميع القنوات والرسائل نهائياً!')) {
+                db.splice(curSrvIdx, 1);
+                curSrvIdx = 0;
+                save();
+                render();
+                closeModal();
+                showNotification('✓ تم حذف السيرفر', 'success');
+            }
+        }
+
+        // Messages
+        function sendMsg() {
+            const inp = document.getElementById('chat-in');
+            if(!inp.value.trim()) return;
+            
+            const now = new Date();
+            const time = now.toLocaleTimeString('ar', {hour: '2-digit', minute: '2-digit'});
+            
+            // Format message with markdown
+            const formattedMsg = formatMessage(inp.value.trim());
+            
+            db[curSrvIdx].textChns[curChnIdx].msgs.push({ 
+                u: 'أنت', 
+                t: formattedMsg,
+                time: time
+            });
+            
+            inp.value = ""; 
+            save(); 
+            loadMsgs();
+            
+            // Scroll to bottom
+            const msgScreen = document.getElementById('msg-screen');
+            setTimeout(() => {
+                msgScreen.scrollTop = msgScreen.scrollHeight;
+            }, 100);
+        }
+
+        function loadMsgs() {
+            const scr = document.getElementById('msg-screen'); 
+            scr.innerHTML = "";
+            
+            const currentChannel = db[curSrvIdx]?.textChns[curChnIdx];
+            if(!currentChannel) return;
+            
+            document.getElementById('current-channel-name').textContent = currentChannel.name;
+            document.getElementById('channel-topic').textContent = currentChannel.topic || 'لا يوجد موضوع';
+            
+            const msgs = currentChannel.msgs || [];
+            
+            if(msgs.length === 0) {
+                scr.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-light);">
+                        <i class="fas fa-comments" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3 style="margin-bottom: 10px;">لا توجد رسائل بعد</h3>
+                        <p>كن أول من يبدأ المحادثة في #${currentChannel.name}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            msgs.forEach(m => {
+                const d = document.createElement('div'); 
+                d.className = 'msg';
+                d.innerHTML = `
+                    <div class="avatar">${m.u[0]}</div>
+                    <div class="msg-content">
+                        <h4>
+                            ${m.u}
+                            <span class="msg-time">${m.time || 'الآن'}</span>
+                        </h4>
+                        <p>${m.t}</p>
+                    </div>
+                `;
+                scr.appendChild(d);
+            });
+            
+            scr.scrollTop = scr.scrollHeight;
+        }
+
+        function switchUI(m) {
+            document.getElementById('chat-view').style.display = m === 'CHAT' ? 'flex' : 'none';
+            document.getElementById('voice-view').style.display = m === 'VOICE' ? 'flex' : 'none';
+        }
+
+        function exitVoice() {
+            if(confirm('هل تريد مغادرة الغرفة الصوتية؟')) {
+                cancelAnimationFrame(animId);
+                if(microphoneStream) microphoneStream.getTracks().forEach(t => t.stop());
+                if(screenStream) screenStream.getTracks().forEach(t => t.stop());
+                if(videoStream) videoStream.getTracks().forEach(t => t.stop());
+                
+                document.getElementById('btn-mic').classList.remove('active');
+                document.getElementById('btn-screen').classList.remove('active');
+                document.getElementById('btn-video').classList.remove('active');
+                document.getElementById('btn-board').classList.remove('active');
+                document.getElementById('screen-box').style.display = 'none';
+                document.getElementById('wb-container').style.display = 'none';
+                
+                switchUI('CHAT');
+                showNotification('👋 تم المغادرة من الغرفة', 'success');
+            }
+        }
+
+        // Additional Functions
+        function goBack() {
+            if(confirm('هل تريد العودة للصفحة الرئيسية؟')) {
+                window.history.back();
+            }
+        }
+
+        function attachFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = 'image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar';
+            
+            input.onchange = (e) => {
+                const files = Array.from(e.target.files);
+                if(files.length === 0) return;
+                
+                showLoader();
+                
+                setTimeout(() => {
+                    files.forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const fileData = {
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                data: event.target.result
+                            };
+                            
+                            const now = new Date();
+                            const time = now.toLocaleTimeString('ar', {hour: '2-digit', minute: '2-digit'});
+                            
+                            let fileIcon = 'fa-file';
+                            let filePreview = '';
+                            
+                            if(file.type.startsWith('image/')) {
+                                fileIcon = 'fa-file-image';
+                                filePreview = `<img src="${event.target.result}" style="max-width: 300px; max-height: 200px; border-radius: 10px; margin-top: 10px; cursor: pointer;" onclick="openImageViewer('${event.target.result}')">`;
+                            } else if(file.type.startsWith('video/')) {
+                                fileIcon = 'fa-file-video';
+                                filePreview = `<video controls style="max-width: 300px; max-height: 200px; border-radius: 10px; margin-top: 10px;">\n<source src="${event.target.result}" type="${file.type}">\n</video>`;
+                            } else if(file.type.startsWith('audio/')) {
+                                fileIcon = 'fa-file-audio';
+                                filePreview = `<audio controls style="width: 300px; margin-top: 10px;">\n<source src="${event.target.result}" type="${file.type}">\n</audio>`;
+                            } else if(file.type === 'application/pdf') {
+                                fileIcon = 'fa-file-pdf';
+                            } else if(file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+                                fileIcon = 'fa-file-word';
+                            } else if(file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
+                                fileIcon = 'fa-file-archive';
+                            }
+                            
+                            const fileSize = file.size < 1024 ? file.size + ' B' :
+                                           file.size < 1024*1024 ? (file.size/1024).toFixed(2) + ' KB' :
+                                           (file.size/(1024*1024)).toFixed(2) + ' MB';
+                            
+                            db[curSrvIdx].textChns[curChnIdx].msgs.push({ 
+                                u: 'أنت', 
+                                t: `<div style="background: var(--glass-medium); padding: 12px; border-radius: 10px; border: 2px solid var(--border-blue); display: inline-block; margin-top: 5px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <i class="fas ${fileIcon}" style="font-size: 2rem; color: var(--accent-blue);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; margin-bottom: 4px;">${file.name}</div>
+                                            <div style="font-size: 0.85rem; color: var(--text-light);">${fileSize}</div>
+                                        </div>
+                                        <button onclick="downloadFile('${event.target.result}', '${file.name}')" style="padding: 8px 16px; background: var(--accent-blue); border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: 600;">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </div>
+                                    ${filePreview}
+                                </div>`,
+                                time: time,
+                                isFile: true
+                            });
+                            
+                            if(index === files.length - 1) {
+                                save();
+                                loadMsgs();
+                                hideLoader();
+                                showNotification(`✓ تم رفع ${files.length} ملف`, 'success');
+                            }
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    });
+                }, 500);
+            };
+            
+            input.click();
+        }
+        
+        function downloadFile(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            link.click();
+            showNotification('✓ جاري التحميل...', 'success');
+        }
+        
+        function openImageViewer(imgSrc) {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            modalBox.innerHTML = `
+                <h2>🖼️ عارض الصور</h2>
+                <div style="margin: 20px 0;">
+                    <img src="${imgSrc}" style="max-width: 100%; max-height: 70vh; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button onclick="downloadFile('${imgSrc}', 'image.png')" class="m-btn m-btn-primary" style="flex: 1;">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                    <button onclick="closeModal()" class="m-btn m-btn-secondary" style="flex: 1;">
+                        <i class="fas fa-times"></i> إغلاق
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+        
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function addEmoji() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            const emojiCategories = {
+                'وجوه وعواطف': ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '🥲', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '😮‍💨', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '😶‍🌫️', '🥴', '😵', '😵‍💫', '🤯', '🤠', '🥳', '🥸', '😎', '🤓', '🧐'],
+                'إيماءات': ['👋', '🤚', '🖐', '✋', '🖖', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🦾', '🦿', '🦵', '🦶'],
+                'قلوب': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝'],
+                'حيوانات': ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🦟', '🦗', '🕷', '🦂', '🐢', '🐍', '🦎', '🦖', '🦕', '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈', '🐊', '🐅', '🐆', '🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐', '🦌', '🐕', '🐩', '🦮', '🐕‍🦺', '🐈', '🐈‍⬛', '🐓', '🦃', '🦚', '🦜', '🦢', '🦩', '🕊', '🐇', '🦝', '🦨', '🦡', '🦦', '🦥', '🐁', '🐀', '🐿', '🦔'],
+                'طعام': ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶', '🫑', '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐', '🥯', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞', '🧇', '🥓', '🥩', '🍗', '🍖', '🌭', '🍔', '🍟', '🍕', '🫓', '🥪', '🥙', '🧆', '🌮', '🌯', '🫔', '🥗', '🥘', '🫕', '🥫', '🍝', '🍜', '🍲', '🍛', '🍣', '🍱', '🥟', '🦪', '🍤', '🍙', '🍚', '🍘', '🍥', '🥠', '🥮', '🍢', '🍡', '🍧', '🍨', '🍦', '🥧', '🧁', '🍰', '🎂', '🍮', '🍭', '🍬', '🍫', '🍿', '🍩', '🍪', '🌰', '🥜', '🍯', '🥛', '🍼', '🫖', '☕', '🍵', '🧃', '🥤', '🧋', '🍶', '🍺', '🍻', '🥂', '🍷', '🥃', '🍸', '🍹', '🧉', '🍾', '🧊'],
+                'رياضة': ['⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍', '🏏', '🪃', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋', '🎽', '🛹', '🛼', '🛷', '⛸', '🥌', '🎿', '⛷', '🏂', '🪂', '🏋️', '🤼', '🤸', '🤺', '🤾', '🏌️', '🏇', '🧘', '🏊', '🤽', '🚣', '🧗', '🚵', '🚴', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖', '🎗'],
+                'سفر': ['🚗', '🚕', '🚙', '🚌', '🚎', '🏎', '🚓', '🚑', '🚒', '🚐', '🛻', '🚚', '🚛', '🚜', '🦯', '🦽', '🦼', '🛴', '🚲', '🛵', '🏍', '🛺', '🚨', '🚔', '🚍', '🚘', '🚖', '🚡', '🚠', '🚟', '🚃', '🚋', '🚞', '🚝', '🚄', '🚅', '🚈', '🚂', '🚆', '🚇', '🚊', '🚉', '✈️', '🛫', '🛬', '🛩', '💺', '🛰', '🚀', '🛸', '🚁', '🛶', '⛵', '🚤', '🛥', '🛳', '⛴', '🚢', '⚓', '⛽', '🚧', '🚦', '🚥', '🗺', '🗿', '🗽', '🗼', '🏰', '🏯', '🏟', '🎡', '🎢', '🎠', '⛲', '⛱', '🏖', '🏝', '🏜', '🌋', '⛰', '🏔', '🗻', '🏕', '⛺', '🛖', '🏠', '🏡', '🏘', '🏚', '🏗', '🏭', '🏢', '🏬', '🏣', '🏤', '🏥', '🏦', '🏨', '🏪', '🏫', '🏩', '💒', '🏛', '⛪', '🕌', '🕍', '🛕'],
+                'رموز': ['❤️', '💔', '💯', '💢', '💬', '👁️‍🗨️', '🗨', '🗯', '💭', '💤', '💮', '♨️', '💈', '🛑', '🕛', '🕧', '🕐', '🕜', '🕑', '🕝', '🕒', '🕞', '🕓', '🕟', '🕔', '🕠', '🕕', '🕡', '🕖', '🕢', '🕗', '🕣', '🕘', '🕤', '🕙', '🕥', '🕚', '🕦', '🌀', '♠️', '♥️', '♦️', '♣️', '🃏', '🀄', '🎴', '🔇', '🔈', '🔉', '🔊', '📢', '📣', '📯', '🔔', '🔕', '🎼', '🎵', '🎶', '🎙', '🎚', '🎛', '🎤', '🎧', '📻', '🎷', '🎸', '🎹', '🎺', '🎻', '🪕', '🥁', '🪘', '📱', '📲', '☎️', '📞', '📟', '📠', '🔋', '🔌', '💻', '🖥', '🖨', '⌨️', '🖱', '🖲', '💽', '💾', '💿', '📀', '🧮', '🎥', '🎞', '📽', '🎬', '📺', '📷', '📸', '📹', '📼', '🔍', '🔎', '🕯', '💡', '🔦', '🏮', '🪔', '📔', '📕', '📖', '📗', '📘', '📙', '📚', '📓', '📒', '📃', '📜', '📄', '📰', '🗞', '📑', '🔖', '🏷', '💰', '💴', '💵', '💶', '💷', '💸', '💳', '🧾', '💹', '✉️', '📧', '📨', '📩', '📤', '📥', '📦', '📫', '📪', '📬', '📭', '📮', '🗳', '✏️', '✒️', '🖋', '🖊', '🖌', '🖍', '📝', '💼', '📁', '📂', '🗂', '📅', '📆', '🗒', '🗓', '📇', '📈', '📉', '📊', '📋', '📌', '📍', '📎', '🖇', '📏', '📐', '✂️', '🗃', '🗄', '🗑', '🔒', '🔓', '🔏', '🔐', '🔑', '🗝', '🔨', '🪓', '⛏', '⚒', '🛠', '🗡', '⚔️', '🔫', '🪃', '🏹', '🛡', '🪚', '🔧', '🪛', '🔩', '⚙️', '🗜', '⚖️', '🦯', '🔗', '⛓', '🪝', '🧰', '🧲', '🪜', '⚗️', '🧪', '🧫', '🧬', '🔬', '🔭', '📡']
+            };
+            
+            let categoriesHTML = '';
+            for(let category in emojiCategories) {
+                categoriesHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: var(--blue-lighter); margin-bottom: 12px; font-size: 0.95rem; text-align: right;">${category}</h4>
+                        <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;">
+                            ${emojiCategories[category].map(emoji => 
+                                `<button onclick="insertEmoji('${emoji}')" style="padding: 10px; background: var(--glass-light); border: 2px solid var(--border-blue); border-radius: 10px; cursor: pointer; font-size: 1.5rem; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.3)'; this.style.background='var(--glass-strong)'" onmouseout="this.style.transform='scale(1)'; this.style.background='var(--glass-light)'">${emoji}</button>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            modalBox.innerHTML = `
+                <h2>😊 لوحة الإيموجي</h2>
+                <div style="max-height: 60vh; overflow-y: auto; margin: 20px 0; padding: 10px;">
+                    ${categoriesHTML}
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function insertEmoji(emoji) {
+            const input = document.getElementById('chat-in');
+            input.value += emoji;
+            input.focus();
+            closeModal();
+        }
+
+        function toggleMembers() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            // Generate random members for demo
+            const members = [
+                { name: 'أحمد محمد', status: 'online', role: 'مدير' },
+                { name: 'سارة علي', status: 'online', role: 'مشرف' },
+                { name: 'محمد خالد', status: 'idle', role: 'عضو' },
+                { name: 'فاطمة أحمد', status: 'online', role: 'عضو' },
+                { name: 'عمر يوسف', status: 'offline', role: 'عضو' },
+                { name: 'ليلى حسن', status: 'online', role: 'عضو' },
+                { name: 'كريم سامي', status: 'idle', role: 'عضو' },
+                { name: 'نور الدين', status: 'online', role: 'مشرف' },
+            ];
+            
+            const onlineMembers = members.filter(m => m.status === 'online');
+            const idleMembers = members.filter(m => m.status === 'idle');
+            const offlineMembers = members.filter(m => m.status === 'offline');
+            
+            const statusColors = {
+                'online': 'var(--accent-success)',
+                'idle': 'var(--accent-warning)',
+                'offline': 'var(--text-gray)'
+            };
+            
+            const statusTexts = {
+                'online': 'متصل',
+                'idle': 'خامل',
+                'offline': 'غير متصل'
+            };
+            
+            function renderMembersList(membersList, title) {
+                if(membersList.length === 0) return '';
+                
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: var(--blue-lighter); font-size: 0.85rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                            ${title} — ${membersList.length}
+                        </h4>
+                        ${membersList.map(member => `
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--glass-light); border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='var(--glass-strong)'; this.style.transform='translateX(-5px)'" onmouseout="this.style.background='var(--glass-light)'; this.style.transform='translateX(0)'">
+                                <div style="position: relative;">
+                                    <div style="width: 42px; height: 42px; background: var(--gradient-blue-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--accent-blue);">
+                                        ${member.name[0]}
+                                    </div>
+                                    <div style="position: absolute; bottom: 0; right: -2px; width: 14px; height: 14px; background: ${statusColors[member.status]}; border-radius: 50%; border: 2px solid var(--navy-dark);"></div>
+                                </div>
+                                <div style="flex: 1; text-align: right;">
+                                    <div style="font-weight: 600; margin-bottom: 2px;">${member.name}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-light);">${member.role}</div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: ${statusColors[member.status]};">
+                                    ${statusTexts[member.status]}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            modalBox.innerHTML = `
+                <h2>👥 الأعضاء (${members.length})</h2>
+                <div style="max-height: 60vh; overflow-y: auto; margin: 20px 0; padding: 10px; text-align: right;">
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="member-search" placeholder="🔍 ابحث عن عضو..." style="width: 100%; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; margin-bottom: 15px;" oninput="filterMembers(this.value)">
+                    </div>
+                    
+                    <div id="members-list">
+                        ${renderMembersList(onlineMembers, 'متصل الآن')}
+                        ${renderMembersList(idleMembers, 'خامل')}
+                        ${renderMembersList(offlineMembers, 'غير متصل')}
+                    </div>
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function filterMembers(searchTerm) {
+            // This would filter members in a real implementation
+            showNotification(`🔍 البحث عن: ${searchTerm}`, 'success');
+        }
+
+        function searchMessages() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            modalBox.innerHTML = `
+                <h2>🔍 البحث في الرسائل</h2>
+                <div style="margin: 25px 0; text-align: right;">
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" id="search-input" placeholder="ابحث في الرسائل..." style="width: 100%; padding: 14px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; font-size: 1rem;" oninput="performSearch(this.value)">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: var(--blue-lighter); margin-bottom: 12px;">خيارات البحث:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--glass-light); padding: 10px 15px; border-radius: 8px; border: 2px solid var(--border-blue);">
+                                <input type="checkbox" id="search-user" style="width: 18px; height: 18px;">
+                                <span>من مستخدم محدد</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--glass-light); padding: 10px 15px; border-radius: 8px; border: 2px solid var(--border-blue);">
+                                <input type="checkbox" id="search-files" style="width: 18px; height: 18px;">
+                                <span>الملفات فقط</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; background: var(--glass-light); padding: 10px 15px; border-radius: 8px; border: 2px solid var(--border-blue);">
+                                <input type="checkbox" id="search-links" style="width: 18px; height: 18px;">
+                                <span>الروابط فقط</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: var(--blue-lighter); margin-bottom: 12px;">التاريخ:</h4>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="date" style="flex: 1; padding: 10px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 8px;">
+                            <span style="color: var(--text-light); padding: 10px;">إلى</span>
+                            <input type="date" style="flex: 1; padding: 10px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div id="search-results" style="background: var(--glass-light); padding: 20px; border-radius: 10px; border: 2px solid var(--border-blue); min-height: 150px; max-height: 300px; overflow-y: auto;">
+                        <div style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                            <i class="fas fa-search" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                            <p>ابدأ البحث للعثور على الرسائل</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="m-btn m-btn-primary" onclick="executeSearch()">
+                    <i class="fas fa-search"></i> بحث
+                </button>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function performSearch(term) {
+            if(term.length < 2) return;
+            
+            const resultsDiv = document.getElementById('search-results');
+            const msgs = db[curSrvIdx].textChns[curChnIdx].msgs;
+            
+            const results = msgs.filter(msg => 
+                msg.t.toLowerCase().includes(term.toLowerCase()) || 
+                msg.u.toLowerCase().includes(term.toLowerCase())
+            );
+            
+            if(results.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div style="text-align: center; color: var(--text-light); padding: 40px 20px;">
+                        <i class="fas fa-search-minus" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>لم يتم العثور على نتائج</p>
+                    </div>
+                `;
+            } else {
+                resultsDiv.innerHTML = results.map(msg => `
+                    <div style="background: var(--glass-medium); padding: 12px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.3s;" onclick="closeModal(); scrollToMessage()">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <div style="width: 32px; height: 32px; background: var(--gradient-blue-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem;">
+                                ${msg.u[0]}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.9rem;">${msg.u}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-light);">${msg.time || 'الآن'}</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--blue-lighter); font-size: 0.9rem; line-height: 1.5;">${msg.t.substring(0, 100)}${msg.t.length > 100 ? '...' : ''}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function executeSearch() {
+            const searchTerm = document.getElementById('search-input').value;
+            performSearch(searchTerm);
+            showNotification(`🔍 تم البحث عن: ${searchTerm}`, 'success');
+        }
+        
+        function scrollToMessage() {
+            const msgScreen = document.getElementById('msg-screen');
+            msgScreen.scrollTop = msgScreen.scrollHeight;
+            showNotification('✓ تم الانتقال إلى الرسالة', 'success');
+        }
+
+        function channelSettings() {
+            const channel = db[curSrvIdx].textChns[curChnIdx];
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            modalBox.innerHTML = `
+                <h2>⚙️ إعدادات القناة</h2>
+                <div style="text-align: right; margin: 25px 0;">
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--blue-lighter); font-weight: 600;">اسم القناة:</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-hashtag" style="color: var(--accent-blue);"></i>
+                            <input type="text" id="chn-name-edit" value="${channel.name}" style="flex: 1; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--blue-lighter); font-weight: 600;">موضوع القناة:</label>
+                        <textarea id="chn-topic-edit" style="width: 100%; min-height: 80px; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; font-family: inherit; resize: vertical;">${channel.topic || ''}</textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; background: var(--glass-light); padding: 15px; border-radius: 10px; border: 2px solid var(--border-blue);">
+                        <h4 style="margin-bottom: 12px; color: var(--white-soft);">الأذونات:</h4>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer;">
+                            <input type="checkbox" id="chn-private" ${channel.isPrivate ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">🔒 قناة خاصة</span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer;">
+                            <input type="checkbox" id="chn-slow-mode" ${channel.slowMode ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">🐌 الوضع البطيء (رسالة كل 5 ثواني)</span>
+                        </label>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="chn-nsfw" ${channel.isNSFW ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="color: var(--blue-lighter);">⚠️ محتوى حساس (NSFW)</span>
+                        </label>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; background: var(--glass-light); padding: 15px; border-radius: 10px; border: 2px solid var(--border-blue);">
+                        <h4 style="margin-bottom: 12px; color: var(--white-soft);">إحصائيات:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div style="text-align: center; padding: 15px; background: var(--glass-medium); border-radius: 10px;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--accent-blue); margin-bottom: 5px;">${channel.msgs.length}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">رسالة</div>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: var(--glass-medium); border-radius: 10px;">
+                                <div style="font-size: 2rem; font-weight: 800; color: var(--accent-success); margin-bottom: 5px;">12</div>
+                                <div style="font-size: 0.85rem; color: var(--text-light);">عضو نشط</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(237, 66, 69, 0.1); padding: 15px; border-radius: 10px; border-right: 4px solid var(--accent-danger);">
+                        <h4 style="color: var(--accent-danger); margin-bottom: 8px;">منطقة خطر</h4>
+                        <button onclick="deleteChannelPermanently()" style="width: 100%; padding: 12px; background: var(--accent-danger); border: none; border-radius: 10px; color: white; cursor: pointer; font-weight: 700; margin-bottom: 8px;">
+                            <i class="fas fa-trash"></i> حذف القناة
+                        </button>
+                        <button onclick="clearChannelMessages()" style="width: 100%; padding: 12px; background: var(--accent-warning); color: var(--navy-darkest); border: none; border-radius: 10px; cursor: pointer; font-weight: 700;">
+                            <i class="fas fa-broom"></i> مسح جميع الرسائل
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="m-btn m-btn-primary" onclick="saveChannelSettings()">✓ حفظ التغييرات</button>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إلغاء</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function saveChannelSettings() {
+            const channel = db[curSrvIdx].textChns[curChnIdx];
+            channel.name = document.getElementById('chn-name-edit').value.trim() || channel.name;
+            channel.topic = document.getElementById('chn-topic-edit').value.trim();
+            channel.isPrivate = document.getElementById('chn-private').checked;
+            channel.slowMode = document.getElementById('chn-slow-mode').checked;
+            channel.isNSFW = document.getElementById('chn-nsfw').checked;
+            
+            save();
+            render();
+            closeModal();
+            showNotification('✓ تم حفظ إعدادات القناة', 'success');
+        }
+        
+        function deleteChannelPermanently() {
+            if(confirm('⚠️ هل أنت متأكد من حذف القناة وجميع رسائلها نهائياً؟')) {
+                db[curSrvIdx].textChns.splice(curChnIdx, 1);
+                if(curChnIdx >= db[curSrvIdx].textChns.length) {
+                    curChnIdx = Math.max(0, db[curSrvIdx].textChns.length - 1);
+                }
+                save();
+                render();
+                closeModal();
+                showNotification('✓ تم حذف القناة', 'success');
+            }
+        }
+        
+        function clearChannelMessages() {
+            if(confirm('⚠️ هل تريد مسح جميع الرسائل من هذه القناة؟')) {
+                db[curSrvIdx].textChns[curChnIdx].msgs = [];
+                save();
+                loadMsgs();
+                closeModal();
+                showNotification('✓ تم مسح جميع الرسائل', 'success');
+            }
+        }
+
+        // Initialize
+        render();
+
+        // Voice Recording
+        let voiceRecorder = null;
+        let voiceChunks = [];
+        let isRecording = false;
+        
+        async function startVoiceRecording() {
+            const btn = document.getElementById('voice-record-btn');
+            
+            if(!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    voiceRecorder = new MediaRecorder(stream);
+                    voiceChunks = [];
+                    
+                    voiceRecorder.ondataavailable = (e) => {
+                        voiceChunks.push(e.data);
+                    };
+                    
+                    voiceRecorder.onstop = () => {
+                        const blob = new Blob(voiceChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const now = new Date();
+                            const time = now.toLocaleTimeString('ar', {hour: '2-digit', minute: '2-digit'});
+                            
+                            db[curSrvIdx].textChns[curChnIdx].msgs.push({ 
+                                u: 'أنت', 
+                                t: `<div style="background: var(--glass-medium); padding: 15px; border-radius: 10px; border: 2px solid var(--border-blue); display: inline-block; margin-top: 5px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <i class="fas fa-microphone" style="font-size: 2rem; color: var(--accent-blue);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; margin-bottom: 8px;">رسالة صوتية</div>
+                                            <audio controls style="max-width: 300px;">
+                                                <source src="${e.target.result}" type="audio/webm">
+                                            </audio>
+                                        </div>
+                                    </div>
+                                </div>`,
+                                time: time,
+                                isVoice: true
+                            });
+                            
+                            save();
+                            loadMsgs();
+                            showNotification('✓ تم إرسال الرسالة الصوتية', 'success');
+                        };
+                        reader.readAsDataURL(blob);
+                        
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+                    
+                    voiceRecorder.start();
+                    isRecording = true;
+                    btn.style.background = 'var(--accent-danger)';
+                    btn.innerHTML = '<i class="fas fa-stop"></i>';
+                    showNotification('🎤 جاري التسجيل...', 'success');
+                    
+                } catch(e) {
+                    showNotification('⚠️ تعذر الوصول للميكروفون', 'error');
+                }
+            } else {
+                voiceRecorder.stop();
+                isRecording = false;
+                btn.style.background = '';
+                btn.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
+        }
+        
+        function addGif() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            const gifs = [
+                'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif',
+                'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif',
+                'https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif',
+                'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+                'https://media.giphy.com/media/3ornka9rAaKRA2Rkac/giphy.gif',
+                'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif',
+                'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif',
+                'https://media.giphy.com/media/26uf4r3EldfX5Ykqk/giphy.gif',
+            ];
+            
+            modalBox.innerHTML = `
+                <h2>🎬 اختر GIF</h2>
+                <div style="margin: 20px 0;">
+                    <input type="text" placeholder="🔍 ابحث عن GIF..." style="width: 100%; padding: 12px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; margin-bottom: 15px;">
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-height: 400px; overflow-y: auto; padding: 10px;">
+                        ${gifs.map(gif => `
+                            <div onclick="sendGif('${gif}')" style="cursor: pointer; border-radius: 10px; overflow: hidden; border: 2px solid var(--border-blue); transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='var(--border-blue)'">
+                                <img src="${gif}" style="width: 100%; height: 150px; object-fit: cover;">
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function sendGif(gifUrl) {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ar', {hour: '2-digit', minute: '2-digit'});
+            
+            db[curSrvIdx].textChns[curChnIdx].msgs.push({ 
+                u: 'أنت', 
+                t: `<img src="${gifUrl}" style="max-width: 300px; border-radius: 10px; cursor: pointer;" onclick="openImageViewer('${gifUrl}')">`,
+                time: time,
+                isGif: true
+            });
+            
+            save();
+            loadMsgs();
+            closeModal();
+            showNotification('✓ تم إرسال GIF', 'success');
+        }
+        
+        function addSticker() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            const stickers = [
+                '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', 
+                '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙',
+                '👍', '👎', '👏', '🙌', '👐', '🤲', '🙏', '✌️', '🤞', '🤟',
+                '🤘', '🤙', '👈', '👉', '👆', '👇', '☝️', '✋', '🤚', '🖐',
+                '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔',
+                '⭐', '🌟', '✨', '💫', '🔥', '💯', '💢', '💥', '💦', '💨',
+                '🎉', '🎊', '🎈', '🎁', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖'
+            ];
+            
+            modalBox.innerHTML = `
+                <h2>🎭 ملصقات</h2>
+                <div style="margin: 20px 0;">
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-height: 400px; overflow-y: auto; padding: 10px;">
+                        ${stickers.map(sticker => `
+                            <button onclick="sendSticker('${sticker}')" style="padding: 20px; background: var(--glass-light); border: 2px solid var(--border-blue); border-radius: 15px; cursor: pointer; font-size: 2.5rem; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.2)'; this.style.background='var(--glass-strong)'" onmouseout="this.style.transform='scale(1)'; this.style.background='var(--glass-light)'">${sticker}</button>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        function sendSticker(sticker) {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ar', {hour: '2-digit', minute: '2-digit'});
+            
+            db[curSrvIdx].textChns[curChnIdx].msgs.push({ 
+                u: 'أنت', 
+                t: `<div style="font-size: 5rem; line-height: 1;">${sticker}</div>`,
+                time: time,
+                isSticker: true
+            });
+            
+            save();
+            loadMsgs();
+            closeModal();
+        }
+        
+        // Quick Replies
+        document.getElementById('chat-in').addEventListener('keydown', function(e) {
+            if(e.key === 'ArrowUp' && this.value === '') {
+                const msgs = db[curSrvIdx].textChns[curChnIdx].msgs;
+                const myLastMsg = [...msgs].reverse().find(m => m.u === 'أنت' && !m.isFile && !m.isVoice && !m.isGif && !m.isSticker);
+                if(myLastMsg) {
+                    this.value = myLastMsg.t.replace(/<[^>]*>/g, '');
+                }
+            }
+        });
+        
+        // Markdown Support
+        function formatMessage(text) {
+            // Bold: **text** or __text__
+            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+            
+            // Italic: *text* or _text_
+            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+            
+            // Strikethrough: ~~text~~
+            text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
+            
+            // Code: `text`
+            text = text.replace(/`(.+?)`/g, '<code style="background: var(--glass-medium); padding: 2px 6px; border-radius: 4px; font-family: monospace;">$1</code>');
+            
+            // Links: [text](url)
+            text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">$1</a>');
+            
+            return text;
+        }
+
+        // Close context menu on click outside
+        document.addEventListener('click', () => {
+            hideContextMenu();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K for quick switcher
+            if(e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                quickSwitcher();
+            }
+            
+            // Ctrl+/ for shortcuts help
+            if(e.ctrlKey && e.key === '/') {
+                e.preventDefault();
+                showShortcutsHelp();
+            }
+            
+            // Ctrl+Shift+M for mute/unmute
+            if(e.ctrlKey && e.shiftKey && e.key === 'M') {
+                e.preventDefault();
+                if(document.getElementById('voice-view').style.display === 'flex') {
+                    toggleMic();
+                }
+            }
+            
+            // Escape to close modal
+            if(e.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        function quickSwitcher() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            let allChannels = [];
+            db.forEach((srv, sIdx) => {
+                srv.textChns.forEach((chn, cIdx) => {
+                    allChannels.push({
+                        type: 'text',
+                        name: chn.name,
+                        server: srv.name,
+                        srvIdx: sIdx,
+                        chnIdx: cIdx
+                    });
+                });
+                srv.voiceChns.forEach((chn, cIdx) => {
+                    allChannels.push({
+                        type: 'voice',
+                        name: chn.name,
+                        server: srv.name,
+                        srvIdx: sIdx,
+                        chnIdx: cIdx
+                    });
+                });
+            });
+            
+            modalBox.innerHTML = `
+                <h2>⚡ التبديل السريع</h2>
+                <div style="margin: 20px 0;">
+                    <input type="text" id="quick-search" placeholder="🔍 ابحث عن قناة أو سيرفر..." style="width: 100%; padding: 14px; background: var(--glass-light); border: 2px solid var(--border-blue); color: var(--white-pure); border-radius: 10px; font-size: 1rem; margin-bottom: 15px;" oninput="filterQuickSwitch(this.value)" autofocus>
+                    
+                    <div id="quick-results" style="max-height: 400px; overflow-y: auto;">
+                        ${allChannels.map((ch, idx) => `
+                            <div onclick="switchToChannel(${ch.srvIdx}, ${ch.chnIdx}, '${ch.type}')" style="padding: 12px; background: var(--glass-light); border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px;" onmouseover="this.style.background='var(--glass-strong)'; this.style.transform='translateX(-5px)'" onmouseout="this.style.background='var(--glass-light)'; this.style.transform='translateX(0)'">
+                                <i class="fas ${ch.type === 'text' ? 'fa-hashtag' : 'fa-volume-up'}" style="color: var(--accent-blue); font-size: 1.2rem;"></i>
+                                <div style="flex: 1; text-align: right;">
+                                    <div style="font-weight: 600; margin-bottom: 2px;">${ch.name}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-light);">${ch.server}</div>
+                                </div>
+                                <i class="fas fa-arrow-left" style="color: var(--text-light); font-size: 0.9rem;"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+            setTimeout(() => document.getElementById('quick-search').focus(), 100);
+        }
+        
+        function filterQuickSwitch(term) {
+            // Filter channels based on search term
+            if(term.length < 1) return;
+            showNotification(`🔍 البحث عن: ${term}`, 'success');
+        }
+        
+        function switchToChannel(srvIdx, chnIdx, type) {
+            curSrvIdx = srvIdx;
+            curChnIdx = chnIdx;
+            
+            if(type === 'text') {
+                switchUI('CHAT');
+            } else {
+                const voiceChn = db[srvIdx].voiceChns[chnIdx];
+                startVoice(voiceChn.name, voiceChn.description);
+            }
+            
+            render();
+            closeModal();
+        }
+        
+        function showShortcutsHelp() {
+            const modal = document.getElementById('modal');
+            const modalBox = modal.querySelector('.modal-box');
+            
+            const shortcuts = [
+                { keys: 'Ctrl + K', desc: 'فتح التبديل السريع' },
+                { keys: 'Ctrl + /', desc: 'عرض الاختصارات' },
+                { keys: 'Ctrl + Shift + M', desc: 'كتم/إلغاء كتم الصوت' },
+                { keys: 'Escape', desc: 'إغلاق النافذة المنبثقة' },
+                { keys: 'Enter', desc: 'إرسال رسالة' },
+                { keys: '↑', desc: 'تعديل آخر رسالة' },
+                { keys: '**نص**', desc: 'نص عريض' },
+                { keys: '*نص*', desc: 'نص مائل' },
+                { keys: '~~نص~~', desc: 'نص مشطوب' },
+                { keys: '`نص`', desc: 'كود' },
+            ];
+            
+            modalBox.innerHTML = `
+                <h2>⌨️ اختصارات لوحة المفاتيح</h2>
+                <div style="margin: 20px 0; max-height: 400px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        ${shortcuts.map(s => `
+                            <tr style="border-bottom: 1px solid var(--border-blue);">
+                                <td style="padding: 15px; text-align: right;">
+                                    <div style="font-weight: 600; color: var(--white-soft);">${s.desc}</div>
+                                </td>
+                                <td style="padding: 15px; text-align: left;">
+                                    <code style="background: var(--glass-medium); padding: 6px 12px; border-radius: 6px; font-family: monospace; color: var(--accent-blue); border: 1px solid var(--border-blue);">${s.keys}</code>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                </div>
+                <button class="m-btn m-btn-secondary" onclick="closeModal()">✕ إغلاق</button>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+        
+        // Desktop Notifications
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+        
+        function sendDesktopNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'https://via.placeholder.com/128/4a90e2/ffffff?text=E',
+                    badge: 'https://via.placeholder.com/96/4a90e2/ffffff?text=E'
+                });
+            }
+        }
+        
+        requestNotificationPermission();
+    </script>
+</body>
+</html>

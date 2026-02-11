@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUCORE | MEGA OS V5.0 - نظام التواصل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --p: #00f2fe; --s: #4facfe; --bg: #010409; --card: rgba(13, 17, 23, 0.9);
+            --neon: 0 0 25px rgba(0, 242, 254, 0.5); --border: rgba(255, 255, 255, 0.1);
+            --gold: #ffcc00; --red: #ff4d4d; --green: #238636;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: #e6edf3; min-height: 100vh; overflow-x: hidden; }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .toast-area { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--card); border-right: 5px solid var(--p); padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); animation: slideIn 0.4s forwards; min-width: 280px; }
+        @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
+        .layout { position: relative; z-index: 10; display: grid; grid-template-columns: 320px 1fr 320px; gap: 20px; padding: 25px; max-width: 1750px; margin: auto; }
+        .panel { background: var(--card); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 28px; padding: 25px; height: fit-content; box-shadow: 0 15px 45px rgba(0,0,0,0.4); }
+        .u-box { text-align: center; margin-bottom: 25px; }
+        .u-avatar-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 15px; cursor: pointer; }
+        .u-avatar-wrap img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--p); box-shadow: var(--neon); object-fit: cover; transition: 0.3s; }
+        .u-avatar-wrap:hover img { filter: brightness(1.2) scale(1.05); }
+        .online-dot { position: absolute; bottom: 10px; right: 10px; width: 18px; height: 18px; background: var(--green); border: 3px solid var(--bg); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .nav-os { display: flex; flex-direction: column; gap: 8px; }
+        .nav-link { padding: 15px 20px; border-radius: 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #8b949e; font-weight: 700; transition: 0.3s; position: relative; }
+        .nav-link.active { background: rgba(0, 242, 254, 0.1); color: var(--p); border: 1px solid var(--p); }
+        .nav-link:hover { background: rgba(255, 255, 255, 0.05); }
+        .badge-notif { position: absolute; top: 10px; left: 10px; background: var(--red); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 900; animation: bounce 0.5s infinite; }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-mini { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border: 1px solid var(--border); text-align: center; }
+        .stat-mini h2 { color: var(--p); font-size: 1.6rem; }
+        .xp-track { height: 14px; background: #161b22; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
+        .xp-bar { height: 100%; background: linear-gradient(90deg, var(--p), var(--s)); width: 0%; transition: 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .item-card { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 18px; border: 1px solid var(--border); text-align: center; transition: 0.3s; }
+        .item-card:hover { border-color: var(--p); transform: scale(1.02); }
+        .form-row { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 0.8rem; color: var(--p); font-weight: bold; margin-bottom: 8px; }
+        .form-input { width: 100%; padding: 14px; background: #0d1117; border: 1px solid var(--border); border-radius: 15px; color: #fff; outline: none; transition: 0.3s; }
+        .form-input:focus { border-color: var(--p); box-shadow: 0 0 10px rgba(0,242,254,0.1); }
+        .btn-action { width: 100%; padding: 16px; border-radius: 16px; border: none; background: linear-gradient(45deg, var(--p), var(--s)); color: #000; font-weight: 900; cursor: pointer; box-shadow: var(--neon); transition: 0.3s; }
+        .btn-action:hover { transform: translateY(-3px); filter: brightness(1.2); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: var(--p); border: 1px solid var(--p); }
+        .btn-danger { background: rgba(255,77,77,0.2); color: var(--red); border: 1px solid var(--red); }
+        .hidden { display: none; }
+        
+        /* نظام الدردشة */
+        .chat-container { display: grid; grid-template-columns: 300px 1fr; gap: 20px; height: 600px; }
+        .chat-sidebar { background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid var(--border); overflow-y: auto; }
+        .chat-user { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.3s; }
+        .chat-user:hover { background: rgba(0, 242, 254, 0.05); }
+        .chat-user.active { background: rgba(0, 242, 254, 0.1); border-right: 3px solid var(--p); }
+        .chat-user img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--border); }
+        .chat-user-info { flex-grow: 1; }
+        .chat-user-name { font-weight: 700; font-size: 0.9rem; }
+        .chat-user-status { font-size: 0.7rem; color: var(--p); }
+        .unread-badge { background: var(--red); color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; }
+        
+        .chat-main { display: flex; flex-direction: column; background: rgba(0,0,0,0.3); border-radius: 20px; border: 1px solid var(--border); }
+        .chat-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .chat-messages { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .message { max-width: 70%; padding: 12px 18px; border-radius: 18px; line-height: 1.5; }
+        .message.sent { background: linear-gradient(135deg, var(--p), var(--s)); color: #000; align-self: flex-end; border-bottom-left-radius: 5px; }
+        .message.received { background: rgba(255,255,255,0.05); color: #e6edf3; align-self: flex-start; border-bottom-right-radius: 5px; }
+        .message-time { font-size: 0.65rem; opacity: 0.7; margin-top: 5px; }
+        .chat-input-area { padding: 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .chat-input { flex-grow: 1; padding: 14px; background: #0d1117; border: 1px solid var(--border); border-radius: 15px; color: #fff; outline: none; }
+        .chat-send-btn { padding: 14px 25px; background: linear-gradient(45deg, var(--p), var(--s)); border: none; border-radius: 15px; color: #000; font-weight: 900; cursor: pointer; }
+        
+        .user-card { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 18px; border: 1px solid var(--border); display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
+        .user-card img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--p); }
+        .user-info { flex-grow: 1; }
+        .user-name { font-weight: 900; font-size: 1rem; }
+        .user-spec { font-size: 0.75rem; color: var(--p); }
+        .user-status { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 0.65rem; margin-top: 5px; }
+        .status-online { background: rgba(35, 134, 54, 0.2); color: var(--green); border: 1px solid var(--green); }
+        .status-offline { background: rgba(139, 148, 158, 0.2); color: #8b949e; border: 1px solid #8b949e; }
+        
+        @media (max-width: 1250px) { 
+            .layout { grid-template-columns: 1fr; } 
+            .side-r { display: none; }
+            .chat-container { grid-template-columns: 1fr; height: auto; }
+            .chat-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="toast-area" id="toastBox"></div>
+
+    <div class="layout" id="osView" style="display: none;">
+        <aside class="panel">
+            <div class="u-box">
+                <div class="u-avatar-wrap" onclick="showTab('edit')">
+                    <img id="u_img" src="" alt="Profile">
+                    <div class="online-dot"></div>
+                </div>
+                <h2 id="u_name" style="font-weight: 900; font-size: 1.5rem;">...</h2>
+                <p id="u_spec" style="color: var(--p); font-size: 0.85rem; margin-top: 5px;">تحميل...</p>
+            </div>
+            <nav class="nav-os">
+                <div class="nav-link active" onclick="showTab('dash', this)"><i class="fas fa-th-large"></i> لوحة القيادة</div>
+                <div class="nav-link" onclick="showTab('friends', this)">
+                    <i class="fas fa-user-friends"></i> أصدقائي
+                    <span id="friendsCount" style="margin-right: auto; background: rgba(0, 242, 254, 0.2); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem;">0</span>
+                </div>
+                <div class="nav-link" onclick="showTab('discover', this)"><i class="fas fa-user-plus"></i> اكتشف مستخدمين</div>
+                <div class="nav-link" onclick="showTab('chat', this)">
+                    <i class="fas fa-comments"></i> الرسائل
+                    <span id="unreadCount" class="badge-notif hidden">0</span>
+                </div>
+                <div class="nav-link" onclick="showTab('edit', this)"><i class="fas fa-user-cog"></i> إعدادات البروفايل</div>
+                <div class="nav-link" onclick="showTab('market', this)"><i class="fas fa-shopping-bag"></i> متجر النخبة</div>
+                <div class="nav-link" onclick="showTab('skills', this)"><i class="fas fa-dna"></i> رادار المهارات</div>
+                <div class="nav-link" onclick="logout()" style="color: var(--red); margin-top: 30px;"><i class="fas fa-power-off"></i> خروج آمن</div>
+            </nav>
+        </aside>
+
+        <main style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- لوحة القيادة -->
+            <section id="tab-dash">
+                <div class="stats-grid">
+                    <div class="stat-mini"><h2 id="s_xp">0</h2><p style="font-size: 0.7rem; color: #8b949e;">XP</p></div>
+                    <div class="stat-mini"><h2 id="s_coins" style="color: var(--gold);">0</h2><p style="font-size: 0.7rem; color: #8b949e;">Coins</p></div>
+                    <div class="stat-mini"><h2 id="s_streak" style="color: var(--red);">0</h2><p style="font-size: 0.7rem; color: #8b949e;">أيام</p></div>
+                </div>
+                <div class="panel">
+                    <div style="display: flex; justify-content: space-between; font-weight: 900; margin-bottom: 10px;">
+                        <span id="u_lvl">المستوى 1</span>
+                        <span id="xp_perc">0/1000 XP</span>
+                    </div>
+                    <div class="xp-track"><div class="xp-bar" id="xp_bar"></div></div>
+                </div>
+                <div class="panel" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px;"><i class="fas fa-scroll" style="color: var(--p);"></i> السيرة الذاتية</h3>
+                    <p id="u_bio" style="font-size: 0.9rem; color: #8b949e; line-height: 1.6;">بانتظار مزامنة قصتك التعليمية...</p>
+                </div>
+            </section>
+
+            <!-- قائمة الأصدقاء -->
+            <section id="tab-friends" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-user-friends"></i> قائمة أصدقائي (<span id="friendsTotal">0</span>)</h3>
+                    <div id="friends_list" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="text-align: center; color: var(--p); padding: 40px;">
+                            <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                            <p>لم تقم بإضافة أي أصدقاء بعد</p>
+                            <p style="font-size: 0.8rem; color: #8b949e; margin-top: 10px;">انتقل إلى "اكتشف مستخدمين" لإضافة أصدقاء جدد</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- اكتشاف المستخدمين -->
+            <section id="tab-discover" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-user-plus"></i> اكتشف مستخدمين جدد</h3>
+                    <div class="form-row">
+                        <input type="text" id="searchInput" class="form-input" placeholder="🔍 ابحث عن مستخدم..." oninput="filterUsers(this.value)">
+                    </div>
+                    <div id="users_list" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="text-align: center; color: var(--p); padding: 20px;"><i class="fas fa-spinner fa-spin"></i> جاري البحث عن المستخدمين...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- نظام الدردشة -->
+            <section id="tab-chat" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-comments"></i> الرسائل المباشرة</h3>
+                    <div class="chat-container">
+                        <div class="chat-sidebar" id="chatSidebar">
+                            <div style="text-align: center; color: var(--p); padding: 20px;">
+                                <p style="font-size: 0.85rem;">لا توجد محادثات بعد</p>
+                            </div>
+                        </div>
+                        <div class="chat-main">
+                            <div class="chat-header" id="chatHeader">
+                                <i class="fas fa-comments" style="font-size: 2rem; color: var(--p);"></i>
+                                <div>
+                                    <h4>مرحباً في نظام المراسلة</h4>
+                                    <p style="font-size: 0.75rem; color: #8b949e;">اختر صديق لبدء المحادثة</p>
+                                </div>
+                            </div>
+                            <div class="chat-messages" id="chatMessages">
+                                <div style="text-align: center; color: #8b949e; padding: 50px;">
+                                    <i class="fas fa-comment-slash" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                                    <p>لم يتم اختيار أي محادثة</p>
+                                </div>
+                            </div>
+                            <div class="chat-input-area" id="chatInputArea" style="display: none;">
+                                <input type="text" class="chat-input" id="messageInput" placeholder="اكتب رسالتك هنا..." onkeypress="if(event.key==='Enter') sendMessage()">
+                                <button class="chat-send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- تعديل البروفايل -->
+            <section id="tab-edit" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 25px;"><i class="fas fa-id-card-alt"></i> مركز تحديث الهوية</h3>
+                    <div class="form-row">
+                        <label class="form-label">رابط الصورة (URL)</label>
+                        <input type="text" id="in_img" class="form-input" placeholder="https://..." oninput="updatePreview(this.value)">
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button onclick="setAvatar('https://api.dicebear.com/7.x/bottts/svg?seed=Elite')" style="padding: 8px 12px; cursor:pointer; background:rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: #fff; transition: 0.3s;">🤖 روبوت</button>
+                            <button onclick="setAvatar('https://api.dicebear.com/7.x/avataaars/svg?seed=Dev')" style="padding: 8px 12px; cursor:pointer; background:rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: #fff; transition: 0.3s;">👨‍💻 مطور</button>
+                            <button onclick="setAvatar('https://api.dicebear.com/7.x/pixel-art/svg?seed=Game')" style="padding: 8px 12px; cursor:pointer; background:rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; color: #fff; transition: 0.3s;">👾 بكسل</button>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-row"><label class="form-label">الاسم المستعار</label><input type="text" id="in_name" class="form-input"></div>
+                        <div class="form-row"><label class="form-label">التخصص</label><input type="text" id="in_spec" class="form-input"></div>
+                    </div>
+                    <div class="form-row"><label class="form-label">السيرة الذاتية (Bio)</label><textarea id="in_bio" class="form-input" style="height: 100px; resize: none;"></textarea></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-row"><label class="form-label">GitHub</label><input type="text" id="in_git" class="form-input" placeholder="github.com/username"></div>
+                        <div class="form-row"><label class="form-label">LinkedIn</label><input type="text" id="in_link" class="form-input" placeholder="linkedin.com/in/username"></div>
+                    </div>
+                    <button class="btn-action" onclick="saveEverything()">💾 مزامنة وحفظ الهوية السحابية</button>
+                </div>
+            </section>
+
+            <!-- المتجر -->
+            <section id="tab-market" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-store"></i> متجر النخبة</h3>
+                    <div class="market-grid">
+                        <div class="item-card"><div style="font-size: 2.5rem;">🛡️</div><h4>درع النخبة</h4><p style="font-size: 0.7rem; color: var(--gold); margin: 10px 0;">500 EC</p><button class="btn-action" style="padding: 8px;" onclick="buyItem(500, 'درع النخبة')">شراء</button></div>
+                        <div class="item-card"><div style="font-size: 2.5rem;">🔥</div><h4>XP Booster</h4><p style="font-size: 0.7rem; color: var(--gold); margin: 10px 0;">1200 EC</p><button class="btn-action" style="padding: 8px;" onclick="buyItem(1200, 'XP Booster')">شراء</button></div>
+                        <div class="item-card"><div style="font-size: 2.5rem;">💎</div><h4>ألماسة النخبة</h4><p style="font-size: 0.7rem; color: var(--gold); margin: 10px 0;">2500 EC</p><button class="btn-action" style="padding: 8px;" onclick="buyItem(2500, 'ألماسة النخبة')">شراء</button></div>
+                        <div class="item-card"><div style="font-size: 2.5rem;">⚡</div><h4>طاقة إضافية</h4><p style="font-size: 0.7rem; color: var(--gold); margin: 10px 0;">800 EC</p><button class="btn-action" style="padding: 8px;" onclick="buyItem(800, 'طاقة إضافية')">شراء</button></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- المهارات -->
+            <section id="tab-skills" class="hidden">
+                <div class="panel">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-dna"></i> تحليل الحمض النووي المبرمج</h3>
+                    <div id="skill_list" style="margin-top: 20px;"></div>
+                </div>
+            </section>
+        </main>
+
+        <aside class="side-r" style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="panel" style="text-align: center;">
+                <p style="font-size: 0.75rem; color: #8b949e;">EDU Vault</p>
+                <h1 id="v_coins" style="font-size: 3rem; font-weight: 900; color: var(--gold);">0</h1>
+                <span style="font-size: 0.7rem; background: rgba(255,204,0,0.1); padding: 5px 12px; border-radius: 10px; color: var(--gold);">EDU COINS (EC)</span>
+            </div>
+            <div class="panel">
+                <h3 style="margin-bottom: 20px;"><i class="fas fa-medal"></i> الأوسمة النادرة</h3>
+                <div id="badge_grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;"></div>
+            </div>
+            <div class="panel">
+                <h3 style="margin-bottom: 15px;"><i class="fas fa-share-alt"></i> تواصل اجتماعي</h3>
+                <div style="display: flex; gap: 15px; margin-top: 15px; font-size: 1.5rem; justify-content: center;">
+                    <a id="lnk_git" href="#" target="_blank" style="color: #fff; transition: 0.3s;"><i class="fab fa-github"></i></a>
+                    <a id="lnk_link" href="#" target="_blank" style="color: var(--s); transition: 0.3s;"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, setDoc, collection, getDocs, query, limit, onSnapshot, addDoc, orderBy, where, arrayUnion, arrayRemove, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+            authDomain: "eliteacademy-37bfc.firebaseapp.com",
+            projectId: "eliteacademy-37bfc",
+            storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+            messagingSenderId: "203080953628",
+            appId: "1:203080953628:web:69efebccc336b79f0554d9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        particlesJS('particles-js', { particles: { number: { value: 60 }, color: { value: '#00f2fe' }, opacity: { value: 0.2 }, move: { speed: 1 } } });
+
+        let uid, currentUser, allUsers = [], currentChatUser = null, chatUnsubscribe = null;
+
+        const notify = (msg, type = 'success') => {
+            const t = document.createElement('div');
+            t.className = 'toast';
+            const icon = type === 'error' ? 'exclamation-circle' : 'check-circle';
+            t.innerHTML = `<i class="fas fa-${icon}" style="color:var(--p)"></i> ${msg}`;
+            document.getElementById('toastBox').appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                uid = user.uid;
+                await updateUserStatus(true);
+                const snap = await getDoc(doc(db, "users", uid));
+                if (snap.exists()) {
+                    currentUser = snap.data();
+                    syncUI();
+                } else {
+                    const fresh = { 
+                        nickname: "بطل النخبة", 
+                        points: 0, 
+                        coins: 500, 
+                        xp: 0, 
+                        streak: 1, 
+                        bio: "طالب جديد في EDUCORE", 
+                        specialty: "Full-Stack Dev", 
+                        photoURL: "https://api.dicebear.com/7.x/bottts/svg?seed=" + user.uid,
+                        friends: [],
+                        friendRequests: [],
+                        isOnline: true,
+                        lastSeen: serverTimestamp()
+                    };
+                    await setDoc(doc(db, "users", uid), fresh);
+                    currentUser = fresh;
+                    syncUI();
+                }
+                document.getElementById('osView').style.display = 'grid';
+                loadAllUsers();
+                listenToFriendRequests();
+            } else { 
+                window.location.href = "login.html"; 
+            }
+        });
+
+        async function updateUserStatus(isOnline) {
+            if (uid) {
+                await updateDoc(doc(db, "users", uid), {
+                    isOnline: isOnline,
+                    lastSeen: serverTimestamp()
+                });
+            }
+        }
+
+        window.addEventListener('beforeunload', () => updateUserStatus(false));
+
+        function syncUI() {
+            const d = currentUser;
+            document.getElementById('u_name').innerText = d.nickname;
+            document.getElementById('u_spec').innerText = d.specialty;
+            document.getElementById('u_img').src = d.photoURL;
+            document.getElementById('u_bio').innerText = d.bio || "لا توجد سيرة ذاتية.";
+            document.getElementById('s_xp').innerText = d.xp || 0;
+            document.getElementById('s_coins').innerText = d.coins || 0;
+            document.getElementById('v_coins').innerText = d.coins || 0;
+            document.getElementById('s_streak').innerText = d.streak || 0;
+
+            const lvl = Math.floor((d.xp || 0)/1000) + 1;
+            document.getElementById('u_lvl').innerText = `المستوى ${lvl}`;
+            document.getElementById('xp_perc').innerText = `${d.xp % 1000}/1000 XP`;
+            document.getElementById('xp_bar').style.width = (d.xp % 1000) / 10 + "%";
+
+            document.getElementById('in_name').value = d.nickname;
+            document.getElementById('in_spec').value = d.specialty;
+            document.getElementById('in_bio').value = d.bio || "";
+            document.getElementById('in_img').value = d.photoURL;
+            document.getElementById('in_git').value = d.github || "";
+            document.getElementById('in_link').value = d.linkedin || "";
+
+            document.getElementById('lnk_git').href = d.github ? `https://${d.github}` : "#";
+            document.getElementById('lnk_link').href = d.linkedin ? `https://${d.linkedin}` : "#";
+
+            document.getElementById('badge_grid').innerHTML = (d.badges || ['🏆', '💻', '🚀']).map(b => `<div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:15px; text-align:center; font-size:1.5rem;">${b}</div>`).join('');
+            
+            const skills = d.skills || { "Logic": 90, "UI/UX": 75, "Coding": 60 };
+            document.getElementById('skill_list').innerHTML = Object.entries(skills).map(([n,v]) => `
+                <div style="margin-bottom:15px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px;"><span>${n}</span><span>${v}%</span></div>
+                    <div class="xp-track" style="height:8px;"><div class="xp-bar" style="width:${v}%"></div></div>
+                </div>
+            `).join('');
+
+            updateFriendsCount();
+        }
+
+        function updateFriendsCount() {
+            const count = (currentUser.friends || []).length;
+            document.getElementById('friendsCount').innerText = count;
+            document.getElementById('friendsTotal').innerText = count;
+        }
+
+        // === نظام تحميل جميع المستخدمين ===
+        async function loadAllUsers() {
+            try {
+                const q = query(collection(db, "users"), limit(50));
+                const snap = await getDocs(q);
+                allUsers = [];
+                
+                snap.forEach(userDoc => {
+                    if (userDoc.id !== uid) {
+                        allUsers.push({ id: userDoc.id, ...userDoc.data() });
+                    }
+                });
+                
+                displayUsers(allUsers);
+            } catch (e) { 
+                notify("خطأ في تحميل المستخدمين", 'error'); 
+            }
+        }
+
+        function displayUsers(users) {
+            const list = document.getElementById('users_list');
+            if (users.length === 0) {
+                list.innerHTML = "<p style='text-align:center; color: #8b949e;'>لا يوجد مستخدمون متاحون</p>";
+                return;
+            }
+
+            list.innerHTML = users.map(user => {
+                const isFriend = (currentUser.friends || []).includes(user.id);
+                const hasSentRequest = (user.friendRequests || []).includes(uid);
+                const hasReceivedRequest = (currentUser.friendRequests || []).includes(user.id);
+                
+                let actionBtn = '';
+                if (isFriend) {
+                    actionBtn = `<button class="btn-action btn-danger" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" onclick="removeFriend('${user.id}')">
+                        <i class="fas fa-user-minus"></i> إزالة
+                    </button>`;
+                } else if (hasSentRequest) {
+                    actionBtn = `<button class="btn-action btn-secondary" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" disabled>
+                        <i class="fas fa-clock"></i> قيد الانتظار
+                    </button>`;
+                } else if (hasReceivedRequest) {
+                    actionBtn = `<button class="btn-action" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" onclick="acceptFriendRequest('${user.id}')">
+                        <i class="fas fa-user-check"></i> قبول الطلب
+                    </button>`;
+                } else {
+                    actionBtn = `<button class="btn-action" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" onclick="sendFriendRequest('${user.id}')">
+                        <i class="fas fa-user-plus"></i> إضافة
+                    </button>`;
+                }
+
+                const status = user.isOnline ? 
+                    '<span class="user-status status-online"><i class="fas fa-circle"></i> متصل الآن</span>' : 
+                    '<span class="user-status status-offline"><i class="fas fa-circle"></i> غير متصل</span>';
+
+                return `
+                    <div class="user-card">
+                        <img src="${user.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" alt="${user.nickname}">
+                        <div class="user-info">
+                            <div class="user-name">${user.nickname}</div>
+                            <div class="user-spec">${user.specialty}</div>
+                            ${status}
+                        </div>
+                        ${actionBtn}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.filterUsers = (searchTerm) => {
+            if (!searchTerm.trim()) {
+                displayUsers(allUsers);
+                return;
+            }
+            const filtered = allUsers.filter(user => 
+                user.nickname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.specialty.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            displayUsers(filtered);
+        };
+
+        // === نظام طلبات الصداقة ===
+        window.sendFriendRequest = async (targetId) => {
+            try {
+                await updateDoc(doc(db, "users", targetId), {
+                    friendRequests: arrayUnion(uid)
+                });
+                notify("تم إرسال طلب الصداقة بنجاح! ✅");
+                loadAllUsers();
+            } catch (e) {
+                notify("خطأ في إرسال الطلب", 'error');
+            }
+        };
+
+        window.acceptFriendRequest = async (friendId) => {
+            try {
+                // إضافة كلا المستخدمين لقائمة أصدقاء بعضهما
+                await updateDoc(doc(db, "users", uid), {
+                    friends: arrayUnion(friendId),
+                    friendRequests: arrayRemove(friendId)
+                });
+                
+                await updateDoc(doc(db, "users", friendId), {
+                    friends: arrayUnion(uid)
+                });
+
+                currentUser.friends = [...(currentUser.friends || []), friendId];
+                currentUser.friendRequests = (currentUser.friendRequests || []).filter(id => id !== friendId);
+                
+                notify("تمت إضافة صديق جديد! 🎉");
+                updateFriendsCount();
+                loadAllUsers();
+                loadFriendsList();
+            } catch (e) {
+                notify("خطأ في قبول الطلب", 'error');
+            }
+        };
+
+        window.removeFriend = async (friendId) => {
+            if (!confirm('هل أنت متأكد من إزالة هذا الصديق؟')) return;
+            
+            try {
+                await updateDoc(doc(db, "users", uid), {
+                    friends: arrayRemove(friendId)
+                });
+                
+                await updateDoc(doc(db, "users", friendId), {
+                    friends: arrayRemove(uid)
+                });
+
+                currentUser.friends = (currentUser.friends || []).filter(id => id !== friendId);
+                
+                notify("تمت إزالة الصديق");
+                updateFriendsCount();
+                loadAllUsers();
+                loadFriendsList();
+            } catch (e) {
+                notify("خطأ في إزالة الصديق", 'error');
+            }
+        };
+
+        // === تحميل قائمة الأصدقاء ===
+        async function loadFriendsList() {
+            const list = document.getElementById('friends_list');
+            const friends = currentUser.friends || [];
+
+            if (friends.length === 0) {
+                list.innerHTML = `
+                    <div style="text-align: center; color: var(--p); padding: 40px;">
+                        <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>لم تقم بإضافة أي أصدقاء بعد</p>
+                        <p style="font-size: 0.8rem; color: #8b949e; margin-top: 10px;">انتقل إلى "اكتشف مستخدمين" لإضافة أصدقاء جدد</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const friendsData = await Promise.all(
+                    friends.map(async (fid) => {
+                        const snap = await getDoc(doc(db, "users", fid));
+                        return snap.exists() ? { id: fid, ...snap.data() } : null;
+                    })
+                );
+
+                const validFriends = friendsData.filter(f => f !== null);
+
+                list.innerHTML = validFriends.map(friend => {
+                    const status = friend.isOnline ? 
+                        '<span class="user-status status-online"><i class="fas fa-circle"></i> متصل الآن</span>' : 
+                        '<span class="user-status status-offline"><i class="fas fa-circle"></i> غير متصل</span>';
+
+                    return `
+                        <div class="user-card">
+                            <img src="${friend.photoURL}" alt="${friend.nickname}">
+                            <div class="user-info">
+                                <div class="user-name">${friend.nickname}</div>
+                                <div class="user-spec">${friend.specialty}</div>
+                                ${status}
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-action" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" onclick="openChat('${friend.id}')">
+                                    <i class="fas fa-comment"></i> رسالة
+                                </button>
+                                <button class="btn-action btn-danger" style="width: auto; padding: 8px 15px; font-size: 0.75rem;" onclick="removeFriend('${friend.id}')">
+                                    <i class="fas fa-user-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                notify("خطأ في تحميل الأصدقاء", 'error');
+            }
+        }
+
+        // === نظام الدردشة ===
+        window.openChat = async (friendId) => {
+            showTab('chat');
+            currentChatUser = friendId;
+
+            const friendSnap = await getDoc(doc(db, "users", friendId));
+            if (!friendSnap.exists()) return;
+
+            const friendData = friendSnap.data();
+            
+            // تحديث رأس الدردشة
+            document.getElementById('chatHeader').innerHTML = `
+                <img src="${friendData.photoURL}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--p);">
+                <div>
+                    <h4>${friendData.nickname}</h4>
+                    <p style="font-size: 0.75rem; color: var(--p);">${friendData.isOnline ? 'متصل الآن' : 'غير متصل'}</p>
+                </div>
+            `;
+
+            document.getElementById('chatInputArea').style.display = 'flex';
+
+            // تحميل الرسائل
+            loadMessages(friendId);
+        };
+
+        function loadMessages(friendId) {
+            if (chatUnsubscribe) chatUnsubscribe();
+
+            const chatId = [uid, friendId].sort().join('_');
+            const messagesRef = collection(db, "chats", chatId, "messages");
+            const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+            chatUnsubscribe = onSnapshot(q, (snapshot) => {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.innerHTML = '';
+
+                if (snapshot.empty) {
+                    messagesDiv.innerHTML = `
+                        <div style="text-align: center; color: #8b949e; padding: 50px;">
+                            <i class="fas fa-comments" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                            <p>ابدأ المحادثة الآن! 💬</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const msg = doc.data();
+                    const isSent = msg.senderId === uid;
+                    const time = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '';
+
+                    messagesDiv.innerHTML += `
+                        <div class="message ${isSent ? 'sent' : 'received'}">
+                            ${msg.text}
+                            <div class="message-time">${time}</div>
+                        </div>
+                    `;
+                });
+
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+        }
+
+        window.sendMessage = async () => {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+
+            if (!text || !currentChatUser) return;
+
+            try {
+                const chatId = [uid, currentChatUser].sort().join('_');
+                await addDoc(collection(db, "chats", chatId, "messages"), {
+                    senderId: uid,
+                    receiverId: currentChatUser,
+                    text: text,
+                    timestamp: serverTimestamp()
+                });
+
+                input.value = '';
+            } catch (e) {
+                notify("خطأ في إرسال الرسالة", 'error');
+            }
+        };
+
+        // === الاستماع لطلبات الصداقة الجديدة ===
+        function listenToFriendRequests() {
+            onSnapshot(doc(db, "users", uid), (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    const requests = data.friendRequests || [];
+                    
+                    if (requests.length > 0) {
+                        notify(`لديك ${requests.length} طلب صداقة جديد! 🔔`);
+                    }
+                }
+            });
+        }
+
+        // === باقي الوظائف ===
+        window.updatePreview = (url) => { 
+            if(url.trim() !== "") document.getElementById('u_img').src = url; 
+        };
+
+        window.setAvatar = (url) => {
+            document.getElementById('in_img').value = url;
+            document.getElementById('u_img').src = url;
+            notify("تم اختيار آفاتار جديد!");
+        };
+
+        window.saveEverything = async () => {
+            const updates = {
+                nickname: document.getElementById('in_name').value,
+                specialty: document.getElementById('in_spec').value,
+                bio: document.getElementById('in_bio').value,
+                photoURL: document.getElementById('in_img').value,
+                github: document.getElementById('in_git').value,
+                linkedin: document.getElementById('in_link').value
+            };
+            
+            try {
+                await updateDoc(doc(db, "users", uid), updates);
+                notify("تمت المزامنة وحفظ الهوية بنجاح! 💾");
+                setTimeout(() => location.reload(), 1000);
+            } catch (e) {
+                notify("خطأ في الحفظ", 'error');
+            }
+        };
+
+        window.buyItem = async (cost, itemName) => {
+            if(currentUser.coins >= cost) {
+                try {
+                    const newCoins = currentUser.coins - cost;
+                    await updateDoc(doc(db, "users", uid), { coins: newCoins });
+                    notify(`تم شراء ${itemName} بنجاح! 🎉`);
+                    setTimeout(() => location.reload(), 1000);
+                } catch (e) {
+                    notify("خطأ في عملية الشراء", 'error');
+                }
+            } else { 
+                notify("عذراً، رصيدك غير كافٍ! 💰", 'error'); 
+            }
+        };
+
+        window.showTab = (t, el) => {
+            document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`tab-${t}`).classList.remove('hidden');
+            
+            if(el) {
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+                el.classList.add('active');
+            }
+            
+            if (t === 'discover') loadAllUsers();
+            if (t === 'friends') loadFriendsList();
+        };
+
+        window.logout = () => {
+            updateUserStatus(false).then(() => {
+                signOut(auth).then(() => location.href = "login.html");
+            });
+        };
+    </script>
+</body>
+</html>

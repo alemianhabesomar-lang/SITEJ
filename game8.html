@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلة عبر التاريخ - لعبة التاريخ</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+        --parchment: #F4E8C1;
+        --dark-parchment: #D4C5A0;
+        --bronze: #CD7F32;
+        --dark-bronze: #8B5A2B;
+        --black: #1a1410;
+        --dark-gray: #2d2520;
+        --sepia: #704214;
+        --gold: #D4AF37;
+        --blood-red: #8B0000;
+    }
+    
+    body {
+        font-family: 'Amiri', 'Cairo', serif;
+        background: 
+            linear-gradient(rgba(26, 20, 16, 0.7), rgba(26, 20, 16, 0.9)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="400" height="400" filter="url(%23noise)" opacity="0.05"/></svg>'),
+            linear-gradient(135deg, #1a1410 0%, #2d2520 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+        direction: rtl;
+    }
+    
+    /* Papyrus texture overlay */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(244, 232, 193, 0.03) 2px, rgba(244, 232, 193, 0.03) 4px),
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(244, 232, 193, 0.03) 2px, rgba(244, 232, 193, 0.03) 4px);
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    /* Ancient scroll header */
+    header {
+        text-align: center;
+        padding: 50px 30px;
+        background: 
+            linear-gradient(to bottom, rgba(244, 232, 193, 0.95), rgba(212, 197, 160, 0.95)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23F4E8C1"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23D4C5A0" stroke-width="0.5" opacity="0.3"/></svg>');
+        border-radius: 10px;
+        box-shadow: 
+            0 15px 50px rgba(0,0,0,0.7),
+            inset 0 2px 5px rgba(0,0,0,0.2),
+            0 0 0 3px var(--dark-bronze),
+            0 0 0 6px var(--bronze);
+        margin-bottom: 40px;
+        position: relative;
+        border: 8px solid var(--sepia);
+    }
+    
+    /* Scroll edges */
+    header::before,
+    header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 30px;
+        background: linear-gradient(to bottom, #8B5A2B, #654321, #8B5A2B);
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+    
+    header::before { right: -15px; border-radius: 0 15px 15px 0; }
+    header::after { left: -15px; border-radius: 15px 0 0 15px; }
+    
+    h1 {
+        font-family: 'Scheherazade New', serif;
+        font-size: 64px;
+        color: var(--sepia);
+        text-shadow: 
+            2px 2px 0px var(--bronze),
+            4px 4px 8px rgba(0,0,0,0.3);
+        margin-bottom: 15px;
+        letter-spacing: 3px;
+        position: relative;
+    }
+    
+    h1::before,
+    h1::after {
+        content: '◆';
+        color: var(--bronze);
+        margin: 0 20px;
+        font-size: 0.6em;
+    }
+    
+    .subtitle {
+        font-size: 24px;
+        color: var(--dark-bronze);
+        font-weight: 700;
+        margin-bottom: 25px;
+        font-family: 'Cairo', sans-serif;
+    }
+    
+    .stats-board {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin-top: 25px;
+    }
+    
+    .stat {
+        background: linear-gradient(135deg, var(--black), var(--dark-gray));
+        padding: 15px 25px;
+        border-radius: 8px;
+        border: 3px solid var(--bronze);
+        box-shadow: 
+            0 5px 15px rgba(0,0,0,0.5),
+            inset 0 1px 2px rgba(212, 175, 55, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    
+    .stat-label {
+        font-size: 13px;
+        color: var(--parchment);
+        opacity: 0.8;
+        font-weight: 700;
+        font-family: 'Cairo', sans-serif;
+    }
+    
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--bronze);
+        font-family: 'Scheherazade New', serif;
+        text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+    }
+    
+    /* Game mode cards */
+    .game-modes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .mode-card {
+        background: 
+            linear-gradient(135deg, rgba(244, 232, 193, 0.95), rgba(212, 197, 160, 0.9)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23F4E8C1"/></svg>');
+        padding: 35px 25px;
+        border-radius: 10px;
+        border: 5px solid var(--sepia);
+        cursor: pointer;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.5),
+            inset 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .mode-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(205, 127, 50, 0.15) 50%, transparent 70%);
+        transform: rotate(45deg);
+        transition: all 0.6s;
+    }
+    
+    .mode-card:hover::before {
+        top: 100%;
+        left: 100%;
+    }
+    
+    .mode-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.7),
+            inset 0 2px 5px rgba(205, 127, 50, 0.2);
+        border-color: var(--bronze);
+    }
+    
+    .mode-icon {
+        font-size: 60px;
+        margin-bottom: 15px;
+        display: block;
+        filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    }
+    
+    .mode-title {
+        font-size: 26px;
+        color: var(--sepia);
+        margin-bottom: 12px;
+        font-weight: 900;
+        font-family: 'Scheherazade New', serif;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .mode-desc {
+        font-size: 16px;
+        color: var(--dark-bronze);
+        line-height: 1.6;
+        font-family: 'Cairo', sans-serif;
+    }
+    
+    /* Game area */
+    .game-area {
+        display: none;
+        background: 
+            linear-gradient(to bottom, rgba(244, 232, 193, 0.98), rgba(212, 197, 160, 0.95)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23F4E8C1"/></svg>');
+        padding: 40px;
+        border-radius: 10px;
+        border: 8px solid var(--sepia);
+        box-shadow: 
+            0 20px 60px rgba(0,0,0,0.8),
+            inset 0 2px 5px rgba(0,0,0,0.15),
+            0 0 0 3px var(--dark-bronze);
+        position: relative;
+    }
+    
+    .game-area.active {
+        display: block;
+        animation: scrollUnfurl 0.8s ease-out;
+    }
+    
+    @keyframes scrollUnfurl {
+        from {
+            opacity: 0;
+            transform: perspective(1000px) rotateX(-15deg) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: perspective(1000px) rotateX(0deg) scale(1);
+        }
+    }
+    
+    .question-container {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .timeline-display {
+        width: 100%;
+        max-width: 600px;
+        height: 120px;
+        margin: 0 auto 30px;
+        position: relative;
+        background: linear-gradient(to right, var(--black), var(--dark-gray), var(--black));
+        border: 4px solid var(--bronze);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 
+            0 10px 30px rgba(0,0,0,0.6),
+            inset 0 2px 5px rgba(0,0,0,0.3);
+    }
+    
+    .timeline-line {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        right: 10%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--bronze), var(--gold), var(--bronze));
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background: var(--gold);
+        border: 3px solid var(--black);
+        border-radius: 50%;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+    }
+    
+    .historical-figure {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        border: 6px solid var(--bronze);
+        background: linear-gradient(135deg, var(--dark-gray), var(--black));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 100px;
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.7),
+            inset 0 2px 5px rgba(205, 127, 50, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .historical-figure::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.1) 50%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .question-text {
+        font-size: 28px;
+        color: var(--sepia);
+        font-weight: 700;
+        margin-bottom: 30px;
+        font-family: 'Scheherazade New', serif;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        line-height: 1.6;
+    }
+    
+    .answers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .answer-btn {
+        background: linear-gradient(135deg, var(--black), var(--dark-gray));
+        border: 4px solid var(--bronze);
+        padding: 25px 20px;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--parchment);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Cairo', sans-serif;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 
+            0 5px 20px rgba(0,0,0,0.5),
+            inset 0 1px 2px rgba(205, 127, 50, 0.1);
+    }
+    
+    .answer-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .answer-btn:hover::before {
+        left: 100%;
+    }
+    
+    .answer-btn:hover {
+        transform: translateY(-3px);
+        border-color: var(--gold);
+        box-shadow: 
+            0 8px 25px rgba(0,0,0,0.7),
+            0 0 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    .answer-btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .answer-btn.correct {
+        background: linear-gradient(135deg, #2d5016, #3d6b1f);
+        border-color: #5a9f2e;
+        animation: correctGlow 0.6s;
+    }
+    
+    .answer-btn.incorrect {
+        background: linear-gradient(135deg, #5c1010, #8B0000);
+        border-color: #a52a2a;
+        animation: incorrectShake 0.5s;
+    }
+    
+    @keyframes correctGlow {
+        0%, 100% { box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        50% { box-shadow: 0 5px 30px rgba(90, 159, 46, 0.8), 0 0 40px rgba(90, 159, 46, 0.6); }
+    }
+    
+    @keyframes incorrectShake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-12px) rotate(-2deg); }
+        75% { transform: translateX(12px) rotate(2deg); }
+    }
+    
+    .answer-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        background: linear-gradient(135deg, var(--bronze), var(--dark-bronze));
+        color: var(--parchment);
+        border: none;
+        padding: 16px 35px;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-family: 'Cairo', sans-serif;
+        box-shadow: 
+            0 8px 20px rgba(0,0,0,0.6),
+            inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid var(--dark-bronze);
+    }
+    
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 
+            0 12px 30px rgba(0,0,0,0.8),
+            0 0 30px rgba(205, 127, 50, 0.4);
+        border-color: var(--gold);
+    }
+    
+    .btn:active {
+        transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, var(--sepia), var(--dark-bronze));
+        border-color: var(--sepia);
+    }
+    
+    /* Results screen */
+    .results {
+        display: none;
+        text-align: center;
+        padding: 50px 30px;
+        background: 
+            linear-gradient(to bottom, rgba(244, 232, 193, 0.98), rgba(212, 197, 160, 0.95)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23F4E8C1"/></svg>');
+        border-radius: 10px;
+        border: 8px solid var(--sepia);
+        box-shadow: 
+            0 20px 60px rgba(0,0,0,0.9),
+            inset 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .results.active {
+        display: block;
+        animation: scrollUnfurl 0.8s ease-out;
+    }
+    
+    .results h2 {
+        font-family: 'Scheherazade New', serif;
+        font-size: 56px;
+        color: var(--sepia);
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .trophy {
+        font-size: 100px;
+        margin-bottom: 30px;
+        display: inline-block;
+        animation: trophyFloat 3s ease-in-out infinite;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+    }
+    
+    @keyframes trophyFloat {
+        0%, 100% { transform: translateY(0px) rotate(-3deg); }
+        50% { transform: translateY(-15px) rotate(3deg); }
+    }
+    
+    .result-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+    }
+    
+    .result-stat {
+        background: linear-gradient(135deg, var(--black), var(--dark-gray));
+        padding: 25px;
+        border-radius: 8px;
+        border: 3px solid var(--bronze);
+        box-shadow: 
+            0 5px 15px rgba(0,0,0,0.5),
+            inset 0 1px 2px rgba(205, 127, 50, 0.1);
+    }
+    
+    .result-label {
+        font-size: 16px;
+        color: var(--parchment);
+        margin-bottom: 10px;
+        font-weight: 700;
+        font-family: 'Cairo', sans-serif;
+        opacity: 0.9;
+    }
+    
+    .result-value {
+        font-size: 42px;
+        font-family: 'Scheherazade New', serif;
+        color: var(--bronze);
+        font-weight: 700;
+        text-shadow: 0 0 15px rgba(205, 127, 50, 0.5);
+    }
+    
+    .message {
+        font-size: 26px;
+        color: var(--sepia);
+        margin: 30px 0;
+        font-weight: 700;
+        font-family: 'Scheherazade New', serif;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        line-height: 1.6;
+    }
+    
+    /* Feedback overlay */
+    .feedback {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 72px;
+        font-weight: 900;
+        color: var(--bronze);
+        text-shadow: 
+            0 0 30px rgba(205, 127, 50, 1),
+            3px 3px 0px var(--dark-bronze),
+            5px 5px 20px rgba(0,0,0,0.8);
+        z-index: 1000;
+        pointer-events: none;
+        font-family: 'Scheherazade New', serif;
+    }
+    
+    .feedback.show {
+        animation: feedbackEmerge 1s ease-out;
+    }
+    
+    @keyframes feedbackEmerge {
+        0% {
+            transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            opacity: 0;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0) rotate(180deg);
+            opacity: 0;
+        }
+    }
+    
+    .hidden {
+        display: none !important;
+    }
+    
+    /* Progress bar */
+    .progress-bar {
+        height: 14px;
+        background: var(--black);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        border: 3px solid var(--bronze);
+        box-shadow: 
+            inset 0 2px 5px rgba(0,0,0,0.5),
+            0 0 15px rgba(205, 127, 50, 0.3);
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--sepia), var(--bronze), var(--gold));
+        border-radius: 10px;
+        transition: width 0.5s ease-out;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+        position: relative;
+    }
+    
+    .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+        border-radius: 10px 10px 0 0;
+    }
+    
+    @media (max-width: 768px) {
+        h1 { font-size: 42px; }
+        .mode-title { font-size: 22px; }
+        .question-text { font-size: 22px; }
+        .answer-btn { font-size: 18px; padding: 20px 15px; }
+        .historical-figure { width: 150px; height: 150px; font-size: 70px; }
+        .timeline-display { height: 100px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>رحلة عبر التاريخ</h1>
+        <div class="subtitle">اكتشف أسرار الحضارات القديمة</div>
+        <div class="stats-board">
+            <div class="stat">
+                <div class="stat-label">النقاط</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">إجابات صحيحة</div>
+                <div class="stat-value" id="correct">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">الدقة</div>
+                <div class="stat-value" id="accuracy">100%</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="game-modes" id="gameModes">
+        <div class="mode-card" onclick="startGame('timeline')">
+            <span class="mode-icon">📜</span>
+            <div class="mode-title">ترتيب الأحداث</div>
+            <div class="mode-desc">رتب الأحداث التاريخية حسب تسلسلها الزمني</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('figures')">
+            <span class="mode-icon">👑</span>
+            <div class="mode-title">الشخصيات التاريخية</div>
+            <div class="mode-desc">تعرف على أشهر الشخصيات عبر العصور</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('civilizations')">
+            <span class="mode-icon">🏛️</span>
+            <div class="mode-title">الحضارات القديمة</div>
+            <div class="mode-desc">اختبر معرفتك بالحضارات العظيمة</div>
+        </div>
+        
+        <div class="mode-card" onclick="startGame('mixed')">
+            <span class="mode-icon">⚔️</span>
+            <div class="mode-title">التحدي الشامل</div>
+            <div class="mode-desc">اختبار متنوع يجمع كل أنواع الأسئلة</div>
+        </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <div class="question-container">
+            <div id="visualDisplay"></div>
+            <div class="question-text" id="questionText">ما هو هذا الحدث التاريخي؟</div>
+        </div>
+        
+        <div class="answers-grid" id="answersGrid"></div>
+        
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="returnToMenu()">القائمة الرئيسية</button>
+        </div>
+    </div>
+
+    <div class="results" id="results">
+        <h2>انتهت الرحلة عبر التاريخ!</h2>
+        <div class="trophy" id="trophyIcon">🏆</div>
+        <div class="result-stats">
+            <div class="result-stat">
+                <div class="result-label">النقاط النهائية</div>
+                <div class="result-value" id="finalScore">0</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-label">إجابات صحيحة</div>
+                <div class="result-value" id="finalCorrect">0/10</div>
+            </div>
+            <div class="result-stat">
+                <div class="result-label">نسبة النجاح</div>
+                <div class="result-value" id="finalAccuracy">0%</div>
+            </div>
+        </div>
+        <div class="message" id="resultMessage">رائع جداً!</div>
+        <div class="controls">
+            <button class="btn" onclick="restartGame()">العب مرة أخرى</button>
+            <button class="btn btn-secondary" onclick="returnToMenu()">القائمة الرئيسية</button>
+        </div>
+    </div>
+</div>
+
+<div class="feedback" id="feedback"></div>
+
+<script>
+// Historical data
+const historicalEvents = {
+    'سقوط الإمبراطورية الرومانية': { year: 476, category: 'حدث' },
+    'الفتح الإسلامي لمصر': { year: 641, category: 'حدث' },
+    'معركة حطين': { year: 1187, category: 'حدث' },
+    'سقوط الأندلس': { year: 1492, category: 'حدث' },
+    'الثورة الفرنسية': { year: 1789, category: 'حدث' },
+    'الحرب العالمية الأولى': { year: 1914, category: 'حدث' },
+    'الحرب العالمية الثانية': { year: 1939, category: 'حدث' },
+    'نكبة فلسطين': { year: 1948, category: 'حدث' },
+    'ثورة 23 يوليو': { year: 1952, category: 'حدث' },
+    'حرب أكتوبر': { year: 1973, category: 'حدث' }
+};
+
+const historicalFigures = {
+    'صلاح الدين الأيوبي': { icon: '⚔️', achievement: 'حرر القدس من الصليبيين', era: 'العصور الوسطى' },
+    'عمر بن الخطاب': { icon: '📖', achievement: 'ثاني الخلفاء الراشدين', era: 'صدر الإسلام' },
+    'خالد بن الوليد': { icon: '🗡️', achievement: 'سيف الله المسلول', era: 'صدر الإسلام' },
+    'هارون الرشيد': { icon: '👑', achievement: 'أشهر خلفاء الدولة العباسية', era: 'العصر العباسي' },
+    'نابليون بونابرت': { icon: '⚜️', achievement: 'إمبراطور فرنسا', era: 'العصر الحديث' },
+    'عمر المختار': { icon: '🦁', achievement: 'أسد الصحراء', era: 'العصر الحديث' },
+    'جمال عبد الناصر': { icon: '🎖️', achievement: 'رئيس مصر الثاني', era: 'العصر المعاصر' },
+    'كليوباترا': { icon: '👸', achievement: 'آخر ملكات مصر القديمة', era: 'العصر الفرعوني' },
+    'يوليوس قيصر': { icon: '🏛️', achievement: 'قائد روماني عظيم', era: 'العصر الروماني' },
+    'الإسكندر الأكبر': { icon: '🐎', achievement: 'فاتح العالم القديم', era: 'العصر اليوناني' }
+};
+
+const civilizations = {
+    'الحضارة المصرية القديمة': { symbol: '𓂀', achievement: 'بناء الأهرامات', location: 'مصر' },
+    'الحضارة البابلية': { symbol: '🌙', achievement: 'حدائق بابل المعلقة', location: 'العراق' },
+    'الحضارة الإغريقية': { symbol: '🏛️', achievement: 'الديمقراطية والفلسفة', location: 'اليونان' },
+    'الحضارة الرومانية': { symbol: '🏺', achievement: 'القانون الروماني', location: 'إيطاليا' },
+    'الحضارة الإسلامية': { symbol: '☪️', achievement: 'العلوم والطب والرياضيات', location: 'الشرق الأوسط' },
+    'الحضارة الصينية': { symbol: '🐉', achievement: 'سور الصين العظيم', location: 'الصين' },
+    'حضارة المايا': { symbol: '🗿', achievement: 'التقويم والفلك', location: 'أمريكا الوسطى' },
+    'الحضارة الفينيقية': { symbol: '⛵', achievement: 'الأبجدية والملاحة', location: 'لبنان' }
+};
+
+let gameState = {
+    mode: '',
+    score: 0,
+    currentQuestion: 0,
+    correctAnswers: 0,
+    totalQuestions: 10,
+    questions: []
+};
+
+function startGame(mode) {
+    gameState = {
+        mode: mode,
+        score: 0,
+        currentQuestion: 0,
+        correctAnswers: 0,
+        totalQuestions: 10,
+        questions: generateQuestions(mode)
+    };
+    
+    document.getElementById('gameModes').classList.add('hidden');
+    document.getElementById('gameArea').classList.add('active');
+    document.getElementById('results').classList.remove('active');
+    
+    updateStats();
+    showQuestion();
+}
+
+function generateQuestions(mode) {
+    const questions = [];
+    
+    for (let i = 0; i < gameState.totalQuestions; i++) {
+        let questionType = mode;
+        if (mode === 'mixed') {
+            const types = ['timeline', 'figures', 'civilizations'];
+            questionType = types[Math.floor(Math.random() * types.length)];
+        }
+        
+        const question = createQuestion(questionType);
+        questions.push(question);
+    }
+    
+    return questions;
+}
+
+function createQuestion(type) {
+    let question = {
+        type: type,
+        correctAnswer: '',
+        answers: []
+    };
+    
+    if (type === 'timeline') {
+        // Get random events
+        const eventNames = Object.keys(historicalEvents);
+        const selectedEvents = [];
+        while (selectedEvents.length < 4) {
+            const event = eventNames[Math.floor(Math.random() * eventNames.length)];
+            if (!selectedEvents.includes(event)) selectedEvents.push(event);
+        }
+        
+        // Sort by year
+        selectedEvents.sort((a, b) => historicalEvents[a].year - historicalEvents[b].year);
+        const targetEvent = selectedEvents[Math.floor(Math.random() * selectedEvents.length)];
+        
+        question.text = `متى حدث: ${targetEvent}؟`;
+        question.correctAnswer = historicalEvents[targetEvent].year.toString();
+        question.visualType = 'timeline';
+        question.visual = targetEvent;
+        
+        // Generate year options
+        const correctYear = historicalEvents[targetEvent].year;
+        const options = [correctYear.toString()];
+        while (options.length < 4) {
+            const offset = (Math.random() - 0.5) * 200;
+            const wrongYear = Math.round(correctYear + offset);
+            if (!options.includes(wrongYear.toString()) && wrongYear > 0) {
+                options.push(wrongYear.toString());
+            }
+        }
+        question.answers = shuffle(options);
+        
+    } else if (type === 'figures') {
+        const figureNames = Object.keys(historicalFigures);
+        const figure = figureNames[Math.floor(Math.random() * figureNames.length)];
+        const figureData = historicalFigures[figure];
+        
+        question.text = 'من هذه الشخصية التاريخية؟';
+        question.correctAnswer = figure;
+        question.visualType = 'figure';
+        question.visual = figureData.icon;
+        question.hint = figureData.achievement;
+        
+        // Generate options
+        const options = [figure];
+        while (options.length < 4) {
+            const wrong = figureNames[Math.floor(Math.random() * figureNames.length)];
+            if (!options.includes(wrong)) options.push(wrong);
+        }
+        question.answers = shuffle(options);
+        
+    } else if (type === 'civilizations') {
+        const civNames = Object.keys(civilizations);
+        const civ = civNames[Math.floor(Math.random() * civNames.length)];
+        const civData = civilizations[civ];
+        
+        const questionTypes = [
+            { text: `ما هي الحضارة التي أنجزت: ${civData.achievement}؟`, answer: civ },
+            { text: `أين ازدهرت ${civ}؟`, answer: civData.location },
+            { text: `ما هو الإنجاز الأشهر لـ ${civ}؟`, answer: civData.achievement }
+        ];
+        
+        const selectedQ = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+        question.text = selectedQ.text;
+        question.correctAnswer = selectedQ.answer;
+        question.visualType = 'civilization';
+        question.visual = civData.symbol;
+        
+        // Generate options based on question type
+        if (selectedQ.text.includes('أين ازدهرت')) {
+            const locations = [...new Set(Object.values(civilizations).map(c => c.location))];
+            const options = [civData.location];
+            while (options.length < 4 && locations.length > 0) {
+                const loc = locations[Math.floor(Math.random() * locations.length)];
+                if (!options.includes(loc)) options.push(loc);
+            }
+            question.answers = shuffle(options);
+        } else if (selectedQ.text.includes('الإنجاز')) {
+            const achievements = Object.values(civilizations).map(c => c.achievement);
+            const options = [civData.achievement];
+            while (options.length < 4) {
+                const ach = achievements[Math.floor(Math.random() * achievements.length)];
+                if (!options.includes(ach)) options.push(ach);
+            }
+            question.answers = shuffle(options);
+        } else {
+            const options = [civ];
+            while (options.length < 4) {
+                const wrong = civNames[Math.floor(Math.random() * civNames.length)];
+                if (!options.includes(wrong)) options.push(wrong);
+            }
+            question.answers = shuffle(options);
+        }
+    }
+    
+    return question;
+}
+
+function shuffle(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+function showQuestion() {
+    const question = gameState.questions[gameState.currentQuestion];
+    
+    // Update progress bar
+    const progress = ((gameState.currentQuestion + 1) / gameState.totalQuestions) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    
+    // Update question text
+    document.getElementById('questionText').textContent = question.text;
+    
+    // Show visual
+    const visualDisplay = document.getElementById('visualDisplay');
+    if (question.visualType === 'timeline') {
+        visualDisplay.innerHTML = `
+            <div class="timeline-display">
+                <div class="timeline-line"></div>
+                <div class="timeline-marker" style="left: 50%;"></div>
+            </div>`;
+    } else if (question.visualType === 'figure') {
+        visualDisplay.innerHTML = `
+            <div class="historical-figure">
+                <span style="position: relative; z-index: 10;">${question.visual}</span>
+            </div>
+            ${question.hint ? `<div style="color: var(--sepia); font-size: 18px; margin-bottom: 20px; font-style: italic;">${question.hint}</div>` : ''}`;
+    } else {
+        visualDisplay.innerHTML = `
+            <div class="historical-figure">
+                <span style="position: relative; z-index: 10; font-size: 120px;">${question.visual}</span>
+            </div>`;
+    }
+    
+    // Create answer buttons
+    const answersGrid = document.getElementById('answersGrid');
+    answersGrid.innerHTML = '';
+    
+    question.answers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(answer);
+        answersGrid.appendChild(btn);
+    });
+}
+
+function checkAnswer(selectedAnswer) {
+    const question = gameState.questions[gameState.currentQuestion];
+    const buttons = document.querySelectorAll('.answer-btn');
+    const isCorrect = selectedAnswer === question.correctAnswer;
+    
+    // Disable all buttons
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === question.correctAnswer) {
+            btn.classList.add('correct');
+        } else if (btn.textContent === selectedAnswer && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    // Update game state
+    if (isCorrect) {
+        gameState.correctAnswers++;
+        gameState.score += 100;
+        showFeedback('صحيح! ⚔️');
+    } else {
+        showFeedback('حاول مرة أخرى! 📜');
+    }
+    
+    updateStats();
+    
+    // Move to next question
+    setTimeout(() => {
+        gameState.currentQuestion++;
+        if (gameState.currentQuestion < gameState.totalQuestions) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    }, 1500);
+}
+
+function showFeedback(message) {
+    const feedback = document.getElementById('feedback');
+    feedback.textContent = message;
+    feedback.classList.remove('show');
+    void feedback.offsetWidth; // Force reflow
+    feedback.classList.add('show');
+}
+
+function updateStats() {
+    document.getElementById('score').textContent = gameState.score;
+    document.getElementById('correct').textContent = gameState.correctAnswers;
+    
+    const accuracy = gameState.currentQuestion === 0 ? 100 : 
+        Math.round((gameState.correctAnswers / gameState.currentQuestion) * 100);
+    document.getElementById('accuracy').textContent = accuracy + '%';
+}
+
+function showResults() {
+    document.getElementById('gameArea').classList.remove('active');
+    document.getElementById('results').classList.add('active');
+    
+    const accuracy = Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100);
+    
+    document.getElementById('finalScore').textContent = gameState.score;
+    document.getElementById('finalCorrect').textContent = `${gameState.correctAnswers}/${gameState.totalQuestions}`;
+    document.getElementById('finalAccuracy').textContent = accuracy + '%';
+    
+    // Set trophy and message based on performance
+    let trophy = '🏆';
+    let message = '';
+    
+    if (accuracy === 100) {
+        trophy = '👑';
+        message = 'مثالي! أنت مؤرخ عظيم!';
+    } else if (accuracy >= 80) {
+        trophy = '🏆';
+        message = 'ممتاز! باحث تاريخي متميز!';
+    } else if (accuracy >= 60) {
+        trophy = '🥇';
+        message = 'جيد جداً! طالب تاريخ نجيب!';
+    } else if (accuracy >= 40) {
+        trophy = '📜';
+        message = 'لا بأس! التاريخ رحلة طويلة!';
+    } else {
+        trophy = '📚';
+        message = 'استمر في التعلم! كل رحلة تبدأ بخطوة!';
+    }
+    
+    document.getElementById('trophyIcon').textContent = trophy;
+    document.getElementById('resultMessage').textContent = message;
+}
+
+function restartGame() {
+    startGame(gameState.mode);
+}
+
+function returnToMenu() {
+    document.getElementById('gameModes').classList.remove('hidden');
+    document.getElementById('gameArea').classList.remove('active');
+    document.getElementById('results').classList.remove('active');
+    
+    // Reset stats
+    gameState.score = 0;
+    gameState.correctAnswers = 0;
+    gameState.currentQuestion = 0;
+    updateStats();
+}
+</script>
+</body>
+</html>

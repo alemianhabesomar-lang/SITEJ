@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التفاعلات الطلابية | أكاديمية النخبة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES (Integrated Navy & Glass Theme) --- */
+        :root {
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --text-navy: #0a1628;
+            --text-gray: #6b7c93;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 40px; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-blue);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .back-btn {
+            color: var(--accent-blue); text-decoration: none;
+            display: flex; align-items: center; gap: 8px; font-weight: bold;
+            transition: 0.3s;
+        }
+        .back-btn:hover { transform: translateX(5px); }
+
+        .header-title {
+            background: var(--gradient-navy-soft); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; font-weight: 900; font-size: 1.5rem;
+        }
+
+        /* --- SEARCH SECTION --- */
+        .search-section {
+            max-width: 800px; margin: 30px auto; padding: 0 20px; position: relative;
+        }
+        .search-bar {
+            width: 100%; padding: 14px 45px 14px 20px; background: var(--glass-white);
+            border: 2px solid var(--border-blue); border-radius: 50px;
+            color: var(--text-navy); outline: none; box-shadow: 0 10px 30px var(--shadow-blue);
+            font-family: 'Cairo';
+        }
+
+        /* --- POST BOX (Creator) --- */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+
+        .post-box {
+            background: var(--glass-white); border: 2px solid var(--border-blue);
+            border-radius: 25px; padding: 25px; margin-bottom: 30px;
+            box-shadow: 0 15px 45px rgba(26, 41, 66, 0.1);
+        }
+
+        textarea {
+            width: 100%; background: #f1f5f9; border: 1px solid var(--border-blue);
+            color: var(--text-navy); padding: 15px; border-radius: 15px;
+            font-family: 'Cairo'; resize: none; outline: none; transition: 0.3s;
+        }
+        textarea:focus { border-color: var(--accent-blue); background: #fff; }
+
+        .btn-gold-action {
+            background: var(--gradient-blue-glow); color: white; border: none;
+            padding: 12px 30px; border-radius: 12px; font-weight: bold;
+            cursor: pointer; transition: 0.4s; box-shadow: 0 8px 20px var(--shadow-blue);
+        }
+        .btn-gold-action:hover { transform: translateY(-3px); box-shadow: 0 12px 25px var(--shadow-blue); }
+
+        /* --- FEED ITEMS --- */
+        .feed-item {
+            background: var(--glass-white); border: 2px solid var(--border-blue);
+            border-radius: 20px; margin-bottom: 25px; padding: 20px;
+            transition: 0.4s;
+        }
+        .feed-item:hover { transform: scale(1.01); box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15); }
+
+        .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-info img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent-blue); }
+        .user-info b { color: var(--navy-dark); font-size: 1.1rem; }
+
+        /* --- INFO SECTIONS --- */
+        .info-section {
+            background: var(--glass-white); border: 1px solid var(--border-blue);
+            border-radius: 20px; padding: 25px; margin-top: 25px;
+        }
+        .section-title {
+            background: var(--gradient-navy-soft); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; font-weight: 800; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .faq-question { color: var(--accent-blue); font-weight: bold; margin-bottom: 5px; }
+        .faq-answer { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 15px; }
+
+        #uploadStatus { color: var(--accent-blue); font-weight: bold; text-align: center; }
+
+        /* --- ANIMATED BG SHAPES --- */
+        .bg-shape {
+            position: fixed; border-radius: 50%; filter: blur(100px);
+            opacity: 0.08; z-index: -1; animation: float 20s infinite;
+        }
+        .shape-1 { width: 400px; height: 400px; background: var(--accent-blue); top: 10%; left: -100px; }
+        @keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px, 30px); } }
+    </style>
+</head>
+<body>
+
+<div class="bg-shape shape-1"></div>
+
+<header>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة</a>
+    <h2 class="header-title">ساحة التفاعلات</h2>
+    <div id="userAvatar" style="background: var(--gradient-blue-glow); color: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 4px 12px var(--shadow-blue);">U</div>
+</header>
+
+<div class="search-section">
+    <i class="fas fa-search" style="position: absolute; right: 35px; top: 18px; color: var(--accent-blue);"></i>
+    <input type="text" id="userSearch" class="search-bar" placeholder="ابحث عن ملوك الأكاديمية...">
+</div>
+
+<div class="container">
+    <div class="post-box">
+        <textarea id="mediaText" rows="3" placeholder="شاركنا معلومة، اقتراح، أو فكرة تساهم في تطور الأكاديمية..."></textarea>
+        <div style="display: flex; gap: 15px; margin-top: 15px; align-items: center;">
+            <label for="mediaUpload" style="flex: 1; border: 2px dashed var(--border-blue); color: var(--accent-blue); padding: 12px; text-align: center; border-radius: 12px; cursor: pointer; transition: 0.3s;">
+                <i class="fas fa-cloud-upload-alt"></i> ارفع ميديا
+                <input type="file" id="mediaUpload" hidden accept="video/*,image/*">
+            </label>
+            <button class="btn-gold-action" onclick="handlePublish()">نشر التفاعل</button>
+        </div>
+        <div id="uploadStatus" style="display: none; margin-top: 15px;"></div>
+    </div>
+
+    <div id="studentFeed">
+        <p style="text-align: center; color: var(--text-gray);">جاري جلب آخر التفاعلات من الساحة...</p>
+    </div>
+
+    <div class="info-section">
+        <h3 class="section-title"><i class="fas fa-headset"></i> مركز المساعدة الذكي</h3>
+        <p style="color: var(--text-gray); margin-bottom: 15px;">فريق دعم "النخبة" متواجد دائماً لضمان أفضل تجربة تعليمية لك.</p>
+        <button class="btn-gold-action" style="padding: 10px 20px; font-size: 0.9rem;" onclick="alert('سيتواصل معك الدعم قريباً')">فتح تذكرة دعم</button>
+    </div>
+
+    <div class="info-section">
+        <h3 class="section-title"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</h3>
+        <div class="faq-item">
+            <div class="faq-question">كيف أحصل على رتبة "النخبة"؟</div>
+            <div class="faq-answer">تمنح هذه الرتبة للطلاب الأكثر تفاعلاً ومساعدة لزملائهم في الساحة.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">ما هي ضوابط النشر؟</div>
+            <div class="faq-answer">نرحب بكل ما هو تعليمي، تقني، أو تحفيزي، مع الالتزام بالاحترام المتبادل.</div>
+        </div>
+    </div>
+
+    <div class="info-section" style="border-right: 4px solid var(--accent-blue);">
+        <h3 class="section-title"><i class="fas fa-file-contract"></i> ميثاق الأكاديمية</h3>
+        <ul style="color: var(--text-gray); padding-right: 20px; font-size: 0.9rem; line-height: 1.8;">
+            <li>المحتوى التعليمي هو الأولوية القصوى في هذه الساحة.</li>
+            <li>يتم حظر أي حساب يقوم بنشر محتوى مسيء أو غير لائق فوراً.</li>
+            <li>تفاعل بذكاء، وتعلم برقي.</li>
+        </ul>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+        authDomain: "eliteacademy-37bfc.firebaseapp.com",
+        projectId: "eliteacademy-37bfc",
+        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+        messagingSenderId: "203080953628",
+        appId: "1:203080953628:web:69efebccc336b79f0554d9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    let userProfile = null;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { 
+             window.location.href = 'login.html'; 
+             return; 
+         }
+        try {
+            const q = query(collection(db, "users"), where("__name__", "==", user.uid));
+            const snap = await getDocs(q);
+            snap.forEach(d => userProfile = d.data());
+            if (userProfile) {
+                document.getElementById('userAvatar').innerText = userProfile.username ? userProfile.username[0].toUpperCase() : 'U';
+            }
+        } catch (e) { console.error(e); }
+    });
+
+    window.handlePublish = async () => {
+        const text = document.getElementById('mediaText').value;
+        const file = document.getElementById('mediaUpload').files[0];
+        const status = document.getElementById('uploadStatus');
+
+        if (!text && !file) return;
+
+        status.style.display = "block";
+        status.innerHTML = "⏳ جاري إرسال تفاعلك إلى الساحة...";
+        let mediaUrl = "";
+        let mediaType = "none";
+
+        try {
+            if (file) {
+                const fileRef = ref(storage, `social_media/${Date.now()}_${file.name}`);
+                const uploadTask = await uploadBytes(fileRef, file);
+                mediaUrl = await getDownloadURL(uploadTask.ref);
+                mediaType = file.type.includes('video') ? 'video' : 'image';
+            }
+
+            if (auth.currentUser && userProfile) {
+                await addDoc(collection(db, "student_interactions"), {
+                    uid: auth.currentUser.uid,
+                    username: userProfile.username || 'طالب متميز',
+                    userPic: userProfile.profilePic || '',
+                    text: text,
+                    mediaUrl: mediaUrl,
+                    mediaType: mediaType,
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('mediaText').value = "";
+                document.getElementById('mediaUpload').value = "";
+                status.innerHTML = "✅ تم النشر بنجاح!";
+                setTimeout(() => status.style.display = "none", 3000);
+            }
+        } catch (e) {
+            status.innerHTML = "❌ حدث خطأ أثناء النشر";
+        }
+    };
+
+    const qInteraction = query(collection(db, "student_interactions"), orderBy("createdAt", "desc"));
+    onSnapshot(qInteraction, (snap) => {
+        const feed = document.getElementById('studentFeed');
+        feed.innerHTML = "";
+        if (snap.empty) {
+            feed.innerHTML = `<p style="text-align: center; color: var(--text-gray);">الساحة هادئة حالياً.. كن أول المتفاعلين!</p>`;
+            return;
+        }
+        snap.forEach(doc => {
+            const item = doc.data();
+            let mediaHtml = "";
+            if (item.mediaType === 'video') {
+                mediaHtml = `<video controls style="width: 100%; border-radius: 15px; margin-top:10px; border: 1px solid var(--border-blue);"><source src="${item.mediaUrl}" type="video/mp4"></video>`;
+            } else if (item.mediaType === 'image') {
+                mediaHtml = `<img src="${item.mediaUrl}" style="width: 100%; border-radius: 15px; margin-top:10px; border: 1px solid var(--border-blue);">`;
+            }
+
+            feed.innerHTML += `
+                <div class="feed-item">
+                    <div class="user-info">
+                        <img src="${item.userPic || 'https://ui-avatars.com/api/?background=4a90e2&color=fff&name=' + item.username}">
+                        <b>${item.username}</b>
+                    </div>
+                    <p style="line-height: 1.6;">${item.text}</p>
+                    ${mediaHtml}
+                </div>`;
+        });
+    });
+</script>
+</body>
+</html>

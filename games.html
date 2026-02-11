@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUCORE - ساحة الألعاب التعليمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS VARIABLES (MATCHING INDEX PAGE) --- */
+        :root {
+            /* Navy Blue Palette */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+            
+            --error: #ff6b6b;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(111, 168, 236, 0.04) 0%, transparent 35%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        .shape-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(155, 180, 208, 0.25) 0%, transparent 70%);
+            top: 35%;
+            left: 45%;
+            animation-delay: -20s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(-120px, -80px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 70px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-blue);
+            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: 14px 70px;
+            background: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            cursor: pointer;
+            transition: 0.3s;
+            width: 48px;
+            height: 48px;
+            background: var(--glass-light);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-icon:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--shadow-blue);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px var(--shadow-blue);
+            animation: logoGlow 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(15px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        .logo-icon i {
+            font-size: 1.6rem;
+            color: var(--white-pure);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 10px 30px var(--shadow-blue);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 15px 45px var(--shadow-glow);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                opacity: 0.6;
+                filter: blur(15px);
+            }
+            50% { 
+                opacity: 0.9;
+                filter: blur(20px);
+            }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .logo-main {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.3));
+        }
+
+        .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        #authSlot {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s;
+            font-family: inherit;
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px var(--shadow-glow);
+        }
+
+        .nav-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-blue);
+            object-fit: cover;
+            box-shadow: 0 4px 15px var(--shadow-blue);
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: var(--glass-light);
+            transition: all 0.3s;
+        }
+
+        .profile-trigger:hover {
+            background: var(--glass-medium);
+            transform: translateY(-2px);
+        }
+
+        .profile-trigger span {
+            font-weight: 700;
+            color: var(--text-navy);
+        }
+
+        /* --- SIDE NAVIGATION --- */
+        .side-nav {
+            height: 100%;
+            width: 400px;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            right: -400px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
+            backdrop-filter: blur(35px);
+            border-left: 3px solid var(--accent-blue);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: right 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 35px 30px;
+            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
+        }
+
+        .side-nav::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-track {
+            background: rgba(26, 41, 66, 0.05);
+            border-radius: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-thumb {
+            background: var(--gradient-blue-glow);
+            border-radius: 10px;
+        }
+
+        .side-nav.active {
+            right: 0;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--border-blue);
+        }
+
+        .nav-header h2 {
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: var(--accent-blue);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass-light);
+        }
+
+        .close-btn:hover {
+            color: #ee5a6f;
+            transform: rotate(90deg) scale(1.2);
+            background: rgba(238, 90, 111, 0.1);
+        }
+
+        .side-nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 8px;
+        }
+
+        .side-nav a {
+            padding: 20px 22px;
+            text-decoration: none;
+            font-size: 1.15rem;
+            color: var(--text-navy);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 15px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .side-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
+            transition: width 0.6s ease;
+            z-index: 0;
+        }
+
+        .side-nav a:hover::before {
+            width: 100%;
+        }
+
+        .side-nav a > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .side-nav a i {
+            width: 35px;
+            color: var(--accent-blue);
+            text-align: center;
+            font-size: 1.4rem;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .side-nav a:hover {
+            color: var(--navy-dark);
+            background: var(--glass-strong);
+            transform: translateX(-12px);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .side-nav a:hover i {
+            transform: scale(1.3) rotate(10deg);
+            filter: drop-shadow(0 0 15px var(--accent-blue));
+        }
+
+        #logoutBtn a {
+            color: var(--error);
+        }
+
+        #logoutBtn a i {
+            color: var(--error);
+        }
+
+        #logoutBtn a:hover {
+            background: rgba(238, 90, 111, 0.15);
+            color: #d63447;
+        }
+
+        /* --- OVERLAY --- */
+        .overlay-bg {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 41, 66, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 2500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .overlay-bg.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            padding: 120px 50px 80px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.2));
+        }
+
+        .page-header p {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .back-btn {
+            display: none;
+            background: transparent;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 30px;
+            transition: all 0.4s;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .back-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .back-btn i {
+            margin-left: 8px;
+        }
+
+        /* --- GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--border-blue);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26, 41, 66, 0.08);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-blue-glow);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(74, 144, 226, 0.3);
+            border-color: var(--accent-blue);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card i {
+            font-size: 4rem;
+            background: var(--gradient-blue-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            display: block;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover i {
+            transform: scale(1.2) rotateY(360deg);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text-navy);
+            font-weight: 800;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .play-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        .play-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--shadow-glow);
+        }
+
+        .play-link i {
+            font-size: 1rem;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            color: var(--white-pure);
+            margin: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 18px 30px;
+            }
+
+            .container {
+                padding: 100px 25px 60px 25px;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            .side-nav {
+                width: 340px;
+                right: -340px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+</div>
+
+<div class="overlay-bg" id="overlay" onclick="toggleMenu()"></div>
+
+<header id="navbar">
+    <div class="header-left">
+        <div class="menu-icon" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <div class="logo-main">EDUCORE</div>
+                <div class="logo-tagline">منصة التعليم الذكية</div>
+            </div>
+        </a>
+    </div>
+
+    <div id="authSlot">
+        <a href="login.html" class="btn-primary">دخول الحساب</a>
+    </div>
+</header>
+
+<nav class="side-nav" id="sideNav">
+    <div class="nav-header">
+        <h2>القائمة الرئيسية</h2>
+        <div class="close-btn" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i> الفيديوهات التعليمية</a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i> المقالات الحصرية</a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i> ساحة الألعاب</a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i> مركز الاختبارات</a></li>
+        <li><a href="sign language hub.html"><i class="fas fa-hands"></i> مركز لغة الإشارة</a></li>
+        <li><a href="AI.html"><i class="fas fa-robot"></i> المساعد الذكي</a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i> الغرف الصوتية</a></li>
+        <li><a href="marks.html"><i class="fas fa-trophy"></i> بوابة النتائج</a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i> قسم الاستفسارات</a></li>
+        <li><a href="support.html"><i class="fas fa-shield-halved"></i> حقوق النشر</a></li>
+        <li id="logoutBtn" class="hidden"><a href="#" onclick="logout()"><i class="fas fa-power-off"></i> تسجيل خروج</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <button id="back-btn" class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة</button>
+    
+    <div class="page-header">
+        <h1 id="page-title">ساحة الألعاب التعليمية</h1>
+        <p>استمتع بالتعلم من خلال ألعاب تفاعلية وممتعة</p>
+    </div>
+
+    <div id="categories" class="grid">
+        <div class="card" onclick="openCategory('languages')">
+            <div class="card-content">
+                <i class="fas fa-language"></i>
+                <h3>اللغات</h3>
+                <p>ألعاب اللغة العربية والإنجليزية</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openCategory('sciences')">
+            <div class="card-content">
+                <i class="fas fa-flask"></i>
+                <h3>العلوم</h3>
+                <p>ألعاب العلوم والفضاء</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openCategory('social')">
+            <div class="card-content">
+                <i class="fas fa-globe-americas"></i>
+                <h3>الاجتماعيات</h3>
+                <p>ألعاب الجغرافيا والتاريخ</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openCategory('math')">
+            <div class="card-content">
+                <i class="fas fa-calculator"></i>
+                <h3>الرياضيات</h3>
+                <p>ألعاب الرياضيات والحساب</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openCategory('skills')">
+            <div class="card-content">
+                <i class="fas fa-keyboard"></i>
+                <h3>المهارات</h3>
+                <p>ألعاب المهارات والسرعة</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openCategory('arcade')">
+            <div class="card-content">
+                <i class="fas fa-rocket"></i>
+                <h3>الترفيه</h3>
+                <p>ألعاب الحركة والمغامرات</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="content-grid" class="grid" style="display: none;"></div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+        authDomain: "eliteacademy-37bfc.firebaseapp.com",
+        projectId: "eliteacademy-37bfc",
+        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+        messagingSenderId: "203080953628",
+        appId: "1:203080953628:web:69efebccc336b79f0554d9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // قاعدة بيانات الألعاب مصنفة حسب الفئات
+    const gameDatabase = {
+        languages: [
+            { name: "أكاديمية اللغة العربية", icon: "fa-book-open", link: "game4.html", desc: "تعلم قواعد اللغة العربية بطريقة تفاعلية" },
+            { name: "English Learning Academy", icon: "fa-language", link: "game5.html", desc: "Learn English through interactive games" }
+        ],
+        sciences: [
+            { name: "مستكشف النظام الشمسي", icon: "fa-sun", link: "game6.html", desc: "اكتشف أسرار الكواكب والنظام الشمسي" }
+        ],
+        social: [
+            { name: "رحلة حول العالم", icon: "fa-map-marked-alt", link: "game7.html", desc: "استكشف دول العالم وعواصمها" },
+            { name: "رحلة عبر التاريخ", icon: "fa-landmark", link: "game8.html", desc: "سافر عبر الزمن واكتشف الحضارات" }
+        ],
+        math: [
+            { name: "Math Blaster", icon: "fa-square-root-alt", link: "game2.html", desc: "حل المسائل الرياضية بسرعة" }
+        ],
+        skills: [
+            { name: "Typing Speed Racer", icon: "fa-keyboard", link: "game3.html", desc: "طور سرعتك في الكتابة" }
+        ],
+        arcade: [
+            { name: "Space Defender", icon: "fa-rocket", link: "game1.html", desc: "دافع عن الأرض من الكويكبات" }
+        ]
+    };
+
+    let currentView = 'categories';
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }, { passive: true });
+
+    // Check user authentication and display profile
+    onAuthStateChanged(auth, async (user) => {
+        const slot = document.getElementById('authSlot');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        if (user) {
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userData = userDoc.data();
+                
+                slot.innerHTML = `
+                    <div class="profile-trigger">
+                        <img src="${userData?.photoURL || 'https://ui-avatars.com/api/?name=' + (userData?.nickname || 'User')}" class="nav-avatar">
+                        <span>${userData?.nickname || 'عضو'}</span>
+                    </div>`;
+                
+                logoutBtn.classList.remove('hidden');
+            } catch (e) {
+                console.error("Error fetching user:", e);
+                slot.innerHTML = `<a href="login.html" class="btn-primary">دخول الحساب</a>`;
+            }
+        } else {
+            slot.innerHTML = `<a href="login.html" class="btn-primary">دخول الحساب</a>`;
+            logoutBtn.classList.add('hidden');
+        }
+    });
+
+    // Toggle menu function
+    window.toggleMenu = function() {
+        const sideNav = document.getElementById('sideNav');
+        const overlay = document.getElementById('overlay');
+        sideNav.classList.toggle('active');
+        overlay.classList.toggle('active');
+
+        if (sideNav.classList.contains("active")) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    // فتح الفئة وعرض الألعاب
+    window.openCategory = function(category) {
+        currentView = 'games';
+        document.getElementById('categories').style.display = 'none';
+        document.getElementById('back-btn').style.display = 'inline-block';
+        const grid = document.getElementById('content-grid');
+        grid.style.display = 'grid';
+        grid.innerHTML = '';
+
+        const games = gameDatabase[category];
+        
+        if (games && games.length > 0) {
+            games.forEach(game => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="fas ${game.icon}"></i>
+                            <h3>${game.name}</h3>
+                            <p>${game.desc}</p>
+                            <a href="${game.link}" target="_blank" class="play-link">
+                                <span>العب الآن</span>
+                                <i class="fas fa-play-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            grid.innerHTML = '<p style="color: var(--text-gray); grid-column: 1/-1; text-align: center; font-size: 1.2rem;">لا توجد ألعاب في هذه الفئة حالياً</p>';
+        }
+    }
+
+    window.goBack = function() {
+        if (currentView === 'games') {
+            document.getElementById('categories').style.display = 'grid';
+            document.getElementById('content-grid').style.display = 'none';
+            document.getElementById('back-btn').style.display = 'none';
+            currentView = 'categories';
+        }
+    }
+
+    window.logout = function() {
+        if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
+            signOut(auth).then(() => {
+                alert("تم تسجيل الخروج بنجاح ✓");
+                location.reload();
+            });
+        }
+    }
+
+    // Close menu on ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const sideNav = document.getElementById("sideNav");
+            const overlay = document.getElementById("overlay");
+            
+            if (sideNav.classList.contains('active')) {
+                sideNav.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.style.overflow = '';
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

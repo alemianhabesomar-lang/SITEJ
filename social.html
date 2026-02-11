@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التفاعلات الطلابية | أكاديمية النخبة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a192f;
+            --gold: #c5a059;
+            --black: #050a14;
+            --white: #e6f1ff;
+            --gold-gradient: linear-gradient(45deg, #c5a059, #f7e0a1, #8e6d2d);
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        /* --- Header --- */
+        header {
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            sticky; top: 0; z-index: 1000;
+        }
+
+        .back-btn { color: var(--gold); text-decoration: none; font-weight: bold; }
+
+        /* --- Search Area --- */
+        .search-section {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--gold);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            outline: none;
+        }
+        .search-section i { position: absolute; right: 40px; top: 18px; color: var(--gold); }
+        
+        #searchResults {
+            background: var(--navy);
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        /* --- Main Content --- */
+        .container { max-width: 700px; margin: auto; padding: 20px; }
+
+        .post-box {
+            background: rgba(10, 25, 47, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%; background: transparent; border: none; color: white;
+            font-size: 1.1rem; resize: none; outline: none; margin-bottom: 15px;
+        }
+
+        .post-options { display: flex; justify-content: space-between; align-items: center; }
+        
+        .upload-icon { color: var(--gold); cursor: pointer; font-size: 1.2rem; }
+
+        /* --- Feed Grid --- */
+        .feed-item {
+            background: #0a192f;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--gold);
+            overflow: hidden;
+        }
+        .item-header { padding: 15px; display: flex; align-items: center; gap: 12px; }
+        .item-content { padding: 0 15px 15px 15px; }
+        .user-pic { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold); }
+        
+        video { width: 100%; border-radius: 0 0 15px 15px; background: black; }
+        
+        .btn-royal {
+            background: var(--gold-gradient); color: black; border: none;
+            padding: 8px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للأكاديمية</a>
+    <h2 style="color: var(--gold); margin: 0; font-size: 1.2rem;">ساحة التفاعلات</h2>
+    <div id="userAvatar"></div>
+</header>
+
+<div class="search-section">
+    <i class="fas fa-search"></i>
+    <input type="text" id="userSearch" class="search-bar" placeholder="ابحث عن ملوك الأكاديمية...">
+    <div id="searchResults"></div>
+</div>
+
+<div class="container">
+    <div class="post-box" id="creator">
+        <textarea id="mediaText" rows="2" placeholder="شاركنا نصيحة، صورة، أو فيديو تعليمي..."></textarea>
+        <div class="post-options">
+            <label for="mediaUpload" class="upload-icon">
+                <i class="fas fa-video"></i> فيديو / <i class="fas fa-image"></i> صورة
+                <input type="file" id="mediaUpload" hidden accept="video/*,image/*">
+            </label>
+            <button class="btn-royal" onclick="handlePublish()">نشر الآن</button>
+        </div>
+        <div id="uploadStatus" style="font-size: 12px; margin-top: 10px; color: var(--gold);"></div>
+    </div>
+
+    <div id="studentFeed">
+        <p style="text-align: center; color: #888;">جاري جلب آخر التفاعلات...</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, getDocs, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    const firebaseConfig = { /* ضع إعداداتك هنا */ };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    let userProfile = null;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        // جلب بيانات المستخدم الحالي
+        const q = query(collection(db, "users"), where("__name__", "==", user.uid));
+        const snap = await getDocs(q);
+        snap.forEach(d => userProfile = d.data());
+    });
+
+    // --- وظيفة البحث ---
+    document.getElementById('userSearch').addEventListener('input', async (e) => {
+        const term = e.target.value;
+        const resDiv = document.getElementById('searchResults');
+        if (term.length < 2) { resDiv.innerHTML = ""; return; }
+
+        const q = query(collection(db, "users"), where("username", ">=", term), where("username", "<=", term + '\uf8ff'));
+        const snap = await getDocs(q);
+        resDiv.innerHTML = "";
+        snap.forEach(doc => {
+            const u = doc.data();
+            resDiv.innerHTML += `
+                <div onclick="location.href='profile.html?id=${doc.id}'" style="padding:12px; display:flex; align-items:center; gap:10px; cursor:pointer; border-bottom:1px solid #111">
+                    <img src="${u.profilePic || 'default.png'}" style="width:35px; height:35px; border-radius:50%">
+                    <span>${u.username}</span>
+                </div>`;
+        });
+    });
+
+    // --- وظيفة النشر (نص + ميديا) ---
+    window.handlePublish = async () => {
+        const text = document.getElementById('mediaText').value;
+        const file = document.getElementById('mediaUpload').files[0];
+        const status = document.getElementById('uploadStatus');
+
+        if (!text && !file) return;
+
+        status.innerText = "⏳ جاري المعالجة والنشر...";
+        let mediaUrl = "";
+        let mediaType = "none";
+
+        if (file) {
+            const fileRef = ref(storage, `social_media/${Date.now()}_${file.name}`);
+            const uploadTask = await uploadBytes(fileRef, file);
+            mediaUrl = await getDownloadURL(uploadTask.ref);
+            mediaType = file.type.includes('video') ? 'video' : 'image';
+        }
+
+        await addDoc(collection(db, "student_interactions"), {
+            uid: auth.currentUser.uid,
+            username: userProfile.username,
+            userPic: userProfile.profilePic || '',
+            text: text,
+            mediaUrl: mediaUrl,
+            mediaType: mediaType,
+            createdAt: serverTimestamp()
+        });
+
+        document.getElementById('mediaText').value = "";
+        document.getElementById('mediaUpload').value = "";
+        status.innerText = "✅ تم النشر في الساحة!";
+    };
+
+    // --- عرض المنشورات حياً ---
+    const qInteraction = query(collection(db, "student_interactions"), orderBy("createdAt", "desc"));
+    onSnapshot(qInteraction, (snap) => {
+        const feed = document.getElementById('studentFeed');
+        feed.innerHTML = "";
+        snap.forEach(doc => {
+            const item = doc.data();
+            let mediaHtml = "";
+            if (item.mediaType === 'video') {
+                mediaHtml = `<video controls src="${item.mediaUrl}"></video>`;
+            } else if (item.mediaType === 'image') {
+                mediaHtml = `<img src="${item.mediaUrl}" style="width:100%">`;
+            }
+
+            feed.innerHTML += `
+                <div class="feed-item">
+                    <div class="item-header">
+                        <img src="${item.userPic}" class="user-pic">
+                        <b>${item.username}</b>
+                    </div>
+                    <div class="item-content">
+                        <p>${item.text}</p>
+                    </div>
+                    ${mediaHtml}
+                </div>`;
+        });
+    });
+</script>
+</body>
+</html>

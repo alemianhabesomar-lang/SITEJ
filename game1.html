@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدينة الأحلام 3D - City Dreams</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --sky-blue: #87CEEB;
+            --grass-green: #7CFC00;
+            --road-gray: #505050;
+            --building-beige: #D2B48C;
+            --accent-orange: #FF6B35;
+            --accent-purple: #6C63FF;
+            --white: #ffffff;
+            --dark: #1a1a1a;
+            --shadow: rgba(0,0,0,0.3);
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, var(--sky-blue) 0%, #B0E0E6 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Game Container */
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* UI Overlay */
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* Top HUD */
+        .top-hud {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow);
+            pointer-events: auto;
+            border: 3px solid var(--accent-orange);
+        }
+        
+        .top-hud h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.9;
+        }
+        
+        .stat-value {
+            font-size: 1.3rem;
+            font-family: 'Cairo', sans-serif;
+            margin-top: 5px;
+        }
+        
+        /* Controls Panel */
+        .controls-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow);
+            pointer-events: auto;
+            border: 3px solid var(--accent-purple);
+        }
+        
+        .controls-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, var(--accent-orange), #FF8A5B);
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+        
+        .control-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .control-btn.jump {
+            grid-column: 2;
+            background: linear-gradient(135deg, var(--accent-purple), #8B7EFF);
+        }
+        
+        .control-info {
+            text-align: center;
+            color: var(--dark);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        /* Building Menu */
+        .building-menu {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow);
+            pointer-events: auto;
+            border: 3px solid var(--accent-orange);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .building-menu h2 {
+            font-family: 'Cairo', sans-serif;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .building-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .building-btn {
+            background: white;
+            border: 2px solid var(--accent-orange);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+        }
+        
+        .building-btn:hover {
+            background: var(--accent-orange);
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .building-btn.active {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+        }
+        
+        /* Interaction Modal */
+        .interaction-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px var(--shadow);
+            pointer-events: auto;
+            border: 4px solid var(--accent-purple);
+            display: none;
+            max-width: 600px;
+            width: 90%;
+            animation: modalAppear 0.3s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .interaction-modal.active {
+            display: block;
+        }
+        
+        .modal-header {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-purple);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 900;
+        }
+        
+        .modal-content {
+            color: var(--dark);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .modal-btn {
+            background: linear-gradient(135deg, var(--accent-orange), #FF8A5B);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+        
+        .modal-btn.secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+        
+        /* Mini Map */
+        .mini-map {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid var(--accent-purple);
+            border-radius: 15px;
+            pointer-events: auto;
+            overflow: hidden;
+        }
+        
+        .mini-map-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, var(--accent-purple), #8B7EFF);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(108, 99, 255, 0.5);
+            pointer-events: auto;
+            transform: translateX(-400px);
+            transition: transform 0.5s;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+            z-index: 2000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader {
+            width: 100px;
+            height: 100px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 30px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 2rem;
+            color: white;
+            font-weight: 900;
+        }
+        
+        /* Quest Panel */
+        .quest-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--shadow);
+            pointer-events: auto;
+            border: 3px solid var(--accent-orange);
+            max-width: 300px;
+        }
+        
+        .quest-panel h3 {
+            font-family: 'Cairo', sans-serif;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .quest-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-right: 4px solid var(--accent-orange);
+        }
+        
+        .quest-title {
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .quest-progress {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-hud {
+                right: 10px;
+                top: 10px;
+                padding: 15px;
+            }
+            
+            .top-hud h1 {
+                font-size: 1.3rem;
+            }
+            
+            .building-menu {
+                display: none;
+            }
+            
+            .quest-panel {
+                left: 10px;
+                top: 10px;
+                max-width: 250px;
+                display: none;
+            }
+            
+            .controls-panel {
+                bottom: 10px;
+                padding: 15px 20px;
+            }
+            
+            .mini-map {
+                width: 150px;
+                height: 150px;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <div class="loading-text">جاري تحميل المدينة...</div>
+    </div>
+    
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    
+    <div class="ui-overlay">
+        <!-- Top HUD -->
+        <div class="top-hud">
+            <h1>🏙️ مدينة الأحلام</h1>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-label">المال 💰</div>
+                    <div class="stat-value" id="money">1000</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">النقاط ⭐</div>
+                    <div class="stat-value" id="points">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">الطاقة ⚡</div>
+                    <div class="stat-value" id="energy">100</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">السعادة 😊</div>
+                    <div class="stat-value" id="happiness">100</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quest Panel -->
+        <div class="quest-panel">
+            <h3>📋 المهام اليومية</h3>
+            <div class="quest-item">
+                <div class="quest-title">زيارة المدرسة</div>
+                <div class="quest-progress">التقدم: 0/1</div>
+            </div>
+            <div class="quest-item">
+                <div class="quest-title">التسوق من السوبرماركت</div>
+                <div class="quest-progress">التقدم: 0/1</div>
+            </div>
+            <div class="quest-item">
+                <div class="quest-title">زيارة المستشفى</div>
+                <div class="quest-progress">التقدم: 0/1</div>
+            </div>
+        </div>
+        
+        <!-- Building Menu -->
+        <div class="building-menu">
+            <h2>🏢 مباني المدينة</h2>
+            <div class="building-list" id="buildingList"></div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls-panel">
+            <div class="controls-title">⌨️ التحكم</div>
+            <div class="control-buttons">
+                <button class="control-btn" id="leftBtn">⬅️ يسار</button>
+                <button class="control-btn jump" id="jumpBtn">⬆️ قفز</button>
+                <button class="control-btn" id="rightBtn">➡️ يمين</button>
+                <button class="control-btn" id="backBtn">⬇️ خلف</button>
+                <button class="control-btn" id="forwardBtn">⬆️ أمام</button>
+                <button class="control-btn" id="interactBtn">🤝 تفاعل</button>
+            </div>
+            <div class="control-info">استخدم WASD أو الأسهم للحركة، مسافة للقفز، E للتفاعل</div>
+        </div>
+        
+        <!-- Mini Map -->
+        <div class="mini-map">
+            <canvas class="mini-map-canvas" id="miniMapCanvas"></canvas>
+        </div>
+        
+        <!-- Interaction Modal -->
+        <div class="interaction-modal" id="interactionModal">
+            <div class="modal-header" id="modalHeader">مرحباً!</div>
+            <div class="modal-content" id="modalContent">محتوى التفاعل</div>
+            <div class="modal-actions" id="modalActions">
+                <button class="modal-btn" onclick="closeModal()">إغلاق</button>
+            </div>
+        </div>
+        
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Game State
+        const gameState = {
+            money: 1000,
+            points: 0,
+            energy: 100,
+            happiness: 100,
+            visitedBuildings: new Set(),
+            currentBuilding: null,
+            playerPosition: { x: 0, y: 0.5, z: 0 },
+            playerVelocity: { x: 0, y: 0, z: 0 },
+            isJumping: false,
+            keys: {},
+            scene: null,
+            camera: null,
+            renderer: null,
+            player: null,
+            buildings: [],
+            interactables: []
+        };
+        
+        // Building Types
+        const buildingTypes = [
+            {
+                name: 'المدرسة',
+                icon: '🏫',
+                color: 0xFFD700,
+                size: { w: 4, h: 3, d: 4 },
+                position: { x: 10, z: 10 },
+                activities: [
+                    { name: 'حضور حصة دراسية', cost: 0, reward: { points: 50, energy: -20 } },
+                    { name: 'المكتبة', cost: 0, reward: { points: 30, happiness: 10 } },
+                    { name: 'الملعب الرياضي', cost: 0, reward: { energy: -10, happiness: 20 } }
+                ]
+            },
+            {
+                name: 'المستشفى',
+                icon: '🏥',
+                color: 0xFF6B6B,
+                size: { w: 5, h: 4, d: 4 },
+                position: { x: -10, z: 10 },
+                activities: [
+                    { name: 'فحص طبي', cost: 50, reward: { energy: 30, happiness: 10 } },
+                    { name: 'شراء دواء', cost: 30, reward: { energy: 20 } },
+                    { name: 'زيارة قسم الطوارئ', cost: 100, reward: { energy: 50 } }
+                ]
+            },
+            {
+                name: 'السوبرماركت',
+                icon: '🏪',
+                color: 0x4ECDC4,
+                size: { w: 4, h: 2.5, d: 5 },
+                position: { x: 10, z: -10 },
+                activities: [
+                    { name: 'شراء طعام', cost: 50, reward: { energy: 30, happiness: 15 } },
+                    { name: 'شراء ملابس', cost: 100, reward: { happiness: 30 } },
+                    { name: 'شراء أدوات منزلية', cost: 80, reward: { happiness: 20 } }
+                ]
+            },
+            {
+                name: 'المطعم',
+                icon: '🍔',
+                color: 0xFF9F1C,
+                size: { w: 3, h: 2, d: 3 },
+                position: { x: -10, z: -10 },
+                activities: [
+                    { name: 'وجبة سريعة', cost: 30, reward: { energy: 20, happiness: 15 } },
+                    { name: 'وجبة فاخرة', cost: 100, reward: { energy: 50, happiness: 40 } },
+                    { name: 'مشروب منعش', cost: 10, reward: { energy: 10, happiness: 10 } }
+                ]
+            },
+            {
+                name: 'البنك',
+                icon: '🏦',
+                color: 0x2A9D8F,
+                size: { w: 4, h: 5, d: 3 },
+                position: { x: 0, z: 15 },
+                activities: [
+                    { name: 'إيداع أموال', cost: -100, reward: { points: 10 } },
+                    { name: 'سحب أموال', cost: 0, reward: { money: 100 } },
+                    { name: 'فتح حساب توفير', cost: 500, reward: { points: 100 } }
+                ]
+            },
+            {
+                name: 'مكتبة',
+                icon: '📚',
+                color: 0x8B4513,
+                size: { w: 3, h: 3, d: 4 },
+                position: { x: 15, z: 0 },
+                activities: [
+                    { name: 'قراءة كتاب', cost: 0, reward: { points: 40, happiness: 25 } },
+                    { name: 'شراء كتاب', cost: 40, reward: { points: 30 } },
+                    { name: 'استعارة كتاب', cost: 10, reward: { points: 20 } }
+                ]
+            },
+            {
+                name: 'صالة الألعاب',
+                icon: '🎮',
+                color: 0x9B59B6,
+                size: { w: 4, h: 2, d: 4 },
+                position: { x: -15, z: 0 },
+                activities: [
+                    { name: 'لعب ألعاب فيديو', cost: 20, reward: { happiness: 30, energy: -10 } },
+                    { name: 'بطولة ألعاب', cost: 50, reward: { points: 80, happiness: 50 } },
+                    { name: 'شراء لعبة', cost: 150, reward: { happiness: 40 } }
+                ]
+            },
+            {
+                name: 'الحديقة',
+                icon: '🌳',
+                color: 0x27AE60,
+                size: { w: 6, h: 0.5, d: 6 },
+                position: { x: 0, z: -15 },
+                activities: [
+                    { name: 'المشي في الحديقة', cost: 0, reward: { energy: 10, happiness: 20 } },
+                    { name: 'ممارسة الرياضة', cost: 0, reward: { energy: -20, happiness: 30, points: 25 } },
+                    { name: 'نزهة عائلية', cost: 50, reward: { happiness: 50 } }
+                ]
+            },
+            {
+                name: 'صالة الرياضة',
+                icon: '💪',
+                color: 0xE74C3C,
+                size: { w: 4, h: 3, d: 3 },
+                position: { x: 15, z: -15 },
+                activities: [
+                    { name: 'تمرين خفيف', cost: 20, reward: { energy: -15, happiness: 20, points: 15 } },
+                    { name: 'تمرين مكثف', cost: 30, reward: { energy: -30, happiness: 30, points: 40 } },
+                    { name: 'درس يوغا', cost: 40, reward: { energy: 10, happiness: 35 } }
+                ]
+            },
+            {
+                name: 'السينما',
+                icon: '🎬',
+                color: 0x3498DB,
+                size: { w: 5, h: 3, d: 4 },
+                position: { x: -15, z: -15 },
+                activities: [
+                    { name: 'مشاهدة فيلم', cost: 40, reward: { happiness: 40, energy: -10 } },
+                    { name: 'فيلم ثلاثي الأبعاد', cost: 70, reward: { happiness: 60, energy: -10 } },
+                    { name: 'شراء فشار', cost: 15, reward: { happiness: 15 } }
+                ]
+            },
+            {
+                name: 'المقهى',
+                icon: '☕',
+                color: 0x6F4E37,
+                size: { w: 2.5, h: 2, d: 2.5 },
+                position: { x: 5, z: 5 },
+                activities: [
+                    { name: 'طلب قهوة', cost: 15, reward: { energy: 20, happiness: 15 } },
+                    { name: 'كعكة وقهوة', cost: 30, reward: { energy: 30, happiness: 25 } },
+                    { name: 'الجلوس مع الأصدقاء', cost: 50, reward: { happiness: 40 } }
+                ]
+            },
+            {
+                name: 'محل الهدايا',
+                icon: '🎁',
+                color: 0xFF1493,
+                size: { w: 3, h: 2.5, d: 3 },
+                position: { x: -5, z: 5 },
+                activities: [
+                    { name: 'شراء هدية صغيرة', cost: 30, reward: { happiness: 20 } },
+                    { name: 'شراء هدية كبيرة', cost: 100, reward: { happiness: 50, points: 30 } },
+                    { name: 'تغليف هدية', cost: 10, reward: { happiness: 10 } }
+                ]
+            }
+        ];
+        
+        // Initialize Three.js
+        function initThreeJS() {
+            const canvas = document.getElementById('gameCanvas');
+            const container = document.getElementById('gameContainer');
+            
+            // Scene
+            gameState.scene = new THREE.Scene();
+            gameState.scene.background = new THREE.Color(0x87CEEB);
+            gameState.scene.fog = new THREE.Fog(0x87CEEB, 1, 100);
+            
+            // Camera
+            gameState.camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            gameState.camera.position.set(0, 10, 20);
+            gameState.camera.lookAt(0, 0, 0);
+            
+            // Renderer
+            gameState.renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            gameState.renderer.setSize(window.innerWidth, window.innerHeight);
+            gameState.renderer.shadowMap.enabled = true;
+            gameState.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            gameState.scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(50, 50, 50);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            directionalLight.shadow.camera.left = -50;
+            directionalLight.shadow.camera.right = 50;
+            directionalLight.shadow.camera.top = 50;
+            directionalLight.shadow.camera.bottom = -50;
+            gameState.scene.add(directionalLight);
+            
+            // Ground
+            const groundGeometry = new THREE.PlaneGeometry(100, 100);
+            const groundMaterial = new THREE.MeshLambertMaterial({ color: 0x7CFC00 });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            gameState.scene.add(ground);
+            
+            // Roads
+            createRoads();
+            
+            // Buildings
+            createBuildings();
+            
+            // Player
+            createPlayer();
+            
+            // Trees and decorations
+            createDecorations();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                gameState.camera.aspect = window.innerWidth / window.innerHeight;
+                gameState.camera.updateProjectionMatrix();
+                gameState.renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        function createRoads() {
+            // Main roads
+            const roadMaterial = new THREE.MeshLambertMaterial({ color: 0x505050 });
+            
+            // Horizontal road
+            const hRoadGeom = new THREE.PlaneGeometry(100, 4);
+            const hRoad = new THREE.Mesh(hRoadGeom, roadMaterial);
+            hRoad.rotation.x = -Math.PI / 2;
+            hRoad.position.y = 0.01;
+            gameState.scene.add(hRoad);
+            
+            // Vertical road
+            const vRoadGeom = new THREE.PlaneGeometry(4, 100);
+            const vRoad = new THREE.Mesh(vRoadGeom, roadMaterial);
+            vRoad.rotation.x = -Math.PI / 2;
+            vRoad.position.y = 0.01;
+            gameState.scene.add(vRoad);
+            
+            // Road markings
+            const markingMaterial = new THREE.MeshBasicMaterial({ color: 0xFFFFFF });
+            for (let i = -40; i < 40; i += 8) {
+                const marking = new THREE.Mesh(
+                    new THREE.PlaneGeometry(0.3, 2),
+                    markingMaterial
+                );
+                marking.rotation.x = -Math.PI / 2;
+                marking.position.set(i, 0.02, 0);
+                gameState.scene.add(marking);
+                
+                const marking2 = new THREE.Mesh(
+                    new THREE.PlaneGeometry(2, 0.3),
+                    markingMaterial
+                );
+                marking2.rotation.x = -Math.PI / 2;
+                marking2.position.set(0, 0.02, i);
+                gameState.scene.add(marking2);
+            }
+        }
+        
+        function createBuildings() {
+            buildingTypes.forEach((buildingType, index) => {
+                const building = createBuilding(buildingType);
+                gameState.buildings.push({
+                    mesh: building,
+                    type: buildingType,
+                    position: buildingType.position
+                });
+                gameState.scene.add(building);
+            });
+            
+            // Update building list UI
+            updateBuildingList();
+        }
+        
+        function createBuilding(type) {
+            const group = new THREE.Group();
+            
+            // Main building
+            const geometry = new THREE.BoxGeometry(type.size.w, type.size.h, type.size.d);
+            const material = new THREE.MeshLambertMaterial({ color: type.color });
+            const building = new THREE.Mesh(geometry, material);
+            building.position.y = type.size.h / 2;
+            building.castShadow = true;
+            building.receiveShadow = true;
+            group.add(building);
+            
+            // Roof
+            const roofGeom = new THREE.ConeGeometry(type.size.w * 0.7, type.size.h * 0.3, 4);
+            const roofMat = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+            const roof = new THREE.Mesh(roofGeom, roofMat);
+            roof.position.y = type.size.h + type.size.h * 0.15;
+            roof.rotation.y = Math.PI / 4;
+            roof.castShadow = true;
+            group.add(roof);
+            
+            // Windows
+            const windowMat = new THREE.MeshBasicMaterial({ color: 0x87CEEB });
+            for (let i = 0; i < 2; i++) {
+                for (let j = 0; j < 2; j++) {
+                    const window1 = new THREE.Mesh(
+                        new THREE.PlaneGeometry(0.5, 0.5),
+                        windowMat
+                    );
+                    window1.position.set(
+                        -type.size.w / 2 + 0.01,
+                        type.size.h * 0.3 + i * 0.8,
+                        -type.size.d / 2 + 0.5 + j * (type.size.d - 1)
+                    );
+                    window1.rotation.y = Math.PI / 2;
+                    group.add(window1);
+                }
+            }
+            
+            // Door
+            const doorGeom = new THREE.BoxGeometry(0.8, 1.5, 0.1);
+            const doorMat = new THREE.MeshLambertMaterial({ color: 0x654321 });
+            const door = new THREE.Mesh(doorGeom, doorMat);
+            door.position.set(type.size.w / 2 - 0.05, 0.75, 0);
+            group.add(door);
+            
+            // Sign
+            const signGeom = new THREE.PlaneGeometry(2, 0.8);
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 256, 128);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(type.name, 128, 80);
+            const texture = new THREE.CanvasTexture(canvas);
+            const signMat = new THREE.MeshBasicMaterial({ map: texture });
+            const sign = new THREE.Mesh(signGeom, signMat);
+            sign.position.set(type.size.w / 2 + 0.1, type.size.h - 0.5, 0);
+            sign.rotation.y = -Math.PI / 2;
+            group.add(sign);
+            
+            group.position.set(type.position.x, 0, type.position.z);
+            group.userData = { type: type.name, buildingType: type };
+            
+            return group;
+        }
+        
+        function createPlayer() {
+            const group = new THREE.Group();
+            
+            // Body
+            const bodyGeom = new THREE.CylinderGeometry(0.3, 0.3, 1.2, 8);
+            const bodyMat = new THREE.MeshLambertMaterial({ color: 0x4169E1 });
+            const body = new THREE.Mesh(bodyGeom, bodyMat);
+            body.position.y = 0.6;
+            body.castShadow = true;
+            group.add(body);
+            
+            // Head
+            const headGeom = new THREE.SphereGeometry(0.25, 16, 16);
+            const headMat = new THREE.MeshLambertMaterial({ color: 0xFFDBAC });
+            const head = new THREE.Mesh(headGeom, headMat);
+            head.position.y = 1.45;
+            head.castShadow = true;
+            group.add(head);
+            
+            // Eyes
+            const eyeGeom = new THREE.SphereGeometry(0.05, 8, 8);
+            const eyeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const leftEye = new THREE.Mesh(eyeGeom, eyeMat);
+            leftEye.position.set(-0.1, 1.5, 0.2);
+            group.add(leftEye);
+            const rightEye = leftEye.clone();
+            rightEye.position.x = 0.1;
+            group.add(rightEye);
+            
+            // Arms
+            const armGeom = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 8);
+            const armMat = new THREE.MeshLambertMaterial({ color: 0xFFDBAC });
+            const leftArm = new THREE.Mesh(armGeom, armMat);
+            leftArm.position.set(-0.4, 0.8, 0);
+            leftArm.castShadow = true;
+            group.add(leftArm);
+            const rightArm = leftArm.clone();
+            rightArm.position.x = 0.4;
+            group.add(rightArm);
+            
+            // Legs
+            const legGeom = new THREE.CylinderGeometry(0.12, 0.12, 0.6, 8);
+            const legMat = new THREE.MeshLambertMaterial({ color: 0x2C3E50 });
+            const leftLeg = new THREE.Mesh(legGeom, legMat);
+            leftLeg.position.set(-0.15, 0.3, 0);
+            leftLeg.castShadow = true;
+            group.add(leftLeg);
+            const rightLeg = leftLeg.clone();
+            rightLeg.position.x = 0.15;
+            group.add(rightLeg);
+            
+            group.position.set(0, 0.5, 0);
+            gameState.player = group;
+            gameState.scene.add(group);
+        }
+        
+        function createDecorations() {
+            // Trees
+            for (let i = 0; i < 30; i++) {
+                const tree = createTree();
+                let x, z;
+                do {
+                    x = (Math.random() - 0.5) * 80;
+                    z = (Math.random() - 0.5) * 80;
+                } while (Math.abs(x) < 3 || Math.abs(z) < 3); // Avoid roads
+                
+                tree.position.set(x, 0, z);
+                gameState.scene.add(tree);
+            }
+            
+            // Benches
+            for (let i = 0; i < 10; i++) {
+                const bench = createBench();
+                bench.position.set(
+                    (Math.random() - 0.5) * 40,
+                    0,
+                    (Math.random() - 0.5) * 40
+                );
+                gameState.scene.add(bench);
+            }
+            
+            // Street lamps
+            for (let i = -40; i < 40; i += 10) {
+                const lamp1 = createStreetLamp();
+                lamp1.position.set(i, 0, 3);
+                gameState.scene.add(lamp1);
+                
+                const lamp2 = createStreetLamp();
+                lamp2.position.set(3, 0, i);
+                gameState.scene.add(lamp2);
+            }
+        }
+        
+        function createTree() {
+            const group = new THREE.Group();
+            
+            // Trunk
+            const trunkGeom = new THREE.CylinderGeometry(0.2, 0.3, 2, 8);
+            const trunkMat = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeom, trunkMat);
+            trunk.position.y = 1;
+            trunk.castShadow = true;
+            group.add(trunk);
+            
+            // Leaves
+            const leavesGeom = new THREE.SphereGeometry(1, 8, 8);
+            const leavesMat = new THREE.MeshLambertMaterial({ color: 0x228B22 });
+            const leaves = new THREE.Mesh(leavesGeom, leavesMat);
+            leaves.position.y = 2.5;
+            leaves.castShadow = true;
+            group.add(leaves);
+            
+            return group;
+        }
+        
+        function createBench() {
+            const group = new THREE.Group();
+            const benchMat = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+            
+            // Seat
+            const seat = new THREE.Mesh(
+                new THREE.BoxGeometry(1.5, 0.1, 0.5),
+                benchMat
+            );
+            seat.position.y = 0.5;
+            group.add(seat);
+            
+            // Back
+            const back = new THREE.Mesh(
+                new THREE.BoxGeometry(1.5, 0.6, 0.1),
+                benchMat
+            );
+            back.position.set(0, 0.8, -0.2);
+            group.add(back);
+            
+            // Legs
+            for (let i = -0.6; i <= 0.6; i += 1.2) {
+                const leg = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.05, 0.05, 0.5, 8),
+                    benchMat
+                );
+                leg.position.set(i, 0.25, 0);
+                group.add(leg);
+            }
+            
+            return group;
+        }
+        
+        function createStreetLamp() {
+            const group = new THREE.Group();
+            
+            // Pole
+            const poleGeom = new THREE.CylinderGeometry(0.1, 0.1, 4, 8);
+            const poleMat = new THREE.MeshLambertMaterial({ color: 0x808080 });
+            const pole = new THREE.Mesh(poleGeom, poleMat);
+            pole.position.y = 2;
+            pole.castShadow = true;
+            group.add(pole);
+            
+            // Light
+            const lightGeom = new THREE.SphereGeometry(0.3, 16, 16);
+            const lightMat = new THREE.MeshBasicMaterial({ color: 0xFFFF00 });
+            const light = new THREE.Mesh(lightGeom, lightMat);
+            light.position.y = 4;
+            group.add(light);
+            
+            // Point light
+            const pointLight = new THREE.PointLight(0xFFFF00, 0.5, 10);
+            pointLight.position.y = 4;
+            group.add(pointLight);
+            
+            return group;
+        }
+        
+        function updateBuildingList() {
+            const list = document.getElementById('buildingList');
+            list.innerHTML = '';
+            
+            buildingTypes.forEach((building, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'building-btn';
+                btn.innerHTML = `${building.icon} ${building.name}`;
+                btn.onclick = () => teleportToBuilding(building);
+                list.appendChild(btn);
+            });
+        }
+        
+        function teleportToBuilding(building) {
+            gameState.playerPosition.x = building.position.x + 6;
+            gameState.playerPosition.z = building.position.z;
+            gameState.player.position.set(
+                gameState.playerPosition.x,
+                gameState.playerPosition.y,
+                gameState.playerPosition.z
+            );
+            showNotification(`انتقلت إلى ${building.name}`);
+        }
+        
+        // Player Controls
+        function setupControls() {
+            // Keyboard
+            window.addEventListener('keydown', (e) => {
+                gameState.keys[e.key.toLowerCase()] = true;
+                
+                if (e.key === ' ' && !gameState.isJumping) {
+                    jump();
+                }
+                if (e.key.toLowerCase() === 'e') {
+                    interact();
+                }
+            });
+            
+            window.addEventListener('keyup', (e) => {
+                gameState.keys[e.key.toLowerCase()] = false;
+            });
+            
+            // Touch controls
+            document.getElementById('forwardBtn').addEventListener('click', () => {
+                movePlayer(0, -0.3);
+            });
+            document.getElementById('backBtn').addEventListener('click', () => {
+                movePlayer(0, 0.3);
+            });
+            document.getElementById('leftBtn').addEventListener('click', () => {
+                movePlayer(-0.3, 0);
+            });
+            document.getElementById('rightBtn').addEventListener('click', () => {
+                movePlayer(0.3, 0);
+            });
+            document.getElementById('jumpBtn').addEventListener('click', jump);
+            document.getElementById('interactBtn').addEventListener('click', interact);
+        }
+        
+        function movePlayer(dx, dz) {
+            gameState.playerPosition.x += dx;
+            gameState.playerPosition.z += dz;
+        }
+        
+        function jump() {
+            if (!gameState.isJumping) {
+                gameState.isJumping = true;
+                gameState.playerVelocity.y = 0.3;
+            }
+        }
+        
+        function interact() {
+            // Check if near any building
+            gameState.buildings.forEach(building => {
+                const distance = Math.sqrt(
+                    Math.pow(gameState.playerPosition.x - building.position.x, 2) +
+                    Math.pow(gameState.playerPosition.z - building.position.z, 2)
+                );
+                
+                if (distance < 8) {
+                    openBuildingModal(building.type);
+                }
+            });
+        }
+        
+        function openBuildingModal(buildingType) {
+            const modal = document.getElementById('interactionModal');
+            const header = document.getElementById('modalHeader');
+            const content = document.getElementById('modalContent');
+            const actions = document.getElementById('modalActions');
+            
+            header.textContent = `${buildingType.icon} ${buildingType.name}`;
+            
+            content.innerHTML = `<p style="margin-bottom: 20px;">اختر نشاطاً:</p>`;
+            
+            actions.innerHTML = '';
+            
+            buildingType.activities.forEach(activity => {
+                const btn = document.createElement('button');
+                btn.className = 'modal-btn';
+                btn.textContent = `${activity.name} (${activity.cost > 0 ? activity.cost + ' ريال' : 'مجاناً'})`;
+                btn.onclick = () => performActivity(activity, buildingType.name);
+                actions.appendChild(btn);
+            });
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'modal-btn secondary';
+            closeBtn.textContent = 'إغلاق';
+            closeBtn.onclick = closeModal;
+            actions.appendChild(closeBtn);
+            
+            modal.classList.add('active');
+            
+            // Mark building as visited
+            if (!gameState.visitedBuildings.has(buildingType.name)) {
+                gameState.visitedBuildings.add(buildingType.name);
+                gameState.points += 10;
+                updateStats();
+            }
+        }
+        
+        function performActivity(activity, buildingName) {
+            if (gameState.money < activity.cost) {
+                showNotification('❌ ليس لديك ما يكفي من المال!');
+                return;
+            }
+            
+            // Apply cost and rewards
+            gameState.money -= activity.cost;
+            
+            if (activity.reward.money) gameState.money += activity.reward.money;
+            if (activity.reward.points) gameState.points += activity.reward.points;
+            if (activity.reward.energy) {
+                gameState.energy += activity.reward.energy;
+                gameState.energy = Math.max(0, Math.min(100, gameState.energy));
+            }
+            if (activity.reward.happiness) {
+                gameState.happiness += activity.reward.happiness;
+                gameState.happiness = Math.max(0, Math.min(100, gameState.happiness));
+            }
+            
+            updateStats();
+            showNotification(`✅ ${activity.name} - تم بنجاح!`);
+            closeModal();
+        }
+        
+        function closeModal() {
+            document.getElementById('interactionModal').classList.remove('active');
+        }
+        
+        function updateStats() {
+            document.getElementById('money').textContent = gameState.money;
+            document.getElementById('points').textContent = gameState.points;
+            document.getElementById('energy').textContent = gameState.energy;
+            document.getElementById('happiness').textContent = gameState.happiness;
+        }
+        
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Player movement
+            const moveSpeed = 0.15;
+            if (gameState.keys['w'] || gameState.keys['arrowup']) {
+                gameState.playerPosition.z -= moveSpeed;
+            }
+            if (gameState.keys['s'] || gameState.keys['arrowdown']) {
+                gameState.playerPosition.z += moveSpeed;
+            }
+            if (gameState.keys['a'] || gameState.keys['arrowleft']) {
+                gameState.playerPosition.x -= moveSpeed;
+                gameState.player.rotation.y = Math.PI / 2;
+            }
+            if (gameState.keys['d'] || gameState.keys['arrowright']) {
+                gameState.playerPosition.x += moveSpeed;
+                gameState.player.rotation.y = -Math.PI / 2;
+            }
+            
+            // Gravity and jumping
+            if (gameState.isJumping) {
+                gameState.playerVelocity.y -= 0.02;
+                gameState.playerPosition.y += gameState.playerVelocity.y;
+                
+                if (gameState.playerPosition.y <= 0.5) {
+                    gameState.playerPosition.y = 0.5;
+                    gameState.isJumping = false;
+                    gameState.playerVelocity.y = 0;
+                }
+            }
+            
+            // Update player mesh position
+            gameState.player.position.set(
+                gameState.playerPosition.x,
+                gameState.playerPosition.y,
+                gameState.playerPosition.z
+            );
+            
+            // Camera follows player
+            gameState.camera.position.x = gameState.playerPosition.x;
+            gameState.camera.position.z = gameState.playerPosition.z + 15;
+            gameState.camera.position.y = 10;
+            gameState.camera.lookAt(gameState.player.position);
+            
+            // Animate buildings (slight rotation)
+            gameState.buildings.forEach((building, index) => {
+                building.mesh.children[0].rotation.y += 0.001;
+            });
+            
+            // Update mini map
+            updateMiniMap();
+            
+            // Render
+            gameState.renderer.render(gameState.scene, gameState.camera);
+        }
+        
+        function updateMiniMap() {
+            const canvas = document.getElementById('miniMapCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 200;
+            canvas.height = 200;
+            
+            // Background
+            ctx.fillStyle = '#7CFC00';
+            ctx.fillRect(0, 0, 200, 200);
+            
+            // Roads
+            ctx.fillStyle = '#505050';
+            ctx.fillRect(0, 95, 200, 10);
+            ctx.fillRect(95, 0, 10, 200);
+            
+            // Buildings
+            gameState.buildings.forEach(building => {
+                const x = (building.position.x + 50) * 2;
+                const z = (building.position.z + 50) * 2;
+                
+                ctx.fillStyle = gameState.visitedBuildings.has(building.type.name) 
+                    ? '#4CAF50' 
+                    : '#FF6B35';
+                ctx.fillRect(x - 4, z - 4, 8, 8);
+            });
+            
+            // Player
+            const px = (gameState.playerPosition.x + 50) * 2;
+            const pz = (gameState.playerPosition.z + 50) * 2;
+            ctx.fillStyle = '#0000FF';
+            ctx.beginPath();
+            ctx.arc(px, pz, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Initialize Game
+        window.addEventListener('load', () => {
+            initThreeJS();
+            setupControls();
+            animate();
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                showNotification('🎮 مرحباً في مدينة الأحلام!');
+            }, 2000);
+        });
+        
+        // Auto-save every 30 seconds
+        setInterval(() => {
+            localStorage.setItem('cityGameSave', JSON.stringify({
+                money: gameState.money,
+                points: gameState.points,
+                energy: gameState.energy,
+                happiness: gameState.happiness,
+                visitedBuildings: Array.from(gameState.visitedBuildings)
+            }));
+        }, 30000);
+        
+        // Load saved game
+        const savedGame = localStorage.getItem('cityGameSave');
+        if (savedGame) {
+            const data = JSON.parse(savedGame);
+            gameState.money = data.money;
+            gameState.points = data.points;
+            gameState.energy = data.energy;
+            gameState.happiness = data.happiness;
+            gameState.visitedBuildings = new Set(data.visitedBuildings);
+            updateStats();
+        }
+    </script>
+</body>
+</html>

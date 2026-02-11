@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة المناهج التعليمية | EDUCORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --primary-navy: #0a192f;
+            --secondary-navy: #172a45;
+            --accent-gold: #64ffda; /* لون تمييز عصري */
+            --white-grad: #ffffff;
+            --text-main: #ccd6f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(180deg, var(--white-grad) 0%, #f0f4f8 15%, var(--primary-navy) 40%, #020c1b 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* شريط التصفح العلوي */
+        nav {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--primary-navy);
+        }
+
+        /* الهيدر الرئيسي */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            animation: fadeInDown 1s;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .hero p {
+            color: #555;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* أقسام الصفوف */
+        .stage-section {
+            margin-bottom: 80px;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-right: 6px solid var(--accent-gold);
+            padding-right: 20px;
+        }
+
+        .stage-header h2 {
+            font-size: 2rem;
+            margin: 0;
+            color: var(--accent-gold);
+        }
+
+        /* بطاقات الصفوف */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--secondary-navy);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--accent-gold);
+            clip-path: circle(0% at 50% 50%);
+            transition: 0.6s ease;
+            z-index: 0;
+            opacity: 0.1;
+        }
+
+        .card:hover::before {
+            clip-path: circle(100% at 50% 50%);
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card i {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            display: block;
+            z-index: 1;
+            position: relative;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin: 0;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* تمييز التوجيهي */
+        .card.featured {
+            background: linear-gradient(135deg, var(--secondary-navy) 0%, #1d3557 100%);
+            border: 2px solid var(--accent-gold);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: -30px;
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            padding: 5px 30px;
+            transform: rotate(-45deg);
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* تخصيص للمرحلة الفاتحة */
+        .light-stage .card {
+            background: white;
+            color: var(--primary-navy);
+            border: 1px solid #e2e8f0;
+        }
+
+        .light-stage .stage-header h2 {
+            color: var(--primary-navy);
+        }
+
+        footer {
+            background: #020c1b;
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .search-box {
+            background: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            max-width: 500px;
+            margin: 30px auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 10px;
+            font-family: 'Cairo';
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .grid-layout { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">EDU<span style="color: #2b6cb0;">CORE</span></div>
+        <div class="nav-links">
+            <i class="fas fa-user-circle fa-2x" style="color: var(--primary-navy);"></i>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 class="animate__animated animate__fadeInUp">بوابتك لمستقبل مشرق</h1>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">جميع الكتب المدرسية والمناهج المعتمدة بين يديك، اختر صفك الدراسي وابدأ رحلة التعلم.</p>
+        
+        <div class="search-box animate__animated animate__zoomIn animate__delay-1s">
+            <i class="fas fa-search" style="color: #aaa;"></i>
+            <input type="text" placeholder="ابحث عن كتاب، مادة، أو صف...">
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <section class="stage-section light-stage">
+            <div class="stage-header">
+                <h2><i class="fas fa-child"></i> المرحلة الأساسية (1 - 4)</h2>
+            </div>
+            <div class="grid-layout">
+                <div class="card">
+                    <i class="fas fa-pencil-alt"></i>
+                    <h3>الصف الأول</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-book-open"></i>
+                    <h3>الصف الثاني</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-palette"></i>
+                    <h3>الصف الثالث</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-calculator"></i>
+                    <h3>الصف الرابع</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="stage-section">
+            <div class="stage-header">
+                <h2><i class="fas fa-user-graduate"></i> المرحلة المتوسطة (5 - 10)</h2>
+            </div>
+            <div class="grid-layout">
+                <div class="card">
+                    <i class="fas fa-atom"></i>
+                    <h3>الصف الخامس</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-microscope"></i>
+                    <h3>الصف السادس</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-globe-americas"></i>
+                    <h3>الصف السابع</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-dna"></i>
+                    <h3>الصف الثامن</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-flask"></i>
+                    <h3>الصف التاسع</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-square-root-alt"></i>
+                    <h3>الصف العاشر</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="stage-section">
+            <div class="stage-header">
+                <h2><i class="fas fa-star"></i> المرحلة الثانوية والتوجيهي</h2>
+            </div>
+            <div class="grid-layout">
+                <div class="card">
+                    <i class="fas fa-university"></i>
+                    <h3>11 - اكاديمي</h3>
+                </div>
+                <div class="card">
+                    <i class="fas fa-pen-nib"></i>
+                    <h3>11 - مهني</h3>
+                </div>
+                <div class="card featured">
+                    <div class="badge">الأهم</div>
+                    <i class="fas fa-medal"></i>
+                    <h3>توجيهي - مهني</h3>
+                </div>
+                <div class="card featured">
+                    <div class="badge">الأهم</div>
+                    <i class="fas fa-scroll"></i>
+                    <h3>توجيهي - اكاديمي</h3>
+                </div>
+
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 20px;">
+            <i class="fab fa-facebook fa-2x" style="margin: 0 15px;"></i>
+            <i class="fab fa-twitter fa-2x" style="margin: 0 15px;"></i>
+            <i class="fab fa-instagram fa-2x" style="margin: 0 15px;"></i>
+        </div>
+        <p>تصميم ذكي للمستقبل التعليمي &copy; 2026</p>
+    </footer>
+
+</body>
+</html>

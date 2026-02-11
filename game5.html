@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #0a0a12, #1a1a2e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 900px;
+            height: 650px;
+            background: linear-gradient(to bottom, #000000, #0a0a1a);
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 
+                        inset 0 0 50px rgba(65, 105, 225, 0.1);
+            border-radius: 5px;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #startScreen, #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0, 0, 10, 0.98), rgba(10, 10, 26, 0.95));
+            padding: 50px;
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            text-align: center;
+            color: #d4af37;
+            z-index: 20;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6),
+                        inset 0 0 30px rgba(65, 105, 225, 0.1);
+            min-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #gameOver {
+            display: none;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 1),
+                         0 0 40px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #4169e1;
+            text-shadow: 0 0 10px rgba(65, 105, 225, 0.8);
+        }
+
+        .modeButtons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 2px solid #f0c950;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+        }
+
+        #menuButton {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 2px solid #f0c950;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: bold;
+            z-index: 30;
+            display: none;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        #menuButton:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
+        }
+
+        #gameArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        #stats {
+            background: rgba(0, 0, 10, 0.7);
+            padding: 15px 180px 15px 20px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            justify-content: space-around;
+            color: #d4af37;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+            position: relative;
+            z-index: 15;
+        }
+
+        #questionArea {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 25px;
+            overflow-y: auto;
+        }
+
+        #questionDisplay {
+            font-size: 42px;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 1);
+            background: rgba(0, 0, 10, 0.6);
+            padding: 30px 50px;
+            border-radius: 15px;
+            border: 3px solid rgba(212, 175, 55, 0.5);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        #questionHint {
+            font-size: 22px;
+            color: #4169e1;
+            text-shadow: 0 0 15px rgba(65, 105, 225, 0.8);
+            background: rgba(0, 0, 10, 0.5);
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid rgba(65, 105, 225, 0.3);
+        }
+
+        #answersArea {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .answerButton {
+            padding: 20px;
+            font-size: 24px;
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 3px solid #f0c950;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .answerButton:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .answerButton.correct {
+            background: linear-gradient(to bottom, #4CAF50, #45a049);
+            border-color: #66bb6a;
+            animation: correctPulse 0.5s;
+        }
+
+        .answerButton.incorrect {
+            background: linear-gradient(to bottom, #f44336, #da190b);
+            border-color: #ff6b6b;
+            animation: shake 0.5s;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        #inputArea {
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 20px;
+            font-size: 28px;
+            font-family: 'Arial', sans-serif;
+            background: rgba(0, 0, 10, 0.9);
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            color: #d4af37;
+            outline: none;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+
+        #textInput:focus {
+            border-color: #f0c950;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        #submitButton {
+            margin-top: 15px;
+            width: 100%;
+            padding: 18px;
+            font-size: 22px;
+        }
+
+        #resultsStats {
+            margin: 30px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .resultItem {
+            background: rgba(0, 0, 10, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .resultLabel {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .resultValue {
+            font-size: 36px;
+            font-weight: bold;
+            color: #f0c950;
+            text-shadow: 0 0 10px rgba(240, 201, 80, 0.8);
+        }
+
+        .rating {
+            font-size: 28px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        #feedback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            font-weight: bold;
+            color: #d4af37;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 1);
+            pointer-events: none;
+            z-index: 25;
+            display: none;
+            animation: feedbackAnimation 1s ease-out;
+        }
+
+        @keyframes feedbackAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .mode-icon {
+            font-size: 28px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="900" height="650"></canvas>
+
+        <button id="menuButton" onclick="returnToMenu()">Main Menu</button>
+
+        <div id="startScreen">
+            <h1>📚 English Learning Academy 📚</h1>
+            <h2>Choose Your Learning Topic</h2>
+            <div class="modeButtons">
+                <button onclick="startGame('alphabet')">
+                    <span class="mode-icon">🔤</span>
+                    Alphabet
+                </button>
+                <button onclick="startGame('vocabulary')">
+                    <span class="mode-icon">📖</span>
+                    Vocabulary
+                </button>
+                <button onclick="startGame('grammar')">
+                    <span class="mode-icon">✍️</span>
+                    Grammar
+                </button>
+                <button onclick="startGame('spelling')">
+                    <span class="mode-icon">📝</span>
+                    Spelling
+                </button>
+                <button onclick="startGame('synonyms')">
+                    <span class="mode-icon">🔄</span>
+                    Synonyms
+                </button>
+                <button onclick="startGame('antonyms')">
+                    <span class="mode-icon">↔️</span>
+                    Antonyms
+                </button>
+                <button onclick="startGame('idioms')">
+                    <span class="mode-icon">💡</span>
+                    Idioms
+                </button>
+                <button onclick="startGame('mixed')">
+                    <span class="mode-icon">🎲</span>
+                    Mixed Challenge
+                </button>
+            </div>
+        </div>
+
+        <div id="gameArea">
+            <div id="stats">
+                <div>Score: <span id="score">0</span></div>
+                <div>Question: <span id="questionNumber">1</span>/10</div>
+                <div>Correct: <span id="correct">0</span></div>
+                <div>Accuracy: <span id="accuracy">100%</span></div>
+            </div>
+
+            <div id="questionArea">
+                <div id="questionDisplay"></div>
+                <div id="questionHint"></div>
+                <div id="answersArea"></div>
+                <div id="inputArea">
+                    <input type="text" id="textInput" placeholder="Type your answer here...">
+                    <button id="submitButton" onclick="checkTextAnswer()">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameOver">
+            <h1>Final Results! 🏆</h1>
+            <div id="resultsStats">
+                <div class="resultItem">
+                    <div class="resultLabel">Final Score</div>
+                    <div class="resultValue" id="finalScore">0</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">Correct Answers</div>
+                    <div class="resultValue"><span id="finalCorrect">0</span>/10</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">Accuracy</div>
+                    <div class="resultValue"><span id="finalAccuracy">0</span>%</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">Level</div>
+                    <div class="resultValue" id="level" style="font-size: 28px;">Beginner</div>
+                </div>
+            </div>
+            <div class="rating" id="rating">⭐ Excellent!</div>
+            <button onclick="returnToMenu()" style="margin-top: 20px;">Main Menu</button>
+        </div>
+
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let gameRunning = false;
+        let gameMode = 'alphabet';
+        let score = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let currentQuestion = null;
+        let questionCount = 0;
+        let maxQuestions = 10;
+        let usedQuestions = [];
+
+        // Game data
+        const gameData = {
+            alphabet: [
+                { q: 'Which letter comes between F and H?', a: ['E', 'G', 'I', 'J'], correct: 'G', hint: 'Middle letter' },
+                { q: 'What is the 10th letter of the alphabet?', a: ['I', 'J', 'K', 'L'], correct: 'J', hint: 'Count from A' },
+                { q: 'Which letter comes after P?', a: ['O', 'Q', 'R', 'S'], correct: 'Q', hint: '17th letter' },
+                { q: 'How many vowels are in the alphabet?', a: ['3', '4', '5', '6'], correct: '5', hint: 'A, E, I, O, U' },
+                { q: 'Which is the 3rd letter?', a: ['A', 'B', 'C', 'D'], correct: 'C', hint: 'After B' },
+                { q: 'Which letter comes before K?', a: ['I', 'J', 'L', 'M'], correct: 'J', hint: 'One before K' },
+                { q: 'Which word comes last alphabetically?', a: ['Zebra', 'Apple', 'Mango', 'Dog'], correct: 'Zebra', hint: 'Z is last' },
+                { q: 'Which is NOT a vowel?', a: ['U', 'I', 'T', 'O'], correct: 'T', hint: 'Consonant' },
+                { q: 'What letter comes after S?', a: ['R', 'T', 'U', 'V'], correct: 'T', hint: '20th letter' },
+                { q: 'Which comes first: Dog, Ball, or Cat?', a: ['Dog', 'Ball', 'Cat', 'All same'], correct: 'Ball', hint: 'B before C and D' }
+            ],
+            vocabulary: [
+                { q: '🌙 What is this?', a: ['Sun', 'Star', 'Moon', 'Cloud'], correct: 'Moon', hint: 'Shines at night' },
+                { q: '🐶 What is this animal?', a: ['Cat', 'Dog', 'Mouse', 'Bird'], correct: 'Dog', hint: 'Says woof' },
+                { q: '🍌 What is this fruit?', a: ['Apple', 'Orange', 'Banana', 'Grape'], correct: 'Banana', hint: 'Yellow and curved' },
+                { q: '✈️ What is this vehicle?', a: ['Car', 'Boat', 'Plane', 'Train'], correct: 'Plane', hint: 'Flies in sky' },
+                { q: '⭐ What is this?', a: ['Moon', 'Star', 'Sun', 'Planet'], correct: 'Star', hint: 'Twinkles at night' },
+                { q: '🎸 What is this?', a: ['Piano', 'Guitar', 'Drum', 'Flute'], correct: 'Guitar', hint: 'String instrument' },
+                { q: '🏫 What is this place?', a: ['Hospital', 'School', 'Mall', 'Park'], correct: 'School', hint: 'Where students learn' },
+                { q: '⚽ What is this sport item?', a: ['Basketball', 'Baseball', 'Football', 'Tennis ball'], correct: 'Football', hint: 'Soccer ball' },
+                { q: '🍕 What is this food?', a: ['Burger', 'Pizza', 'Sandwich', 'Pasta'], correct: 'Pizza', hint: 'Italian dish' },
+                { q: '🌳 What is this?', a: ['Bush', 'Flower', 'Tree', 'Grass'], correct: 'Tree', hint: 'Tall plant with trunk' }
+            ],
+            grammar: [
+                { q: 'She ___ to school every day.', a: ['go', 'goes', 'going', 'gone'], correct: 'goes', hint: 'Third person singular' },
+                { q: 'We ___ playing outside now.', a: ['is', 'am', 'are', 'be'], correct: 'are', hint: 'Plural subject' },
+                { q: 'Yesterday, I ___ to the park.', a: ['go', 'went', 'gone', 'going'], correct: 'went', hint: 'Past tense' },
+                { q: 'What is the plural of "foot"?', a: ['foots', 'feet', 'footes', 'feets'], correct: 'feet', hint: 'Irregular plural' },
+                { q: 'What is the past tense of "eat"?', a: ['eated', 'eaten', 'ate', 'eating'], correct: 'ate', hint: 'Past simple' },
+                { q: 'Which is correct?', a: ['They is happy', 'They are happy', 'They am happy', 'They be happy'], correct: 'They are happy', hint: 'Plural verb' },
+                { q: 'Which is an adverb?', a: ['quick', 'quickly', 'quickness', 'quicker'], correct: 'quickly', hint: 'Describes how' },
+                { q: 'Which sentence is correct?', a: ['I has a pen', 'I have a pen', 'I haves a pen', 'I having a pen'], correct: 'I have a pen', hint: 'First person' },
+                { q: 'What type of word is "beautiful"?', a: ['Noun', 'Verb', 'Adjective', 'Adverb'], correct: 'Adjective', hint: 'Describes' },
+                { q: 'What is the plural of "mouse"?', a: ['mouses', 'mice', 'mices', 'mouse'], correct: 'mice', hint: 'Irregular' }
+            ],
+            spelling: [
+                { q: 'Spell: Necessary', correct: 'necessary', hint: 'N-E-C-E-S-S-A-R-Y', type: 'text' },
+                { q: 'Spell: Restaurant', correct: 'restaurant', hint: 'Place to eat', type: 'text' },
+                { q: 'Spell: Library', correct: 'library', hint: 'Place with books', type: 'text' },
+                { q: 'Spell: Chocolate', correct: 'chocolate', hint: 'Sweet treat', type: 'text' },
+                { q: 'Which is correct?', a: ['accomodate', 'accommodate', 'acomodate', 'acommodate'], correct: 'accommodate', hint: 'Double C and M' },
+                { q: 'Which is correct?', a: ['wierd', 'weird', 'werid', 'weerd'], correct: 'weird', hint: 'Exception to I before E' },
+                { q: 'Which is correct?', a: ['goverment', 'governmant', 'government', 'govermant'], correct: 'government', hint: 'Rules a country' },
+                { q: 'Which is correct?', a: ['enviroment', 'environment', 'enviornment', 'enviorment'], correct: 'environment', hint: 'Nature around us' },
+                { q: 'Which is correct?', a: ['beleive', 'believe', 'beleave', 'belive'], correct: 'believe', hint: 'I before E' },
+                { q: 'Which is correct?', a: ['fourty', 'forty', 'fourthy', 'fourty'], correct: 'forty', hint: 'Number 40' }
+            ],
+            synonyms: [
+                { q: 'Synonym of "tiny"?', a: ['huge', 'small', 'tall', 'wide'], correct: 'small', hint: 'Very small' },
+                { q: 'Synonym of "brave"?', a: ['scared', 'courageous', 'weak', 'shy'], correct: 'courageous', hint: 'Fearless' },
+                { q: 'Synonym of "angry"?', a: ['happy', 'mad', 'calm', 'kind'], correct: 'mad', hint: 'Upset' },
+                { q: 'Synonym of "talk"?', a: ['listen', 'speak', 'write', 'read'], correct: 'speak', hint: 'Use words' },
+                { q: 'Synonym of "funny"?', a: ['sad', 'boring', 'hilarious', 'serious'], correct: 'hilarious', hint: 'Makes you laugh' },
+                { q: 'Synonym of "start"?', a: ['end', 'begin', 'finish', 'stop'], correct: 'begin', hint: 'Commence' },
+                { q: 'Synonym of "quiet"?', a: ['loud', 'noisy', 'silent', 'busy'], correct: 'silent', hint: 'No noise' },
+                { q: 'Synonym of "glad"?', a: ['sad', 'angry', 'happy', 'tired'], correct: 'happy', hint: 'Joyful' },
+                { q: 'Synonym of "rich"?', a: ['poor', 'wealthy', 'broke', 'cheap'], correct: 'wealthy', hint: 'Lots of money' },
+                { q: 'Synonym of "easy"?', a: ['hard', 'simple', 'difficult', 'tough'], correct: 'simple', hint: 'Not complicated' }
+            ],
+            antonyms: [
+                { q: 'Opposite of "light"?', a: ['bright', 'dark', 'white', 'clear'], correct: 'dark', hint: 'No light' },
+                { q: 'Opposite of "right"?', a: ['correct', 'left', 'up', 'down'], correct: 'left', hint: 'Direction' },
+                { q: 'Opposite of "full"?', a: ['filled', 'complete', 'empty', 'whole'], correct: 'empty', hint: 'Nothing inside' },
+                { q: 'Opposite of "loud"?', a: ['noisy', 'quiet', 'sound', 'music'], correct: 'quiet', hint: 'Soft sound' },
+                { q: 'Opposite of "clean"?', a: ['pure', 'dirty', 'neat', 'tidy'], correct: 'dirty', hint: 'Not clean' },
+                { q: 'Opposite of "good"?', a: ['great', 'nice', 'bad', 'fine'], correct: 'bad', hint: 'Not good' },
+                { q: 'Opposite of "wet"?', a: ['water', 'rain', 'dry', 'damp'], correct: 'dry', hint: 'No water' },
+                { q: 'Opposite of "happy"?', a: ['joyful', 'glad', 'sad', 'excited'], correct: 'sad', hint: 'Not happy' },
+                { q: 'Opposite of "high"?', a: ['tall', 'up', 'low', 'top'], correct: 'low', hint: 'Near ground' },
+                { q: 'Opposite of "thick"?', a: ['fat', 'wide', 'thin', 'big'], correct: 'thin', hint: 'Not thick' }
+            ],
+            idioms: [
+                { q: 'Complete: Bite off more than you can ___', a: ['eat', 'chew', 'swallow', 'drink'], correct: 'chew', hint: 'Take too much' },
+                { q: 'Complete: Under the ___', a: ['sun', 'weather', 'sky', 'rain'], correct: 'weather', hint: 'Feeling sick' },
+                { q: 'Complete: Costs an arm and a ___', a: ['hand', 'leg', 'foot', 'toe'], correct: 'leg', hint: 'Very expensive' },
+                { q: 'Complete: Hit the ___', a: ['roof', 'nail', 'ball', 'wall'], correct: 'nail', hint: 'Exactly right' },
+                { q: 'Complete: Barking up the wrong ___', a: ['dog', 'tree', 'cat', 'house'], correct: 'tree', hint: 'Wrong approach' },
+                { q: 'Complete: Let the cat out of the ___', a: ['house', 'box', 'room', 'bag'], correct: 'bag', hint: 'Reveal a secret' },
+                { q: 'Complete: A blessing in ___', a: ['heaven', 'disguise', 'peace', 'love'], correct: 'disguise', hint: 'Good from bad' },
+                { q: 'Complete: Actions speak louder than ___', a: ['sounds', 'words', 'music', 'voice'], correct: 'words', hint: 'Do, don\'t just say' },
+                { q: 'Complete: Bite the ___', a: ['food', 'bullet', 'apple', 'hand'], correct: 'bullet', hint: 'Face something difficult' },
+                { q: 'Complete: Best of both ___', a: ['sides', 'worlds', 'ways', 'times'], correct: 'worlds', hint: 'Two good things' }
+            ]
+        };
+
+        // Stars background
+        let stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.2,
+                opacity: Math.random() * 0.5 + 0.5,
+                twinkleSpeed: Math.random() * 0.02 + 0.01,
+                twinklePhase: Math.random() * Math.PI * 2
+            });
+        }
+
+        function drawStars() {
+            stars.forEach(star => {
+                const twinkle = Math.sin(star.twinklePhase) * 0.3 + 0.7;
+                ctx.fillStyle = `rgba(168, 197, 232, ${star.opacity * twinkle})`;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function updateStars() {
+            stars.forEach(star => {
+                star.y += star.speed;
+                star.twinklePhase += star.twinkleSpeed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        function backgroundLoop() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            updateStars();
+            drawStars();
+            
+            requestAnimationFrame(backgroundLoop);
+        }
+
+        function startGame(mode) {
+            gameMode = mode;
+            gameRunning = true;
+            score = 0;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            questionCount = 0;
+            usedQuestions = [];
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'flex';
+            document.getElementById('menuButton').style.display = 'block';
+
+            updateStats();
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            if (questionCount >= maxQuestions) {
+                endGame();
+                return;
+            }
+
+            questionCount++;
+
+            // Get question set based on mode
+            let questionSet;
+            if (gameMode === 'mixed') {
+                const modes = ['alphabet', 'vocabulary', 'grammar', 'spelling', 'synonyms', 'antonyms', 'idioms'];
+                const randomMode = modes[Math.floor(Math.random() * modes.length)];
+                questionSet = gameData[randomMode];
+            } else {
+                questionSet = gameData[gameMode];
+            }
+
+            // Get a question that hasn't been used
+            let availableQuestions = questionSet.filter((q, index) => 
+                !usedQuestions.includes(gameMode + index)
+            );
+            
+            if (availableQuestions.length === 0) {
+                usedQuestions = [];
+                availableQuestions = questionSet;
+            }
+
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const selectedQuestion = availableQuestions[randomIndex];
+            const originalIndex = questionSet.indexOf(selectedQuestion);
+            usedQuestions.push(gameMode + originalIndex);
+
+            currentQuestion = selectedQuestion;
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            document.getElementById('questionDisplay').textContent = currentQuestion.q;
+            document.getElementById('questionHint').textContent = currentQuestion.hint || '';
+
+            const answersArea = document.getElementById('answersArea');
+            const inputArea = document.getElementById('inputArea');
+
+            if (currentQuestion.type === 'text') {
+                // Text input question
+                answersArea.style.display = 'none';
+                inputArea.style.display = 'block';
+                document.getElementById('textInput').value = '';
+                document.getElementById('textInput').focus();
+            } else {
+                // Multiple choice question
+                answersArea.style.display = 'grid';
+                inputArea.style.display = 'none';
+                answersArea.innerHTML = '';
+
+                currentQuestion.a.forEach(answer => {
+                    const button = document.createElement('button');
+                    button.className = 'answerButton';
+                    button.textContent = answer;
+                    button.onclick = () => checkAnswer(answer, button);
+                    answersArea.appendChild(button);
+                });
+            }
+        }
+
+        function checkAnswer(answer, buttonElement) {
+            const allButtons = document.querySelectorAll('.answerButton');
+            allButtons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (answer === currentQuestion.correct) {
+                buttonElement.classList.add('correct');
+                score += 10;
+                correctAnswers++;
+                showFeedback('Correct! ✅', '#4CAF50');
+            } else {
+                buttonElement.classList.add('incorrect');
+                wrongAnswers++;
+                showFeedback('Try Again! ❌', '#f44336');
+                
+                allButtons.forEach(btn => {
+                    if (btn.textContent === currentQuestion.correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            updateStats();
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 1500);
+        }
+
+        function checkTextAnswer() {
+            const userAnswer = document.getElementById('textInput').value.trim().toLowerCase();
+            const correctAnswer = currentQuestion.correct.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                score += 10;
+                correctAnswers++;
+                showFeedback('Perfect! ✅', '#4CAF50');
+            } else {
+                wrongAnswers++;
+                showFeedback('Correct: ' + currentQuestion.correct, '#f44336');
+            }
+
+            updateStats();
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 2000);
+        }
+
+        // Allow Enter key to submit text answers
+        document.getElementById('textInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkTextAnswer();
+            }
+        });
+
+        function showFeedback(text, color) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = text;
+            feedback.style.color = color;
+            feedback.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('questionNumber').textContent = questionCount;
+            document.getElementById('correct').textContent = correctAnswers;
+            
+            const total = correctAnswers + wrongAnswers;
+            const accuracy = total > 0 ? Math.round((correctAnswers / total) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function getLevel(score) {
+            if (score >= 90) return 'Expert 🏆';
+            if (score >= 70) return 'Advanced 🌟';
+            if (score >= 50) return 'Intermediate ⭐';
+            return 'Beginner 📚';
+        }
+
+        function getRating(accuracy) {
+            if (accuracy >= 90) return "🏆 Outstanding! You're a star!";
+            if (accuracy >= 75) return "⭐ Excellent! Keep it up!";
+            if (accuracy >= 60) return "👍 Good job! Practice more!";
+            if (accuracy >= 50) return "💪 Not bad! Keep trying!";
+            return "📚 Need more practice!";
+        }
+
+        function endGame() {
+            gameRunning = false;
+
+            const total = correctAnswers + wrongAnswers;
+            const finalAccuracy = total > 0 ? Math.round((correctAnswers / total) * 100) : 0;
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalAccuracy').textContent = finalAccuracy;
+            document.getElementById('level').textContent = getLevel(score);
+            document.getElementById('rating').textContent = getRating(finalAccuracy);
+
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'block';
+        }
+
+        function returnToMenu() {
+            gameRunning = false;
+            questionCount = 0;
+            usedQuestions = [];
+
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('menuButton').style.display = 'none';
+        }
+
+        backgroundLoop();
+    </script>
+</body>
+</html>

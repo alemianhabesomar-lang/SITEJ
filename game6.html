@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مستكشف النظام الشمسي</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        background: linear-gradient(to bottom, #0a0a12, #1a1a2e);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Tahoma', 'Arial', 'Segoe UI', sans-serif;
+        overflow: hidden;
+        user-select: none;
+        direction: rtl;
+    }
+    #gameContainer {
+        position: relative;
+        width: 900px;
+        height: 650px;
+        background: linear-gradient(to bottom, #000000, #0a0a1a);
+        border: 3px solid #d4af37;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), inset 0 0 50px rgba(65, 105, 225, 0.1);
+        border-radius: 5px;
+    }
+    #gameCanvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        pointer-events: none;
+    }
+    #startScreen, #gameOver {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, rgba(0, 0, 10, 0.98), rgba(10, 10, 26, 0.95));
+        padding: 50px;
+        border: 3px solid #d4af37;
+        border-radius: 15px;
+        text-align: center;
+        color: #d4af37;
+        z-index: 50;
+        box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), inset 0 0 30px rgba(65, 105, 225, 0.1);
+        min-width: 500px;
+    }
+    #gameOver {
+        display: none;
+    }
+    h1 {
+        font-size: 48px;
+        margin-bottom: 15px;
+        text-shadow: 0 0 20px rgba(212, 175, 55, 1), 0 0 40px rgba(212, 175, 55, 0.5);
+        letter-spacing: 2px;
+    }
+    h2 {
+        font-size: 24px;
+        margin-bottom: 35px;
+        color: #4169e1;
+        text-shadow: 0 0 10px rgba(65, 105, 225, 0.8);
+    }
+    .modeButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    button {
+        background: linear-gradient(to bottom, #d4af37, #b8941f);
+        color: #000;
+        border: 2px solid #f0c950;
+        padding: 18px 35px;
+        font-size: 20px;
+        font-family: 'Tahoma', 'Arial', sans-serif;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+    button:hover {
+        background: linear-gradient(to bottom, #f0c950, #d4af37);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+    }
+    button:active {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+    }
+    #menuButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: linear-gradient(to bottom, #d4af37, #b8941f);
+        color: #000;
+        border: 2px solid #f0c950;
+        padding: 10px 20px;
+        font-size: 14px;
+        z-index: 100;
+        display: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+    #menuButton:hover {
+        background: linear-gradient(to bottom, #f0c950, #d4af37);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+    }
+    #menuButton:active {
+        transform: translateY(1px);
+    }
+    #gameArea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        z-index: 10;
+    }
+    #stats {
+        background: rgba(0, 0, 10, 0.8);
+        padding: 15px 20px;
+        padding-left: 120px;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        display: flex;
+        justify-content: space-around;
+        color: #d4af37;
+        font-size: 18px;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+        position: relative;
+        z-index: 15;
+    }
+    #questionArea {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        gap: 20px;
+        position: relative;
+        z-index: 12;
+    }
+    #planetDisplay {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: rgba(0, 0, 20, 0.5);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+    }
+    #questionText {
+        font-size: 28px;
+        color: #4169e1;
+        text-shadow: 0 0 15px rgba(65, 105, 225, 0.8);
+        background: rgba(0, 0, 10, 0.7);
+        padding: 20px 40px;
+        border-radius: 10px;
+        border: 2px solid rgba(65, 105, 225, 0.3);
+    }
+    #answersArea {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        width: 100%;
+        max-width: 600px;
+    }
+    .answerButton {
+        padding: 20px;
+        font-size: 22px;
+        background: linear-gradient(to bottom, #d4af37, #b8941f);
+        color: #000;
+        border: 3px solid #f0c950;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+    .answerButton:hover {
+        background: linear-gradient(to bottom, #f0c950, #d4af37);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+    }
+    .answerButton:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .answerButton.correct {
+        background: linear-gradient(to bottom, #4CAF50, #45a049);
+        border-color: #66bb6a;
+        animation: correctPulse 0.5s;
+    }
+    .answerButton.incorrect {
+        background: linear-gradient(to bottom, #f44336, #da190b);
+        border-color: #ff6b6b;
+        animation: shake 0.5s;
+    }
+    @keyframes correctPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+    #resultsStats {
+        margin: 30px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .resultItem {
+        background: rgba(0, 0, 10, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    .resultLabel {
+        font-size: 16px;
+        opacity: 0.8;
+        margin-bottom: 10px;
+    }
+    .resultValue {
+        font-size: 36px;
+        font-weight: bold;
+        color: #f0c950;
+        text-shadow: 0 0 10px rgba(240, 201, 80, 0.8);
+    }
+    .rating {
+        font-size: 28px;
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        border: 2px solid rgba(212, 175, 55, 0.3);
+    }
+    #feedback {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 60px;
+        font-weight: bold;
+        color: #d4af37;
+        text-shadow: 0 0 30px rgba(212, 175, 55, 1);
+        pointer-events: none;
+        z-index: 25;
+        display: none;
+        animation: feedbackAnimation 1s ease-out;
+    }
+    @keyframes feedbackAnimation {
+        0% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+<body>
+<div id="gameContainer">
+    <canvas id="gameCanvas" width="900" height="650"></canvas>
+    <button id="menuButton" onclick="returnToMenu()">القائمة الرئيسية</button>
+
+    <div id="startScreen">
+        <h1>مستكشف النظام الشمسي</h1>
+        <h2>تعلم عن الفضاء!</h2>
+        <div class="modeButtons">
+            <button onclick="startGame('planets')">التعرف على الكواكب</button>
+            <button onclick="startGame('facts')">حقائق عن الكواكب</button>
+            <button onclick="startGame('order')">ترتيب النظام الشمسي</button>
+            <button onclick="startGame('mixed')">التحدي المختلط</button>
+        </div>
+    </div>
+
+    <div id="gameArea">
+        <div id="stats">
+            <div>النقاط: <span id="score">0</span></div>
+            <div>السؤال: <span id="questionNumber">1</span>/10</div>
+            <div>صحيح: <span id="correct">0</span></div>
+            <div>الدقة: <span id="accuracy">100%</span></div>
+        </div>
+        <div id="questionArea">
+            <canvas id="planetDisplay" width="250" height="250"></canvas>
+            <div id="questionText">ما هذا الكوكب؟</div>
+            <div id="answersArea"></div>
+        </div>
+    </div>
+
+    <div id="gameOver">
+        <h1>اكتملت اللعبة!</h1>
+        <div id="resultsStats">
+            <div class="resultItem">
+                <div class="resultLabel">النقاط النهائية</div>
+                <div class="resultValue" id="finalScore">0</div>
+            </div>
+            <div class="resultItem">
+                <div class="resultLabel">الإجابات الصحيحة</div>
+                <div class="resultValue" id="finalCorrect">0/10</div>
+            </div>
+            <div class="resultItem">
+                <div class="resultLabel">الدقة</div>
+                <div class="resultValue" id="finalAccuracy">0%</div>
+            </div>
+            <div class="resultItem">
+                <div class="resultLabel">الوقت الإجمالي</div>
+                <div class="resultValue" id="finalTime">0ث</div>
+            </div>
+        </div>
+        <div class="rating" id="rating">مستكشف الفضاء!</div>
+        <div class="modeButtons" style="margin-top: 30px;">
+            <button onclick="restartGame()">العب مرة أخرى</button>
+            <button onclick="returnToMenu()">القائمة الرئيسية</button>
+        </div>
+    </div>
+
+    <div id="feedback"></div>
+</div>
+
+<script>
+// Game State
+let gameState = {
+    mode: '',
+    score: 0,
+    currentQuestion: 0,
+    correctAnswers: 0,
+    totalQuestions: 10,
+    startTime: 0,
+    questions: []
+};
+
+// Planet Data
+const planets = {
+    mercury: { name: 'عطارد', color: '#8C7853', size: 0.38, distance: 0.39, moons: 0, fact: 'أقرب كوكب إلى الشمس' },
+    venus: { name: 'الزهرة', color: '#FFC649', size: 0.95, distance: 0.72, moons: 0, fact: 'أسخن كوكب في نظامنا الشمسي' },
+    earth: { name: 'الأرض', color: '#4A90E2', size: 1.0, distance: 1.0, moons: 1, fact: 'الكوكب الوحيد المعروف الذي يدعم الحياة' },
+    mars: { name: 'المريخ', color: '#CD5C5C', size: 0.53, distance: 1.52, moons: 2, fact: 'يُعرف بالكوكب الأحمر' },
+    jupiter: { name: 'المشتري', color: '#DAA520', size: 11.2, distance: 5.2, moons: 95, fact: 'أكبر كوكب في نظامنا الشمسي' },
+    saturn: { name: 'زحل', color: '#F4E4C1', size: 9.45, distance: 9.54, moons: 146, fact: 'مشهور بحلقاته الرائعة' },
+    uranus: { name: 'أورانوس', color: '#4FD0E7', size: 4.0, distance: 19.2, moons: 27, fact: 'يدور على جانبه' },
+    neptune: { name: 'نبتون', color: '#4169E1', size: 3.88, distance: 30.1, moons: 14, fact: 'أبعد كوكب عن الشمس' }
+};
+
+const planetOrder = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
+
+// Canvas Setup
+const bgCanvas = document.getElementById('gameCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+const planetCanvas = document.getElementById('planetDisplay');
+const planetCtx = planetCanvas.getContext('2d');
+
+// Star Background Animation
+let stars = [];
+function initStars() {
+    stars = [];
+    for (let i = 0; i < 100; i++) {
+        stars.push({
+            x: Math.random() * bgCanvas.width,
+            y: Math.random() * bgCanvas.height,
+            radius: Math.random() * 1.5,
+            opacity: Math.random()
+        });
+    }
+}
+
+function drawStars() {
+    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    stars.forEach(star => {
+        bgCtx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        bgCtx.beginPath();
+        bgCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        bgCtx.fill();
+        star.opacity = Math.abs(Math.sin(Date.now() / 1000 + star.x));
+    });
+    requestAnimationFrame(drawStars);
+}
+
+initStars();
+drawStars();
+
+// Draw Planet
+function drawPlanet(planetKey) {
+    const planet = planets[planetKey];
+    planetCtx.clearRect(0, 0, planetCanvas.width, planetCanvas.height);
+    
+    const centerX = planetCanvas.width / 2;
+    const centerY = planetCanvas.height / 2;
+    const radius = 90;
+    
+    // Save context
+    planetCtx.save();
+    
+    // Draw planet-specific designs
+    switch(planetKey) {
+        case 'mercury':
+            drawMercury(centerX, centerY, radius);
+            break;
+        case 'venus':
+            drawVenus(centerX, centerY, radius);
+            break;
+        case 'earth':
+            drawEarth(centerX, centerY, radius);
+            break;
+        case 'mars':
+            drawMars(centerX, centerY, radius);
+            break;
+        case 'jupiter':
+            drawJupiter(centerX, centerY, radius);
+            break;
+        case 'saturn':
+            drawSaturn(centerX, centerY, radius);
+            break;
+        case 'uranus':
+            drawUranus(centerX, centerY, radius);
+            break;
+        case 'neptune':
+            drawNeptune(centerX, centerY, radius);
+            break;
+    }
+    
+    planetCtx.restore();
+}
+
+function drawMercury(x, y, r) {
+    // Gray rocky surface with craters
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#B8AFA0');
+    gradient.addColorStop(0.5, '#8C7853');
+    gradient.addColorStop(1, '#5C5040');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Craters
+    for (let i = 0; i < 12; i++) {
+        const angle = (Math.PI * 2 * i) / 12 + Math.random();
+        const dist = Math.random() * r * 0.7;
+        const cx = x + Math.cos(angle) * dist;
+        const cy = y + Math.sin(angle) * dist;
+        const cr = r * (0.1 + Math.random() * 0.15);
+        
+        planetCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        planetCtx.beginPath();
+        planetCtx.arc(cx, cy, cr, 0, Math.PI * 2);
+        planetCtx.fill();
+        
+        planetCtx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        planetCtx.beginPath();
+        planetCtx.arc(cx - cr * 0.2, cy - cr * 0.2, cr * 0.4, 0, Math.PI * 2);
+        planetCtx.fill();
+    }
+}
+
+function drawVenus(x, y, r) {
+    // Thick yellowish atmosphere
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#FFEB99');
+    gradient.addColorStop(0.4, '#FFC649');
+    gradient.addColorStop(1, '#CC9A3D');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Swirling clouds
+    for (let i = 0; i < 8; i++) {
+        const yPos = y - r + (i * r * 0.25);
+        planetCtx.strokeStyle = `rgba(255, 230, 153, ${0.2 + Math.random() * 0.2})`;
+        planetCtx.lineWidth = r * 0.15;
+        planetCtx.beginPath();
+        
+        const offset = Math.sin(i * 0.5) * r * 0.3;
+        planetCtx.moveTo(x - r, yPos);
+        planetCtx.quadraticCurveTo(x + offset, yPos, x + r, yPos);
+        planetCtx.stroke();
+    }
+}
+
+function drawEarth(x, y, r) {
+    // Blue oceans
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#6AB8E8');
+    gradient.addColorStop(0.5, '#4A90E2');
+    gradient.addColorStop(1, '#2E5C8A');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Green continents
+    planetCtx.fillStyle = '#3EA055';
+    
+    // Continent 1 (Africa-like)
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.2, y - r * 0.1, r * 0.35, r * 0.5, 0.3, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Continent 2 (Americas-like)
+    planetCtx.beginPath();
+    planetCtx.ellipse(x - r * 0.4, y + r * 0.2, r * 0.25, r * 0.6, -0.2, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Continent 3 (Asia-like)
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.5, y + r * 0.4, r * 0.3, r * 0.25, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // White clouds
+    planetCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    for (let i = 0; i < 6; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * r * 0.7;
+        const cx = x + Math.cos(angle) * dist;
+        const cy = y + Math.sin(angle) * dist;
+        
+        planetCtx.beginPath();
+        planetCtx.ellipse(cx, cy, r * 0.15, r * 0.1, angle, 0, Math.PI * 2);
+        planetCtx.fill();
+    }
+}
+
+function drawMars(x, y, r) {
+    // Red rocky surface
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#E27B58');
+    gradient.addColorStop(0.5, '#CD5C5C');
+    gradient.addColorStop(1, '#8B3A3A');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Darker regions (maria)
+    planetCtx.fillStyle = 'rgba(100, 40, 40, 0.4)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x - r * 0.3, y - r * 0.3, r * 0.4, r * 0.35, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.4, y + r * 0.2, r * 0.3, r * 0.4, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Polar ice cap (white)
+    planetCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x, y - r * 0.8, r * 0.3, r * 0.15, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Valles Marineris (canyon system)
+    planetCtx.strokeStyle = 'rgba(80, 30, 30, 0.5)';
+    planetCtx.lineWidth = r * 0.08;
+    planetCtx.beginPath();
+    planetCtx.moveTo(x - r * 0.6, y);
+    planetCtx.lineTo(x + r * 0.5, y + r * 0.1);
+    planetCtx.stroke();
+}
+
+function drawJupiter(x, y, r) {
+    // Horizontal bands
+    const bands = [
+        { color: '#C8A882', width: 0.2 },
+        { color: '#D4B896', width: 0.15 },
+        { color: '#B89968', width: 0.18 },
+        { color: '#E8D4B0', width: 0.15 },
+        { color: '#C09860', width: 0.2 },
+        { color: '#D8C4A0', width: 0.12 }
+    ];
+    
+    let currentY = y - r;
+    bands.forEach((band, i) => {
+        const bandHeight = r * 2 * band.width;
+        
+        const gradient = planetCtx.createLinearGradient(x - r, currentY, x + r, currentY);
+        gradient.addColorStop(0, darkenColor(band.color, 30));
+        gradient.addColorStop(0.5, band.color);
+        gradient.addColorStop(1, darkenColor(band.color, 30));
+        
+        planetCtx.fillStyle = gradient;
+        planetCtx.fillRect(x - r, currentY, r * 2, bandHeight);
+        
+        currentY += bandHeight;
+    });
+    
+    // Clip to circle
+    planetCtx.globalCompositeOperation = 'destination-in';
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    planetCtx.globalCompositeOperation = 'source-over';
+    
+    // Great Red Spot
+    planetCtx.fillStyle = 'rgba(180, 80, 60, 0.8)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.3, y + r * 0.2, r * 0.35, r * 0.25, -0.2, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    planetCtx.strokeStyle = 'rgba(200, 100, 80, 0.6)';
+    planetCtx.lineWidth = 3;
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.3, y + r * 0.2, r * 0.35, r * 0.25, -0.2, 0, Math.PI * 2);
+    planetCtx.stroke();
+    
+    // Add turbulence details
+    for (let i = 0; i < 15; i++) {
+        const yPos = y - r + Math.random() * r * 2;
+        planetCtx.strokeStyle = `rgba(255, 255, 255, ${0.05 + Math.random() * 0.1})`;
+        planetCtx.lineWidth = 2;
+        planetCtx.beginPath();
+        planetCtx.moveTo(x - r, yPos);
+        planetCtx.lineTo(x + r, yPos + (Math.random() - 0.5) * 10);
+        planetCtx.stroke();
+    }
+}
+
+function drawSaturn(x, y, r) {
+    // Pale yellow planet
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#FAF0DC');
+    gradient.addColorStop(0.5, '#F4E4C1');
+    gradient.addColorStop(1, '#D4C8A8');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Faint bands
+    for (let i = 0; i < 6; i++) {
+        const yPos = y - r * 0.6 + (i * r * 0.2);
+        planetCtx.strokeStyle = `rgba(200, 180, 150, ${0.1 + i * 0.05})`;
+        planetCtx.lineWidth = r * 0.08;
+        planetCtx.beginPath();
+        planetCtx.moveTo(x - r * 0.8, yPos);
+        planetCtx.lineTo(x + r * 0.8, yPos);
+        planetCtx.stroke();
+    }
+    
+    // Rings (behind planet)
+    planetCtx.globalCompositeOperation = 'destination-over';
+    
+    // Ring shadows on planet
+    planetCtx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+    planetCtx.fillRect(x - r, y - r * 0.2, r * 2, r * 0.4);
+    
+    planetCtx.globalCompositeOperation = 'source-over';
+    
+    // Multiple ring layers
+    const rings = [
+        { distance: 1.8, thickness: 0.15, color: '#E6D7B8', alpha: 0.9 },
+        { distance: 2.0, thickness: 0.12, color: '#D4C5A8', alpha: 0.8 },
+        { distance: 2.2, thickness: 0.08, color: '#C8B898', alpha: 0.7 },
+        { distance: 2.35, thickness: 0.05, color: '#B8A888', alpha: 0.5 }
+    ];
+    
+    rings.forEach(ring => {
+        // Ring behind planet (bottom half)
+        planetCtx.save();
+        planetCtx.beginPath();
+        planetCtx.rect(x - r * 3, y, r * 6, r * 3);
+        planetCtx.clip();
+        
+        planetCtx.strokeStyle = ring.color;
+        planetCtx.globalAlpha = ring.alpha * 0.5;
+        planetCtx.lineWidth = r * ring.thickness;
+        planetCtx.beginPath();
+        planetCtx.ellipse(x, y, r * ring.distance, r * ring.thickness * 2, 0, 0, Math.PI * 2);
+        planetCtx.stroke();
+        
+        planetCtx.restore();
+        
+        // Ring in front (top half)
+        planetCtx.save();
+        planetCtx.beginPath();
+        planetCtx.rect(x - r * 3, y - r * 3, r * 6, r * 3);
+        planetCtx.clip();
+        
+        planetCtx.strokeStyle = ring.color;
+        planetCtx.globalAlpha = ring.alpha;
+        planetCtx.lineWidth = r * ring.thickness;
+        planetCtx.beginPath();
+        planetCtx.ellipse(x, y, r * ring.distance, r * ring.thickness * 2, 0, 0, Math.PI * 2);
+        planetCtx.stroke();
+        
+        planetCtx.restore();
+    });
+    
+    planetCtx.globalAlpha = 1;
+}
+
+function drawUranus(x, y, r) {
+    // Pale cyan/blue-green color
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#A8E6E6');
+    gradient.addColorStop(0.5, '#7FD9D9');
+    gradient.addColorStop(1, '#4FB8B8');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Subtle atmospheric features (nearly featureless)
+    planetCtx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x - r * 0.3, y, r * 0.4, r * 0.8, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    planetCtx.fillStyle = 'rgba(100, 200, 200, 0.1)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.2, y, r * 0.5, r * 0.9, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Faint rings (nearly invisible)
+    planetCtx.strokeStyle = 'rgba(180, 220, 220, 0.3)';
+    planetCtx.lineWidth = 2;
+    planetCtx.beginPath();
+    planetCtx.ellipse(x, y, r * 1.4, r * 0.3, Math.PI / 2, 0, Math.PI * 2);
+    planetCtx.stroke();
+}
+
+function drawNeptune(x, y, r) {
+    // Deep blue color
+    const gradient = planetCtx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+    gradient.addColorStop(0, '#6A9BE2');
+    gradient.addColorStop(0.5, '#4169E1');
+    gradient.addColorStop(1, '#2E4A9E');
+    
+    planetCtx.fillStyle = gradient;
+    planetCtx.beginPath();
+    planetCtx.arc(x, y, r, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Great Dark Spot
+    planetCtx.fillStyle = 'rgba(30, 40, 80, 0.5)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x - r * 0.2, y - r * 0.1, r * 0.3, r * 0.25, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // White clouds around the spot
+    planetCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x - r * 0.2, y - r * 0.1, r * 0.15, r * 0.12, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+    
+    // Atmospheric bands
+    for (let i = 0; i < 8; i++) {
+        const yPos = y - r + Math.random() * r * 2;
+        planetCtx.strokeStyle = `rgba(100, 150, 220, ${0.1 + Math.random() * 0.15})`;
+        planetCtx.lineWidth = r * 0.08;
+        planetCtx.beginPath();
+        planetCtx.moveTo(x - r, yPos);
+        planetCtx.lineTo(x + r, yPos);
+        planetCtx.stroke();
+    }
+    
+    // Additional white storm features
+    planetCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    planetCtx.beginPath();
+    planetCtx.ellipse(x + r * 0.4, y + r * 0.5, r * 0.2, r * 0.15, 0, 0, Math.PI * 2);
+    planetCtx.fill();
+}
+
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.max(0, (num >> 16) - amt);
+    const G = Math.max(0, (num >> 8 & 0x00FF) - amt);
+    const B = Math.max(0, (num & 0x0000FF) - amt);
+    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+function lightenColor(color, percent) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = Math.min(255, (num >> 16) + amt);
+    const G = Math.min(255, (num >> 8 & 0x00FF) + amt);
+    const B = Math.min(255, (num & 0x0000FF) + amt);
+    return "#" + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+}
+
+// Question Generation
+function generateQuestions(mode) {
+    const questions = [];
+    const usedPlanets = new Set();
+    
+    for (let i = 0; i < gameState.totalQuestions; i++) {
+        let questionType = mode;
+        if (mode === 'mixed') {
+            const types = ['planets', 'facts', 'order'];
+            questionType = types[Math.floor(Math.random() * types.length)];
+        }
+        
+        let planetKey;
+        do {
+            planetKey = planetOrder[Math.floor(Math.random() * planetOrder.length)];
+        } while (usedPlanets.has(planetKey) && usedPlanets.size < planetOrder.length);
+        usedPlanets.add(planetKey);
+        
+        const question = createQuestion(questionType, planetKey);
+        questions.push(question);
+    }
+    
+    return questions;
+}
+
+function createQuestion(type, planetKey) {
+    const planet = planets[planetKey];
+    const wrongAnswers = planetOrder.filter(p => p !== planetKey);
+    
+    let question = {
+        type: type,
+        planetKey: planetKey,
+        correctAnswer: '',
+        answers: []
+    };
+    
+    if (type === 'planets') {
+        question.text = 'ما هذا الكوكب؟';
+        question.correctAnswer = planet.name;
+        question.showPlanet = true;
+        
+        const options = [planet.name];
+        while (options.length < 4) {
+            const wrong = planets[wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)]].name;
+            if (!options.includes(wrong)) options.push(wrong);
+        }
+        question.answers = shuffle(options);
+        
+    } else if (type === 'facts') {
+        const factTypes = ['moons', 'size', 'distance'];
+        const factType = factTypes[Math.floor(Math.random() * factTypes.length)];
+        
+        if (factType === 'moons') {
+            question.text = `كم عدد أقمار ${planet.name}؟`;
+            question.correctAnswer = planet.moons.toString();
+            question.showPlanet = false;
+            
+            const options = [planet.moons.toString()];
+            while (options.length < 4) {
+                const wrong = planets[wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)]].moons.toString();
+                if (!options.includes(wrong)) options.push(wrong);
+            }
+            question.answers = shuffle(options);
+            
+        } else if (factType === 'size') {
+            question.text = `أي كوكب أكبر؟`;
+            question.showPlanet = false;
+            
+            const comparePlanet = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+            const larger = planet.size > planets[comparePlanet].size ? planet.name : planets[comparePlanet].name;
+            question.correctAnswer = larger;
+            question.answers = shuffle([planet.name, planets[comparePlanet].name]);
+            
+        } else {
+            question.text = `ما هي حقيقة عن ${planet.name}؟`;
+            question.showPlanet = true;
+            question.correctAnswer = planet.fact;
+            
+            const options = [planet.fact];
+            while (options.length < 4) {
+                const wrong = planets[wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)]].fact;
+                if (!options.includes(wrong)) options.push(wrong);
+            }
+            question.answers = shuffle(options);
+        }
+        
+    } else if (type === 'order') {
+        const position = planetOrder.indexOf(planetKey) + 1;
+        question.text = `ما هو ترتيب ${planet.name} من الشمس؟`;
+        question.correctAnswer = getOrdinalArabic(position);
+        question.showPlanet = false;
+        
+        const options = [getOrdinalArabic(position)];
+        while (options.length < 4) {
+            const wrongPos = Math.floor(Math.random() * 8) + 1;
+            const ordinal = getOrdinalArabic(wrongPos);
+            if (!options.includes(ordinal)) options.push(ordinal);
+        }
+        question.answers = shuffle(options);
+    }
+    
+    return question;
+}
+
+function getOrdinalArabic(n) {
+    const ordinals = ['', 'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن'];
+    return ordinals[n] || n.toString();
+}
+
+function shuffle(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+// Game Flow
+function startGame(mode) {
+    gameState.mode = mode;
+    gameState.score = 0;
+    gameState.currentQuestion = 0;
+    gameState.correctAnswers = 0;
+    gameState.startTime = Date.now();
+    gameState.questions = generateQuestions(mode);
+    
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('gameArea').style.display = 'flex';
+    document.getElementById('menuButton').style.display = 'block';
+    
+    showQuestion();
+}
+
+function showQuestion() {
+    const question = gameState.questions[gameState.currentQuestion];
+    
+    document.getElementById('questionText').textContent = question.text;
+    document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
+    document.getElementById('score').textContent = gameState.score;
+    document.getElementById('correct').textContent = gameState.correctAnswers;
+    
+    const accuracy = gameState.currentQuestion === 0 ? 100 : 
+        Math.round((gameState.correctAnswers / gameState.currentQuestion) * 100);
+    document.getElementById('accuracy').textContent = accuracy + '%';
+    
+    // Draw planet if needed
+    if (question.showPlanet) {
+        drawPlanet(question.planetKey);
+        planetCanvas.style.display = 'block';
+    } else {
+        planetCanvas.style.display = 'none';
+    }
+    
+    // Create answer buttons
+    const answersArea = document.getElementById('answersArea');
+    answersArea.innerHTML = '';
+    
+    question.answers.forEach(answer => {
+        const button = document.createElement('button');
+        button.className = 'answerButton';
+        button.textContent = answer;
+        button.onclick = () => checkAnswer(answer);
+        answersArea.appendChild(button);
+    });
+}
+
+function checkAnswer(selectedAnswer) {
+    const question = gameState.questions[gameState.currentQuestion];
+    const buttons = document.querySelectorAll('.answerButton');
+    const isCorrect = selectedAnswer === question.correctAnswer;
+    
+    // Disable all buttons
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === question.correctAnswer) {
+            btn.classList.add('correct');
+        } else if (btn.textContent === selectedAnswer && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    // Update score
+    if (isCorrect) {
+        gameState.correctAnswers++;
+        gameState.score += 100;
+        showFeedback('صحيح! ⭐');
+    } else {
+        showFeedback('حاول مرة أخرى! 💫');
+    }
+    
+    // Move to next question
+    setTimeout(() => {
+        gameState.currentQuestion++;
+        if (gameState.currentQuestion < gameState.totalQuestions) {
+            showQuestion();
+        } else {
+            endGame();
+        }
+    }, 1500);
+}
+
+function showFeedback(message) {
+    const feedback = document.getElementById('feedback');
+    feedback.textContent = message;
+    feedback.style.display = 'block';
+    
+    setTimeout(() => {
+        feedback.style.display = 'none';
+    }, 1000);
+}
+
+function endGame() {
+    const totalTime = Math.round((Date.now() - gameState.startTime) / 1000);
+    const accuracy = Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100);
+    
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('gameOver').style.display = 'block';
+    
+    document.getElementById('finalScore').textContent = gameState.score;
+    document.getElementById('finalCorrect').textContent = `${gameState.correctAnswers}/${gameState.totalQuestions}`;
+    document.getElementById('finalAccuracy').textContent = accuracy + '%';
+    document.getElementById('finalTime').textContent = totalTime + 'ث';
+    
+    // Rating
+    let rating = '';
+    if (accuracy === 100) rating = '🌟 مثالي! سيد الفضاء!';
+    else if (accuracy >= 80) rating = '🚀 ممتاز! مستكشف النجوم!';
+    else if (accuracy >= 60) rating = '🌙 أحسنت! متدرب الفضاء!';
+    else if (accuracy >= 40) rating = '⭐ محاولة رائعة! استمر في التعلم!';
+    else rating = '💫 استمر في التدريب!';
+    
+    document.getElementById('rating').textContent = rating;
+}
+
+function restartGame() {
+    startGame(gameState.mode);
+    document.getElementById('gameOver').style.display = 'none';
+}
+
+function returnToMenu() {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('gameOver').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'block';
+    document.getElementById('menuButton').style.display = 'none';
+    planetCanvas.style.display = 'none';
+}
+</script>
+</body>
+</html>

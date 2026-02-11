@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أكاديمية EDUCORE | نظام الاختبارات الملكي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* === RESET & VARIABLES === */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+            /* Navy Blue Palette */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* === ANIMATED BACKGROUND === */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(111, 168, 236, 0.04) 0%, transparent 35%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        .shape-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(155, 180, 208, 0.25) 0%, transparent 70%);
+            top: 35%;
+            left: 45%;
+            animation-delay: -20s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
+            }
+            50% {
+                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
+            }
+            75% {
+                transform: translate(-120px, -80px) scale(1.05) rotate(270deg);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 15s infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatParticle {
+            0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px); }
+        }
+
+        /* === HEADER === */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 22px 70px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-blue);
+            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: 14px 70px;
+            background: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px var(--shadow-blue);
+            animation: logoGlow 4s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(15px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        .logo-icon i {
+            font-size: 1.6rem;
+            color: var(--white-pure);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 10px 30px var(--shadow-blue);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 15px 45px var(--shadow-glow);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                opacity: 0.6;
+                filter: blur(15px);
+            }
+            50% { 
+                opacity: 0.9;
+                filter: blur(20px);
+            }
+        }
+
+        .logo-text {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.3));
+        }
+
+        /* === NAV ACTIONS === */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            background: var(--glass-light);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .notification-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px) rotate(5deg);
+            box-shadow: 0 10px 25px var(--shadow-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .notification-btn i {
+            color: var(--accent-blue);
+            font-size: 1.3rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+            animation: badgePulse 2.5s infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* === BURGER MENU === */
+        .burger {
+            cursor: pointer;
+            width: 38px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2000;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .burger:hover {
+            transform: scale(1.1);
+        }
+
+        .line {
+            width: 100%;
+            height: 3.5px;
+            background: var(--gradient-blue-glow);
+            border-radius: 6px;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 10px var(--shadow-blue);
+        }
+
+        .burger.active .line:nth-child(1) {
+            transform: rotate(45deg) translate(11px, 11px);
+            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
+        }
+
+        .burger.active .line:nth-child(2) {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .burger.active .line:nth-child(3) {
+            transform: rotate(-45deg) translate(11px, -11px);
+            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
+        }
+
+        /* === SIDE NAVIGATION === */
+        .side-nav {
+            height: 100%;
+            width: 400px;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            right: -400px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
+            backdrop-filter: blur(35px);
+            border-left: 3px solid var(--accent-blue);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: right 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 35px 30px;
+            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
+        }
+
+        .side-nav::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-track {
+            background: rgba(26, 41, 66, 0.05);
+            border-radius: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-thumb {
+            background: var(--gradient-blue-glow);
+            border-radius: 10px;
+        }
+
+        .side-nav.active {
+            right: 0;
+        }
+
+        .side-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--border-blue);
+        }
+
+        .side-nav h2 {
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .close-nav {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass-light);
+        }
+
+        .close-nav:hover {
+            color: #ee5a6f;
+            transform: rotate(90deg) scale(1.2);
+            background: rgba(238, 90, 111, 0.1);
+        }
+
+        /* User Profile in Sidebar */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 25px;
+            background: var(--glass-medium);
+            border: 2px solid var(--border-blue);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .user-profile:hover {
+            background: var(--glass-strong);
+            transform: translateX(-8px);
+            box-shadow: 0 8px 30px var(--shadow-blue);
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-blue-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white-pure);
+            border: 3px solid var(--white-pure);
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .user-info h3 {
+            color: var(--text-navy);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .user-info p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .side-nav ul {
+            list-style: none;
+        }
+
+        .side-nav li {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: slideInRight 0.5s forwards;
+        }
+
+        .side-nav li:nth-child(1) { animation-delay: 0.1s; }
+        .side-nav li:nth-child(2) { animation-delay: 0.15s; }
+        .side-nav li:nth-child(3) { animation-delay: 0.2s; }
+        .side-nav li:nth-child(4) { animation-delay: 0.25s; }
+        .side-nav li:nth-child(5) { animation-delay: 0.3s; }
+        .side-nav li:nth-child(6) { animation-delay: 0.35s; }
+        .side-nav li:nth-child(7) { animation-delay: 0.4s; }
+        .side-nav li:nth-child(8) { animation-delay: 0.45s; }
+        .side-nav li:nth-child(9) { animation-delay: 0.5s; }
+        .side-nav li:nth-child(10) { animation-delay: 0.55s; }
+        .side-nav li:nth-child(11) { animation-delay: 0.6s; }
+        .side-nav li:nth-child(12) { animation-delay: 0.65s; }
+        .side-nav li:nth-child(13) { animation-delay: 0.7s; }
+        .side-nav li:nth-child(14) { animation-delay: 0.75s; }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .side-nav a {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 20px 22px;
+            color: var(--text-navy);
+            text-decoration: none;
+            border-radius: 15px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+            font-size: 1.15rem;
+            justify-content: flex-end;
+        }
+
+        .side-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
+            transition: width 0.6s ease;
+            z-index: 0;
+        }
+
+        .side-nav a:hover::before {
+            width: 100%;
+        }
+
+        .side-nav a > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .side-nav a:hover {
+            color: var(--navy-dark);
+            background: var(--glass-strong);
+            transform: translateX(-12px);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .side-nav a i {
+            font-size: 1.4rem;
+            color: var(--accent-blue);
+            width: 35px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .side-nav a:hover i {
+            transform: scale(1.3) rotate(10deg);
+            filter: drop-shadow(0 0 15px var(--accent-blue));
+        }
+
+        #logoutBtn {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid rgba(238, 90, 111, 0.2);
+        }
+
+        #logoutBtn a {
+            color: #ee5a6f;
+        }
+
+        #logoutBtn a i {
+            color: #ee5a6f;
+        }
+
+        #logoutBtn a:hover {
+            background: rgba(238, 90, 111, 0.15);
+            color: #d63447;
+        }
+    /* === OVERLAY === */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(26, 11, 46, 0.75);
+        backdrop-filter: blur(10px);
+        z-index: 2500;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.6s;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    /* === CONTAINER === */
+    .container { 
+        max-width: 1100px; 
+        margin: 0 auto;
+        padding: 140px 50px 50px;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* === PAGE TITLE === */
+    .page-title {
+        text-align: center;
+        margin-bottom: 60px;
+        animation: fadeInUp 1s;
+    }
+
+    .page-title h1 {
+        font-size: 4rem;
+        font-weight: 900;
+        margin-bottom: 15px;
+        background: var(--gradient-royal);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        filter: drop-shadow(0 0 50px rgba(255, 215, 0, 0.3));
+    }
+
+    .page-title p {
+        font-size: 1.3rem;
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* === ADMIN PANEL === */
+    .admin-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 25px;
+        border: 2px solid var(--border-gold);
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 15px 50px var(--shadow-gold);
+        animation: fadeInUp 1s 0.2s both;
+    }
+
+    .admin-panel h3 {
+        background: var(--gradient-royal);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .teacher-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    input, select, textarea {
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid var(--border-gold);
+        border-radius: 12px;
+        color: var(--text-purple);
+        padding: 14px 18px;
+        outline: none;
+        width: 100%;
+        font-family: 'Cairo', 'Tajawal', sans-serif;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--gold-pure);
+        background: var(--white-pure);
+        box-shadow: 0 5px 20px var(--shadow-gold);
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: var(--text-light);
+    }
+
+    .btn-gold {
+        background: var(--gradient-gold-glow);
+        color: var(--purple-darkest);
+        border: none;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-family: 'Cairo', 'Tajawal', sans-serif;
+        font-size: 1rem;
+        box-shadow: 0 5px 20px var(--shadow-gold);
+    }
+
+    .btn-gold:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 30px var(--shadow-glow);
+    }
+
+    .question-item {
+        background: rgba(255, 255, 255, 0.7);
+        border-left: 4px solid var(--gold-pure);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s;
+    }
+
+    .question-item:hover {
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 5px 20px var(--shadow-gold);
+    }
+
+    /* === EXAMS GRID === */
+    .exams-section {
+        animation: fadeInUp 1s 0.4s both;
+    }
+
+    .exams-section h3 {
+        background: var(--gradient-royal);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+        margin-bottom: 35px;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .exams-section h3::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, var(--gold-pure), transparent);
+    }
+
+    .exams-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .exam-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid var(--border-gold);
+        padding: 35px;
+        border-radius: 25px;
+        text-align: center;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(91, 58, 143, 0.1);
+    }
+
+    .exam-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--gradient-gold-glow);
+        border-radius: 25px;
+        opacity: 0;
+        transition: opacity 0.5s;
+        z-index: -1;
+    }
+
+    .exam-card:hover::before {
+        opacity: 1;
+    }
+
+    .exam-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px var(--shadow-gold);
+    }
+
+    .exam-card i {
+        font-size: 3rem;
+        color: var(--gold-dark);
+        margin-bottom: 20px;
+        filter: drop-shadow(0 5px 15px var(--shadow-gold));
+    }
+
+    .exam-card h3 {
+        color: var(--text-purple);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .exam-card p {
+        color: var(--text-light);
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .exam-card .btn-gold {
+        width: 100%;
+        padding: 12px 25px;
+    }
+
+    /* === EXAM ACTIVE OVERLAY === */
+    #examActiveOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #faf8f3, #e8dcc4);
+        z-index: 5000;
+        padding: 40px;
+        overflow-y: auto;
+        display: none;
+    }
+
+    .timer-box {
+        position: sticky;
+        top: 20px;
+        background: var(--gradient-gold-glow);
+        color: var(--purple-darkest);
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: 900;
+        width: fit-content;
+        margin: 0 auto 30px;
+        box-shadow: 0 10px 30px var(--shadow-gold);
+        font-size: 1.2rem;
+        z-index: 100;
+    }
+
+    #examContent .question-item {
+        background: rgba(255, 255, 255, 0.95);
+        border-left: 5px solid var(--gold-pure);
+        margin-bottom: 25px;
+    }
+
+    #examContent label {
+        display: block;
+        margin: 12px 0;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 15px 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+
+    #examContent label:hover {
+        background: rgba(255, 215, 0, 0.1);
+        border-color: var(--gold-pure);
+        transform: translateX(-5px);
+    }
+
+    #finalSubmitBtn {
+        width: 100%;
+        max-width: 800px;
+        height: 60px;
+        font-size: 1.4rem;
+        margin: 40px auto 0;
+        display: block;
+    }
+
+    /* === RESULT MODAL === */
+    #resultModal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.98);
+        padding: 60px;
+        border-radius: 30px;
+        border: 3px solid var(--gold-pure);
+        text-align: center;
+        z-index: 6000;
+        display: none;
+        width: 90%;
+        max-width: 450px;
+        box-shadow: 0 20px 60px var(--shadow-gold);
+    }
+
+    #resultModal i {
+        font-size: 5rem;
+        color: var(--gold-pure);
+        margin-bottom: 25px;
+        filter: drop-shadow(0 10px 25px var(--shadow-gold));
+    }
+
+    #resultModal h3 {
+        color: var(--text-purple);
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    #resultScore {
+        font-size: 3.5rem;
+        background: var(--gradient-royal);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+        margin-bottom: 30px;
+    }
+
+    /* === UTILITIES === */
+    .hidden {
+        display: none !important;
+    }
+
+    .nav-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 2px solid var(--gold-pure);
+        box-shadow: 0 5px 15px var(--shadow-gold);
+    }
+
+    .auth-slot {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+        header {
+            padding: 18px 30px;
+        }
+
+        header.scrolled {
+            padding: 14px 30px;
+        }
+
+        .container {
+            padding: 120px 25px 50px;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+        }
+
+        .page-title p {
+            font-size: 1.1rem;
+        }
+
+        .admin-panel {
+            padding: 25px;
+        }
+
+        .teacher-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .exams-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .side-nav {
+            width: 100%;
+            right: -100%;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        #resultModal {
+            padding: 40px 25px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title h1 {
+            font-size: 2rem;
+        }
+
+        .exams-section h3 {
+            font-size: 1.6rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+</div>
+
+<!-- Floating Particles -->
+<script>
+    for(let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        document.body.appendChild(particle);
+    }
+</script>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- Header -->
+<header id="header">
+    <div class="header-content">
+        <div class="nav-actions">
+            <div class="notification-btn" onclick="showNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="burger" id="burger" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+        
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div class="logo-text">EDUCORE</div>
+        </a>
+        
+        <div class="auth-slot" id="authSlot">
+            <a href="login.html" class="btn-gold" style="padding: 10px 25px;">تسجيل الدخول</a>
+        </div>
+    </div>
+</header>
+
+<!-- Side Navigation -->
+<nav class="side-nav" id="sideNav">
+    <div class="side-nav-header">
+        <h2>القائمة الرئيسية</h2>
+        <div class="close-nav" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+    <a href="profile.html" style="text-decoration: none; color: inherit;">
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h3 id="displayUser">الملف التعريفي</h3>
+                <p>اضغط لعرض البيانات</p>
+            </div>
+        </div>
+    </a>
+
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i> الفيديوهات التعليمية</a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i> المقالات الحصرية</a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i> ساحة الألعاب</a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i> مركز الاختبارات</a></li>
+        <li><a href="books.html"><i class="fas fa-book"></i> المكتبة الدراسية</a></li>
+        <li><a href="sign language hub.html"><i class="fas fa-hands"></i> مركز لغة الإشارة</a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i> اسلاميات</a></li>
+        <li><a href="AI.html"><i class="fas fa-robot"></i> المساعد الذكي</a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i> الغرف الصوتية</a></li>
+        <li><a href="marks.html"><i class="fas fa-trophy"></i> بوابة النتائج</a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i> قسم الاستفسارات</a></li>
+        <li><a href="family.html"><i class="fas fa-people-roof"></i> توعية في الرقابة الأبوية</a></li>
+        <li><a href="support.html"><i class="fas fa-shield-halved"></i> حقوق النشر</a></li>
+        <li id="logoutBtn" class="hidden">
+            <a href="#" onclick="logout()">
+                <i class="fas fa-power-off"></i> تسجيل خروج
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+    <!-- Page Title -->
+    <div class="page-title">
+        <h1><i class="fas fa-crown"></i> نظام الاختبارات الملكي</h1>
+        <p>اختبر معرفتك وحقق التميز</p>
+    </div>
+
+    <!-- ADMIN PANEL / EXAMS -->
+    <section class="admin-panel">
+        <h3><i class="fas fa-tools"></i> إنشاء اختبار ملكي جديد</h3>
+        <div class="teacher-grid">
+            <input type="text" id="exTitle" placeholder="عنوان الاختبار">
+            <select id="exCategory">
+                <option value="عام">اختبار عام</option>
+                <option value="شهري">اختبار شهري</option>
+                <option value="نهائي">اختبار نهائي</option>
+            </select>
+            <input type="number" id="exMarks" placeholder="الدرجة الكلية">
+            <input type="number" id="exDuration" placeholder="المدة (دقائق)">
+            <input type="datetime-local" id="exEnd">
+        </div>
+
+        <div style="border-top:2px solid rgba(255, 215, 0, 0.2); padding-top:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h4 style="color: var(--gold-dark); font-size: 1.3rem;">محتوى الأسئلة</h4>
+                <div style="display:flex; gap:10px;">
+                    <select id="qTypeSelector" style="width:200px;">
+                        <option value="mcq">اختيار من متعدد</option>
+                        <option value="truefalse">صح / خطأ</option>
+                        <option value="fill">إكمال فراغ</option>
+                    </select>
+                    <button onclick="addNewQuestionField()" class="btn-gold" style="padding:10px 15px;">+ إضافة</button>
+                </div>
+            </div>
+            <div id="questionsContainer"></div>
+        </div>
+
+        <button onclick="saveExam()" class="btn-gold" style="width:100%; height:55px; font-size:1.2rem; margin-top:20px;">
+            <i class="fas fa-rocket"></i> نشر الاختبار الآن
+        </button>
+    </section>
+
+    <!-- Exams Grid -->
+    <section class="exams-section">
+        <h3><i class="fas fa-scroll"></i> الاختبارات المتاحة</h3>
+        <div class="exams-grid" id="examsGrid"></div>
+    </section>
+</div>
+
+<div id="examActiveOverlay">
+    <div class="timer-box" id="examTimer">⏱️ الوقت المتبقي: --:--</div>
+    <div id="examContent" class="container" style="max-width:800px;"></div>
+    <div class="container" style="max-width:800px;">
+        <button id="finalSubmitBtn" class="btn-gold">
+            <i class="fas fa-check-circle"></i> تأكيد تسليم الإجابات النهائية
+        </button>
+    </div>
+</div>
+
+<div id="resultModal">
+    <i class="fas fa-trophy"></i>
+    <h3>نتيجتك النهائية</h3>
+    <p id="resultScore">0 / 0</p>
+    <button onclick="location.reload()" class="btn-gold" style="margin-top:30px;">
+        <i class="fas fa-redo"></i> إغلاق والعودة
+    </button>
+</div>
+
+<script>
+// Header scroll effect
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
+
+window.onload = () => {
+    const user = localStorage.getItem('eliteUser');
+    if(!user) {
+        // Show login prompt if needed
+    } else { 
+        document.getElementById('displayUser').innerText = user; 
+        loadExams(); 
+    }
+};
+
+// Menu toggle
+window.toggleMenu = () => {
+    document.getElementById('sideNav').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+    document.getElementById('burger').classList.toggle('active');
+};
+
+// Show notifications
+window.showNotifications = () => {
+    alert('🔔 لديك 3 إشعارات جديدة:\n\n1. 📝 اختبار جديد متاح\n2. ✅ تم تقييم إجابتك\n3. 💬 رسالة جديدة من المعلم');
+};
+
+function addNewQuestionField(){
+    const type = document.getElementById('qTypeSelector').value;
+    const container = document.getElementById('questionsContainer');
+    const qId = Date.now();
+    let html = `<div class="question-item" id="q_${qId}" data-type="${type}">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <span style="color:var(--gold-dark); font-weight:700; font-size: 1.1rem;">📌 نوع السؤال: ${type}</span>
+            <i class="fas fa-trash" onclick="this.parentElement.parentElement.remove()" style="color:var(--error); cursor:pointer; font-size: 1.2rem;"></i>
+        </div>
+        <input type="text" class="q-title" placeholder="اكتب نص السؤال هنا..." style="margin-bottom:15px;">`;
+
+    if(type==='mcq'){
+        html+=`<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <input type="text" class="q-opt" placeholder="✅ الإجابة الصحيحة" style="border-color:var(--gold-pure)">
+            <input type="text" class="q-opt" placeholder="❌ خيار خطأ 1">
+            <input type="text" class="q-opt" placeholder="❌ خيار خطأ 2">
+            <input type="text" class="q-opt" placeholder="❌ خيار خطأ 3">
+        </div>`;
+    } else if(type==='fill'){
+        html+=`<input type="text" class="q-ans" placeholder="✅ الإجابة الصحيحة المحددة">`;
+    } else if(type==='truefalse'){
+        html+=`<select class="q-ans"><option value="صح">✅ صح</option><option value="خطأ">❌ خطأ</option></select>`;
+    }
+    container.insertAdjacentHTML('beforeend', html + `</div>`);
+}
+
+function saveExam(){
+    const qElements=document.querySelectorAll('.question-item');
+    let questions=[];
+    qElements.forEach(el=>{
+        const type=el.dataset.type;
+        const text=el.querySelector('.q-title').value;
+        let correct, options=[];
+        if(type==='mcq'){
+            const opts=Array.from(el.querySelectorAll('.q-opt')).map(o=>o.value);
+            correct=opts[0];
+            options=opts.sort(()=>Math.random()-0.5);
+        } else {
+            correct=el.querySelector('.q-ans').value;
+            options=type==='truefalse'?["صح","خطأ"]:[];
+        }
+        questions.push({type,text,correct,options});
+    });
+    const exam={
+        id:Date.now(),
+        title:document.getElementById('exTitle').value||"اختبار بدون عنوان",
+        duration:document.getElementById('exDuration').value||10,
+        marks:document.getElementById('exMarks').value||10,
+        end:document.getElementById('exEnd').value,
+        questions
+    };
+    let exams=JSON.parse(localStorage.getItem('eliteExams')||'[]');
+    exams.push(exam);
+    localStorage.setItem('eliteExams',JSON.stringify(exams));
+    alert('✨ تم نشر الاختبار بنجاح!');
+    location.reload();
+}
+
+function loadExams(){
+    const grid=document.getElementById('examsGrid');
+    let exams=JSON.parse(localStorage.getItem('eliteExams')||'[]');
+    const now=new Date();
+    
+    if(exams.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-light);">
+                <i class="fas fa-clipboard-list" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                <p style="font-size: 1.2rem;">لا توجد اختبارات متاحة حالياً</p>
+            </div>
+        `;
+        return;
+    }
+    
+    exams.forEach(ex=>{
+        if(ex.end && new Date(ex.end)<now) return;
+        grid.innerHTML+=`<div class="exam-card">
+            <i class="fas fa-file-invoice"></i>
+            <h3>${ex.title}</h3>
+            <p>⏱️ المدة: ${ex.duration} دقيقة | 🏆 الدرجة: ${ex.marks}</p>
+            <button class="btn-gold" onclick="startExam(${ex.id})">
+                <i class="fas fa-play"></i> دخول الاختبار
+            </button>
+        </div>`;
+    });
+}
+
+let activeExam;
+function startExam(id){
+    activeExam=JSON.parse(localStorage.getItem('eliteExams')).find(e=>e.id===id);
+    const container=document.getElementById('examContent');
+    container.innerHTML=`<h1 style="text-align:center; margin-bottom:40px; color: var(--text-purple); font-size: 2.5rem;">📝 ${activeExam.title}</h1>`;
+    activeExam.questions.forEach((q,i)=>{
+        let html=`<div class="question-item">
+            <p style="font-size:1.3rem; margin-bottom:20px; color: var(--text-purple); font-weight: 600;">
+                ${i+1}. ${q.text}
+            </p>`;
+        if(q.type==='mcq'||q.type==='truefalse'){
+            q.options.forEach(opt=>{
+                html+=`<label>
+                    <input type="radio" name="q${i}" value="${opt}" style="margin-left: 10px;"> ${opt}
+                </label>`;
+            });
+        } else if(q.type==='fill'){
+            html+=`<input type="text" id="ans${i}" placeholder="اكتب الإجابة هنا..." style="border-bottom:2px solid var(--gold-pure); border-radius:8px; background:rgba(255,255,255,0.8);">`;
+        }
+        container.innerHTML+=html+`</div>`;
+    });
+    document.getElementById('examActiveOverlay').style.display='block';
+    startTimer(activeExam.duration);
+    document.getElementById('finalSubmitBtn').onclick=submitExam;
+}
+
+function startTimer(mins){
+    let sec=mins*60;
+    let timer=setInterval(()=>{
+        let m=Math.floor(sec/60), s=sec%60;
+        document.getElementById('examTimer').innerText=`⏱️ الوقت المتبقي: ${m}:${s<10?'0':''}${s}`;
+        if(sec--<=0){ clearInterval(timer); submitExam(); }
+    },1000);
+}
+
+function submitExam(){
+    let score=0;
+    const markPerQ=activeExam.marks/activeExam.questions.length;
+    activeExam.questions.forEach((q,i)=>{
+        let isCorrect=false;
+        if(q.type==='mcq'||q.type==='truefalse'){
+            const checked=document.querySelector(`input[name="q${i}"]:checked`);
+            if(checked && checked.value===q.correct) isCorrect=true;
+        } else if(q.type==='fill'){
+            if(document.getElementById(`ans${i}`).value.trim()===q.correct) isCorrect=true;
+        }
+        if(isCorrect) score+=markPerQ;
+    });
+    document.getElementById('examActiveOverlay').style.display='none';
+    document.getElementById('resultModal').style.display='block';
+    document.getElementById('resultScore').innerText=`${score.toFixed(1)} / ${activeExam.marks}`;
+}
+
+function logout(){ 
+    localStorage.removeItem('eliteUser'); 
+    location.reload(); 
+}
+
+// Close menu on ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('sideNav').classList.contains('active')) {
+        toggleMenu();
+    }
+});
+
+// Close menu when clicking on link
+document.querySelectorAll('.side-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        if(window.innerWidth <= 768) {
+            toggleMenu();
+        }
+    });
+});
+</script>
+</body>
+</html>

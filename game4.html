@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية اللغة العربية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #0a0a12, #1a1a2e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', 'Tahoma', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 900px;
+            height: 650px;
+            background: linear-gradient(to bottom, #000000, #0a0a1a);
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 
+                        inset 0 0 50px rgba(65, 105, 225, 0.1);
+            border-radius: 5px;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #startScreen, #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(0, 0, 10, 0.98), rgba(10, 10, 26, 0.95));
+            padding: 50px;
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            text-align: center;
+            color: #d4af37;
+            z-index: 20;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6),
+                        inset 0 0 30px rgba(65, 105, 225, 0.1);
+            min-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #gameOver {
+            display: none;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 1),
+                         0 0 40px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #4169e1;
+            text-shadow: 0 0 10px rgba(65, 105, 225, 0.8);
+        }
+
+        .modeButtons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 2px solid #f0c950;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-family: 'Arial', 'Tahoma', sans-serif;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+        }
+
+        #menuButton {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 2px solid #f0c950;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: bold;
+            z-index: 30;
+            display: none;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        #menuButton:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
+        }
+
+        #gameArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        #stats {
+            background: rgba(0, 0, 10, 0.7);
+            padding: 15px 20px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            display: flex;
+            justify-content: space-around;
+            color: #d4af37;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+            position: relative;
+            z-index: 15;
+        }
+
+        #questionArea {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 25px;
+            overflow-y: auto;
+        }
+
+        #questionDisplay {
+            font-size: 42px;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 1);
+            background: rgba(0, 0, 10, 0.6);
+            padding: 30px 50px;
+            border-radius: 15px;
+            border: 3px solid rgba(212, 175, 55, 0.5);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        #questionHint {
+            font-size: 22px;
+            color: #4169e1;
+            text-shadow: 0 0 15px rgba(65, 105, 225, 0.8);
+            background: rgba(0, 0, 10, 0.5);
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: 2px solid rgba(65, 105, 225, 0.3);
+        }
+
+        #answersArea {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .answerButton {
+            padding: 20px;
+            font-size: 24px;
+            background: linear-gradient(to bottom, #d4af37, #b8941f);
+            color: #000;
+            border: 3px solid #f0c950;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .answerButton:hover {
+            background: linear-gradient(to bottom, #f0c950, #d4af37);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .answerButton.correct {
+            background: linear-gradient(to bottom, #4CAF50, #45a049);
+            border-color: #66bb6a;
+            animation: correctPulse 0.5s;
+        }
+
+        .answerButton.incorrect {
+            background: linear-gradient(to bottom, #f44336, #da190b);
+            border-color: #ff6b6b;
+            animation: shake 0.5s;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        #inputArea {
+            width: 100%;
+            max-width: 600px;
+            display: none;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 20px;
+            font-size: 28px;
+            font-family: 'Arial', 'Tahoma', sans-serif;
+            background: rgba(0, 0, 10, 0.9);
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            color: #d4af37;
+            outline: none;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            text-align: center;
+        }
+
+        #textInput:focus {
+            border-color: #f0c950;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        #submitButton {
+            margin-top: 15px;
+            width: 100%;
+            padding: 18px;
+            font-size: 22px;
+        }
+
+        #resultsStats {
+            margin: 30px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .resultItem {
+            background: rgba(0, 0, 10, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .resultLabel {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .resultValue {
+            font-size: 36px;
+            font-weight: bold;
+            color: #f0c950;
+            text-shadow: 0 0 10px rgba(240, 201, 80, 0.8);
+        }
+
+        .rating {
+            font-size: 28px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        #feedback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            font-weight: bold;
+            color: #d4af37;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 1);
+            pointer-events: none;
+            z-index: 25;
+            display: none;
+            animation: feedbackAnimation 1s ease-out;
+        }
+
+        @keyframes feedbackAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .mode-icon {
+            font-size: 28px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="900" height="650"></canvas>
+
+        <button id="menuButton" onclick="returnToMenu()">القائمة الرئيسية</button>
+
+        <div id="startScreen">
+            <h1>📚 أكاديمية اللغة العربية 📚</h1>
+            <h2>اختر موضوع التعلم</h2>
+            <div class="modeButtons">
+                <button onclick="startGame('alphabet')">
+                    <span class="mode-icon">🔤</span>
+                    الحروف العربية
+                </button>
+                <button onclick="startGame('vocabulary')">
+                    <span class="mode-icon">📖</span>
+                    المفردات
+                </button>
+                <button onclick="startGame('grammar')">
+                    <span class="mode-icon">✍️</span>
+                    القواعد
+                </button>
+                <button onclick="startGame('harakat')">
+                    <span class="mode-icon">🎯</span>
+                    الحركات
+                </button>
+                <button onclick="startGame('spelling')">
+                    <span class="mode-icon">📝</span>
+                    الإملاء
+                </button>
+                <button onclick="startGame('opposites')">
+                    <span class="mode-icon">↔️</span>
+                    الأضداد
+                </button>
+                <button onclick="startGame('proverbs')">
+                    <span class="mode-icon">💡</span>
+                    الأمثال
+                </button>
+                <button onclick="startGame('mixed')">
+                    <span class="mode-icon">🎲</span>
+                    التحدي الشامل
+                </button>
+            </div>
+        </div>
+
+        <div id="gameArea">
+            <div id="stats">
+                <div>النقاط: <span id="score">0</span></div>
+                <div>السؤال: <span id="questionNumber">1</span>/10</div>
+                <div>الصحيح: <span id="correct">0</span></div>
+                <div>الدقة: <span id="accuracy">100%</span></div>
+            </div>
+
+            <div id="questionArea">
+                <div id="questionDisplay"></div>
+                <div id="questionHint"></div>
+                <div id="answersArea"></div>
+                <div id="inputArea">
+                    <input type="text" id="textInput" placeholder="اكتب إجابتك هنا...">
+                    <button id="submitButton" onclick="checkTextAnswer()">إرسال</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameOver">
+            <h1>النتائج النهائية! 🏆</h1>
+            <div id="resultsStats">
+                <div class="resultItem">
+                    <div class="resultLabel">النقاط النهائية</div>
+                    <div class="resultValue" id="finalScore">0</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">الإجابات الصحيحة</div>
+                    <div class="resultValue"><span id="finalCorrect">0</span>/10</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">نسبة الدقة</div>
+                    <div class="resultValue"><span id="finalAccuracy">0</span>%</div>
+                </div>
+                <div class="resultItem">
+                    <div class="resultLabel">المستوى</div>
+                    <div class="resultValue" id="level" style="font-size: 28px;">مبتدئ</div>
+                </div>
+            </div>
+            <div class="rating" id="rating">⭐ ممتاز!</div>
+            <button onclick="returnToMenu()" style="margin-top: 20px;">القائمة الرئيسية</button>
+        </div>
+
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let gameRunning = false;
+        let gameMode = 'alphabet';
+        let score = 0;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let currentQuestion = null;
+        let questionCount = 0;
+        let maxQuestions = 10;
+        let usedQuestions = [];
+
+        // Game data
+        const gameData = {
+            alphabet: [
+                { q: 'أ', a: ['أسد', 'بطة', 'ثعلب', 'جمل'], correct: 'أسد', hint: 'يبدأ بحرف...' },
+                { q: 'ب', a: ['أرنب', 'بطة', 'تمساح', 'جمل'], correct: 'بطة', hint: 'يبدأ بحرف...' },
+                { q: 'ت', a: ['أسد', 'بقرة', 'تمساح', 'جمل'], correct: 'تمساح', hint: 'يبدأ بحرف...' },
+                { q: 'ث', a: ['أرنب', 'بطة', 'ثعلب', 'جمل'], correct: 'ثعلب', hint: 'يبدأ بحرف...' },
+                { q: 'ج', a: ['أسد', 'بطة', 'تفاح', 'جمل'], correct: 'جمل', hint: 'يبدأ بحرف...' },
+                { q: 'ح', a: ['حصان', 'بطة', 'تمساح', 'جمل'], correct: 'حصان', hint: 'يبدأ بحرف...' },
+                { q: 'خ', a: ['أسد', 'خروف', 'تمساح', 'جمل'], correct: 'خروف', hint: 'يبدأ بحرف...' },
+                { q: 'د', a: ['دجاجة', 'بطة', 'تمساح', 'جمل'], correct: 'دجاجة', hint: 'يبدأ بحرف...' },
+                { q: 'ذ', a: ['أسد', 'ذئب', 'تمساح', 'جمل'], correct: 'ذئب', hint: 'يبدأ بحرف...' },
+                { q: 'ر', a: ['رمانة', 'بطة', 'تمساح', 'جمل'], correct: 'رمانة', hint: 'يبدأ بحرف...' },
+                { q: 'ز', a: ['أسد', 'زرافة', 'تمساح', 'جمل'], correct: 'زرافة', hint: 'يبدأ بحرف...' },
+                { q: 'س', a: ['سمكة', 'بطة', 'تمساح', 'جمل'], correct: 'سمكة', hint: 'يبدأ بحرف...' }
+            ],
+            vocabulary: [
+                { q: '🍎', a: ['تفاح', 'موز', 'برتقال', 'عنب'], correct: 'تفاح', hint: 'ما اسم هذه الفاكهة؟' },
+                { q: '🐱', a: ['كلب', 'قطة', 'أرنب', 'فأر'], correct: 'قطة', hint: 'ما اسم هذا الحيوان؟' },
+                { q: '🏠', a: ['مدرسة', 'بيت', 'مسجد', 'حديقة'], correct: 'بيت', hint: 'ما اسم هذا المكان؟' },
+                { q: '🚗', a: ['طائرة', 'قطار', 'سيارة', 'دراجة'], correct: 'سيارة', hint: 'ما اسم هذه المركبة؟' },
+                { q: '☀️', a: ['قمر', 'نجم', 'شمس', 'سحاب'], correct: 'شمس', hint: 'ما اسم هذا؟' },
+                { q: '📚', a: ['قلم', 'كتاب', 'دفتر', 'ممحاة'], correct: 'كتاب', hint: 'ما اسم هذا؟' },
+                { q: '🌹', a: ['شجرة', 'وردة', 'عشب', 'ورقة'], correct: 'وردة', hint: 'ما اسم هذا؟' },
+                { q: '💧', a: ['حليب', 'عصير', 'ماء', 'شاي'], correct: 'ماء', hint: 'ما اسم هذا؟' },
+                { q: '👨‍👩‍👧‍👦', a: ['أصدقاء', 'عائلة', 'جيران', 'طلاب'], correct: 'عائلة', hint: 'ما اسم هذه المجموعة؟' },
+                { q: '🎂', a: ['خبز', 'كعكة', 'بسكويت', 'حلوى'], correct: 'كعكة', hint: 'ما اسم هذا الطعام؟' }
+            ],
+            grammar: [
+                { q: 'الولد يلعب في الحديقة\nما هو الفاعل؟', a: ['الولد', 'يلعب', 'الحديقة', 'في'], correct: 'الولد', hint: 'من يقوم بالفعل؟' },
+                { q: 'القطة جميلة\nما نوع الجملة؟', a: ['فعلية', 'اسمية', 'استفهامية', 'تعجبية'], correct: 'اسمية', hint: 'جملة تبدأ باسم' },
+                { q: 'أكل الطفل التفاحة\nما هو المفعول به؟', a: ['أكل', 'الطفل', 'التفاحة', 'لا شيء'], correct: 'التفاحة', hint: 'ما الذي وقع عليه الفعل؟' },
+                { q: 'كتاب - ما نوع هذه الكلمة؟', a: ['اسم مذكر', 'اسم مؤنث', 'فعل', 'حرف'], correct: 'اسم مذكر', hint: 'انظر للتذكير والتأنيث' },
+                { q: 'مدرسة - ما نوع هذه الكلمة؟', a: ['اسم مذكر', 'اسم مؤنث', 'فعل', 'حرف'], correct: 'اسم مؤنث', hint: 'انظر للتذكير والتأنيث' },
+                { q: 'طالب - مثنى هذه الكلمة؟', a: ['طلاب', 'طالبان', 'طالبين', 'الطالبان'], correct: 'طالبان', hint: 'اثنان' },
+                { q: 'معلم - جمع هذه الكلمة؟', a: ['معلمان', 'معلمون', 'معلمين', 'المعلمين'], correct: 'معلمون', hint: 'أكثر من اثنين' }
+            ],
+            harakat: [
+                { q: 'كَتَبَ - ما حركة الحرف الأول؟', a: ['فتحة', 'ضمة', 'كسرة', 'سكون'], correct: 'فتحة', hint: 'انظر للتشكيل' },
+                { q: 'قُلْ - ما حركة الحرف الأول؟', a: ['فتحة', 'ضمة', 'كسرة', 'سكون'], correct: 'ضمة', hint: 'انظر للتشكيل' },
+                { q: 'بِسْمِ - ما حركة الحرف الأول؟', a: ['فتحة', 'ضمة', 'كسرة', 'سكون'], correct: 'كسرة', hint: 'انظر للتشكيل' },
+                { q: 'كتابٌ - ما نوع التنوين؟', a: ['فتح', 'ضم', 'كسر', 'لا تنوين'], correct: 'ضم', hint: 'تنوين على الضمة' },
+                { q: 'كتاباً - ما نوع التنوين؟', a: ['فتح', 'ضم', 'كسر', 'لا تنوين'], correct: 'فتح', hint: 'تنوين على الفتحة' },
+                { q: 'كتابٍ - ما نوع التنوين؟', a: ['فتح', 'ضم', 'كسر', 'لا تنوين'], correct: 'كسر', hint: 'تنوين على الكسرة' }
+            ],
+            spelling: [
+                { q: 'اكتب كلمة: مَدْرَسَة', correct: 'مدرسة', hint: 'المكان الذي ندرس فيه', type: 'text' },
+                { q: 'اكتب كلمة: كِتَاب', correct: 'كتاب', hint: 'نقرأ فيه', type: 'text' },
+                { q: 'اكتب كلمة: قَلَم', correct: 'قلم', hint: 'نكتب به', type: 'text' },
+                { q: 'اكتب كلمة: مُعَلِّم', correct: 'معلم', hint: 'من يدرس الطلاب', type: 'text' },
+                { q: 'اكتب كلمة: طَالِب', correct: 'طالب', hint: 'من يتعلم في المدرسة', type: 'text' },
+                { q: 'أيهما صحيح؟', a: ['إسم', 'اسم', 'أسم', 'إأسم'], correct: 'اسم', hint: 'كتابة الهمزة' },
+                { q: 'أيهما صحيح؟', a: ['هذا', 'هاذا', 'هضا', 'هذة'], correct: 'هذا', hint: 'اسم إشارة' },
+                { q: 'أيهما صحيح؟', a: ['هذه', 'هاذه', 'هذة', 'هاذة'], correct: 'هذه', hint: 'اسم إشارة للمؤنث' }
+            ],
+            opposites: [
+                { q: 'عكس كلمة: كبير', a: ['صغير', 'ضخم', 'طويل', 'عريض'], correct: 'صغير', hint: 'ما عكس كبير؟' },
+                { q: 'عكس كلمة: طويل', a: ['قصير', 'عالي', 'واسع', 'ضيق'], correct: 'قصير', hint: 'ما عكس طويل؟' },
+                { q: 'عكس كلمة: سعيد', a: ['حزين', 'فرحان', 'مسرور', 'غاضب'], correct: 'حزين', hint: 'ما عكس سعيد؟' },
+                { q: 'عكس كلمة: قوي', a: ['ضعيف', 'شديد', 'صلب', 'متين'], correct: 'ضعيف', hint: 'ما عكس قوي؟' },
+                { q: 'عكس كلمة: جميل', a: ['قبيح', 'حسن', 'رائع', 'بديع'], correct: 'قبيح', hint: 'ما عكس جميل؟' },
+                { q: 'عكس كلمة: سريع', a: ['بطيء', 'خفيف', 'نشيط', 'رشيق'], correct: 'بطيء', hint: 'ما عكس سريع؟' },
+                { q: 'عكس كلمة: ساخن', a: ['بارد', 'دافئ', 'حار', 'ملتهب'], correct: 'بارد', hint: 'ما عكس ساخن؟' },
+                { q: 'عكس كلمة: نظيف', a: ['وسخ', 'نقي', 'طاهر', 'صاف'], correct: 'وسخ', hint: 'ما عكس نظيف؟' }
+            ],
+            proverbs: [
+                { q: 'أكمل المثل: العلم في الصغر كالنقش على...', a: ['الحجر', 'الماء', 'الورق', 'الرمل'], correct: 'الحجر', hint: 'مثل عن التعليم' },
+                { q: 'أكمل المثل: الصديق وقت...', a: ['الضيق', 'الفرح', 'العمل', 'اللعب'], correct: 'الضيق', hint: 'مثل عن الصداقة' },
+                { q: 'أكمل المثل: من جد...', a: ['وجد', 'نجح', 'فاز', 'ربح'], correct: 'وجد', hint: 'مثل عن الاجتهاد' },
+                { q: 'أكمل المثل: الوقت كـ...', a: ['السيف', 'الذهب', 'الماس', 'الكنز'], correct: 'السيف', hint: 'الوقت كالسيف...' },
+                { q: 'أكمل المثل: في التأني السلامة وفي العجلة...', a: ['الندامة', 'الخطأ', 'الفشل', 'المصيبة'], correct: 'الندامة', hint: 'مثل عن التأني' },
+                { q: 'أكمل المثل: درهم وقاية خير من قنطار...', a: ['علاج', 'دواء', 'طب', 'شفاء'], correct: 'علاج', hint: 'مثل عن الوقاية' }
+            ]
+        };
+
+        // Stars background
+        let stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.2,
+                opacity: Math.random() * 0.5 + 0.5,
+                twinkleSpeed: Math.random() * 0.02 + 0.01,
+                twinklePhase: Math.random() * Math.PI * 2
+            });
+        }
+
+        function drawStars() {
+            stars.forEach(star => {
+                const twinkle = Math.sin(star.twinklePhase) * 0.3 + 0.7;
+                ctx.fillStyle = `rgba(168, 197, 232, ${star.opacity * twinkle})`;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function updateStars() {
+            stars.forEach(star => {
+                star.y += star.speed;
+                star.twinklePhase += star.twinkleSpeed;
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+            });
+        }
+
+        function backgroundLoop() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            updateStars();
+            drawStars();
+            
+            requestAnimationFrame(backgroundLoop);
+        }
+
+        function startGame(mode) {
+            gameMode = mode;
+            gameRunning = true;
+            score = 0;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            questionCount = 0;
+            usedQuestions = [];
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'flex';
+            document.getElementById('menuButton').style.display = 'block';
+
+            updateStats();
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            if (questionCount >= maxQuestions) {
+                endGame();
+                return;
+            }
+
+            questionCount++;
+
+            // Get question set based on mode
+            let questionSet;
+            if (gameMode === 'mixed') {
+                const modes = ['alphabet', 'vocabulary', 'grammar', 'harakat', 'spelling', 'opposites', 'proverbs'];
+                const randomMode = modes[Math.floor(Math.random() * modes.length)];
+                questionSet = gameData[randomMode];
+            } else {
+                questionSet = gameData[gameMode];
+            }
+
+            // Get a question that hasn't been used
+            let availableQuestions = questionSet.filter((q, index) => 
+                !usedQuestions.includes(gameMode + index)
+            );
+            
+            if (availableQuestions.length === 0) {
+                usedQuestions = [];
+                availableQuestions = questionSet;
+            }
+
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const selectedQuestion = availableQuestions[randomIndex];
+            const originalIndex = questionSet.indexOf(selectedQuestion);
+            usedQuestions.push(gameMode + originalIndex);
+
+            currentQuestion = selectedQuestion;
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            document.getElementById('questionDisplay').textContent = currentQuestion.q;
+            document.getElementById('questionHint').textContent = currentQuestion.hint || '';
+
+            const answersArea = document.getElementById('answersArea');
+            const inputArea = document.getElementById('inputArea');
+
+            if (currentQuestion.type === 'text') {
+                // Text input question
+                answersArea.style.display = 'none';
+                inputArea.style.display = 'block';
+                document.getElementById('textInput').value = '';
+                document.getElementById('textInput').focus();
+            } else {
+                // Multiple choice question
+                answersArea.style.display = 'grid';
+                inputArea.style.display = 'none';
+                answersArea.innerHTML = '';
+
+                currentQuestion.a.forEach(answer => {
+                    const button = document.createElement('button');
+                    button.className = 'answerButton';
+                    button.textContent = answer;
+                    button.onclick = () => checkAnswer(answer, button);
+                    answersArea.appendChild(button);
+                });
+            }
+        }
+
+        function checkAnswer(answer, buttonElement) {
+            const allButtons = document.querySelectorAll('.answerButton');
+            allButtons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            if (answer === currentQuestion.correct) {
+                buttonElement.classList.add('correct');
+                score += 10;
+                correctAnswers++;
+                showFeedback('أحسنت! ✅', '#4CAF50');
+            } else {
+                buttonElement.classList.add('incorrect');
+                wrongAnswers++;
+                showFeedback('حاول مرة أخرى! ❌', '#f44336');
+                
+                allButtons.forEach(btn => {
+                    if (btn.textContent === currentQuestion.correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            updateStats();
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 1500);
+        }
+
+        function checkTextAnswer() {
+            const userAnswer = document.getElementById('textInput').value.trim();
+            const correctAnswer = currentQuestion.correct;
+
+            if (userAnswer === correctAnswer) {
+                score += 10;
+                correctAnswers++;
+                showFeedback('ممتاز! ✅', '#4CAF50');
+            } else {
+                wrongAnswers++;
+                showFeedback('الإجابة الصحيحة: ' + correctAnswer, '#f44336');
+            }
+
+            updateStats();
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 2000);
+        }
+
+        // Allow Enter key to submit text answers
+        document.getElementById('textInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkTextAnswer();
+            }
+        });
+
+        function showFeedback(text, color) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = text;
+            feedback.style.color = color;
+            feedback.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('questionNumber').textContent = questionCount;
+            document.getElementById('correct').textContent = correctAnswers;
+            
+            const total = correctAnswers + wrongAnswers;
+            const accuracy = total > 0 ? Math.round((correctAnswers / total) * 100) : 100;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function getLevel(score) {
+            if (score >= 90) return 'متقدم 🏆';
+            if (score >= 70) return 'جيد جداً 🌟';
+            if (score >= 50) return 'جيد ⭐';
+            return 'مبتدئ 📚';
+        }
+
+        function getRating(accuracy) {
+            if (accuracy >= 90) return "🏆 ممتاز جداً! أنت متفوق!";
+            if (accuracy >= 75) return "⭐ رائع! استمر في التقدم!";
+            if (accuracy >= 60) return "👍 جيد! واصل التدريب!";
+            if (accuracy >= 50) return "💪 لا بأس! حاول أكثر!";
+            return "📚 تحتاج المزيد من المذاكرة!";
+        }
+
+        function endGame() {
+            gameRunning = false;
+
+            const total = correctAnswers + wrongAnswers;
+            const finalAccuracy = total > 0 ? Math.round((correctAnswers / total) * 100) : 0;
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalCorrect').textContent = correctAnswers;
+            document.getElementById('finalAccuracy').textContent = finalAccuracy;
+            document.getElementById('level').textContent = getLevel(score);
+            document.getElementById('rating').textContent = getRating(finalAccuracy);
+
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'block';
+        }
+
+        function returnToMenu() {
+            gameRunning = false;
+            questionCount = 0;
+            usedQuestions = [];
+
+            document.getElementById('startScreen').style.display = 'block';
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+            document.getElementById('menuButton').style.display = 'none';
+        }
+
+        backgroundLoop();
+    </script>
+</body>
+</html>

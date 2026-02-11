@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="mainHtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موسوعة EduCore الشاملة | مدرسة سالم الثانوية</title>
+    <style>
+        :root { 
+            --navy: #0e1c36; 
+            --gold: #c5a059; 
+            --white: #ffffff;
+            --light-bg: #f8f9fa;
+            --text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            --accent-green: #27ae60;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: radial-gradient(circle at center, #1e3a5f 0%, #0e1c36 100%); 
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold);
+        }
+        .school-info { display: flex; align-items: center; gap: 15px; font-weight: bold; }
+        .educore-brand { font-size: 1.5rem; color: var(--gold); letter-spacing: 2px; }
+
+        header { text-align: center; padding: 40px 20px; }
+        header h1 { font-size: 2.8rem; margin-bottom: 10px; text-shadow: var(--text-shadow); }
+        header p { opacity: 0.9; font-size: 1.2rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .category-card {
+            position: relative;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: flex-end;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-overlay {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(14, 28, 54, 1) 0%, rgba(14, 28, 54, 0.6) 70%, transparent 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title { font-size: 1.3rem; font-weight: bold; }
+        .card-icon { font-size: 1.8rem; }
+
+        /* منطقة عرض المقال */
+        #article-viewer {
+            display: none;
+            max-width: 1000px;
+            margin: 20px auto 60px auto;
+            background: #ffffff;
+            color: #2c3e50;
+            border-radius: 25px;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        
+        .close-btn { 
+            background: var(--navy); color: var(--gold); border: none; padding: 10px 25px; 
+            border-radius: 20px; cursor: pointer; font-weight: bold; margin-bottom: 20px;
+        }
+
+        .article-body h2 { color: var(--navy); font-size: 2rem; border-right: 8px solid var(--gold); padding-right: 15px; }
+        .quran-verse { background: #f0fdf4; border-right: 6px solid var(--accent-green); padding: 20px; border-radius: 12px; text-align: center; font-style: italic; font-size: 1.3rem; color: #166534; margin: 25px 0; }
+        .article-body p { font-size: 1.2rem; line-height: 2; margin-bottom: 20px; }
+        
+        .analysis-box { background: #f8fafc; padding: 25px; border-radius: 15px; border-right: 6px solid var(--navy); margin: 25px 0; }
+        .analysis-box h3 { color: var(--navy); margin-top: 0; }
+        
+        .parenting-steps { background: #fffbeb; border: 2px solid #fef3c7; padding: 25px; border-radius: 15px; margin: 25px 0; }
+        .parenting-steps h4 { color: #92400e; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        .golden-tip { background: #fffcf0; border: 2px dashed var(--gold); padding: 25px; border-radius: 15px; margin: 30px 0; }
+        .golden-tip strong { color: #854d0e; display: block; margin-bottom: 10px; font-size: 1.3rem; }
+
+        .controls { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; z-index: 5000; }
+        .btn-action { background: var(--gold); color: var(--navy); border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* صور الأقسام */
+        .bg-academic { background-image: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500'); }
+        .bg-school { background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500'); }
+        .bg-behavior { background-image: url('https://images.unsplash.com/photo-1484662020986-75935d2ebc66?w=500'); }
+        .bg-peers { background-image: url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500'); }
+        .bg-digital { background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500'); }
+        .bg-drugs { background-image: url('https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500'); }
+        .bg-emotional { background-image: url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=500'); }
+        .bg-positive { background-image: url('https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?w=500'); }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="school-info" id="schoolName">مدرسة سالم الثانوية للبنين</div>
+    <div class="educore-brand">EduCore</div>
+</div>
+
+<header id="headerArea">
+    <h1 id="mainTitle">موسوعة التوعية الأسرية الشاملة</h1>
+    <p id="subTitle">منصة متكاملة لإرشاد الوالدين في تربية جيل واعي، مسؤول، ومبدع في ظل تحديات العصر.</p>
+</header>
+
+<div class="grid-container" id="grid">
+    <div class="category-card bg-positive" onclick="showArticle('positive_discipline')">
+        <div class="card-overlay"><div class="card-title">التربية الإيجابية</div><div class="card-icon">🌱</div></div>
+    </div>
+    <div class="category-card bg-emotional" onclick="showArticle('emotional_intel')">
+        <div class="card-overlay"><div class="card-title">الذكاء العاطفي</div><div class="card-icon">❤️</div></div>
+    </div>
+    <div class="category-card bg-academic" onclick="showArticle('academic')">
+        <div class="card-overlay"><div class="card-title" id="t1">المتابعة الأكاديمية</div><div class="card-icon">📚</div></div>
+    </div>
+    <div class="category-card bg-behavior" onclick="showArticle('behavior')">
+        <div class="card-overlay"><div class="card-title" id="t3">الرقابة السلوكية</div><div class="card-icon">🕵️‍♂️</div></div>
+    </div>
+    <div class="category-card bg-digital" onclick="showArticle('digital')">
+        <div class="card-overlay"><div class="card-title" id="t5">الأمان الرقمي</div><div class="card-icon">💻</div></div>
+    </div>
+    <div class="category-card bg-peers" onclick="showArticle('peers')">
+        <div class="card-overlay"><div class="card-title" id="t4">رفاق السوء</div><div class="card-icon">👥</div></div>
+    </div>
+    <div class="category-card bg-school" onclick="showArticle('school_link')">
+        <div class="card-overlay"><div class="card-title" id="t2">الشراكة المدرسية</div><div class="card-icon">🤝</div></div>
+    </div>
+    <div class="category-card bg-drugs" onclick="showArticle('drugs')">
+        <div class="card-overlay"><div class="card-title" id="t6">الوقاية من السموم</div><div class="card-icon">🛡️</div></div>
+    </div>
+</div>
+
+<div id="article-viewer">
+    <button class="close-btn" onclick="closeArticle()" id="backBtn">🔙 العودة للرئيسية</button>
+    <div id="article-content" class="article-body"></div>
+</div>
+
+<div class="controls">
+    <button class="btn-action" onclick="toggleLanguage()" id="langBtn">English</button>
+    <button class="btn-action" onclick="stopSpeaking()" id="stopBtn">⏹ توقف الصوت</button>
+</div>
+
+<script>
+    let currentLang = 'ar';
+    let synth = window.speechSynthesis;
+
+    const data = {
+        ar: {
+            school: 'مدرسة سالم الثانوية للبنين',
+            mainTitle: 'موسوعة التوعية الأسرية الشاملة',
+            subTitle: 'دليلك المتكامل لفهم الأبناء، حمايتهم، وبناء جسور الثقة معهم.',
+            back: '🔙 العودة للرئيسية',
+            tabs: ['المتابعة الأكاديمية', 'الشراكة المدرسية', 'الرقابة السلوكية', 'رفاق السوء', 'الأمان الرقمي', 'الوقاية من السموم'],
+            articles: {
+                positive_discipline: {
+                    h: 'التربية الإيجابية: بناء الشخصية لا تحطيمها',
+                    v: '“فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ”',
+                    p1: 'التربية الإيجابية ليست تساهلاً، بل هي حزم محبب. تعتمد على فهم دوافع السلوك بدلاً من معاقبة السلوك نفسه. عندما يشعر الطفل بالانتماء والأهمية، يتلاشى الدافع وراء السلوكيات المزعجة.',
+                    steps: 'استراتيجيات عملية: 1. ركز على الحلول لا العقاب. 2. امدح الجهد وليس النتيجة (قل: "أحببت إصرارك" بدلاً من "أنت ذكي"). 3. خصص وقتاً نوعياً يومياً بدون هواتف.',
+                    analysis: 'العقاب البدني أو النفسي (التحقير) يؤدي لنتائج عكسية، حيث يتعلم الطفل الخوف والتمرد بدلاً من تحمل المسؤولية.',
+                    tip: 'عند الخطأ، اسأل: "كيف يمكننا إصلاح ما حدث؟" بدلاً من "لماذا فعلت ذلك؟". هذا يبني عقلية إصلاحية ومسؤولة.',
+                    p2: 'تذكر أن طفلك يراقب أفعالك أكثر مما يسمع كلماتك، فكن أنت القدوة التي تتمنى أن يقتدي بها.'
+                },
+                emotional_intel: {
+                    h: 'الذكاء العاطفي: كيف نفهم لغة مشاعرهم؟',
+                    v: '“وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ”',
+                    p1: 'الذكاء العاطفي هو قدرة الأبناء على التعرف على مشاعرهم وإدارتها. دورك كولي أمر هو "مدرب عاطفي" وليس مجرد "مصدر أوامر". المراهقون غالباً ما يترجمون خوفهم أو حزنهم إلى غضب.',
+                    steps: 'خطوات التدريب العاطفي: 1. استمع بإنصات دون مقاطعة. 2. سمِّ المشاعر (قل: "يبدو أنك تشعر بالإحباط لأن درجتك كانت أقل مما توقعت"). 3. علمهم تقنيات التنفس عند الغضب.',
+                    analysis: 'الأطفال الذين يتمتعون بذكاء عاطفي عالٍ هم أقل عرضة للانجراف وراء ضغوط الأقران أو الوقوع في فخ الإدمان لأنهم يفهمون حاجاتهم النفسية.',
+                    tip: 'لا تسفه مشاعر ابنك (لا تقل: "الأمر بسيط لا يستدعي البكاء")، بل قل: "أنا أتفهم أن هذا الأمر أحزنك، أنا معك".',
+                    p2: 'بناء الأمان العاطفي هو أقوى درع يحمي ابنك من تقلبات الحياة الخارجية.'
+                },
+                academic: {
+                    h: 'المتابعة الأكاديمية الشاملة',
+                    v: '“يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ”',
+                    p1: 'المتابعة الأكاديمية هي رحلة تشاركية. الأبحاث تؤكد أن الطالب الذي يجد اهتماماً من والديه بمهامه الدراسية يرتفع مستوى إنجازه بنسبة 40%. المتابعة ليست تفتيشاً، بل مساندة.',
+                    steps: 'خطة التفوق: 1. ترتيب بيئة الدراسة (إضاءة جيدة، بلا مشتتات). 2. تحديد جدول زمني مرن. 3. ربط العلم بالواقع والحياة اليومية.',
+                    analysis: 'التراجع الأكاديمي المفاجئ هو صرخة استغاثة لمشكلة غير ظاهرة (تنمر، ضعف نظر، أو تشتت رقمي). لا تتجاهل المؤشرات البسيطة.',
+                    tip: 'اجعل من الدراسة وقتاً ممتعاً؛ ناقش معهم ما تعلموه اليوم وكأنك تتعلم منهم، فهذا يعزز ثقتهم بأنفسهم.',
+                    p2: 'العلم هو السلاح الذي لا يصدأ، والمتابعة هي الوقود الذي يبقي شعلة الفضول متقدة.'
+                },
+                digital: {
+                    h: 'الأمان الرقمي: الرقابة في عصر الشاشات',
+                    v: '“إِنَّ السَّمْعَ وَالْبَصَرَ وَالْفُؤَادَ كُلُّ أُولَٰئِكَ كَانَ عَنْهُ مَسْئُولًا”',
+                    p1: 'العالم الافتراضي هو غابة مفتوحة. الرقابة الرقمية لا تعني التجسس، بل تعني وضع قوانين واضحة واستخدام برامج الرقابة الأبوية (Parental Control) كحماية تقنية موازية للتوعية الفكرية.',
+                    steps: 'قواعد المنزل الرقمي: 1. لا شاشات قبل النوم بساعة. 2. الأجهزة تستخدم في الصالة وليس في الغرف المغلقة. 3. تعليم الأبناء عدم مشاركة الصور الشخصية أبداً.',
+                    analysis: 'التنمر الإلكتروني والمحتوى غير اللائق يسببان صدمات نفسية عميقة. يجب أن يثق ابنك بأنه يمكنه إخبارك بأي شيء يراه دون خوف من سحب الهاتف منه.',
+                    tip: 'كن "صديقاً رقمياً" لابنك، اطلب منه أن يعلمك لعبة أو تطبيقاً، لتفهم عالمه من الداخل.',
+                    p2: 'الهدف هو بناء "شرطي داخلي" لدى الطفل يجعله يغلق المحتوى السيئ بنفسه حتى لو كان وحده.'
+                },
+                behavior: {
+                    h: 'الرقابة السلوكية: لغة الجسد والتغيرات الخفية',
+                    v: '“إِنَّ اللَّهَ كَانَ عَلَيْكُمْ رَقِيبًا”',
+                    p1: 'السلوك هو لغة المراهق غير المنطوقة. أي تغيير في نمط النوم، الشهية، أو المفردات المستخدمة هو رسالة. الرقابة الذكية تراقب دون خنق، وتوجه دون إحراج.',
+                    steps: 'مؤشرات الانتباه: 1. الانطواء المفاجئ. 2. ردود الفعل العنيفة غير المبررة. 3. التغير في اختيار الملابس أو الموسيقى بشكل جذري.',
+                    analysis: 'المراهقة مرحلة اضطراب هرموني، لذا فإن الصبر هو مفتاح الرقابة السلوكية الناجحة. اجعل القواعد واضحة ولكن كن مرناً في التفاصيل.',
+                    tip: 'استخدم أسلوب "الدردشة العابرة" (مثلاً أثناء ركوب السيارة) لمناقشة السلوكيات، فهي أقل ضغطاً من المواجهة المباشرة.',
+                    p2: 'السلوك القويم ينبع من بيت يسوده الحب والوضوح في القيم والمبادئ.'
+                },
+                peers: {
+                    h: 'رفاق السوء: حماية الدائرة الاجتماعية',
+                    v: '“الْمَرْءُ عَلَى دِينِ خَلِيلِهِ فَلْيَنْظُرْ أَحَدُكُمْ مَنْ يُخَالِلُ”',
+                    p1: 'في سن المراهقة، يتفوق تأثير الصديق على تأثير الأب. "رفاق السوء" ليسوا دائماً مجرمين، بل قد يكونون مجرد أصدقاء غير مبالين أو محبطين. خطر فوارق السن يكمن في استغلال المراهق الصغير للقيام بأعمال طائشة.',
+                    steps: 'بناء الدائرة الآمنة: 1. تعرف على أهالي أصدقاء ابنك. 2. استضف أصدقاءه في المنزل لتراقب طباعهم عن قرب. 3. شجع ابنك على ممارسة رياضات جماعية.',
+                    analysis: 'المراهق ينضم لمجموعات قد تضره ليشعر بالقبول. إذا وفرت له القبول والحب في المنزل، فلن يبحث عنه في الخارج بأي ثمن.',
+                    tip: 'لا تسب أصدقاءه مباشرة، بل انقد السلوك (قل: "أنا قلق لأن هذا التصرف لا يشبه تربيتك" بدلاً من "صديقك سيء").',
+                    p2: 'الصداقة الصالحة هي رئة يتنفس منها المراهق هواءً نقياً من القيم.'
+                },
+                school_link: {
+                    h: 'الشراكة بين البيت والمدرسة',
+                    v: '“وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى”',
+                    p1: 'المدرسة ليست جهة تسليم واستلام، بل هي شريك استراتيجي. تواصلك مع المعلم يرفع من مكانة ابنك في المدرسة ويجعل المعلمين أكثر اهتماماً بحالته النفسية والأكاديمية.',
+                    steps: 'التواصل الفعال: 1. حضور اجتماعات أولياء الأمور. 2. متابعة المنصات الإلكترونية للمدرسة. 3. التواصل مع المرشد الطلابي لبحث التطور الشخصي.',
+                    analysis: 'الفجوة بين البيت والمدرسة تسمح للطالب بالتلاعب بالحقائق أو إخفاء المشاكل. التنسيق المستمر يغلق هذه الفجوات.',
+                    tip: 'أخبر ابنك: "لقد تحدثت مع معلمك وأثنى على تميزك في كذا". هذا يشعره بأن عيون المحبة ترعاه في كل مكان.',
+                    p2: 'عندما تتحد رؤية البيت مع رسالة المدرسة، يكون النجاح حليف الطالب دائماً.'
+                },
+                drugs: {
+                    h: 'الوقاية من السموم: بناء جدار الصد النفسي',
+                    v: '“وَلَا تُلْقُوا بِأَيْدِيكُمْ إِلَى التَّهْلُكَةِ”',
+                    p1: 'الوقاية تبدأ بكلمة "لا" الواثقة. تعليم الأبناء مخاطر التدخين، الفيب، والمواد المخدرة يجب أن يكون مبنياً على الحقائق العلمية وليس فقط الترهيب. الفراغ العاطفي هو المدخل الأول للسموم.',
+                    steps: 'خطوات الحماية: 1. كن قدوة (لا تدخن أمامهم). 2. اشرح تأثير هذه المواد على الدماغ والمستقبل. 3. علمهم مهارة "رفض الضغط الاجتماعي" بذكاء.',
+                    analysis: 'العلامات التحذيرية تشمل: احمرار العين، اضطراب النوم، فقدان الوزن، واختفاء مبالغ مالية. التدخل المبكر الهادئ ينقذ حياة.',
+                    tip: 'ابنِ علاقة تجعل ابنك يقول لك: "يا أبي، عرضوا عليّ كذا اليوم". هذه الصراحة هي أغلى ما تملك للوقاية.',
+                    p2: 'حماية الأبناء من السموم تبدأ بملء قلوبهم بالحب، وعقولهم بالوعي، وأوقاتهم بالهوايات النافعة.'
+                }
+            }
+        },
+        en: {
+            school: 'Salem Secondary School',
+            mainTitle: 'Family Awareness Encyclopedia',
+            subTitle: 'A comprehensive guide for parents to raise a conscious, responsible, and creative generation.',
+            back: '🔙 Back to Main',
+            tabs: ['Academic Follow-up', 'School Partnership', 'Behavioral Monitoring', 'Peer Protection', 'Digital Safety', 'Drug Prevention'],
+            articles: {
+                positive_discipline: {
+                    h: 'Positive Discipline: Building Character',
+                    v: '“Be kind and gentle with them”',
+                    p1: 'Positive discipline focuses on understanding the motives behind behavior rather than just punishing it.',
+                    steps: 'Strategies: 1. Focus on solutions. 2. Praise effort. 3. Quality time.',
+                    analysis: 'Physical or verbal punishment leads to rebellion, not responsibility.',
+                    tip: 'Ask: "How can we fix this?" instead of "Why did you do that?"',
+                    p2: 'Be the role model you want your children to follow.'
+                }
+                // (يمكن إضافة باقي الترجمة الإنجليزية هنا بنفس النمط)
+            }
+        }
+    };
+
+    function showArticle(key) {
+        const lang = data[currentLang];
+        const art = lang.articles[key] || lang.articles['positive_discipline'];
+        
+        document.getElementById('grid').style.display = 'none';
+        document.getElementById('headerArea').style.display = 'none';
+        document.getElementById('article-viewer').style.display = 'block';
+        
+        document.getElementById('article-content').innerHTML = `
+            <h2>${art.h}</h2>
+            <div class="quran-verse">${art.v}</div>
+            <p>${art.p1}</p>
+            <div class="parenting-steps">
+                <h4>💡 خطوات عملية للوالدين:</h4>
+                <p>${art.steps}</p>
+            </div>
+            <div class="analysis-box">
+                <h3>🔍 التحليل التربوي الاستراتيجي</h3>
+                <p>${art.analysis}</p>
+            </div>
+            <div class="golden-tip">
+                <strong>✨ النصيحة الذهبية لولي الأمر</strong>
+                <p>${art.tip}</p>
+            </div>
+            <p>${art.p2}</p>
+        `;
+        window.scrollTo(0,0);
+        speak(document.getElementById('article-content').innerText);
+    }
+
+    function closeArticle() {
+        stopSpeaking();
+        document.getElementById('grid').style.display = 'grid';
+        document.getElementById('headerArea').style.display = 'block';
+        document.getElementById('article-viewer').style.display = 'none';
+    }
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        const lang = data[currentLang];
+        document.getElementById('mainHtml').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        document.getElementById('schoolName').innerText = lang.school;
+        document.getElementById('mainTitle').innerText = lang.mainTitle;
+        document.getElementById('subTitle').innerText = lang.subTitle;
+        document.getElementById('backBtn').innerText = lang.back;
+        closeArticle();
+    }
+
+    function speak(text) {
+        synth.cancel();
+        const ut = new SpeechSynthesisUtterance(text);
+        ut.lang = currentLang === 'ar' ? 'ar-SA' : 'en-US';
+        ut.rate = 1.0;
+        synth.speak(ut);
+    }
+
+    function stopSpeaking() { synth.cancel(); }
+</script>
+
+</body>
+</html>
