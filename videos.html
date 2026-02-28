@@ -1,1844 +1,1316 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educore - مكتبة الفيديو</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* === RESET & VARIABLES === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Navy Blue Palette */
-            --navy-darkest: #0a1628;
-            --navy-darker: #112240;
-            --navy-dark: #1a2942;
-            --navy-medium: #233554;
-            --navy-light: #2d4263;
-            --navy-lighter: #3d5a7f;
-            
-            /* White to Navy Gradient Colors */
-            --white-pure: #ffffff;
-            --white-soft: #f8f9fa;
-            --white-light: #e8eef5;
-            --blue-lightest: #d4dfe9;
-            --blue-lighter: #b8c9dc;
-            --blue-light: #9bb4d0;
-            --blue-medium: #7a9ac2;
-            --blue-navy: #5a7fa8;
-            
-            /* Accent Colors */
-            --accent-blue: #4a90e2;
-            --accent-light-blue: #6fa8ec;
-            --accent-sky: #87ceeb;
-            --accent-teal: #20c997;
-            --accent-purple: #a78bfa;
-            
-            /* Gradients */
-            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
-            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
-            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
-            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
-            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
-            
-            /* Glass Effects */
-            --glass-white: rgba(255, 255, 255, 0.95);
-            --glass-light: rgba(255, 255, 255, 0.1);
-            --glass-medium: rgba(255, 255, 255, 0.15);
-            --glass-strong: rgba(255, 255, 255, 0.25);
-            --glass-navy: rgba(26, 41, 66, 0.8);
-            
-            /* Border Colors */
-            --border-white: rgba(255, 255, 255, 0.3);
-            --border-blue: rgba(74, 144, 226, 0.3);
-            --border-navy: rgba(26, 41, 66, 0.3);
-            
-            /* Shadow Colors */
-            --shadow-blue: rgba(74, 144, 226, 0.2);
-            --shadow-navy: rgba(26, 41, 66, 0.3);
-            --shadow-glow: rgba(74, 144, 226, 0.5);
-            
-            /* Text Colors */
-            --text-navy: #0a1628;
-            --text-blue: #1a2942;
-            --text-gray: #6b7c93;
-            --text-light: #9bb4d0;
-        }
-
-        body {
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
-            background-attachment: fixed;
-            color: var(--text-navy);
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        /* === ANIMATED BACKGROUND === */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-            background: 
-                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
-                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(111, 168, 236, 0.04) 0%, transparent 35%);
-        }
-
-        .bg-shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.12;
-            animation: float 30s infinite ease-in-out;
-        }
-
-        .shape-1 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
-            bottom: -150px;
-            left: -150px;
-            animation-delay: -10s;
-        }
-
-        .shape-3 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(155, 180, 208, 0.25) 0%, transparent 70%);
-            top: 35%;
-            left: 45%;
-            animation-delay: -20s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) scale(1) rotate(0deg);
-            }
-            25% {
-                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
-            }
-            50% {
-                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
-            }
-            75% {
-                transform: translate(-120px, -80px) scale(1.05) rotate(270deg);
-            }
-        }
-
-        /* Floating particles */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: var(--accent-blue);
-            border-radius: 50%;
-            opacity: 0;
-            animation: floatParticle 15s infinite;
-            z-index: 1;
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { opacity: 0; transform: translateY(0) translateX(0); }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(-100vh) translateX(100px); }
-        }
-
-        /* === HEADER === */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 22px 70px;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid var(--border-blue);
-            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        header.scrolled {
-            padding: 14px 70px;
-            background: rgba(248, 249, 250, 0.95);
-            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
-            border-bottom: 2px solid var(--accent-blue);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            text-decoration: none;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .logo:hover {
-            transform: scale(1.08) translateY(-2px);
-        }
-
-        .logo-icon {
-            width: 55px;
-            height: 55px;
-            background: var(--gradient-blue-glow);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px var(--shadow-blue);
-            animation: logoGlow 4s ease-in-out infinite;
-            position: relative;
-        }
-
-        .logo-icon::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            background: var(--gradient-blue-glow);
-            border-radius: 18px;
-            z-index: -1;
-            opacity: 0.6;
-            filter: blur(15px);
-            animation: glowPulse 4s ease-in-out infinite;
-        }
-
-        .logo-icon i {
-            font-size: 1.6rem;
-            color: var(--white-pure);
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
-        }
-
-        @keyframes logoGlow {
-            0%, 100% { 
-                transform: scale(1); 
-                box-shadow: 0 10px 30px var(--shadow-blue);
-            }
-            50% { 
-                transform: scale(1.05); 
-                box-shadow: 0 15px 45px var(--shadow-glow);
-            }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { 
-                opacity: 0.6;
-                filter: blur(15px);
-            }
-            50% { 
-                opacity: 0.9;
-                filter: blur(20px);
-            }
-        }
-
-        .logo-text {
-            font-family: 'Cairo', sans-serif;
-            font-size: 1.9rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            background: var(--gradient-navy-soft);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.3));
-        }
-
-        /* === NAV ACTIONS === */
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .notification-btn {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            background: var(--glass-light);
-            border: 1px solid var(--border-blue);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .notification-btn:hover {
-            background: var(--glass-strong);
-            transform: translateY(-3px) rotate(5deg);
-            box-shadow: 0 10px 25px var(--shadow-blue);
-            border-color: var(--accent-blue);
-        }
-
-        .notification-btn i {
-            color: var(--accent-blue);
-            font-size: 1.3rem;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: white;
-            animation: badgePulse 2.5s infinite;
-        }
-
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        /* === BURGER MENU === */
-        .burger {
-            cursor: pointer;
-            width: 38px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            z-index: 2000;
-            position: relative;
-            transition: transform 0.3s ease;
-        }
-
-        .burger:hover {
-            transform: scale(1.1);
-        }
-
-        .line {
-            width: 100%;
-            height: 3.5px;
-            background: var(--gradient-blue-glow);
-            border-radius: 6px;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 2px 10px var(--shadow-blue);
-        }
-
-        .burger.active .line:nth-child(1) {
-            transform: rotate(45deg) translate(11px, 11px);
-            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
-        }
-
-        .burger.active .line:nth-child(2) {
-            opacity: 0;
-            transform: translateX(30px);
-        }
-
-        .burger.active .line:nth-child(3) {
-            transform: rotate(-45deg) translate(11px, -11px);
-            background: linear-gradient(135deg, #ee5a6f 0%, #ff6b6b 100%);
-        }
-
-        /* === SIDE NAVIGATION === */
-        .side-nav {
-            height: 100%;
-            width: 400px;
-            position: fixed;
-            z-index: 3000;
-            top: 0;
-            right: -400px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
-            backdrop-filter: blur(35px);
-            border-left: 3px solid var(--accent-blue);
-            overflow-x: hidden;
-            overflow-y: auto;
-            transition: right 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            padding: 35px 30px;
-            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
-        }
-
-        .side-nav::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .side-nav::-webkit-scrollbar-track {
-            background: rgba(26, 41, 66, 0.05);
-            border-radius: 10px;
-        }
-
-        .side-nav::-webkit-scrollbar-thumb {
-            background: var(--gradient-blue-glow);
-            border-radius: 10px;
-        }
-
-        .side-nav.active {
-            right: 0;
-        }
-
-        .side-nav-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
-            border-bottom: 2px solid var(--border-blue);
-        }
-
-        .side-nav h2 {
-            background: var(--gradient-navy-soft);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
-            font-size: 1.7rem;
-            letter-spacing: 1.5px;
-        }
-
-        .close-nav {
-            font-size: 1.5rem;
-            color: var(--accent-blue);
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--glass-light);
-        }
-
-        .close-nav:hover {
-            color: #ee5a6f;
-            transform: rotate(90deg) scale(1.2);
-            background: rgba(238, 90, 111, 0.1);
-        }
-
-        /* User Profile in Sidebar */
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 25px;
-            background: var(--glass-medium);
-            border: 2px solid var(--border-blue);
-            border-radius: 20px;
-            margin-bottom: 30px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .user-profile:hover {
-            background: var(--glass-strong);
-            transform: translateX(-8px);
-            box-shadow: 0 8px 30px var(--shadow-blue);
-        }
-
-        .user-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--gradient-blue-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--white-pure);
-            border: 3px solid var(--white-pure);
-            box-shadow: 0 8px 25px var(--shadow-blue);
-        }
-
-        .user-info h3 {
-            color: var(--text-navy);
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-
-        .user-info p {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .side-nav ul {
-            list-style: none;
-        }
-
-        .side-nav li {
-            margin-bottom: 8px;
-            opacity: 0;
-            animation: slideInRight 0.5s forwards;
-        }
-
-        .side-nav li:nth-child(1) { animation-delay: 0.1s; }
-        .side-nav li:nth-child(2) { animation-delay: 0.15s; }
-        .side-nav li:nth-child(3) { animation-delay: 0.2s; }
-        .side-nav li:nth-child(4) { animation-delay: 0.25s; }
-        .side-nav li:nth-child(5) { animation-delay: 0.3s; }
-        .side-nav li:nth-child(6) { animation-delay: 0.35s; }
-        .side-nav li:nth-child(7) { animation-delay: 0.4s; }
-        .side-nav li:nth-child(8) { animation-delay: 0.45s; }
-        .side-nav li:nth-child(9) { animation-delay: 0.5s; }
-        .side-nav li:nth-child(10) { animation-delay: 0.55s; }
-        .side-nav li:nth-child(11) { animation-delay: 0.6s; }
-        .side-nav li:nth-child(12) { animation-delay: 0.65s; }
-        .side-nav li:nth-child(13) { animation-delay: 0.7s; }
-        .side-nav li:nth-child(14) { animation-delay: 0.75s; }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .side-nav a {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 20px 22px;
-            color: var(--text-navy);
-            text-decoration: none;
-            border-radius: 15px;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-            font-weight: 600;
-            font-size: 1.15rem;
-            justify-content: flex-end;
-        }
-
-        .side-nav a::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
-            transition: width 0.6s ease;
-            z-index: 0;
-        }
-
-        .side-nav a:hover::before {
-            width: 100%;
-        }
-
-        .side-nav a > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .side-nav a:hover {
-            color: var(--navy-dark);
-            background: var(--glass-strong);
-            transform: translateX(-12px);
-            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
-        }
-
-        .side-nav a i {
-            font-size: 1.4rem;
-            color: var(--accent-blue);
-            width: 35px;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .side-nav a:hover i {
-            transform: scale(1.3) rotate(10deg);
-            filter: drop-shadow(0 0 15px var(--accent-blue));
-        }
-
-        #logoutBtn {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid rgba(238, 90, 111, 0.2);
-        }
-
-        #logoutBtn a {
-            color: #ee5a6f;
-        }
-
-        #logoutBtn a i {
-            color: #ee5a6f;
-        }
-
-        #logoutBtn a:hover {
-            background: rgba(238, 90, 111, 0.15);
-            color: #d63447;
-        }
-
-        /* === OVERLAY === */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(26, 41, 66, 0.75);
-            backdrop-filter: blur(10px);
-            z-index: 2500;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        /* === HERO SECTION === */
-        .hero {
-            position: relative;
-            z-index: 10;
-            padding: 180px 50px 80px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: var(--gradient-navy-soft);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 1s;
-            letter-spacing: 3px;
-            filter: drop-shadow(0 0 60px rgba(74, 144, 226, 0.3));
-        }
-
-        .hero-subtitle {
-            font-size: 1.4rem;
-            color: var(--text-gray);
-            margin-bottom: 40px;
-            animation: fadeInUp 1s 0.2s both;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* === CATEGORY FILTERS === */
-        .filters-section {
-            position: relative;
-            z-index: 10;
-            max-width: 1600px;
-            margin: 0 auto 60px;
-            padding: 0 50px;
-            animation: fadeInUp 1s 0.4s both;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .filter-tab {
-            padding: 12px 30px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--border-blue);
-            border-radius: 50px;
-            color: var(--text-navy);
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            font-size: 1rem;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(26, 41, 66, 0.08);
-        }
-
-        .filter-tab::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-blue-glow);
-            border-radius: 50px;
-            transition: transform 0.5s;
-            z-index: -1;
-        }
-
-        .filter-tab:hover::before,
-        .filter-tab.active::before {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .filter-tab:hover,
-        .filter-tab.active {
-            color: var(--white-pure);
-            border-color: var(--accent-blue);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
-        }
-
-        /* === SEARCH BAR === */
-        .search-container {
-            position: relative;
-            z-index: 10;
-            max-width: 700px;
-            margin: 0 auto 80px;
-            padding: 0 50px;
-            animation: fadeInUp 1s 0.5s both;
-        }
-
-        .search-bar {
-            position: relative;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--border-blue);
-            border-radius: 50px;
-            padding: 18px 30px;
-            transition: all 0.4s;
-            box-shadow: 0 4px 20px rgba(26, 41, 66, 0.08);
-        }
-
-        .search-bar:focus-within {
-            border-color: var(--accent-blue);
-            background: var(--white-pure);
-            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .search-bar i {
-            color: var(--accent-blue);
-            font-size: 1.3rem;
-            margin-left: 15px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            background: none;
-            border: none;
-            outline: none;
-            color: var(--text-navy);
-            font-size: 1.1rem;
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-        }
-
-        .search-bar input::placeholder {
-            color: var(--text-gray);
-        }
-
-        /* === VIDEO GRID === */
-        .videos-section {
-            position: relative;
-            z-index: 10;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 50px 100px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            background: var(--gradient-navy-soft);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-blue), transparent);
-        }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 35px;
-        }
-
-        /* === VIDEO CARD === */
-        .video-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--border-blue);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            position: relative;
-            animation: fadeInScale 0.8s both;
-            box-shadow: 0 8px 30px rgba(26, 41, 66, 0.1);
-        }
-
-        .video-card:nth-child(1) { animation-delay: 0.1s; }
-        .video-card:nth-child(2) { animation-delay: 0.2s; }
-        .video-card:nth-child(3) { animation-delay: 0.3s; }
-        .video-card:nth-child(4) { animation-delay: 0.4s; }
-        .video-card:nth-child(5) { animation-delay: 0.5s; }
-        .video-card:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.8) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .video-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: var(--gradient-blue-glow);
-            border-radius: 20px;
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: -1;
-        }
-
-        .video-card:hover::before {
-            opacity: 1;
-        }
-
-        .video-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(74, 144, 226, 0.3);
-        }
-
-        .thumbnail-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--blue-lightest), var(--blue-lighter));
-        }
-
-        .thumbnail-wrapper img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.7s;
-        }
-
-        .video-card:hover .thumbnail-wrapper img {
-            transform: scale(1.1);
-        }
-
-        .play-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(26, 41, 66, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 1;
-            transition: all 0.5s;
-        }
-
-        .video-card:hover .play-overlay {
-            background: rgba(26, 41, 66, 0.6);
-        }
-
-        .play-button {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient-blue-glow);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--white-pure);
-            transition: all 0.5s;
-            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.5);
-        }
-
-        .video-card:hover .play-button {
-            transform: scale(1.2);
-            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.7);
-        }
-
-        .video-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--gradient-blue-glow);
-            color: var(--white-pure);
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .video-info {
-            padding: 25px;
-        }
-
-        .video-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--navy-dark);
-            margin-bottom: 12px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .video-meta {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .video-meta i {
-            color: var(--accent-blue);
-            margin-left: 5px;
-        }
-
-        .video-teacher {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-navy);
-            font-weight: 600;
-        }
-
-        .teacher-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient-blue-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: var(--white-pure);
-        }
-
-        .delete-btn {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: rgba(255, 107, 107, 0.15);
-            border: 1px solid rgba(255, 107, 107, 0.3);
-            border-radius: 10px;
-            color: #ff6b6b;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .delete-btn:hover {
-            background: rgba(255, 107, 107, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* === ADMIN PANEL === */
-        .admin-panel {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 40px auto 80px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--accent-blue);
-            border-radius: 25px;
-            box-shadow: 0 15px 50px rgba(74, 144, 226, 0.2);
-            display: none;
-            animation: fadeInUp 1s;
-        }
-
-        .admin-panel-header {
-            font-size: 2rem;
-            background: var(--gradient-navy-soft);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .admin-input {
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid var(--border-blue);
-            border-radius: 12px;
-            color: var(--text-navy);
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .admin-input:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-            background: var(--white-pure);
-            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.2);
-        }
-
-        .admin-input::placeholder {
-            color: var(--text-gray);
-        }
-
-        .btn-gold {
-            padding: 15px 30px;
-            background: var(--gradient-blue-glow);
-            border: none;
-            border-radius: 12px;
-            color: var(--white-pure);
-            font-family: 'Cairo', 'Tajawal', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
-        }
-
-        .btn-gold:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.5);
-        }
-
-        .upload-progress {
-            height: 10px;
-            background: rgba(74, 144, 226, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--gradient-blue-glow);
-            width: 0%;
-            transition: width 0.3s;
-            box-shadow: 0 0 20px var(--accent-blue);
-        }
-
-        /* === VIDEO MODAL === */
-        .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(26, 41, 66, 0.97);
-            z-index: 5000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            position: relative;
-            width: 95%;
-            max-width: 1200px;
-            aspect-ratio: 16 / 9;
-            animation: zoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: -50px;
-            right: 0;
-            font-size: 2.5rem;
-            color: var(--accent-blue);
-            cursor: pointer;
-            transition: all 0.3s;
-            z-index: 5001;
-        }
-
-        .close-modal:hover {
-            transform: rotate(90deg) scale(1.2);
-            color: var(--accent-light-blue);
-        }
-
-        .video-player {
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 80px rgba(74, 144, 226, 0.4);
-        }
-
-        /* === UTILITIES === */
-        .hidden {
-            display: none !important;
-        }
-
-        .nav-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-blue);
-            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
-        }
-
-        .auth-slot {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 1200px) {
-            .video-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 18px 30px;
-            }
-
-            header.scrolled {
-                padding: 14px 30px;
-            }
-
-            .hero {
-                padding: 140px 25px 60px;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .filters-section,
-            .search-container,
-            .videos-section {
-                padding-left: 25px;
-                padding-right: 25px;
-            }
-
-            .video-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .filter-tabs {
-                gap: 10px;
-            }
-
-            .filter-tab {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-
-            .admin-panel {
-                padding: 25px;
-                margin: 25px;
-            }
-
-            .admin-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .side-nav {
-                width: 100%;
-                right: -100%;
-            }
-
-            .logo-text {
-                font-size: 1.5rem;
-            }
-
-            .logo-icon {
-                width: 48px;
-                height: 48px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SITAJ | الفيديوهات التعليمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Josefin+Sans:wght@100;200;300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ════════════════════════════════════════════════
+   VARIABLES — نفس المتغيرات من الصفحة الرئيسية
+════════════════════════════════════════════════ */
+:root{
+  --void:#03060f;
+  --abyss:#060c1e;
+  --deep:#0a1428;
+  --navy:#0f1e3d;
+  --white:#f0f4ff;
+  --mist:#a8bce0;
+  --fog:#6880a8;
+  --gold:#c8a84a;
+  --gold2:#e8ca78;
+  --gold3:#f5dfa0;
+  --azure:#3d7fff;
+  --azure2:#5b94ff;
+  --sapphire:#1a4fc4;
+  --teal:#00d4b8;
+  --rose:#ff3d6e;
+  --violet:#7c3aed;
+  --amber:#f59e0b;
+  --emerald:#059669;
+  --font-ar:'Cairo','Tajawal',sans-serif;
+  --font-cin:'Cinzel',serif;
+  --font-cind:'Cinzel Decorative',serif;
+  --font-jos:'Josefin Sans',sans-serif;
+  --font-cor:'Cormorant Garamond',serif;
+}
+
+/* ════════════════════════════════════════════════
+   RESET
+════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--void);
+  color:var(--white);
+  font-family:var(--font-ar);
+  overflow-x:hidden;
+  cursor:none;
+  min-height:100vh;
+}
+
+/* ════════════════════════════════════════════════
+   NOISE TEXTURE — نفس التكستشر
+════════════════════════════════════════════════ */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+
+/* ════════════════════════════════════════════════
+   CURSOR — نفس الكيرسور
+════════════════════════════════════════════════ */
+#cur{
+  position:fixed;width:8px;height:8px;
+  background:var(--gold2);border-radius:50%;
+  pointer-events:none;z-index:999999;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s,background .2s;
+  mix-blend-mode:difference;
+}
+#curR{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(200,168,74,.5);border-radius:50%;
+  pointer-events:none;z-index:999998;
+  transform:translate(-50%,-50%);
+  transition:all .14s cubic-bezier(.22,1,.36,1);
+}
+body.hov #cur{width:20px;height:20px;background:var(--gold3);}
+body.hov #curR{width:60px;height:60px;border-color:rgba(200,168,74,.3);}
+
+/* ════════════════════════════════════════════════
+   NAVBAR — نفس النافبار بالضبط
+════════════════════════════════════════════════ */
+#NAV{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  height:68px;padding:0 44px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(3,6,15,0);
+  backdrop-filter:blur(0px);
+  border-bottom:1px solid rgba(200,168,74,0);
+  transition:all .5s cubic-bezier(.22,1,.36,1);
+}
+#NAV.solid{
+  background:rgba(3,6,15,.92);
+  backdrop-filter:blur(28px) saturate(2);
+  border-bottom-color:rgba(200,168,74,.1);
+  box-shadow:0 4px 60px rgba(0,0,0,.6);
+}
+.n-logo{
+  font-family:var(--font-cind);font-size:1.35rem;font-weight:700;letter-spacing:5px;
+  background:linear-gradient(135deg,var(--white),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  cursor:pointer;user-select:none;flex-shrink:0;text-decoration:none;
+}
+.n-links{display:flex;gap:32px;list-style:none;}
+.n-links a{
+  font-family:var(--font-ar);font-size:13.5px;font-weight:500;color:var(--fog);
+  text-decoration:none;position:relative;padding-bottom:3px;transition:color .3s;
+}
+.n-links a::after{
+  content:'';position:absolute;bottom:0;right:0;width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));transition:width .35s ease;
+}
+.n-links a:hover{color:var(--white);}
+.n-links a:hover::after{width:100%;right:auto;left:0;}
+.n-links a.act{color:var(--gold2);}
+.n-links a.act::after{width:100%;left:0;background:linear-gradient(90deg,transparent,var(--gold2));}
+.n-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+
+/* زر اللغة */
+.n-lang{
+  display:flex;border:1px solid rgba(200,168,74,.22);border-radius:50px;
+  overflow:hidden;background:rgba(200,168,74,.04);
+}
+.n-lang button{
+  font-family:var(--font-jos);font-size:11px;font-weight:300;letter-spacing:2.5px;
+  padding:7px 13px;background:transparent;border:none;color:var(--fog);cursor:pointer;transition:all .3s;
+}
+.n-lang button.on{background:rgba(200,168,74,.18);color:var(--gold2);}
+
+/* الجرس */
+.n-bell{
+  position:relative;width:42px;height:42px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);border-radius:13px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--azure2);font-size:1rem;transition:all .3s;
+}
+.n-bell:hover{background:rgba(61,127,255,.12);border-color:rgba(61,127,255,.4);transform:translateY(-2px);}
+.n-bell-badge{
+  position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),#c0274e);display:flex;align-items:center;
+  justify-content:center;font-size:.58rem;font-weight:800;color:#fff;animation:bp 2.5s infinite;
+}
+@keyframes bp{0%,100%{box-shadow:0 0 0 0 rgba(255,61,110,.5);}50%{box-shadow:0 0 0 6px rgba(255,61,110,0);}}
+
+/* البرغر */
+.n-burger{width:34px;height:22px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;}
+.n-bline{
+  width:100%;height:2px;border-radius:4px;
+  background:linear-gradient(90deg,var(--gold2),var(--azure2));
+  transition:all .55s cubic-bezier(.68,-.55,.265,1.55);
+}
+.n-burger.on .n-bline:nth-child(1){transform:rotate(45deg) translate(7px,7px);background:linear-gradient(90deg,var(--rose),#e0274e);}
+.n-burger.on .n-bline:nth-child(2){opacity:0;transform:translateX(-20px);}
+.n-burger.on .n-bline:nth-child(3){transform:rotate(-45deg) translate(7px,-7px);background:linear-gradient(90deg,var(--rose),#e0274e);}
+
+/* ════════════════════════════════════════════════
+   OVERLAY + SIDE NAV — نفس القائمة الجانبية بالضبط
+════════════════════════════════════════════════ */
+#OVERLAY{
+  position:fixed;inset:0;z-index:1500;
+  background:rgba(3,6,15,.88);backdrop-filter:blur(12px);
+  opacity:0;pointer-events:none;transition:opacity .45s;
+}
+#OVERLAY.on{opacity:1;pointer-events:all;}
+
+#SIDENAV{
+  position:fixed;top:0;right:-460px;width:420px;height:100vh;z-index:1600;
+  background:linear-gradient(170deg,#0d1a35 0%,#080f22 60%,#040810 100%);
+  border-left:1px solid rgba(200,168,74,.14);
+  box-shadow:-30px 0 100px rgba(0,0,0,.7);
+  transition:right .65s cubic-bezier(.68,-.55,.265,1.55);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+#SIDENAV.on{right:0;}
+
+/* الزخرفة العلوية */
+.sn-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--azure2),var(--gold),transparent);}
+.sn-deco2{position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,168,74,.07),transparent 70%);pointer-events:none;}
+
+/* المحتوى القابل للتمرير */
+.sn-body{
+  flex:1;overflow-y:auto;padding:28px 24px 24px;
+  scrollbar-width:thin;scrollbar-color:rgba(200,168,74,.25) transparent;
+}
+.sn-body::-webkit-scrollbar{width:3px;}
+.sn-body::-webkit-scrollbar-thumb{background:rgba(200,168,74,.25);border-radius:3px;}
+
+/* رأس القائمة */
+.sn-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:24px;margin-bottom:20px;
+  border-bottom:1px solid rgba(200,168,74,.1);
+}
+.sn-logo-txt{
+  font-family:var(--font-cind);font-size:1.2rem;letter-spacing:4px;
+  background:linear-gradient(135deg,var(--gold2),var(--white));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.sn-x{
+  width:38px;height:38px;border-radius:50%;background:rgba(255,61,110,.08);
+  border:1px solid rgba(255,61,110,.18);display:flex;align-items:center;
+  justify-content:center;cursor:pointer;color:var(--rose);font-size:1rem;
+  transition:all .3s;flex-shrink:0;
+}
+.sn-x:hover{background:rgba(255,61,110,.2);transform:rotate(90deg);}
+
+/* بطاقة الملف الشخصي */
+.sn-profile{
+  display:flex;align-items:center;gap:14px;padding:18px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(200,168,74,.1);
+  border-radius:18px;margin-bottom:20px;text-decoration:none;
+  transition:all .35s;cursor:pointer;
+}
+.sn-profile:hover{background:rgba(200,168,74,.06);border-color:rgba(200,168,74,.28);transform:translateX(-5px);}
+.sn-av{
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--azure),var(--sapphire));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;box-shadow:0 0 20px rgba(61,127,255,.3);
+}
+.sn-info h3{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:3px;}
+.sn-info p{font-size:.75rem;color:var(--fog);}
+
+/* عناوين الأقسام */
+.sn-sec-label{
+  font-family:var(--font-jos);font-size:.55rem;letter-spacing:5px;
+  color:rgba(200,168,74,.3);text-transform:uppercase;
+  padding:14px 6px 8px;margin-top:4px;
+}
+
+/* عناصر القائمة */
+.sn-ul{list-style:none;}
+.sn-li{margin-bottom:2px;}
+.sn-a{
+  display:flex;align-items:center;justify-content:flex-end;gap:12px;
+  padding:13px 14px;text-decoration:none;border-radius:14px;
+  font-size:.92rem;font-weight:600;color:var(--fog);
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.sn-a::before{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,transparent,rgba(61,127,255,.08));
+  border-radius:14px;transition:width .3s;
+}
+.sn-a:hover::before{width:100%;}
+.sn-a:hover{color:var(--white);transform:translateX(-5px);}
+/* الصفحة الحالية */
+.sn-a.current{color:var(--gold2);background:rgba(200,168,74,.05);}
+.sn-a.current .sn-ic{background:rgba(200,168,74,.15);border-color:rgba(200,168,74,.3);color:var(--gold2);}
+/* الأيقونة */
+.sn-ic{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;
+  background:rgba(61,127,255,.08);border:1px solid rgba(61,127,255,.15);color:var(--azure2);
+  transition:all .3s;
+}
+.sn-a:hover .sn-ic{background:rgba(61,127,255,.18);border-color:rgba(61,127,255,.35);transform:scale(1.1);}
+/* تسجيل خروج */
+.sn-li.logout .sn-a{color:rgba(255,100,120,.7);}
+.sn-li.logout .sn-a .sn-ic{background:rgba(255,61,110,.08);border-color:rgba(255,61,110,.15);color:var(--rose);}
+.sn-li.logout .sn-a:hover{color:var(--rose);}
+.sn-li.logout .sn-a:hover .sn-ic{background:rgba(255,61,110,.18);}
+/* فاصل */
+.sn-hr{height:1px;background:rgba(255,255,255,.05);margin:12px 0;}
+
+/* ════════════════════════════════════════════════
+   HERO SECTION — هيرو صفحة الفيديوهات
+════════════════════════════════════════════════ */
+.hero{
+  position:relative;min-height:68vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 70px;overflow:hidden;z-index:1;
+}
+#heroCanvas{position:absolute;inset:0;z-index:0;}
+.h-mesh{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 25%,rgba(61,127,255,.07) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 65% at 20% 85%,rgba(200,168,74,.06) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(124,58,237,.04) 0%,transparent 55%);
+}
+.h-grid{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(200,168,74,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,74,.022) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+.h-vignette{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 100% 100% at 50% 0%,transparent 40%,rgba(3,6,15,.8) 100%);
+}
+.h-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:1;}
+.h-orb.a{width:700px;height:700px;background:radial-gradient(circle,rgba(61,127,255,.07),transparent 70%);top:5%;right:-15%;animation:orbA 18s ease-in-out infinite;}
+.h-orb.b{width:500px;height:500px;background:radial-gradient(circle,rgba(200,168,74,.08),transparent 70%);bottom:10%;left:-10%;animation:orbB 22s ease-in-out infinite;}
+.h-orb.c{width:250px;height:250px;background:radial-gradient(circle,rgba(0,212,184,.05),transparent 70%);top:50%;left:15%;animation:orbA 12s ease-in-out infinite 3s;}
+@keyframes orbA{0%,100%{transform:translate(0,0);}33%{transform:translate(-40px,30px);}66%{transform:translate(25px,-20px);}}
+@keyframes orbB{0%,100%{transform:translate(0,0);}33%{transform:translate(30px,-35px);}66%{transform:translate(-20px,25px);}}
+
+/* Badge */
+.h-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(200,168,74,.28);background:rgba(200,168,74,.04);
+  backdrop-filter:blur(10px);border-radius:50px;padding:9px 26px;
+  font-family:var(--font-jos);font-size:10.5px;letter-spacing:5.5px;
+  color:var(--gold2);text-transform:uppercase;
+  margin-bottom:24px;position:relative;z-index:2;
+  animation:fD .9s ease both;
+}
+.h-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 10px var(--gold);animation:bp 2s infinite;
+}
+@keyframes fD{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
+
+/* العنوان */
+.h-title{
+  font-family:var(--font-ar);font-size:clamp(2.8rem,8.5vw,7rem);font-weight:900;
+  line-height:1.05;margin-bottom:22px;position:relative;z-index:2;
+  animation:fD .95s ease both .1s;
+}
+.h-grad{
+  display:block;
+  background:linear-gradient(140deg,#fff 0%,#d0dcf8 25%,var(--azure2) 60%,var(--gold2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 70px rgba(61,127,255,.28));
+}
+.h-sub{
+  display:block;font-size:.35em;font-weight:300;
+  color:rgba(168,188,224,.55);letter-spacing:2px;margin-top:10px;
+  -webkit-text-fill-color:rgba(168,188,224,.55);
+}
+
+/* الوصف */
+.h-desc{
+  font-size:clamp(1rem,2vw,1.25rem);color:var(--mist);max-width:600px;
+  line-height:2.1;margin:0 auto 50px;font-weight:300;
+  position:relative;z-index:2;animation:fD 1s ease both .18s;
+}
+
+/* إحصائيات صغيرة */
+.h-stats{
+  display:flex;gap:40px;justify-content:center;flex-wrap:wrap;
+  position:relative;z-index:2;animation:fD 1.05s ease both .26s;
+}
+.h-stat{text-align:center;}
+.h-stat-n{
+  font-family:var(--font-ar);font-size:2rem;font-weight:900;color:var(--azure2);
+  line-height:1;margin-bottom:5px;
+}
+.h-stat-l{font-size:12px;color:var(--fog);letter-spacing:1px;}
+
+/* ════════════════════════════════════════════════
+   MARQUEE — نفس الشريط
+════════════════════════════════════════════════ */
+.mq-wrap{
+  border-top:1px solid rgba(200,168,74,.12);border-bottom:1px solid rgba(200,168,74,.12);
+  background:rgba(3,6,15,.7);backdrop-filter:blur(10px);
+  padding:18px 0;overflow:hidden;position:relative;z-index:2;
+}
+.mq-wrap::before,.mq-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;
+}
+.mq-wrap::before{left:0;background:linear-gradient(90deg,rgba(3,6,15,.9),transparent);}
+.mq-wrap::after{right:0;background:linear-gradient(-90deg,rgba(3,6,15,.9),transparent);}
+.mq-track{
+  display:flex;width:max-content;gap:80px;white-space:nowrap;
+  animation:mq 36s linear infinite;
+}
+.mq-wrap:hover .mq-track{animation-play-state:paused;}
+.mq-item{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--mist);flex-shrink:0;}
+.mq-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ════════════════════════════════════════════════
+   MAIN CONTENT WRAPPER
+════════════════════════════════════════════════ */
+.main-wrap{max-width:1260px;margin:0 auto;padding:0 28px 100px;position:relative;z-index:2;}
+
+/* ════════════════════════════════════════════════
+   FILTER BAR — شريط البحث والفلتر (نفس أسلوب sf-bar)
+════════════════════════════════════════════════ */
+.fbar{
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+  padding:22px 26px;
+  background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.08);border-radius:24px;
+  margin:48px 0 36px;
+  backdrop-filter:blur(12px);
+  position:sticky;top:76px;z-index:100;
+}
+.fbar-search{
+  flex:1;min-width:200px;display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:12px 18px;transition:all .3s;
+}
+.fbar-search:focus-within{background:rgba(61,127,255,.08);border-color:rgba(61,127,255,.4);box-shadow:0 0 0 3px rgba(61,127,255,.1);}
+.fbar-search i{color:var(--azure2);font-size:.95rem;flex-shrink:0;}
+.fbar-search input{background:none;border:none;outline:none;color:var(--white);font-family:var(--font-ar);font-size:.93rem;width:100%;}
+.fbar-search input::placeholder{color:var(--fog);}
+.fbar-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.fbar-pill{
+  padding:9px 18px;border-radius:50px;font-family:var(--font-ar);font-size:12.5px;
+  font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.12);
+  background:transparent;color:var(--fog);transition:all .3s;
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.fbar-pill:hover{background:rgba(255,255,255,.06);color:var(--white);}
+.fbar-pill.on{
+  background:linear-gradient(135deg,rgba(61,127,255,.22),rgba(61,127,255,.08));
+  border-color:rgba(61,127,255,.45);color:var(--white);
+  box-shadow:0 4px 16px rgba(61,127,255,.2);
+}
+.fbar-count{
+  font-family:var(--font-jos);font-size:.68rem;letter-spacing:2px;
+  color:rgba(200,168,74,.5);white-space:nowrap;margin-right:auto;
+}
+
+/* ════════════════════════════════════════════════
+   SECTION HEADER
+════════════════════════════════════════════════ */
+.sec-h{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+.sec-h-icon{
+  width:44px;height:44px;border-radius:14px;
+  background:rgba(61,127,255,.1);border:1px solid rgba(61,127,255,.25);
+  display:flex;align-items:center;justify-content:center;color:var(--azure2);font-size:1.1rem;
+}
+.sec-h-txt h2{font-family:var(--font-ar);font-size:1.55rem;font-weight:900;color:var(--white);}
+.sec-h-txt p{font-size:12.5px;color:var(--fog);margin-top:2px;}
+.sec-h-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(61,127,255,.3),transparent);}
+
+/* ════════════════════════════════════════════════
+   VIDEO GRID
+════════════════════════════════════════════════ */
+.v-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px;}
+
+/* ════════════════════════════════════════════════
+   VIDEO CARD — نفس أسلوب بطاقات الصفحة الرئيسية
+════════════════════════════════════════════════ */
+.vc{
+  background:linear-gradient(155deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.08);border-radius:28px;overflow:hidden;
+  transition:all .45s cubic-bezier(.22,1,.36,1);cursor:pointer;position:relative;
+}
+/* الخط العلوي الملوّن */
+.vc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--azure2),var(--gold2));opacity:0;transition:opacity .4s;z-index:1;
+}
+.vc:hover{transform:translateY(-10px);border-color:rgba(61,127,255,.4);box-shadow:0 28px 80px rgba(61,127,255,.14);}
+.vc:hover::before{opacity:1;}
+
+/* الثمبنيل */
+.vc-thumb{position:relative;padding-bottom:56.25%;overflow:hidden;background:linear-gradient(135deg,var(--deep),var(--navy));}
+.vc-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.22,1,.36,1);}
+.vc:hover .vc-thumb img{transform:scale(1.07);}
+
+/* الأوفرلاي */
+.vc-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(3,6,15,.65) 100%);
+  display:flex;align-items:center;justify-content:center;transition:all .4s;
+}
+.vc:hover .vc-overlay{background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(3,6,15,.78) 100%);}
+
+/* زر التشغيل */
+.vc-play{
+  width:66px;height:66px;
+  background:linear-gradient(135deg,var(--azure),var(--sapphire));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;color:#fff;
+  box-shadow:0 8px 28px rgba(61,127,255,.5);
+  transition:all .45s cubic-bezier(.22,1,.36,1);
+}
+.vc:hover .vc-play{transform:scale(1.16);box-shadow:0 14px 44px rgba(61,127,255,.7);}
+
+/* شارة الفئة */
+.vc-cat{
+  position:absolute;top:14px;right:14px;
+  padding:5px 12px;border-radius:50px;
+  font-family:var(--font-jos);font-size:.6rem;letter-spacing:2px;font-weight:600;
+  text-transform:uppercase;backdrop-filter:blur(8px);
+}
+.cat-arabic{background:rgba(200,168,74,.2);color:var(--gold2);border:1px solid rgba(200,168,74,.35);}
+.cat-geography{background:rgba(0,212,184,.15);color:var(--teal);border:1px solid rgba(0,212,184,.3);}
+.cat-islam{background:rgba(5,150,105,.15);color:#34d399;border:1px solid rgba(5,150,105,.3);}
+.cat-programming{background:rgba(61,127,255,.18);color:var(--azure2);border:1px solid rgba(61,127,255,.35);}
+.cat-ai{background:rgba(124,58,237,.18);color:#a78bfa;border:1px solid rgba(124,58,237,.3);}
+.cat-all{background:rgba(255,61,110,.15);color:var(--rose);border:1px solid rgba(255,61,110,.3);}
+
+/* شارة جديد */
+.vc-new{
+  position:absolute;top:14px;left:14px;
+  padding:4px 10px;border-radius:50px;
+  font-family:var(--font-jos);font-size:.58rem;letter-spacing:2px;font-weight:700;
+  background:rgba(5,150,105,.2);color:#34d399;border:1px solid rgba(5,150,105,.3);
+  backdrop-filter:blur(8px);
+}
+/* المدة */
+.vc-dur{
+  position:absolute;bottom:12px;left:12px;
+  padding:4px 10px;border-radius:8px;
+  background:rgba(3,6,15,.75);backdrop-filter:blur(8px);
+  font-family:var(--font-jos);font-size:.65rem;letter-spacing:1px;color:var(--mist);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* جسم البطاقة */
+.vc-body{padding:22px 20px 20px;}
+.vc-title{
+  font-family:var(--font-ar);font-size:1.1rem;font-weight:800;color:var(--white);
+  margin-bottom:10px;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.vc-meta{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+.vc-meta-i{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--fog);}
+.vc-meta-i i{color:var(--azure2);font-size:.78rem;}
+.vc-teacher{
+  display:flex;align-items:center;gap:10px;
+  padding-top:14px;border-top:1px solid rgba(255,255,255,.06);
+}
+.vc-teacher-av{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--azure),var(--sapphire));
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#fff;flex-shrink:0;
+}
+.vc-teacher-name{font-size:12.5px;font-weight:600;color:var(--mist);}
+.vc-arrow{margin-right:auto;color:var(--azure2);font-size:.85rem;opacity:.4;transition:all .3s;}
+.vc:hover .vc-arrow{opacity:1;transform:translateX(-4px);}
+
+/* زر الحذف */
+.vc-del{
+  display:block;width:100%;margin-top:12px;padding:9px;
+  background:rgba(255,61,110,.08);border:1px solid rgba(255,61,110,.18);
+  border-radius:10px;color:var(--rose);font-family:var(--font-ar);
+  font-size:.82rem;font-weight:600;cursor:pointer;transition:all .3s;text-align:center;
+}
+.vc-del:hover{background:rgba(255,61,110,.18);transform:translateY(-1px);}
+
+/* حالة فارغة */
+.empty-s{
+  grid-column:1/-1;text-align:center;padding:80px 24px;color:var(--fog);
+}
+.empty-s i{font-size:3.5rem;margin-bottom:20px;opacity:.2;display:block;}
+.empty-s p{font-size:1.1rem;}
+
+/* ════════════════════════════════════════════════
+   ADMIN PANEL — نفس أسلوب لوحة التحكم
+════════════════════════════════════════════════ */
+.admin-wrap{
+  background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid rgba(200,168,74,.2);border-radius:28px;padding:36px;
+  margin-bottom:48px;display:none;position:relative;overflow:hidden;
+}
+.admin-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--azure2),var(--gold),transparent);}
+.adm-h{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+.adm-h-icon{
+  width:46px;height:46px;border-radius:14px;
+  background:rgba(200,168,74,.1);border:1px solid rgba(200,168,74,.25);
+  display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:1.2rem;
+}
+.adm-h h3{font-family:var(--font-ar);font-size:1.4rem;font-weight:900;color:var(--white);}
+.adm-h p{font-size:12.5px;color:var(--fog);margin-top:2px;}
+.adm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:16px;}
+.adm-inp{
+  padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:13px;color:var(--white);font-family:var(--font-ar);font-size:.9rem;
+  transition:all .3s;width:100%;
+}
+.adm-inp:focus{outline:none;border-color:rgba(61,127,255,.5);background:rgba(61,127,255,.06);box-shadow:0 0 0 3px rgba(61,127,255,.1);}
+.adm-inp::placeholder{color:var(--fog);}
+.adm-select{
+  padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:13px;color:var(--white);font-family:var(--font-ar);font-size:.9rem;
+  transition:all .3s;width:100%;cursor:pointer;
+}
+.adm-select:focus{outline:none;border-color:rgba(61,127,255,.5);}
+.adm-select option{background:#0a1428;color:var(--white);}
+.adm-btns{display:flex;gap:12px;flex-wrap:wrap;}
+/* نفس أزرار الصفحة الرئيسية */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:13px 28px;border-radius:50px;
+  font-family:var(--font-ar);font-size:14px;font-weight:700;cursor:pointer;border:none;
+  transition:all .35s;text-decoration:none;position:relative;overflow:hidden;
+}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.09);opacity:0;transition:opacity .3s;border-radius:50px;}
+.btn:hover::after{opacity:1;}
+.btn:hover{transform:translateY(-3px);}
+.btn.prime{background:linear-gradient(135deg,var(--azure),var(--sapphire));color:#fff;box-shadow:0 8px 32px rgba(61,127,255,.35);}
+.btn.prime:hover{box-shadow:0 18px 50px rgba(61,127,255,.55);}
+.btn.gold{background:linear-gradient(135deg,var(--gold2),#9a6f10);color:var(--void);font-weight:900;box-shadow:0 8px 32px rgba(200,168,74,.3);}
+.btn.gold:hover{box-shadow:0 18px 50px rgba(200,168,74,.5);}
+/* progress */
+.adm-prog{height:4px;background:rgba(61,127,255,.1);border-radius:4px;overflow:hidden;margin-top:16px;display:none;}
+.adm-prog-fill{height:100%;background:linear-gradient(90deg,var(--azure),var(--gold2));width:0;transition:width .3s;}
+.adm-status{font-family:var(--font-jos);font-size:.75rem;letter-spacing:2px;color:var(--azure2);margin-top:8px;display:none;}
+
+/* ════════════════════════════════════════════════
+   VIDEO MODAL
+════════════════════════════════════════════════ */
+#vModal{
+  display:none;position:fixed;inset:0;
+  background:rgba(3,6,15,.97);z-index:5000;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(18px);animation:mFadeIn .3s ease;
+}
+@keyframes mFadeIn{from{opacity:0;}to{opacity:1;}}
+#vModal.open{display:flex;}
+.vm-wrap{
+  position:relative;width:95%;max-width:1100px;
+  animation:mZoom .5s cubic-bezier(.22,1,.36,1);
+}
+@keyframes mZoom{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+.vm-close{
+  position:absolute;top:-50px;right:0;font-size:2rem;color:var(--azure2);
+  cursor:pointer;transition:all .3s;z-index:1;
+}
+.vm-close:hover{transform:rotate(90deg) scale(1.2);color:var(--gold2);}
+.vm-player{
+  width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;
+  box-shadow:0 20px 80px rgba(61,127,255,.35);
+}
+.vm-player iframe,.vm-player video{width:100%;height:100%;}
+
+/* ════════════════════════════════════════════════
+   DIVIDER
+════════════════════════════════════════════════ */
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,74,.18),transparent);position:relative;z-index:2;}
+
+/* ════════════════════════════════════════════════
+   SCROLL TO TOP
+════════════════════════════════════════════════ */
+.stb{
+  position:fixed;bottom:30px;left:30px;width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--azure),var(--sapphire));
+  border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:500;opacity:0;pointer-events:none;transition:all .35s;
+  box-shadow:0 8px 28px rgba(61,127,255,.4);
+}
+.stb.show{opacity:1;pointer-events:all;}
+.stb:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(61,127,255,.6);}
+
+/* ════════════════════════════════════════════════
+   REVEAL
+════════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ════════════════════════════════════════════════
+   LANG
+════════════════════════════════════════════════ */
+[data-lang="en"] .ar{display:none!important;}
+[data-lang="ar"] .en{display:none!important;}
+.en{display:none;}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════ */
+@media(max-width:900px){
+  #NAV{padding:0 18px;}
+  .n-links{display:none;}
+  .fbar{position:static;flex-direction:column;align-items:stretch;}
+  .fbar-pills{justify-content:flex-start;}
+  .v-grid{grid-template-columns:1fr;}
+  .main-wrap{padding:0 16px 80px;}
+  #SIDENAV{width:100%;right:-105%;}
+  .h-stats{gap:22px;}
+}
+@media(max-width:480px){
+  .h-title{font-size:2.2rem;}
+  .adm-grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
 
-<!-- Animated Background -->
-<div class="bg-animation">
-    <div class="bg-shape shape-1"></div>
-    <div class="bg-shape shape-2"></div>
-    <div class="bg-shape shape-3"></div>
-</div>
+<!-- ── CURSORS ── -->
+<div id="cur"></div>
+<div id="curR"></div>
 
-<!-- Floating Particles -->
-<script>
-    for(let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        document.body.appendChild(particle);
-    }
-</script>
+<!-- ╔══════════════════════════════════════════════╗
+     ║               NAVBAR                         ║
+     ╚══════════════════════════════════════════════╝ -->
+<nav id="NAV">
+  <a href="index.html" class="n-logo">SITAJ</a>
 
-<!-- Overlay -->
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <ul class="n-links">
+    <li><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a></li>
+    <li><a href="videos.html" class="act"><span class="ar">فيديوهات</span><span class="en">Videos</span></a></li>
+    <li><a href="exams.html"><span class="ar">اختبارات</span><span class="en">Exams</span></a></li>
+    <li><a href="games.html"><span class="ar">ألعاب</span><span class="en">Games</span></a></li>
+    <li><a href="AI.html"><span class="ar">المساعد الذكي</span><span class="en">AI</span></a></li>
+  </ul>
 
-<!-- Header -->
-<header id="header">
-    <div class="header-content">
-        <div class="nav-actions">
-            <div class="notification-btn" onclick="showNotifications()">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </div>
-            
-            <div class="burger" id="burger" onclick="toggleMenu()">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
-        </div>
-        
-        <a href="index.html" class="logo">
-            <div class="logo-icon">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <div class="logo-text">EDUCORE</div>
-        </a>
-        
-        <div class="auth-slot" id="authSlot">
-            <a href="login.html" class="btn-gold" style="padding: 10px 25px;">تسجيل الدخول</a>
-        </div>
+  <div class="n-right">
+    <div class="n-lang">
+      <button id="btnAr" class="on" onclick="setLang('ar')">AR</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
     </div>
-</header>
-
-<!-- Side Navigation -->
-<nav class="side-nav" id="sideNav">
-    <div class="side-nav-header">
-        <h2>القائمة الرئيسية</h2>
-        <div class="close-nav" onclick="toggleMenu()">
-            <i class="fas fa-times"></i>
-        </div>
+    <div class="n-bell" onclick="showNotif()">
+      <i class="fas fa-bell"></i>
+      <span class="n-bell-badge">3</span>
     </div>
-    
-    <a href="profile.html" style="text-decoration: none; color: inherit;">
-        <div class="user-profile">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-info">
-                <h3>your profile</h3>
-                <p>ملفك التعريفي</p>
-            </div>
-        </div>
-    </a>        
-
-    <ul>
-        <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
-        <li><a href="videos.html"><i class="fas fa-play-circle"></i> الفيديوهات التعليمية</a></li>
-        <li><a href="articals.html"><i class="fas fa-feather-alt"></i> المقالات الحصرية</a></li>
-        <li><a href="games.html"><i class="fas fa-chess"></i> ساحة الألعاب</a></li>
-        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i> مركز الاختبارات</a></li>
-        <li><a href="books.html"><i class="fas fa-book"></i> المكتبة الدراسية</a></li>
-        <li><a href="sign language hub.html"><i class="fas fa-hands"></i> مركز لغة الإشارة</a></li>
-        <li><a href="quraan.html"><i class="fas fa-book-quran"></i> اسلاميات</a></li>
-        <li><a href="https://siraj.moe.gov.jo/"><i class="fas fa-robot"></i> المساعد الذكي</a></li>
-        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i> الغرف الصوتية</a></li>
-        <li><a href="marks.html"><i class="fas fa-trophy"></i> بوابة النتائج</a></li>
-        <li><a href="questions.html"><i class="fas fa-comment-dots"></i> قسم الاستفسارات</a></li>
-            <li><a href="family.html"><i class="fas fa-people-roof"></i>توعية في الرقابة الابوية</a></li>
-            <li><a href="support.html"><i class="fas fa-shield-halved"></i> حقوق النشر</a></li>
-        <li id="logoutBtn" class="hidden">
-            <a href="#" onclick="logout()">
-                <i class="fas fa-power-off"></i> تسجيل خروج
-            </a>
-        </li>
-    </ul>
+    <div class="n-burger" id="burger" onclick="toggleMenu()">
+      <div class="n-bline"></div>
+      <div class="n-bline"></div>
+      <div class="n-bline"></div>
+    </div>
+  </div>
 </nav>
 
-<!-- Hero Section -->
+<!-- ── OVERLAY ── -->
+<div id="OVERLAY" onclick="toggleMenu()"></div>
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║            SIDE NAV                          ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="SIDENAV">
+  <div class="sn-deco"></div>
+  <div class="sn-deco2"></div>
+  <div class="sn-body">
+
+    <div class="sn-top">
+      <div class="sn-logo-txt">SITAJ</div>
+      <div class="sn-x" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
+    </div>
+
+    <a href="profile.html" class="sn-profile">
+      <div class="sn-av"><i class="fas fa-user"></i></div>
+      <div class="sn-info">
+        <h3 class="ar">ملفك الشخصي</h3><h3 class="en">Your Profile</h3>
+        <p class="ar">عرض وتعديل البيانات</p><p class="en">View & edit your data</p>
+      </div>
+    </a>
+
+    <!-- القسم الأول -->
+    <div class="sn-sec-label ar">القائمة الرئيسية</div>
+    <div class="sn-sec-label en">MAIN MENU</div>
+    <ul class="sn-ul">
+      <li class="sn-li">
+        <a href="index.html" class="sn-a">
+          <span class="ar">الصفحة الرئيسية</span><span class="en">Home</span>
+          <div class="sn-ic"><i class="fas fa-home"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="videos.html" class="sn-a current">
+          <span class="ar">الفيديوهات التعليمية</span><span class="en">Educational Videos</span>
+          <div class="sn-ic"><i class="fas fa-play-circle"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="articals.html" class="sn-a">
+          <span class="ar">المقالات الحصرية</span><span class="en">Exclusive Articles</span>
+          <div class="sn-ic"><i class="fas fa-feather-alt"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="games.html" class="sn-a">
+          <span class="ar">ساحة الألعاب</span><span class="en">Games Arena</span>
+          <div class="sn-ic"><i class="fas fa-chess"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="exams.html" class="sn-a">
+          <span class="ar">مركز الاختبارات</span><span class="en">Exam Center</span>
+          <div class="sn-ic"><i class="fas fa-pen-fancy"></i></div>
+        </a>
+      </li>
+
+      <div class="sn-hr"></div>
+      <div class="sn-sec-label ar">تطوير المسار</div>
+      <div class="sn-sec-label en">PATH DEVELOPMENT</div>
+
+      <li class="sn-li">
+        <a href="masarat.html" class="sn-a">
+          <span class="ar">هندسة المسارات</span><span class="en">Academic Paths</span>
+          <div class="sn-ic"><i class="fas fa-road"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="sign language hub.html" class="sn-a">
+          <span class="ar">مركز لغة الإشارة</span><span class="en">Sign Language Hub</span>
+          <div class="sn-ic"><i class="fas fa-hands"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="quraan.html" class="sn-a">
+          <span class="ar">إسلاميات</span><span class="en">Islamic Studies</span>
+          <div class="sn-ic"><i class="fas fa-book-quran"></i></div>
+        </a>
+      </li>
+
+      <div class="sn-hr"></div>
+      <div class="sn-sec-label ar">المجتمع والتواصل</div>
+      <div class="sn-sec-label en">COMMUNITY</div>
+
+      <li class="sn-li">
+        <a href="partys.html" class="sn-a">
+          <span class="ar">الغرف الصوتية</span><span class="en">Voice Rooms</span>
+          <div class="sn-ic"><i class="fas fa-microphone-alt"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="questions.html" class="sn-a">
+          <span class="ar">قسم الاستفسارات</span><span class="en">Q&A</span>
+          <div class="sn-ic"><i class="fas fa-comment-dots"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="family.html" class="sn-a">
+          <span class="ar">الرقابة الأبوية</span><span class="en">Parental Control</span>
+          <div class="sn-ic"><i class="fas fa-users"></i></div>
+        </a>
+      </li>
+      <li class="sn-li">
+        <a href="support.html" class="sn-a">
+          <span class="ar">الراعي والشركاء</span><span class="en">Sponsors</span>
+          <div class="sn-ic"><i class="fas fa-handshake"></i></div>
+        </a>
+      </li>
+
+      <div class="sn-hr"></div>
+      <div class="sn-sec-label ar">أدوات ذكية</div>
+      <div class="sn-sec-label en">AI & TOOLS</div>
+
+      <li class="sn-li">
+        <a href="AI.html" class="sn-a">
+          <span class="ar">المساعد الذكي</span><span class="en">AI Assistant</span>
+          <div class="sn-ic"><i class="fas fa-robot"></i></div>
+        </a>
+      </li>
+
+      <div class="sn-hr"></div>
+      <li class="sn-li logout">
+        <a href="#" class="sn-a" onclick="doLogout()">
+          <span class="ar">تسجيل خروج</span><span class="en">Logout</span>
+          <div class="sn-ic"><i class="fas fa-power-off"></i></div>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║               HERO                           ║
+     ╚══════════════════════════════════════════════╝ -->
 <section class="hero">
-    <h1>مكتبة الفيديو التعليمية</h1>
-    <p class="hero-subtitle">استكشف عالماً من المعرفة والتميز</p>
+  <canvas id="heroCanvas"></canvas>
+  <div class="h-mesh"></div>
+  <div class="h-grid"></div>
+  <div class="h-vignette"></div>
+  <div class="h-orb a"></div>
+  <div class="h-orb b"></div>
+  <div class="h-orb c"></div>
+
+  <div class="h-badge ar">✦ تعلّم بالصوت والصورة ✦</div>
+  <div class="h-badge en">✦ LEARN WITH AUDIO & VISION ✦</div>
+
+  <h1 class="h-title">
+    <span class="h-grad ar">مكتبة الفيديو</span>
+    <span class="h-grad en">Video Library</span>
+    <span class="h-sub ar">أكثر من 50 درس مرئي · يغطي كل المواد الدراسية</span>
+    <span class="h-sub en">50+ Visual Lessons · Covering All Academic Subjects</span>
+  </h1>
+
+  <p class="h-desc ar">شروحات مرئية تفاعلية بجودة عالية — تجعل الفهم أعمق والتعلم أسرع وأكثر متعة من أي وقت مضى</p>
+  <p class="h-desc en">High-quality interactive visual explanations — making understanding deeper and learning faster and more enjoyable than ever</p>
+
+  <div class="h-stats">
+    <div class="h-stat">
+      <div class="h-stat-n">50+</div>
+      <div class="h-stat-l ar">فيديو تعليمي</div>
+      <div class="h-stat-l en">Videos</div>
+    </div>
+    <div class="h-stat" style="border-right:1px solid rgba(255,255,255,.08);border-left:1px solid rgba(255,255,255,.08);padding:0 40px;">
+      <div class="h-stat-n">6</div>
+      <div class="h-stat-l ar">تخصصات</div>
+      <div class="h-stat-l en">Specialties</div>
+    </div>
+    <div class="h-stat">
+      <div class="h-stat-n">HD</div>
+      <div class="h-stat-l ar">جودة عالية</div>
+      <div class="h-stat-l en">Quality</div>
+    </div>
+  </div>
 </section>
 
-<!-- Category Filters -->
-<div class="filters-section">
-    <div class="filter-tabs">
-        <div class="filter-tab active" data-category="all">
-            <i class="fas fa-crown"></i> الكل
-        </div>
-        <div class="filter-tab" data-category="arabic">
-            <i class="fas fa-book"></i> اللغة العربية
-        </div>
-        <div class="filter-tab" data-category="geography">
-            <i class="fas fa-globe"></i> الجغرافيا
-        </div>
-        <div class="filter-tab" data-category="islam">
-            <i class="fas fa-mosque"></i> التربية الإسلامية
-        </div>
-        <div class="filter-tab" data-category="programming">
-            <i class="fas fa-code"></i> البرمجة
-        </div>
-        <div class="filter-tab" data-category="ai">
-            <i class="fas fa-robot"></i> الذكاء الاصطناعي
-        </div>
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">فيديوهات احترافية بجودة عالية</span><span class="en">Professional high-quality videos</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">شروح مبسطة لكل المستويات</span><span class="en">Simplified explanations for all levels</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">معلمون خبراء متخصصون</span><span class="en">Expert specialized teachers</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تعلّم في أي وقت ومن أي مكان</span><span class="en">Learn anytime, anywhere</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">محتوى محدَّث باستمرار</span><span class="en">Continuously updated content</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">مكتبة تعليمية شاملة</span><span class="en">Comprehensive educational library</span></div>
+    <!-- نسخ مكررة للحلقة -->
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">فيديوهات احترافية بجودة عالية</span><span class="en">Professional high-quality videos</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">شروح مبسطة لكل المستويات</span><span class="en">Simplified explanations for all levels</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">معلمون خبراء متخصصون</span><span class="en">Expert specialized teachers</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تعلّم في أي وقت ومن أي مكان</span><span class="en">Learn anytime, anywhere</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">محتوى محدَّث باستمرار</span><span class="en">Continuously updated content</span></div>
+    <div class="mq-item"><span class="mq-dot"></span><span class="ar">مكتبة تعليمية شاملة</span><span class="en">Comprehensive educational library</span></div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- ╔══════════════════════════════════════════════╗
+     ║           MAIN CONTENT                       ║
+     ╚══════════════════════════════════════════════╝ -->
+<div class="main-wrap">
+
+  <!-- FILTER BAR -->
+  <div class="fbar reveal">
+    <div class="fbar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInp" placeholder="ابحث عن درس، معلم، أو موضوع..." class="ar">
+      <input type="text" id="searchInpEn" placeholder="Search lesson, teacher, or topic..." class="en" style="display:none;">
     </div>
+    <div class="fbar-pills" id="catPills">
+      <button class="fbar-pill on" data-cat="all"><i class="fas fa-layer-group"></i><span class="ar">الكل</span><span class="en">All</span></button>
+      <button class="fbar-pill" data-cat="arabic"><i class="fas fa-book"></i><span class="ar">عربي</span><span class="en">Arabic</span></button>
+      <button class="fbar-pill" data-cat="geography"><i class="fas fa-globe"></i><span class="ar">جغرافيا</span><span class="en">Geography</span></button>
+      <button class="fbar-pill" data-cat="islam"><i class="fas fa-mosque"></i><span class="ar">إسلامية</span><span class="en">Islamic</span></button>
+      <button class="fbar-pill" data-cat="programming"><i class="fas fa-code"></i><span class="ar">برمجة</span><span class="en">Programming</span></button>
+      <button class="fbar-pill" data-cat="ai"><i class="fas fa-robot"></i><span class="ar">ذكاء اصطناعي</span><span class="en">AI</span></button>
+    </div>
+    <span class="fbar-count" id="vidCount">0 / 0 VIDEOS</span>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-wrap reveal" id="adminPanel">
+    <div class="adm-h">
+      <div class="adm-h-icon"><i class="fas fa-sliders-h"></i></div>
+      <div>
+        <h3 class="ar">لوحة التحكم</h3><h3 class="en">Admin Panel</h3>
+        <p class="ar">إضافة ورفع الفيديوهات</p><p class="en">Add & upload videos</p>
+      </div>
+    </div>
+    <div class="adm-grid">
+      <input type="text" id="vidTitle" class="adm-inp" placeholder="عنوان الفيديو">
+      <input type="text" id="vidTeacher" class="adm-inp" placeholder="اسم المعلم">
+      <input type="text" id="vidUrl" class="adm-inp" placeholder="رابط يوتيوب (اختياري)">
+      <select id="vidCat" class="adm-select">
+        <option value="all">الكل</option>
+        <option value="arabic">اللغة العربية</option>
+        <option value="geography">الجغرافيا</option>
+        <option value="islam">التربية الإسلامية</option>
+        <option value="programming">البرمجة</option>
+        <option value="ai">الذكاء الاصطناعي</option>
+      </select>
+    </div>
+    <div class="adm-btns">
+      <input type="file" id="fileInp" style="display:none" accept="video/*">
+      <button class="btn gold" onclick="document.getElementById('fileInp').click()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <span class="ar">رفع فيديو</span><span class="en">Upload Video</span>
+      </button>
+      <button class="btn prime" onclick="addVideo()">
+        <i class="fas fa-plus-circle"></i>
+        <span class="ar">إضافة رابط</span><span class="en">Add Link</span>
+      </button>
+    </div>
+    <div class="adm-prog" id="admProg"><div class="adm-prog-fill" id="admFill"></div></div>
+    <div class="adm-status" id="admStatus"></div>
+  </div>
+
+  <!-- SECTION HEADER -->
+  <div class="sec-h reveal">
+    <div class="sec-h-icon"><i class="fas fa-play-circle"></i></div>
+    <div class="sec-h-txt">
+      <h2 class="ar">المحاضرات المتاحة</h2><h2 class="en">Available Lectures</h2>
+      <p class="ar">اختر درسك وابدأ التعلم الآن</p><p class="en">Choose your lesson and start learning now</p>
+    </div>
+    <div class="sec-h-line"></div>
+  </div>
+
+  <!-- VIDEO GRID -->
+  <div class="v-grid" id="vGrid"></div>
+
 </div>
 
-<!-- Search Bar -->
-<div class="search-container">
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="ابحث عن محاضرة...">
-    </div>
+<!-- ╔══════════════════════════════════════════════╗
+     ║            VIDEO MODAL                       ║
+     ╚══════════════════════════════════════════════╝ -->
+<div id="vModal">
+  <div class="vm-wrap">
+    <div class="vm-close" onclick="closeVid()"><i class="fas fa-times-circle"></i></div>
+    <div class="vm-player" id="vmPlayer"></div>
+  </div>
 </div>
 
-<!-- Admin Panel -->
-<div class="admin-panel" id="adminPanel">
-    <div class="admin-panel-header">
-        <i class="fas fa-tools"></i>
-        لوحة التحكم
-    </div>
-    <div class="admin-grid">
-        <input type="text" id="videoTitle" class="admin-input" placeholder="عنوان الفيديو">
-        <input type="text" id="videoTeacher" class="admin-input" placeholder="اسم المعلم">
-        <input type="text" id="videoUrl" class="admin-input" placeholder="رابط يوتيوب (اختياري)">
-        <input type="file" id="fileInput" class="hidden" accept="video/*">
-        <button class="btn-gold" onclick="document.getElementById('fileInput').click()">
-            <i class="fas fa-cloud-upload-alt"></i> رفع فيديو
-        </button>
-        <button class="btn-gold" onclick="addNewVideo()">
-            <i class="fas fa-plus-circle"></i> إضافة رابط
-        </button>
-    </div>
-    <div class="upload-progress" id="uploadProgress">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div id="statusText" style="color: var(--accent-blue); margin-top: 15px; display: none;"></div>
-</div>
+<button class="stb" id="stb" onclick="scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-arrow-up"></i>
+</button>
 
-<!-- Videos Section -->
-<section class="videos-section">
-    <h2 class="section-title">
-        <i class="fas fa-play-circle"></i>
-        المحاضرات المتاحة
-    </h2>
-    <div class="video-grid" id="videoGrid">
-        <!-- Videos will be loaded here -->
-    </div>
-</section>
-
-<!-- Video Modal -->
-<div class="video-modal" id="videoModal">
-    <div class="modal-content">
-        <div class="close-modal" onclick="closeVideo()">
-            <i class="fas fa-times-circle"></i>
-        </div>
-        <div class="video-player" id="videoPlayer"></div>
-    </div>
-</div>
-
+<!-- ════════════════════════════════════════════════
+     FIREBASE + LOGIC
+════════════════════════════════════════════════ -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { initializeApp }        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
-        authDomain: "eliteacademy-37bfc.firebaseapp.com",
-        projectId: "eliteacademy-37bfc",
-        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
-        messagingSenderId: "203080953628",
-        appId: "1:203080953628:web:69efebccc336b79f0554d9"
-    };
+const FB = { apiKey:"AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA", authDomain:"eliteacademy-37bfc.firebaseapp.com", projectId:"eliteacademy-37bfc", storageBucket:"eliteacademy-37bfc.firebasestorage.app", messagingSenderId:"203080953628", appId:"1:203080953628:web:69efebccc336b79f0554d9" };
+const app  = initializeApp(FB);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const sto  = getStorage(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+let canAdmin = false;
+let allVids  = [];
+let activeCat = 'all';
+let searchQ  = '';
 
-    let canManage = false;
-    let allVideos = [];
-    let currentCategory = 'all';
+/* ── بيانات الفيديوهات المثبتة ── */
+const preset = [
+  { id:'arabic',   title:'اللغة العربية',             titleEn:'Arabic Language',         teacher:'أ. محمد العربي',    teacherEn:'Mr. Mohammed Al-Arabi', filename:'arabic.mp4',            category:'arabic',      thumb:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80', isNew:false, dur:'28:14' },
+  { id:'geography',title:'الجغرافيا',                 titleEn:'Geography',               teacher:'د. سارة الجغرافي',  teacherEn:'Dr. Sarah',             filename:'geography.mp4',         category:'geography',   thumb:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=600&q=80', isNew:false, dur:'34:52' },
+  { id:'islam',    title:'التربية الإسلامية',         titleEn:'Islamic Studies',         teacher:'الشيخ أحمد النور', teacherEn:'Sheikh Ahmed Al-Nour', filename:'islam.mp4',             category:'islam',       thumb:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80', isNew:false, dur:'22:06' },
+  { id:'islam2',   title:'التربية الإسلامية ٢',       titleEn:'Islamic Studies 2',       teacher:'الشيخ أحمد النور', teacherEn:'Sheikh Ahmed Al-Nour', filename:'islam2.mp4',            category:'islam',       thumb:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&q=80', isNew:true,  dur:'19:44' },
+  { id:'scratch',  title:'برمجة سكراتش',              titleEn:'Scratch Programming',     teacher:'م. ليلى التقنية',   teacherEn:'Eng. Layla',            filename:'scratch.mp4',           category:'programming', thumb:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600&q=80', isNew:false, dur:'41:30' },
+  { id:'ai',       title:'كيف صُنع الذكاء الاصطناعي', titleEn:'How AI Was Made',         teacher:'د. عمر الذكي',      teacherEn:'Dr. Omar',              filename:'how were ai made.mp4',  category:'ai',          thumb:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80', isNew:true,  dur:'38:17' },
+];
 
-    // Predefined videos with categories
-    const predefinedVideos = [
-        {
-            id: 'arabic',
-            title: 'اللغة العربية',
-            teacher: 'أ. محمد العربي',
-            filename: 'arabic.mp4',
-            category: 'arabic',
-            thumbnail: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'
-        },
-        {
-            id: 'geography',
-            title: 'الجغرافيا',
-            teacher: 'د. سارة الجغرافي',
-            filename: 'geography.mp4',
-            category: 'geography',
-            thumbnail: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'
-        },
-        {
-            id: 'islam',
-            title: 'التربية الإسلامية',
-            teacher: 'الشيخ أحمد النور',
-            filename: 'islam.mp4',
-            category: 'islam',
-            thumbnail: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'
-        },
-        {
-            id: 'islam2',
-            title: 'التربية الإسلامية 2',
-            teacher: 'الشيخ أحمد النور',
-            filename: 'islam2.mp4',
-            category: 'islam',
-            thumbnail: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'
-        },
-        {
-            id: 'scratch',
-            title: 'برمجة سكراتش',
-            teacher: 'م. ليلى التقنية',
-            filename: 'scratch.mp4',
-            category: 'programming',
-            thumbnail: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'
-        },
-        {
-            id: 'ai',
-            title: 'كيف صنع الذكاء الاصطناعي',
-            teacher: 'د. عمر الذكي',
-            filename: 'how were ai made.mp4',
-            category: 'ai',
-            thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400'
-        }
-    ];
+/* خريطة لأسماء الفئات */
+const catName = {
+  ar:{ all:'عام', arabic:'اللغة العربية', geography:'الجغرافيا', islam:'الإسلامية', programming:'البرمجة', ai:'الذكاء الاصطناعي' },
+  en:{ all:'General', arabic:'Arabic', geography:'Geography', islam:'Islamic', programming:'Programming', ai:'AI' }
+};
 
-    const renderVideos = () => {
-        const grid = document.getElementById('videoGrid');
-        grid.innerHTML = '';
+/* ── رندر البطاقات ── */
+const render = () => {
+  const grid = document.getElementById('vGrid');
+  const lang = document.documentElement.getAttribute('data-lang') || 'ar';
 
-        const filtered = currentCategory === 'all' 
-            ? allVideos 
-            : allVideos.filter(v => v.category === currentCategory);
+  let list = activeCat === 'all' ? allVids : allVids.filter(v => v.category === activeCat);
+  if(searchQ) list = list.filter(v => {
+    const t  = lang==='ar' ? v.title    : (v.titleEn   || v.title);
+    const tc = lang==='ar' ? v.teacher  : (v.teacherEn || v.teacher);
+    return t.toLowerCase().includes(searchQ) || tc.toLowerCase().includes(searchQ);
+  });
 
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-gray);">
-                    <i class="fas fa-film" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
-                    <p style="font-size: 1.2rem;">لا توجد فيديوهات في هذا القسم</p>
-                </div>
-            `;
-            return;
-        }
+  document.getElementById('vidCount').textContent = list.length + ' / ' + allVids.length + ' VIDEOS';
+  grid.innerHTML = '';
 
-        filtered.forEach((video, index) => {
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.style.animationDelay = (index * 0.1) + 's';
-            card.setAttribute('data-video', JSON.stringify(video));
+  if(!list.length){
+    grid.innerHTML = `<div class="empty-s"><i class="fas fa-film"></i><p>${lang==='ar'?'لا توجد فيديوهات في هذا القسم':'No videos found in this section'}</p></div>`;
+    return;
+  }
 
-            card.innerHTML = `
-                <div class="thumbnail-wrapper" onclick='playVideoFromCard(this.parentElement)'>
-                    <img src="${video.thumbnail}" alt="${video.title}">
-                    <div class="play-overlay">
-                        <div class="play-button">
-                            <i class="fas fa-play"></i>
-                        </div>
-                    </div>
-                    <div class="video-badge">MP4</div>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">${video.title}</h3>
-                    <div class="video-meta">
-                        <span><i class="fas fa-clock"></i> جديد</span>
-                        <span><i class="fas fa-star"></i> مميز</span>
-                    </div>
-                    <div class="video-teacher">
-                        <div class="teacher-avatar">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <span>${video.teacher}</span>
-                    </div>
-                    ${canManage && video.firestoreId ? 
-                        `<div class="delete-btn" onclick="event.stopPropagation(); deleteVideo('${video.firestoreId}')">
-                            <i class="fas fa-trash-alt"></i> حذف الفيديو
-                        </div>` : ''}
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-    };
+  list.forEach((v, i) => {
+    const lang2   = lang;
+    const title   = lang2==='ar' ? v.title   : (v.titleEn   || v.title);
+    const teacher = lang2==='ar' ? v.teacher : (v.teacherEn || v.teacher);
+    const catL    = catName[lang2][v.category] || '';
 
-    const loadVideos = () => {
-        allVideos = [...predefinedVideos];
-        renderVideos();
+    const card = document.createElement('div');
+    card.className = 'vc';
+    card.style.cssText = `animation:vcIn .7s both;animation-delay:${i*.07}s`;
+    card.setAttribute('data-vd', JSON.stringify(v));
 
-        const q = query(collection(db, "videos"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            const firestoreVideos = [];
-            
-            snapshot.forEach((vDoc) => {
-                const video = vDoc.data();
-                const isYoutube = video.url && (video.url.includes('youtube.com') || video.url.includes('youtu.be'));
-                
-                let thumbnail = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400";
-                if (isYoutube) {
-                    thumbnail = `https://img.youtube.com/vi/${extractID(video.url)}/mqdefault.jpg`;
-                }
+    card.innerHTML = `
+      <style>@keyframes vcIn{from{opacity:0;transform:translateY(28px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}</style>
+      <div class="vc-thumb" onclick='window.__play(JSON.parse(this.closest("[data-vd]").getAttribute("data-vd")))'>
+        <img src="${v.thumb || ''}" alt="${title}" loading="lazy">
+        <div class="vc-overlay"><div class="vc-play"><i class="fas fa-play" style="margin-right:3px"></i></div></div>
+        <span class="vc-cat cat-${v.category}">${catL}</span>
+        ${v.isNew ? '<span class="vc-new">NEW</span>' : ''}
+        <span class="vc-dur"><i class="fas fa-clock" style="margin-left:4px;font-size:.6rem"></i>${v.dur || '—'}</span>
+      </div>
+      <div class="vc-body">
+        <div class="vc-title">${title}</div>
+        <div class="vc-meta">
+          <span class="vc-meta-i"><i class="fas fa-star"></i> <span class="ar">مميز</span><span class="en">Featured</span></span>
+          <span class="vc-meta-i"><i class="fas fa-eye"></i> ${(Math.floor(Math.random()*900)+100)}</span>
+        </div>
+        <div class="vc-teacher">
+          <div class="vc-teacher-av"><i class="fas fa-user-tie"></i></div>
+          <span class="vc-teacher-name">${teacher}</span>
+          <i class="fas fa-chevron-left vc-arrow"></i>
+        </div>
+        ${canAdmin && v.fid ? `<button class="vc-del" onclick="event.stopPropagation();window.__del('${v.fid}')"><i class="fas fa-trash-alt" style="margin-left:6px"></i><span class="ar">حذف</span><span class="en">Delete</span></button>` : ''}
+      </div>`;
+    grid.appendChild(card);
+  });
+};
 
-                firestoreVideos.push({
-                    id: vDoc.id,
-                    firestoreId: vDoc.id,
-                    title: video.title || 'بدون عنوان',
-                    teacher: video.teacher || 'مدرب',
-                    url: video.url,
-                    category: video.category || 'all',
-                    filename: null,
-                    thumbnail: thumbnail,
-                    isYoutube: isYoutube
-                });
-            });
+/* ── تشغيل فيديو ── */
+window.__play = v => {
+  const p = document.getElementById('vmPlayer');
+  if(v.isYT || (v.url && (v.url.includes('youtube.com')||v.url.includes('youtu.be')))){
+    const id = ytID(v.url);
+    p.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="autoplay;fullscreen" allowfullscreen style="border-radius:20px"></iframe>`;
+  } else if(v.filename){
+    p.innerHTML = `<video controls autoplay style="background:#000;border-radius:20px"><source src="${v.filename}" type="video/mp4">متصفحك لا يدعم الفيديو</video>`;
+  } else if(v.url){
+    p.innerHTML = `<video controls autoplay style="background:#000;border-radius:20px"><source src="${v.url}" type="video/mp4">متصفحك لا يدعم الفيديو</video>`;
+  }
+  document.getElementById('vModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
 
-            allVideos = [...predefinedVideos, ...firestoreVideos];
-            renderVideos();
-        });
-    };
+/* ── إغلاق المودال ── */
+window.closeVid = () => {
+  document.getElementById('vModal').classList.remove('open');
+  document.getElementById('vmPlayer').innerHTML = '';
+  document.body.style.overflow = '';
+};
+document.getElementById('vModal').addEventListener('click', e => { if(e.target===e.currentTarget) window.closeVid(); });
 
-    // Category filtering
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentCategory = tab.dataset.category;
-            renderVideos();
-        });
+/* ── حذف ── */
+window.__del = async fid => {
+  if(confirm('حذف هذا الفيديو؟')) await deleteDoc(doc(db,'videos',fid));
+};
+
+/* ── استخراج ID يوتيوب ── */
+function ytID(url){ const m=url.match(/^.*(youtu\.be\/|v\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/); return m&&m[2].length===11?m[2]:null; }
+
+/* ── تحميل الفيديوهات ── */
+const loadVids = () => {
+  allVids = [...preset];
+  render();
+  onSnapshot(query(collection(db,'videos'),orderBy('createdAt','desc')), snap => {
+    const fvs = [];
+    snap.forEach(d => {
+      const v = d.data();
+      const isYT = v.url && (v.url.includes('youtube.com')||v.url.includes('youtu.be'));
+      fvs.push({
+        fid:d.id, id:d.id,
+        title:v.title||'بدون عنوان', titleEn:v.title||'Untitled',
+        teacher:v.teacher||'مدرب', teacherEn:v.teacher||'Trainer',
+        url:v.url, category:v.category||'all', filename:null,
+        thumb: isYT ? `https://img.youtube.com/vi/${ytID(v.url)}/mqdefault.jpg` : 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80',
+        isYT, isNew:false, dur:'—'
+      });
     });
+    allVids = [...preset, ...fvs];
+    render();
+  });
+};
 
-    // Search functionality
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        document.querySelectorAll('.video-card').forEach(card => {
-            const videoData = JSON.parse(card.getAttribute('data-video'));
-            const matches = videoData.title.toLowerCase().includes(term) || 
-                           videoData.teacher.toLowerCase().includes(term);
-            card.style.display = matches ? 'block' : 'none';
-        });
+/* ── Auth ── */
+onAuthStateChanged(auth, async user => {
+  if(user){
+    try{
+      const ud = await getDoc(doc(db,'users',user.uid));
+      const role = (ud.data()?.role||'').toLowerCase();
+      if(['teacher','admin','owner'].includes(role)){
+        canAdmin = true;
+        document.getElementById('adminPanel').style.display = 'block';
+      }
+    }catch(e){}
+  }
+  loadVids();
+});
+
+/* ── إضافة فيديو رابط ── */
+window.addVideo = async () => {
+  const t = document.getElementById('vidTitle').value;
+  const u = document.getElementById('vidUrl').value;
+  const tc= document.getElementById('vidTeacher').value;
+  const c = document.getElementById('vidCat').value;
+  if(!t||!u){alert('يرجى ملء العنوان والرابط');return;}
+  await addDoc(collection(db,'videos'),{title:t,url:u,teacher:tc||'مدرب',category:c,createdAt:serverTimestamp()});
+  alert('تمت الإضافة بنجاح ✨');
+  ['vidTitle','vidUrl','vidTeacher'].forEach(id=>document.getElementById(id).value='');
+};
+
+/* ── رفع ملف ── */
+document.getElementById('fileInp').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  const t    = document.getElementById('vidTitle').value;
+  if(!t){alert('اكتب العنوان أولاً');return;}
+  if(!file) return;
+  const r   = ref(sto,'videos/'+Date.now()+'_'+file.name);
+  const task= uploadBytesResumable(r,file);
+  const pg  = document.getElementById('admProg');
+  const pf  = document.getElementById('admFill');
+  const st  = document.getElementById('admStatus');
+  pg.style.display='block'; st.style.display='block';
+  task.on('state_changed',
+    snap=>{ const p=(snap.bytesTransferred/snap.totalBytes)*100; pf.style.width=p+'%'; st.textContent='جاري الرفع: '+Math.round(p)+'%'; },
+    err=>{ alert('خطأ: '+err.message); pg.style.display='none'; st.style.display='none'; },
+    ()=>{ getDownloadURL(task.snapshot.ref).then(async url=>{
+      await addDoc(collection(db,'videos'),{title:t,url,teacher:document.getElementById('vidTeacher').value||'مدرب',category:document.getElementById('vidCat').value||'all',createdAt:serverTimestamp()});
+      alert('تم الرفع بنجاح 🎉');
+      pg.style.display='none'; st.style.display='none';
+      ['vidTitle','vidTeacher'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('fileInp').value='';
+    });}
+  );
+});
+
+/* ── فلتر الفئة ── */
+document.getElementById('catPills').addEventListener('click', e => {
+  const pill = e.target.closest('.fbar-pill');
+  if(!pill) return;
+  document.querySelectorAll('.fbar-pill').forEach(p=>p.classList.remove('on'));
+  pill.classList.add('on');
+  activeCat = pill.dataset.cat;
+  render();
+});
+
+/* ── البحث ── */
+document.getElementById('searchInp').addEventListener('input', e => { searchQ=e.target.value.toLowerCase(); render(); });
+document.getElementById('searchInpEn').addEventListener('input', e => { searchQ=e.target.value.toLowerCase(); render(); });
+
+/* ── تحديث الرندر عند تغيير اللغة ── */
+const origSL = window.setLang;
+window.setLang = l => { if(origSL) origSL(l); setTimeout(render,30); };
+</script>
+
+<!-- ════════════════════════════════════════════════
+     JS عام — نفس المنطق من الصفحة الرئيسية
+════════════════════════════════════════════════ -->
+<script>
+/* ── CURSOR ── */
+const C  = document.getElementById('cur');
+const CR = document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; C.style.left=mx+'px'; C.style.top=my+'px'; });
+(function raf(){ requestAnimationFrame(raf); rx+=(mx-rx)*.13; ry+=(my-ry)*.13; CR.style.left=rx+'px'; CR.style.top=ry+'px'; })();
+document.querySelectorAll('a,button,.vc,.fbar-pill,.sn-a,.btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+/* ── HERO CANVAS — نفس كانفاس الصفحة الرئيسية ── */
+(()=>{
+  const c=document.getElementById('heroCanvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  const resize=()=>{ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; };
+  resize(); addEventListener('resize',resize);
+  for(let i=0;i<60;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:.4+Math.random()*1.4,a:.05+Math.random()*.18,ph:Math.random()*Math.PI*2});
+  let fr=0;
+  (function loop(){
+    requestAnimationFrame(loop); fr++;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(200,168,74,${p.a*(0.5+0.5*Math.sin(fr*.014+p.ph))})`;
+      ctx.fill();
     });
+    ctx.strokeStyle=`rgba(61,127,255,${.013+.004*Math.sin(fr*.007)})`; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=72){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for(let y=0;y<H;y+=72){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  })();
+})();
 
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        const header = document.getElementById('header');
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
+/* ── LANG ── */
+function setLang(l){
+  document.documentElement.setAttribute('data-lang',l);
+  document.documentElement.dir = l==='ar'?'rtl':'ltr';
+  document.getElementById('btnAr').classList.toggle('on',l==='ar');
+  document.getElementById('btnEn').classList.toggle('on',l==='en');
+  localStorage.setItem('sl',l);
+}
+const _sl = localStorage.getItem('sl'); if(_sl) setLang(_sl);
 
-    // Auth state
-    onAuthStateChanged(auth, async (user) => {
-        const slot = document.getElementById('authSlot');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const adminPanel = document.getElementById('adminPanel');
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('NAV').classList.toggle('solid', scrollY>60);
+  document.getElementById('stb').classList.toggle('show', scrollY>400);
+},{passive:true});
 
-        if (user) {
-            try {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                const userData = userDoc.data();
-                
-                slot.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="${userData?.photoURL || 'https://ui-avatars.com/api/?name=' + (userData?.nickname || 'User')}" 
-                             class="nav-avatar" alt="Profile">
-                        <span style="color: var(--navy-dark); font-weight: 700;">${userData?.nickname || 'عضو'}</span>
-                    </div>`;
-                
-                logoutBtn.classList.remove('hidden');
+/* ── MENU TOGGLE ── */
+function toggleMenu(){
+  const sn=document.getElementById('SIDENAV');
+  const ov=document.getElementById('OVERLAY');
+  const bg=document.getElementById('burger');
+  sn.classList.toggle('on'); ov.classList.toggle('on'); bg.classList.toggle('on');
+  document.body.style.overflow = sn.classList.contains('on') ? 'hidden' : '';
+}
 
-                const role = userData?.role?.toLowerCase() || "";
-                if (['teacher', 'admin', 'owner'].includes(role)) {
-                    canManage = true;
-                    adminPanel.style.display = 'block';
-                }
-            } catch (e) {
-                console.error("Error:", e);
-            }
-        } else {
-            slot.innerHTML = `<a href="login.html" class="btn-gold" style="padding: 10px 25px;">تسجيل الدخول</a>`;
-        }
-        loadVideos();
-    });
+/* ESC لإغلاق كل شيء */
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape'){
+    const modal=document.getElementById('vModal');
+    if(modal.classList.contains('open')) window.closeVid();
+    else if(document.getElementById('SIDENAV').classList.contains('on')) toggleMenu();
+  }
+});
 
-    // Add video
-    window.addNewVideo = async () => {
-        const title = document.getElementById('videoTitle').value;
-        const url = document.getElementById('videoUrl').value;
-        const teacher = document.getElementById('videoTeacher').value;
-        
-        if(!title || !url) {
-            alert("يرجى ملء العنوان والرابط");
-            return;
-        }
+/* Swipe لإغلاق القائمة */
+let _tx=0;
+document.getElementById('SIDENAV').addEventListener('touchstart',e=>{_tx=e.changedTouches[0].screenX;},{passive:true});
+document.getElementById('SIDENAV').addEventListener('touchend',e=>{
+  if(e.changedTouches[0].screenX>_tx+70&&document.getElementById('SIDENAV').classList.contains('on')) toggleMenu();
+},{passive:true});
 
-        try {
-            await addDoc(collection(db, "videos"), { 
-                title, 
-                url, 
-                teacher: teacher || "مدرب",
-                category: 'all',
-                createdAt: serverTimestamp() 
-            });
-            alert("تمت الإضافة بنجاح ✨");
-            document.getElementById('videoTitle').value = "";
-            document.getElementById('videoUrl').value = "";
-            document.getElementById('videoTeacher').value = "";
-        } catch (e) {
-            alert("خطأ: " + e.message);
-        }
-    };
+/* ── PARALLAX HERO ORBS ── */
+document.addEventListener('mousemove', e => {
+  const x=(e.clientX/innerWidth-.5)*22;
+  const y=(e.clientY/innerHeight-.5)*22;
+  document.querySelectorAll('.h-orb').forEach((el,i)=>{ const d=(i+1)*.42; el.style.transform=`translate(${x*d}px,${y*d}px)`; });
+},{passive:true});
 
-    // File upload
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const title = document.getElementById('videoTitle').value;
-        
-        if (!title) {
-            alert("اكتب العنوان أولاً");
-            return;
-        }
+/* ── REVEAL ON SCROLL ── */
+const io = new IntersectionObserver(ee => ee.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:.06});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-        if (file) {
-            const storageRef = ref(storage, 'videos/' + Date.now() + "_" + file.name);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-            
-            document.getElementById('uploadProgress').style.display = 'block';
-            document.getElementById('statusText').style.display = 'block';
-
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    document.getElementById('progressBar').style.width = progress + '%';
-                    document.getElementById('statusText').innerText = "جاري الرفع: " + Math.round(progress) + "%";
-                }, 
-                (error) => {
-                    alert("خطأ: " + error.message);
-                    document.getElementById('uploadProgress').style.display = 'none';
-                    document.getElementById('statusText').style.display = 'none';
-                }, 
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                        await addDoc(collection(db, "videos"), {
-                            title, 
-                            url, 
-                            teacher: document.getElementById('videoTeacher').value || "مدرب",
-                            category: 'all',
-                            createdAt: serverTimestamp()
-                        });
-                        alert("تم الرفع بنجاح! 🎉");
-                        document.getElementById('uploadProgress').style.display = 'none';
-                        document.getElementById('statusText').style.display = 'none';
-                        document.getElementById('videoTitle').value = "";
-                        document.getElementById('videoTeacher').value = "";
-                        document.getElementById('fileInput').value = "";
-                    });
-                }
-            );
-        }
-    });
-
-    // Delete video
-    window.deleteVideo = async (id) => {
-        if(confirm("هل أنت متأكد من حذف هذا الفيديو؟")) {
-            try {
-                await deleteDoc(doc(db, "videos", id));
-                alert("تم الحذف بنجاح");
-            } catch (e) {
-                alert("خطأ: " + e.message);
-            }
-        }
-    };
-
-    // Play video
-    window.playVideoFromCard = (cardElement) => {
-        const videoData = JSON.parse(cardElement.getAttribute('data-video'));
-        playVideo(videoData);
-    };
-
-    window.playVideo = (videoData) => {
-        const player = document.getElementById('videoPlayer');
-        
-        if (videoData.isYoutube || (videoData.url && (videoData.url.includes('youtube.com') || videoData.url.includes('youtu.be')))) {
-            player.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${extractID(videoData.url)}?autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius: 15px;"></iframe>`;
-        } else if (videoData.filename) {
-            player.innerHTML = `<video controls autoplay style="width:100%; height:100%; border-radius: 15px; background:#000;">
-                <source src="${videoData.filename}" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو
-            </video>`;
-        } else if (videoData.url) {
-            player.innerHTML = `<video controls autoplay style="width:100%; height:100%; border-radius: 15px; background:#000;">
-                <source src="${videoData.url}" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو
-            </video>`;
-        }
-        document.getElementById('videoModal').style.display = 'flex';
-    };
-
-    window.closeVideo = () => {
-        document.getElementById('videoModal').style.display = 'none';
-        document.getElementById('videoPlayer').innerHTML = '';
-    };
-
-    function extractID(url) {
-        const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        const match = url.match(reg);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
-
-    // Menu toggle
-    window.toggleMenu = () => {
-        document.getElementById('sideNav').classList.toggle('active');
-        document.getElementById('overlay').classList.toggle('active');
-        document.getElementById('burger').classList.toggle('active');
-    };
-
-    // Show notifications
-    window.showNotifications = () => {
-        alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة');
-    };
-
-    // Logout
-    window.logout = () => {
-        signOut(auth).then(() => location.reload());
-    };
-
-    // Close modal on click outside
-    document.getElementById('videoModal').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) {
-            closeVideo();
-        }
-    });
-
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeVideo();
-            if (document.getElementById('sideNav').classList.contains('active')) {
-                toggleMenu();
-            }
-        }
-    });
+/* ── الإشعارات والخروج ── */
+function showNotif(){ alert('🔔 إشعاراتك:\n\n1. 📚 درس جديد أُضيف\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم'); }
+function doLogout(){ if(confirm('تسجيل الخروج؟')) location.href='login.html'; }
 </script>
 
 </body>
