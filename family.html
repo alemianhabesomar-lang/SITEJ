@@ -1,1001 +1,1036 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-lang="ar">
+<html lang="ar" dir="rtl" id="mainHtml">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SITAJ | الرقابة الأبوية</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Josefin+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-:root{
-  --void:#03060f;--abyss:#060c1e;--deep:#0a1428;--navy:#0f1e3d;
-  --white:#f0f4ff;--mist:#a8bce0;--fog:#6880a8;
-  --gold:#c8a84a;--gold2:#e8ca78;--gold3:#f5dfa0;
-  --azure:#3d7fff;--azure2:#5b94ff;--sapphire:#1a4fc4;
-  --teal:#00d4b8;--rose:#ff3d6e;--emerald:#10b981;--amber:#f59e0b;
-  --font-ar:'Cairo','Tajawal',sans-serif;
-  --font-cin:'Cinzel',serif;--font-cind:'Cinzel Decorative',serif;
-  --font-jos:'Josefin Sans',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}
-body{background:var(--void);color:var(--white);font-family:var(--font-ar);min-height:100vh;cursor:none;overflow-x:hidden;}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");opacity:.5;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITEJ | موسوعة التوعية الأسرية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy-darkest:#0a1628; --navy-dark:#1a2942; --navy-lighter:#3d5a7f;
+            --white-pure:#ffffff; --white-soft:#f8f9fa; --white-light:#e8eef5;
+            --blue-lightest:#d4dfe9; --blue-lighter:#b8c9dc; --blue-light:#9bb4d0;
+            --blue-medium:#7a9ac2; --blue-navy:#5a7fa8;
+            --accent-blue:#4a90e2; --accent-light-blue:#6fa8ec; --accent-sky:#87ceeb;
+            --accent-green:#20c997;
+            --gradient-navy-soft:linear-gradient(135deg,#1a2942 0%,#3d5a7f 50%,#b8c9dc 100%);
+            --gradient-blue-glow:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+            --glass-light:rgba(255,255,255,0.1);
+            --glass-medium:rgba(255,255,255,0.15);
+            --glass-strong:rgba(255,255,255,0.25);
+            --border-blue:rgba(74,144,226,0.3);
+            --shadow-blue:rgba(74,144,226,0.2);
+            --shadow-glow:rgba(74,144,226,0.5);
+            --text-navy:#0a1628; --text-gray:#6b7c93; --text-light:#9bb4d0;
+        }
 
-/* CURSOR */
-#cur{position:fixed;width:8px;height:8px;background:var(--gold2);border-radius:50%;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference;}
-#curR{position:fixed;width:36px;height:36px;border:1px solid rgba(200,168,74,.5);border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);transition:all .14s cubic-bezier(.22,1,.36,1);}
-body.hov #cur{width:20px;height:20px;}
-body.hov #curR{width:60px;height:60px;border-color:rgba(200,168,74,.25);}
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        html { scroll-behavior:smooth; }
 
-/* NAVBAR */
-#NAV{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;padding:0 44px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,6,15,.92);backdrop-filter:blur(28px) saturate(2);border-bottom:1px solid rgba(200,168,74,.1);box-shadow:0 4px 60px rgba(0,0,0,.6);}
-.n-logo{font-family:var(--font-cind);font-size:1.35rem;font-weight:700;letter-spacing:5px;background:linear-gradient(135deg,var(--white),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;user-select:none;flex-shrink:0;text-decoration:none;}
-.n-links{display:flex;gap:32px;list-style:none;}
-.n-links a{font-family:var(--font-ar);font-size:13.5px;font-weight:500;color:var(--fog);text-decoration:none;position:relative;padding-bottom:3px;transition:color .3s;}
-.n-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold));transition:width .35s;}
-.n-links a:hover{color:var(--white);}
-.n-links a:hover::after,.n-links a.act::after{width:100%;right:auto;left:0;}
-.n-links a.act{color:var(--gold2);}
-.n-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.n-lang{display:flex;border:1px solid rgba(200,168,74,.22);border-radius:50px;overflow:hidden;background:rgba(200,168,74,.04);}
-.n-lang button{font-family:var(--font-jos);font-size:11px;font-weight:300;letter-spacing:2.5px;padding:7px 13px;background:transparent;border:none;color:var(--fog);cursor:pointer;transition:all .3s;}
-.n-lang button.on{background:rgba(200,168,74,.18);color:var(--gold2);}
-.n-bell{position:relative;width:42px;height:42px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--azure2);font-size:1rem;transition:all .3s;}
-.n-bell:hover{background:rgba(61,127,255,.12);border-color:rgba(61,127,255,.4);transform:translateY(-2px);}
-.n-bell-badge{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--rose),#c0274e);display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;color:#fff;animation:bp 2.5s infinite;}
-@keyframes bp{0%,100%{box-shadow:0 0 0 0 rgba(255,61,110,.5);}50%{box-shadow:0 0 0 6px rgba(255,61,110,0);}}
-.n-burger{width:34px;height:22px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;}
-.n-bline{width:100%;height:2px;border-radius:4px;background:linear-gradient(90deg,var(--gold2),var(--azure2));transition:all .55s cubic-bezier(.68,-.55,.265,1.55);}
-.n-burger.on .n-bline:nth-child(1){transform:rotate(45deg) translate(7px,7px);}
-.n-burger.on .n-bline:nth-child(2){opacity:0;transform:translateX(-20px);}
-.n-burger.on .n-bline:nth-child(3){transform:rotate(-45deg) translate(7px,-7px);}
+        body {
+            font-family:'Cairo','Tajawal',sans-serif;
+            background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);
+            background-attachment:fixed;
+            color:var(--text-navy);
+            min-height:100vh;
+            overflow-x:hidden;
+        }
 
-/* OVERLAY + SIDENAV */
-#OVERLAY{position:fixed;inset:0;z-index:1500;background:rgba(3,6,15,.88);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .45s;}
-#OVERLAY.on{opacity:1;pointer-events:all;}
-#SIDENAV{position:fixed;top:0;right:-460px;width:420px;height:100vh;z-index:1600;background:linear-gradient(170deg,#0d1a35 0%,#080f22 60%,#040810 100%);border-left:1px solid rgba(200,168,74,.14);box-shadow:-30px 0 100px rgba(0,0,0,.7);transition:right .65s cubic-bezier(.68,-.55,.265,1.55);display:flex;flex-direction:column;overflow:hidden;}
-#SIDENAV.on{right:0;}
-.sn-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--azure2),var(--gold),transparent);}
-.sn-body{flex:1;overflow-y:auto;padding:28px 24px 24px;scrollbar-width:thin;scrollbar-color:rgba(200,168,74,.25) transparent;}
-.sn-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;margin-bottom:20px;border-bottom:1px solid rgba(200,168,74,.1);}
-.sn-logo-txt{font-family:var(--font-cind);font-size:1.2rem;letter-spacing:4px;background:linear-gradient(135deg,var(--gold2),var(--white));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sn-x{width:38px;height:38px;border-radius:50%;background:rgba(255,61,110,.08);border:1px solid rgba(255,61,110,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--rose);font-size:1rem;transition:all .3s;flex-shrink:0;}
-.sn-x:hover{background:rgba(255,61,110,.2);transform:rotate(90deg);}
-.sn-profile{display:flex;align-items:center;gap:14px;padding:18px;background:rgba(255,255,255,.03);border:1px solid rgba(200,168,74,.1);border-radius:18px;margin-bottom:20px;text-decoration:none;transition:all .35s;}
-.sn-profile:hover{background:rgba(200,168,74,.06);border-color:rgba(200,168,74,.28);transform:translateX(-5px);}
-.sn-av{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--azure),var(--sapphire));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-.sn-info h3{font-size:.95rem;font-weight:700;color:var(--white);}
-.sn-info p{font-size:.75rem;color:var(--fog);}
-.sn-sec-label{font-family:var(--font-jos);font-size:.55rem;letter-spacing:5px;color:rgba(200,168,74,.3);text-transform:uppercase;padding:14px 6px 8px;}
-.sn-ul{list-style:none;}
-.sn-li{margin-bottom:2px;}
-.sn-a{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:13px 14px;text-decoration:none;border-radius:14px;font-size:.92rem;font-weight:600;color:var(--fog);transition:all .3s;}
-.sn-a:hover{color:var(--white);background:rgba(61,127,255,.08);transform:translateX(-5px);}
-.sn-a.current{color:var(--gold2);background:rgba(200,168,74,.05);}
-.sn-a.current .sn-ic{background:rgba(200,168,74,.15);border-color:rgba(200,168,74,.3);color:var(--gold2);}
-.sn-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;background:rgba(61,127,255,.08);border:1px solid rgba(61,127,255,.15);color:var(--azure2);}
-.sn-li.logout .sn-a{color:rgba(255,100,120,.7);}
-.sn-li.logout .sn-a .sn-ic{background:rgba(255,61,110,.08);border-color:rgba(255,61,110,.15);color:var(--rose);}
-.sn-hr{height:1px;background:rgba(255,255,255,.05);margin:12px 0;}
+        /* ── ANIMATED BG ── */
+        .bg-animation { position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden; }
+        .bg-shape { position:absolute;border-radius:50%;filter:blur(120px);opacity:0.12;animation:float 30s infinite ease-in-out; }
+        .shape-1 { width:600px;height:600px;background:radial-gradient(circle,rgba(74,144,226,0.4) 0%,transparent 70%);top:-200px;right:-200px; }
+        .shape-2 { width:500px;height:500px;background:radial-gradient(circle,rgba(26,41,66,0.3) 0%,transparent 70%);bottom:-150px;left:-150px;animation-delay:-10s; }
+        .shape-3 { width:450px;height:450px;background:radial-gradient(circle,rgba(155,180,208,0.25) 0%,transparent 70%);top:35%;left:45%;animation-delay:-20s; }
+        @keyframes float { 0%,100%{transform:translate(0,0) scale(1);}25%{transform:translate(100px,-100px) scale(1.1);}50%{transform:translate(-50px,50px) scale(0.9);}75%{transform:translate(-120px,-80px) scale(1.05);} }
 
-/* ═══ PAGE STYLES ═══ */
-.page{padding-top:68px;min-height:100vh;}
+        /* ── TOP BAR ── */
+        nav.top-bar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:20px 70px; position:fixed; width:100%; top:0; z-index:1000;
+            background:rgba(255,255,255,0.82); backdrop-filter:blur(30px) saturate(180%);
+            border-bottom:1px solid var(--border-blue);
+            box-shadow:0 4px 30px rgba(26,41,66,0.08);
+            transition:all 0.5s ease;
+        }
+        nav.top-bar.scrolled {
+            padding:13px 70px;
+            background:rgba(248,249,250,0.97);
+            box-shadow:0 8px 40px rgba(26,41,66,0.12);
+            border-bottom:2px solid var(--accent-blue);
+        }
 
-/* HERO */
-.hero{
-  position:relative;min-height:480px;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.hero-bg{position:absolute;inset:0;z-index:0;}
-#heroCanvas{position:absolute;inset:0;z-index:1;}
-.hero-overlay{position:absolute;inset:0;z-index:2;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(16,185,129,.04),transparent 70%);}
-.hero-overlay2{position:absolute;bottom:0;left:0;right:0;height:200px;z-index:3;background:linear-gradient(transparent,var(--void));}
-.hero-content{position:relative;z-index:4;text-align:center;padding:60px 24px 80px;}
-.hero-eyebrow{
-  font-family:var(--font-jos);font-size:.65rem;letter-spacing:6px;
-  color:var(--emerald);text-transform:uppercase;margin-bottom:20px;
-  display:inline-flex;align-items:center;gap:10px;
-}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:40px;height:1px;background:var(--emerald);}
-.hero-title{
-  font-family:var(--font-ar);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;
-  line-height:1.15;margin-bottom:20px;
-}
-.hero-title span{
-  background:linear-gradient(135deg,var(--emerald),var(--teal),var(--azure2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-sub{font-size:1rem;color:var(--mist);max-width:600px;margin:0 auto 32px;line-height:1.7;}
-.hero-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-.h-badge{
-  display:flex;align-items:center;gap:8px;padding:8px 18px;
-  border-radius:30px;font-size:.8rem;font-weight:700;
-  font-family:var(--font-jos);letter-spacing:1px;
-}
-.hb-green{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:var(--emerald);}
-.hb-gold{background:rgba(200,168,74,.1);border:1px solid rgba(200,168,74,.3);color:var(--gold2);}
-.hb-blue{background:rgba(61,127,255,.1);border:1px solid rgba(61,127,255,.3);color:var(--azure2);}
+        .logo-wrap { display:flex;align-items:center;gap:14px;text-decoration:none;cursor:pointer;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .logo-wrap:hover { transform:scale(1.06) translateY(-2px); }
+        .logo-icon { width:50px;height:50px;background:var(--gradient-blue-glow);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px var(--shadow-blue);position:relative; }
+        .logo-icon::before { content:'';position:absolute;inset:-4px;background:var(--gradient-blue-glow);border-radius:16px;z-index:-1;opacity:0.5;filter:blur(12px); }
+        .logo-icon i { font-size:1.4rem;color:var(--white-pure); }
+        .logo-text { font-size:1.85rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 
-/* LANG STRIP */
-.lang-strip{
-  display:flex;align-items:center;justify-content:space-between;
-  max-width:1100px;margin:0 auto;padding:0 24px 32px;gap:16px;flex-wrap:wrap;
-}
-.ls-title{font-size:.8rem;font-family:var(--font-jos);letter-spacing:3px;color:var(--fog);text-transform:uppercase;}
-.ls-btns{display:flex;gap:8px;}
-.ls-btn{
-  padding:8px 20px;border-radius:20px;font-family:var(--font-jos);
-  font-size:.75rem;letter-spacing:2px;cursor:pointer;border:1px solid rgba(255,255,255,.1);
-  background:transparent;color:var(--fog);transition:all .3s;
-}
-.ls-btn.on{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.4);color:var(--emerald);}
-.ls-btn:hover:not(.on){background:rgba(255,255,255,.06);color:var(--white);}
+        .school-info { font-size:0.92rem;font-weight:700;color:var(--text-navy);opacity:0.85;letter-spacing:0.5px; }
 
-/* SECTIONS GRID (Main view) */
-.sections-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:20px;max-width:1100px;margin:0 auto;padding:0 24px 60px;
-}
-.section-card{
-  position:relative;border-radius:22px;overflow:hidden;cursor:pointer;
-  border:1px solid rgba(255,255,255,.07);
-  transition:all .45s cubic-bezier(.22,1,.36,1);
-  background:rgba(10,20,40,.7);backdrop-filter:blur(20px);
-}
-.section-card::before{
-  content:'';position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .4s;
-}
-.section-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,.14);box-shadow:0 20px 60px rgba(0,0,0,.5);}
-.section-card:hover::before{opacity:1;}
-.sc-img{
-  width:100%;height:180px;object-fit:cover;display:block;
-  filter:brightness(.6) saturate(.8);transition:filter .4s;
-}
-.section-card:hover .sc-img{filter:brightness(.75) saturate(1);}
-.sc-body{padding:22px;}
-.sc-icon-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.sc-icon{
-  width:46px;height:46px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
-  flex-shrink:0;
-}
-.sc-arrow{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--fog);
-  transition:all .3s;
-}
-.section-card:hover .sc-arrow{background:rgba(16,185,129,.15);border-color:var(--emerald);color:var(--emerald);}
-.sc-title{font-size:1.1rem;font-weight:900;color:var(--white);margin-bottom:6px;}
-.sc-desc{font-size:.82rem;color:var(--fog);line-height:1.6;}
-.sc-tag{
-  display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
-  border-radius:10px;font-size:.68rem;font-weight:700;font-family:var(--font-jos);
-  letter-spacing:1px;margin-top:12px;
-}
+        .nav-right { display:flex;align-items:center;gap:16px; }
 
-/* COLOR THEMES PER CARD */
-.theme-green .sc-icon{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);color:var(--emerald);}
-.theme-green .sc-tag{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:var(--emerald);}
-.theme-gold .sc-icon{background:rgba(200,168,74,.12);border:1px solid rgba(200,168,74,.25);color:var(--gold2);}
-.theme-gold .sc-tag{background:rgba(200,168,74,.1);border:1px solid rgba(200,168,74,.2);color:var(--gold2);}
-.theme-blue .sc-icon{background:rgba(61,127,255,.12);border:1px solid rgba(61,127,255,.25);color:var(--azure2);}
-.theme-blue .sc-tag{background:rgba(61,127,255,.1);border:1px solid rgba(61,127,255,.2);color:var(--azure2);}
-.theme-rose .sc-icon{background:rgba(255,61,110,.1);border:1px solid rgba(255,61,110,.2);color:var(--rose);}
-.theme-rose .sc-tag{background:rgba(255,61,110,.08);border:1px solid rgba(255,61,110,.2);color:var(--rose);}
-.theme-amber .sc-icon{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--amber);}
-.theme-amber .sc-tag{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--amber);}
-.theme-teal .sc-icon{background:rgba(0,212,184,.1);border:1px solid rgba(0,212,184,.25);color:var(--teal);}
-.theme-teal .sc-tag{background:rgba(0,212,184,.08);border:1px solid rgba(0,212,184,.2);color:var(--teal);}
+        /* ── LANGUAGE SELECTOR ── */
+        .lang-selector-wrap { position:relative;user-select:none; }
+        .lang-trigger-btn {
+            display:flex;align-items:center;gap:8px;padding:10px 16px;
+            background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;
+            cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;
+            color:var(--accent-blue);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            white-space:nowrap;min-width:110px;justify-content:space-between;
+        }
+        .lang-trigger-btn:hover { background:var(--glass-strong);border-color:var(--accent-blue);transform:translateY(-3px);box-shadow:0 10px 25px var(--shadow-blue); }
+        .lang-flag { font-size:1.1rem;line-height:1;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .lang-label { flex:1;text-align:center; }
+        .lang-chevron { width:14px;height:14px;color:var(--accent-blue);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)!important;flex-shrink:0; }
+        .lang-selector-wrap.open .lang-chevron { transform:rotate(180deg); }
+        .lang-selector-wrap.open .lang-flag { transform:scale(1.2); }
+        .lang-dropdown-menu {
+            position:absolute;top:calc(100% + 10px);right:0;min-width:150px;
+            background:rgba(255,255,255,0.97);border:1.5px solid var(--border-blue);
+            border-radius:16px;overflow:hidden;box-shadow:0 16px 45px rgba(26,41,66,0.18);
+            transform-origin:top right;
+            transform:scale(0.85) translateY(-10px)!important;
+            opacity:0!important;
+            transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease!important;
+            z-index:9999;pointer-events:none;backdrop-filter:blur(20px);
+        }
+        .lang-selector-wrap.open .lang-dropdown-menu {
+            transform:scale(1) translateY(0)!important;
+            opacity:1!important;
+            pointer-events:all!important;
+        }
+        .lang-option-item {
+            display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;
+            font-size:0.95rem;font-weight:600;color:var(--text-navy);
+            font-family:'Cairo','Tajawal',sans-serif;transition:background 0.2s,color 0.2s;
+            opacity:0;transform:translateX(8px);
+        }
+        .lang-selector-wrap.open .lang-option-item:nth-child(1){animation:itemSlideIn 0.3s 0.05s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+        .lang-selector-wrap.open .lang-option-item:nth-child(2){animation:itemSlideIn 0.3s 0.02s ease forwards;}
+        .lang-selector-wrap.open .lang-option-item:nth-child(3){animation:itemSlideIn 0.3s 0.12s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+        @keyframes itemSlideIn { from{opacity:0;transform:translateX(10px);}to{opacity:1;transform:translateX(0);} }
+        .lang-option-item:hover { background:rgba(74,144,226,0.08);color:var(--accent-blue); }
+        .lang-option-item.lang-active { color:var(--accent-blue);background:rgba(74,144,226,0.06); }
+        .lang-option-item .lang-check {
+            margin-left:auto;width:16px;height:16px;color:var(--accent-blue);
+            opacity:0;transform:scale(0.5)!important;
+            transition:opacity 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)!important;
+        }
+        .lang-option-item.lang-active .lang-check { opacity:1;transform:scale(1)!important; }
+        .lang-divider-line { height:1px;background:var(--border-blue);margin:0 14px; }
 
-/* ═══ ARTICLE VIEW ═══ */
-#articleView{
-  display:none;max-width:860px;margin:0 auto;padding:24px 24px 80px;
-  animation:artIn .5s cubic-bezier(.22,1,.36,1);
-}
-@keyframes artIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+        /* ── HEADER ── */
+        header { text-align:center;padding:130px 20px 40px;position:relative;z-index:1; }
+        header h1 { font-size:2.9rem;margin-bottom:14px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;letter-spacing:2px;filter:drop-shadow(0 0 40px rgba(74,144,226,0.25));animation:fadeInDown 0.8s ease-out; }
+        header p { opacity:0.8;font-size:1.15rem;max-width:800px;margin:0 auto;line-height:1.75;color:var(--text-gray);font-weight:500;animation:fadeInUp 0.8s ease-out 0.2s backwards; }
+        @keyframes fadeInDown { from{opacity:0;transform:translateY(-30px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);} }
 
-.art-back{
-  display:inline-flex;align-items:center;gap:10px;padding:10px 20px;
-  border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  color:var(--fog);font-size:.88rem;font-weight:700;cursor:pointer;
-  transition:all .3s;margin-bottom:28px;
-}
-.art-back:hover{background:rgba(255,255,255,.1);color:var(--white);}
+        /* ── CARDS GRID ── */
+        .grid-container {
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;
+            max-width:1260px;margin:0 auto 70px;padding:0 28px;
+            position:relative;z-index:1;
+        }
+        .category-card {
+            position:relative;height:225px;border-radius:24px;overflow:hidden;cursor:pointer;
+            transition:all 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+            border:2px solid var(--border-blue);display:flex;align-items:flex-end;
+            background-size:cover;background-position:center;
+            box-shadow:0 8px 25px rgba(26,41,66,0.1);
+        }
+        .category-card:hover { transform:translateY(-12px);box-shadow:0 22px 50px rgba(74,144,226,0.35);border-color:var(--accent-blue); }
+        .card-overlay {
+            width:100%;padding:22px;
+            background:linear-gradient(to top,rgba(26,41,66,0.97) 0%,rgba(26,41,66,0.6) 65%,transparent 100%);
+            display:flex;justify-content:space-between;align-items:center;
+        }
+        .card-title { font-size:1.25rem;font-weight:800;color:var(--white-pure);text-shadow:0 2px 8px rgba(0,0,0,0.4); }
+        .card-icon  { font-size:1.9rem; }
 
-.art-card{
-  background:linear-gradient(145deg,rgba(10,20,40,.98),rgba(6,12,30,.98));
-  border:1px solid rgba(200,168,74,.12);border-radius:28px;overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.5);
-}
-.art-banner{
-  position:relative;height:260px;overflow:hidden;
-  display:flex;align-items:flex-end;
-}
-.art-banner-img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:brightness(.45) saturate(.7);
-}
-.art-banner-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(61,127,255,.1));
-  mix-blend-mode:screen;
-}
-.art-banner-grad{position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(transparent,rgba(6,12,30,.98));}
-.art-banner-content{position:relative;z-index:2;padding:28px 36px;width:100%;}
-.art-eyebrow{font-family:var(--font-jos);font-size:.6rem;letter-spacing:4px;color:var(--emerald);text-transform:uppercase;margin-bottom:10px;}
-.art-title{font-size:1.7rem;font-weight:900;color:var(--white);line-height:1.25;}
+        /* ── ARTICLE VIEWER ── */
+        #article-viewer {
+            display:none;max-width:1000px;margin:110px auto 80px!important;
+            background:rgba(255,255,255,0.98);color:var(--text-navy);
+            border-radius:28px;padding:45px;
+            animation:fadeInUp 0.5s ease;
+            box-shadow:0 25px 60px rgba(26,41,66,0.2);
+            border:2px solid var(--border-blue);
+            position:relative;z-index:1;
+        }
+        .back-btn {
+            background:var(--gradient-navy-soft);color:var(--white-pure);
+            border:none;padding:12px 28px;border-radius:50px;cursor:pointer;
+            font-weight:700;margin-bottom:28px;font-family:'Cairo','Tajawal',sans-serif;
+            font-size:0.95rem;box-shadow:0 6px 20px var(--shadow-blue);
+            transition:all 0.3s ease;display:inline-flex;align-items:center;gap:8px;
+        }
+        .back-btn:hover { transform:translateY(-3px);box-shadow:0 10px 30px var(--shadow-glow); }
+        .article-body h2 {
+            color:var(--navy-dark);font-size:1.95rem;font-weight:900;
+            border-right:7px solid var(--accent-blue);padding-right:16px;margin-bottom:22px;
+            background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+        }
+        [dir="ltr"] .article-body h2 { border-right:none;border-left:7px solid var(--accent-blue);padding-right:0;padding-left:16px; }
+        .quran-verse {
+            background:linear-gradient(135deg,rgba(32,201,151,0.08),rgba(32,201,151,0.04));
+            border-right:6px solid var(--accent-green);padding:22px;border-radius:16px;
+            text-align:center;font-style:italic;font-size:1.25rem;color:#0d6849;margin:25px 0;
+            box-shadow:0 4px 15px rgba(32,201,151,0.1);
+        }
+        [dir="ltr"] .quran-verse { border-right:none;border-left:6px solid var(--accent-green); }
+        .article-body p { font-size:1.12rem;line-height:2;margin-bottom:20px;color:var(--text-navy); }
+        .analysis-box {
+            background:linear-gradient(135deg,rgba(74,144,226,0.05),rgba(74,144,226,0.02));
+            padding:25px;border-radius:18px;
+            border-right:6px solid var(--accent-blue);margin:25px 0;
+            box-shadow:0 4px 15px var(--shadow-blue);
+        }
+        [dir="ltr"] .analysis-box { border-right:none;border-left:6px solid var(--accent-blue); }
+        .analysis-box h3 { color:var(--navy-dark);margin-top:0;font-size:1.15rem;font-weight:800; }
+        .parenting-steps {
+            background:linear-gradient(135deg,rgba(255,251,235,0.9),rgba(254,243,199,0.5));
+            border:2px solid rgba(254,243,199,0.9);padding:25px;border-radius:18px;margin:25px 0;
+        }
+        .parenting-steps h4 { color:#92400e;margin-top:0;display:flex;align-items:center;gap:10px;font-size:1.1rem;font-weight:800; }
+        .golden-tip {
+            background:linear-gradient(135deg,rgba(74,144,226,0.06),rgba(111,168,236,0.04));
+            border:2px dashed var(--accent-blue);padding:25px;border-radius:18px;margin:30px 0;
+        }
+        .golden-tip strong { color:var(--navy-dark);display:block;margin-bottom:10px;font-size:1.2rem;font-weight:900; }
 
-.art-body{padding:36px;}
+        /* BG images */
+        .bg-academic  { background-image:url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500'); }
+        .bg-behavior  { background-image:url('https://images.unsplash.com/photo-1484662020986-75935d2ebc66?w=500'); }
+        .bg-peers     { background-image:url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500'); }
+        .bg-digital   { background-image:url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500'); }
+        .bg-drugs     { background-image:url('https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=500'); }
+        .bg-emotional { background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=500'); }
+        .bg-positive  { background-image:url('https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?w=500'); }
+        .bg-school    { background-image:url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500'); }
 
-/* QURAN */
-.quran-block{
-  position:relative;background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(0,212,184,.04));
-  border:1px solid rgba(16,185,129,.2);border-radius:20px;
-  padding:28px 36px;margin:0 0 28px;text-align:center;overflow:hidden;
-}
-.quran-block::before{content:'\f67b';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;top:16px;right:20px;font-size:1.8rem;color:rgba(16,185,129,.15);}
-.quran-text{font-size:1.25rem;color:var(--emerald);font-weight:700;line-height:1.8;margin-bottom:8px;}
-.quran-ref{font-family:var(--font-jos);font-size:.65rem;letter-spacing:3px;color:rgba(16,185,129,.5);text-transform:uppercase;}
+        /* ── BURGER ── */
+        .burger {
+            cursor:pointer;width:38px;height:28px;display:flex;flex-direction:column;
+            justify-content:space-between;z-index:10000;transition:transform 0.3s ease;
+        }
+        .burger:hover { transform:scale(1.1); }
+        .bline {
+            width:100%;height:3px;
+            background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+            border-radius:6px;
+            transition:all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+            transform-origin:center;
+            opacity:0;
+            animation:lineReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+        }
+        .bline:nth-child(1){animation-delay:0.1s;}
+        .bline:nth-child(2){animation-delay:0.2s;}
+        .bline:nth-child(3){animation-delay:0.3s;}
+        @keyframes lineReveal{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:translateX(0);}}
+        .burger:hover .bline { background:var(--accent-light-blue); }
+        .burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+        .burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
+        .burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
 
-/* TEXT */
-.art-p{font-size:.97rem;color:var(--mist);line-height:1.9;margin-bottom:22px;}
+        /* ── OVERLAY ── */
+        .overlay {
+            position:fixed;inset:0;background:rgba(26,41,66,0.65);
+            backdrop-filter:blur(8px);z-index:2500;
+            opacity:0;pointer-events:none;transition:opacity 0.45s;
+        }
+        .overlay.show { opacity:1;pointer-events:all; }
 
-/* STEPS BOX */
-.steps-box{
-  background:rgba(200,168,74,.04);border:1px solid rgba(200,168,74,.15);
-  border-radius:20px;padding:24px 28px;margin-bottom:24px;
-}
-.steps-title{
-  display:flex;align-items:center;gap:12px;font-size:1rem;font-weight:900;
-  color:var(--gold2);margin-bottom:18px;
-}
-.steps-title i{font-size:1.1rem;}
-.step-item{
-  display:flex;align-items:flex-start;gap:14px;padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-.step-item:last-child{border:none;}
-.step-num{
-  width:28px;height:28px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:900;color:var(--void);font-family:var(--font-jos);
-}
-.step-text{font-size:.9rem;color:var(--mist);line-height:1.7;padding-top:3px;}
-.step-text strong{color:var(--white);display:block;margin-bottom:2px;}
+        /* ── SIDENAV ── */
+        .sidenav {
+            position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
+            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+            backdrop-filter:blur(35px);
+            border-inline-start:3px solid #4a90e2;
+            padding:28px 24px;overflow-y:auto;
+            transition:right 0.55s cubic-bezier(0.68,-0.55,0.265,1.55);
+            box-shadow:-12px 0 50px rgba(26,41,66,0.15);
+        }
+        .sidenav::-webkit-scrollbar { width:8px; }
+        .sidenav::-webkit-scrollbar-thumb { background:var(--gradient-blue-glow);border-radius:10px; }
+        .sidenav.show { right:0!important; }
 
-/* ANALYSIS BOX */
-.analysis-box{
-  background:rgba(61,127,255,.04);border:1px solid rgba(61,127,255,.15);
-  border-radius:20px;padding:24px 28px;margin-bottom:24px;
-}
-.analysis-title{
-  display:flex;align-items:center;gap:12px;font-size:1rem;font-weight:900;
-  color:var(--azure2);margin-bottom:14px;
-}
-.analysis-title i{font-size:1.1rem;}
-.analysis-text{font-size:.9rem;color:var(--mist);line-height:1.8;}
+        .sn-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3); }
+        .sn-head h2 { background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem; }
+        .sn-close { width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#4a90e2;font-size:1.4rem;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-close:hover { background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15); }
 
-/* GOLDEN TIP */
-.golden-tip{
-  position:relative;background:linear-gradient(135deg,rgba(200,168,74,.07),rgba(245,158,11,.04));
-  border:1px dashed rgba(200,168,74,.35);border-radius:20px;
-  padding:24px 28px;margin-bottom:24px;overflow:hidden;
-}
-.golden-tip::before{content:'\f0eb';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;left:20px;top:20px;font-size:2.5rem;color:rgba(200,168,74,.08);}
-.gt-title{font-size:1rem;font-weight:900;color:var(--gold2);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.gt-text{font-size:.9rem;color:var(--mist);line-height:1.8;}
+        .sn-user { display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.3);border-radius:18px;margin-bottom:20px;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-user:hover { transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,226,0.18);border-color:#4a90e2; }
+        .sn-avatar { width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(74,144,226,0.3);flex-shrink:0; }
+        .sn-uname { color:#0a1628;font-size:1.05rem;font-weight:700; }
+        .sn-urole { color:#6b7c93;font-size:0.82rem; }
 
-/* WARNING BOX */
-.warning-box{
-  background:rgba(255,61,110,.04);border:1px solid rgba(255,61,110,.18);
-  border-radius:20px;padding:24px 28px;margin-bottom:24px;
-}
-.warning-title{display:flex;align-items:center;gap:12px;font-size:1rem;font-weight:900;color:var(--rose);margin-bottom:14px;}
-.warning-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
-.warning-list li{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--mist);}
-.warning-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;}
+        .sn-links { list-style:none;padding:0;margin:0; }
+        .sn-links li { margin-bottom:4px; }
+        .sn-links a {
+            display:flex;align-items:center;justify-content:flex-end;gap:14px;
+            padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
+            color:#0a1628;border-radius:14px;
+            transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            position:relative;overflow:hidden;
+        }
+        .sn-links a::before {
+            content:'';position:absolute;inset:0;
+            background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
+            transform:translateX(110%);border-radius:14px;
+            transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .sn-links a:hover::before { transform:translateX(0); }
+        .sn-links a:hover { transform:translateX(-8px);color:#4a90e2; }
+        .sn-links a i { color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-links a:hover i { transform:scale(1.3) rotate(-5deg); }
 
-/* STAT STRIP */
-.stat-strip{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:12px;margin-bottom:24px;
-}
-.stat-item{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-  border-radius:16px;padding:18px 16px;text-align:center;
-}
-.stat-val{font-family:var(--font-cind);font-size:1.6rem;font-weight:700;background:linear-gradient(135deg,var(--white),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.stat-lbl{font-family:var(--font-jos);font-size:.55rem;letter-spacing:3px;color:var(--fog);text-transform:uppercase;margin-top:4px;}
+        .sn-logout { margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2); }
+        .sn-logout a, .sn-logout a i { color:#ee5a6f!important; }
+        .sn-logout a:hover { background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important; }
 
-/* AUDIO CONTROL */
-.audio-bar{
-  display:flex;align-items:center;gap:14px;
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;padding:14px 20px;margin-bottom:24px;
-}
-.audio-play{
-  width:40px;height:40px;border-radius:50%;
-  background:linear-gradient(135deg,var(--emerald),var(--teal));
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  font-size:.9rem;color:#fff;flex-shrink:0;transition:all .3s;
-  box-shadow:0 4px 14px rgba(16,185,129,.35);
-}
-.audio-play:hover{transform:scale(1.1);}
-.audio-info{flex:1;}
-.audio-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:2px;}
-.audio-sub{font-size:.7rem;color:var(--fog);font-family:var(--font-jos);}
-.audio-stop{
-  width:32px;height:32px;border-radius:8px;background:rgba(255,61,110,.1);
-  border:1px solid rgba(255,61,110,.2);cursor:pointer;display:flex;align-items:center;
-  justify-content:center;color:var(--rose);font-size:.8rem;transition:all .2s;
-}
-.audio-stop:hover{background:rgba(255,61,110,.2);}
+        /* ── SETTINGS PANEL ── */
+        .sn-settings-toggle {
+            display:flex;align-items:center;justify-content:space-between;
+            padding:14px 16px;border-radius:14px;cursor:pointer;
+            background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
+            margin-bottom:4px;color:#0a1628;font-weight:700;font-size:0.95rem;
+            transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .sn-settings-toggle:hover { background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:#4a90e2; }
+        .sn-settings-toggle i { color:#4a90e2; }
+        .sn-settings-chevron { color:#4a90e2;font-size:0.8rem;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-settings-toggle.open .sn-settings-chevron { transform:rotate(180deg); }
+        .sn-settings-panel { max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.4,0,0.2,1),opacity 0.4s;opacity:0; }
+        .sn-settings-panel.open { max-height:800px;opacity:1; }
+        .sn-settings-inner { padding:18px 14px;background:rgba(248,249,250,0.9);border:1.5px solid rgba(74,144,226,0.2);border-radius:16px;margin-top:8px;margin-bottom:8px; }
+        .sn-s-label { font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#4a90e2;margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px; }
+        .sn-s-label:first-child { margin-top:0; }
+        .sn-s-label::after { content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3)); }
 
-/* TOAST */
-#toast{position:fixed;bottom:30px;right:50%;transform:translateX(50%);z-index:9000;background:rgba(6,12,30,.98);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 22px;font-size:.88rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:10px;white-space:nowrap;}
-#toast.show{opacity:1;}
-#toast.ok{border-color:rgba(16,185,129,.3);color:var(--emerald);}
-#toast.err{border-color:rgba(255,61,110,.3);color:var(--rose);}
+        .sn-theme-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+        .sn-t-opt { border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;height:70px;position:relative;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-t-opt:hover { transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,144,226,0.2); }
+        .sn-t-opt.sel { border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,0.18); }
+        .sn-t-preview { width:100%;height:100%; }
+        .sn-t-light { background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc); }
+        .sn-t-dark  { background:linear-gradient(135deg,#0a1628,#112240,#1a2942); }
+        .sn-t-label { position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700; }
+        .sn-t-light .sn-t-label { color:#1a2942; }
+        .sn-t-dark  .sn-t-label { color:#e8eef5; }
+        .sn-t-check { position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(0.4);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-t-opt.sel .sn-t-check { opacity:1;transform:scale(1); }
 
-[data-lang="en"] .ar{display:none!important;}
-[data-lang="ar"] .en{display:none!important;}
-.en{display:none;}
+        .sn-g-row { display:grid;grid-template-columns:repeat(3,1fr);gap:8px; }
+        .sn-g-opt { padding:10px 6px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(74,144,226,0.25);text-align:center;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);position:relative; }
+        .sn-g-opt:hover { transform:translateY(-3px);border-color:#4a90e2;box-shadow:0 6px 16px rgba(74,144,226,0.2); }
+        .sn-g-opt.sel { border-color:#4a90e2;background:rgba(74,144,226,0.08); }
+        .sn-g-icon { font-size:1.3rem;display:block;margin-bottom:4px; }
+        .sn-g-name { font-size:0.65rem;font-weight:700;color:#0a1628; }
+        .sn-g-chk { position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-g-opt.sel .sn-g-chk { opacity:1;transform:scale(1); }
 
-@media(max-width:900px){#NAV{padding:0 18px;}.n-links{display:none;}#SIDENAV{width:100%;right:-105%;}}
-@media(max-width:600px){.art-banner{height:180px;}.art-banner-content{padding:20px;}.art-body{padding:22px;}.art-title{font-size:1.3rem;}.sections-grid{grid-template-columns:1fr;}}
-</style>
+        .sn-font-row { padding:6px 2px; }
+        .sn-font-slider { -webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background 0.15s;direction:ltr; }
+        .sn-font-slider::-webkit-slider-thumb { -webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);box-shadow:0 2px 10px rgba(74,144,226,0.5);cursor:pointer;transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-font-slider::-webkit-slider-thumb:hover { transform:scale(1.3); }
+        .sn-font-labels { display:flex;justify-content:space-between;margin-top:7px;direction:ltr; }
+        .sn-font-labels span { font-size:0.62rem;color:#6b7c93;font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all 0.2s; }
+        .sn-font-labels span:hover, .sn-font-labels span.act { background:rgba(74,144,226,0.1);color:#4a90e2;font-weight:800; }
+
+        .sn-save-btn { width:100%;margin-top:14px;padding:12px;background:linear-gradient(135deg,#4a90e2,#6fa8ec);border:none;border-radius:12px;color:#fff;font-weight:700;font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;cursor:pointer;box-shadow:0 5px 16px rgba(74,144,226,0.35);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-save-btn:hover { transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(74,144,226,0.45); }
+
+        /* ── PROFILE & BELL ── */
+        .profile-nav-btn { width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:all 0.3s;flex-shrink:0; }
+        .profile-nav-btn:hover { transform:translateY(-2px) scale(1.08);box-shadow:0 8px 22px var(--shadow-glow); }
+        .profile-nav-btn i { color:#fff;font-size:1.1rem; }
+        .notification-btn { position:relative;width:42px;height:42px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;flex-shrink:0; }
+        .notification-btn:hover { background:rgba(255,255,255,0.95);transform:translateY(-2px);box-shadow:0 6px 18px var(--shadow-blue); }
+        .notification-btn i { color:var(--accent-blue);font-size:1.2rem; }
+        .notification-badge { position:absolute;top:-5px;right:-5px;width:19px;height:19px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff; }
+
+        /* ── TOAST ── */
+        .sn-toast { position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;opacity:0;pointer-events:none;z-index:99999;box-shadow:0 8px 28px rgba(26,41,66,0.3);display:flex;align-items:center;gap:9px;transition:all 0.38s cubic-bezier(0.34,1.56,0.64,1); }
+        .sn-toast.show { opacity:1;transform:translateX(-50%) translateY(0); }
+
+        /* ── FOOTER ── */
+        footer { background:linear-gradient(180deg,rgba(26,41,66,0.98) 0%,rgba(10,22,40,1) 100%);border-top:2px solid var(--accent-blue);padding:30px;text-align:center;color:var(--blue-lightest);font-size:0.9rem;position:relative;z-index:1; }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:768px) {
+            nav.top-bar { padding:16px 28px; }
+            nav.top-bar.scrolled { padding:12px 28px; }
+            header { padding-top:110px; }
+            header h1 { font-size:2rem; }
+            .grid-container { padding:0 16px;gap:16px; }
+            .school-info { display:none; }
+            .lang-trigger-btn { min-width:90px;padding:8px 12px;font-size:0.8rem; }
+            #article-viewer { padding:28px 20px;margin:80px 16px 60px!important; }
+            .sidenav { width:100%;right:-100%!important; }
+            .sidenav.show { right:0!important; }
+        }
+        @media(max-width:480px) {
+            .lang-label { display:none; }
+            .lang-trigger-btn { min-width:auto; }
+        }
+    </style>
 </head>
 <body>
-<div id="cur"></div>
-<div id="curR"></div>
 
-<!-- NAVBAR -->
-<nav id="NAV">
-  <a href="index.html" class="n-logo">SITAJ</a>
-  <ul class="n-links">
-    <li><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a></li>
-    <li><a href="videos.html"><span class="ar">فيديوهات</span><span class="en">Videos</span></a></li>
-    <li><a href="partys.html"><span class="ar">الغرف الصوتية</span><span class="en">Voice Rooms</span></a></li>
-    <li><a href="family.html" class="act"><span class="ar">الرقابة الأبوية</span><span class="en">Parental Control</span></a></li>
-  </ul>
-  <div class="n-right">
-    <div class="n-lang">
-      <button id="btnAr" class="on" onclick="setLang('ar')">AR</button>
-      <button id="btnEn" onclick="setLang('en')">EN</button>
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+</div>
+
+<!-- ══ TOP NAV ══ -->
+<nav class="top-bar" id="navbar">
+
+    <!-- Left: school name -->
+    <div class="school-info" id="schoolName">مدرسة سالم الثانوية للبنين</div>
+
+    <!-- Center: SITEJ logo -->
+    <a href="index.html" class="logo-wrap">
+        <div class="logo-icon"><i class="fas fa-crown"></i></div>
+        <span class="logo-text">SITEJ</span>
+    </a>
+
+    <!-- Right cluster -->
+    <div class="nav-right">
+        <!-- Language Selector -->
+        <div class="lang-selector-wrap" id="langSelectorWrap">
+            <div class="lang-trigger-btn" id="langTriggerBtn">
+                <span class="lang-flag" id="langFlag">🇸🇦</span>
+                <span class="lang-label" id="langLabelText">العربية</span>
+                <svg class="lang-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="lang-dropdown-menu">
+                <div class="lang-option-item lang-active" data-lang="ar" onclick="setLang('ar')">
+                    <span>🇸🇦</span><span>العربية</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="lang-divider-line"></div>
+                <div class="lang-option-item" data-lang="en" onclick="setLang('en')">
+                    <span>🇬🇧</span><span>English</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile -->
+        <a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a>
+
+        <!-- Bell -->
+        <div class="notification-btn" onclick="if(typeof showNotifications==='function')showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+
+        <!-- Burger -->
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false">
+            <div class="bline"></div>
+            <div class="bline"></div>
+            <div class="bline"></div>
+        </div>
     </div>
-    <div class="n-bell"><i class="fas fa-bell"></i><span class="n-bell-badge">3</span></div>
-    <div class="n-burger" id="burger" onclick="toggleMenu()"><div class="n-bline"></div><div class="n-bline"></div><div class="n-bline"></div></div>
-  </div>
 </nav>
 
-<!-- SIDENAV -->
-<div id="OVERLAY" onclick="toggleMenu()"></div>
-<div id="SIDENAV">
-  <div class="sn-deco"></div>
-  <div class="sn-body">
-    <div class="sn-top"><div class="sn-logo-txt">SITAJ</div><div class="sn-x" onclick="toggleMenu()"><i class="fas fa-times"></i></div></div>
-    <a href="profile.html" class="sn-profile">
-      <div class="sn-av"><i class="fas fa-user"></i></div>
-      <div class="sn-info"><h3 class="ar">ملفك الشخصي</h3><p class="ar">عرض وتعديل البيانات</p></div>
-    </a>
-    <div class="sn-sec-label ar">القائمة الرئيسية</div>
-    <ul class="sn-ul">
-      <li class="sn-li"><a href="index.html" class="sn-a"><span class="ar">الصفحة الرئيسية</span><div class="sn-ic"><i class="fas fa-home"></i></div></a></li>
-      <li class="sn-li"><a href="videos.html" class="sn-a"><span class="ar">الفيديوهات التعليمية</span><div class="sn-ic"><i class="fas fa-play-circle"></i></div></a></li>
-      <li class="sn-li"><a href="exams.html" class="sn-a"><span class="ar">مركز الاختبارات</span><div class="sn-ic"><i class="fas fa-pen-fancy"></i></div></a></li>
-      <li class="sn-li"><a href="partys.html" class="sn-a"><span class="ar">الغرف الصوتية</span><div class="sn-ic"><i class="fas fa-microphone-alt"></i></div></a></li>
-      <li class="sn-li"><a href="questions.html" class="sn-a"><span class="ar">قسم الاستفسارات</span><div class="sn-ic"><i class="fas fa-comment-dots"></i></div></a></li>
-      <li class="sn-li"><a href="marks.html" class="sn-a"><span class="ar">بوابة النتائج</span><div class="sn-ic"><i class="fas fa-trophy"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li"><a href="AI.html" class="sn-a"><span class="ar">المساعد الذكي</span><div class="sn-ic"><i class="fas fa-robot"></i></div></a></li>
-      <li class="sn-li"><a href="family.html" class="sn-a current"><span class="ar">الرقابة الأبوية</span><div class="sn-ic"><i class="fas fa-users"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li logout"><a href="#" class="sn-a" onclick="doLogout()"><span class="ar">تسجيل خروج</span><div class="sn-ic"><i class="fas fa-power-off"></i></div></a></li>
-    </ul>
-  </div>
-</div>
+<!-- ══ OVERLAY ══ -->
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
 
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-overlay"></div>
-    <div class="hero-overlay2"></div>
-    <div class="hero-content">
-      <div class="hero-eyebrow ar">موسوعة التوعية الأسرية</div>
-      <div class="hero-eyebrow en">Family Awareness Encyclopedia</div>
-      <h1 class="hero-title">
-        <span class="ar">الرقابة الأبوية</span><span class="en">Parental Control</span><br>
-        <span style="color:var(--white);" class="ar">دليل بناء الجيل الواعي</span>
-        <span style="color:var(--white);" class="en">Guide to Raising the Aware Generation</span>
-      </h1>
-      <p class="hero-sub ar">منصة متكاملة لإرشاد الوالدين في تربية جيل واعٍ، مسؤول، ومبدع في ظل تحديات العصر الرقمي.</p>
-      <p class="hero-sub en">A comprehensive platform guiding parents to raise a conscious, responsible, and creative generation amid digital age challenges.</p>
-      <div class="hero-badges">
-        <span class="h-badge hb-green"><i class="fas fa-shield-heart"></i> <span class="ar">8 محاور تربوية</span><span class="en">8 Educational Pillars</span></span>
-        <span class="h-badge hb-gold"><i class="fas fa-graduation-cap"></i> <span class="ar">استراتيجيات مدعومة علمياً</span><span class="en">Science-backed Strategies</span></span>
-        <span class="h-badge hb-blue"><i class="fas fa-volume-up"></i> <span class="ar">استماع صوتي</span><span class="en">Audio Narration</span></span>
-      </div>
+<!-- ══ SIDENAV ══ -->
+<div class="sidenav" id="snDrawer">
+    <div class="sn-head">
+        <h2 id="sideNavTitle">القائمة</h2>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
-  </div>
-
-  <!-- MAIN VIEW -->
-  <div id="mainView">
-    <div class="lang-strip">
-      <div class="ls-title ar">اختر محور التوعية</div>
-      <div class="ls-title en">Choose an Awareness Topic</div>
-      <div class="ls-btns">
-        <button class="ls-btn on" id="lsAr" onclick="setLang('ar')">العربية</button>
-        <button class="ls-btn" id="lsEn" onclick="setLang('en')">English</button>
-      </div>
-    </div>
-
-    <div class="sections-grid" id="sectionsGrid"></div>
-  </div>
-
-  <!-- ARTICLE VIEW -->
-  <div id="articleView">
-    <div class="art-back" onclick="closeArticle()">
-      <i class="fas fa-arrow-right"></i>
-      <span class="ar">العودة للموسوعة</span><span class="en">Back to Encyclopedia</span>
-    </div>
-    <div class="art-card">
-      <div class="art-banner" id="artBanner">
-        <img class="art-banner-img" id="artBannerImg" src="" alt="">
-        <div class="art-banner-overlay"></div>
-        <div class="art-banner-grad"></div>
-        <div class="art-banner-content">
-          <div class="art-eyebrow" id="artEyebrow"></div>
-          <div class="art-title" id="artTitle"></div>
+    <div class="sn-user">
+        <div class="sn-avatar">👤</div>
+        <div>
+            <div class="sn-uname">مرحباً بك</div>
+            <div class="sn-urole">طالب متميز</div>
         </div>
-      </div>
-      <div class="art-body" id="artBody"></div>
     </div>
-  </div>
+    <ul class="sn-links">
+        <li><a href="index.html"><i class="fas fa-home"></i><span data-i18n="navHome">الصفحة الرئيسية</span></a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span data-i18n="navVideos">الفيديوهات التعليمية</span></a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span data-i18n="navArticles">المقالات الحصرية</span></a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i><span data-i18n="navGames">ساحة الألعاب</span></a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span data-i18n="navExams">مركز الاختبارات</span></a></li>
+        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span data-i18n="navSign">مركز لغة الإشارة</span></a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span data-i18n="navQuran">اسلاميات</span></a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span data-i18n="navVoice">الغرف الصوتية</span></a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span data-i18n="navQuestions">قسم الاستفسارات</span></a></li>
+        <li><a href="family.html"><i class="fas fa-users"></i><span data-i18n="navFamily">توعية في الرقابة الأبوية</span></a></li>
+        <li><a href="support.html"><i class="fas fa-headset"></i><span data-i18n="navSupport">تعريف عن الراعي</span></a></li>
+        <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
+        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+    </ul>
 
+    <!-- Settings Toggle -->
+    <div style="margin-top:12px;">
+        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+            <span style="display:flex;align-items:center;gap:10px;">
+                <i class="fas fa-sliders-h"></i> الإعدادات
+            </span>
+            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+        </div>
+        <div class="sn-settings-panel" id="snSettingsPanel">
+            <div class="sn-settings-inner">
+                <!-- THEME -->
+                <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+                <div class="sn-theme-row">
+                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+                        <div class="sn-t-preview sn-t-light"></div>
+                        <div class="sn-t-label">فاتح</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+                        <div class="sn-t-preview sn-t-dark"></div>
+                        <div class="sn-t-label">داكن</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+                <!-- GRAPHICS -->
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+                <div class="sn-g-row">
+                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
+                        <span class="sn-g-icon">✨</span>
+                        <div class="sn-g-name">كامل</div>
+                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
+                        <span class="sn-g-icon">🌤</span>
+                        <div class="sn-g-name">مخفف</div>
+                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
+                        <span class="sn-g-icon">⚡</span>
+                        <div class="sn-g-name">بسيط</div>
+                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+                <!-- FONT SIZE -->
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+                <div class="sn-font-row">
+                    <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1"
+                           oninput="snFontInput(this.value)">
+                    <div class="sn-font-labels">
+                        <span onclick="snSetFont(0)" data-idx="0">S</span>
+                        <span onclick="snSetFont(1)" data-idx="1">M</span>
+                        <span onclick="snSetFont(2)" data-idx="2">L</span>
+                        <span onclick="snSetFont(3)" data-idx="3">XL</span>
+                    </div>
+                </div>
+                <!-- SAVE -->
+                <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+    <ul class="sn-links sn-logout" style="margin-top:16px;">
+        <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span data-i18n="navLogout">تسجيل خروج</span></a></li>
+    </ul>
 </div>
 
-<div id="toast"></div>
+<!-- TOAST -->
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
+
+<!-- ══ HEADER ══ -->
+<header id="headerArea">
+    <h1 id="mainTitle">موسوعة التوعية الأسرية الشاملة</h1>
+    <p id="subTitle">دليلك المتكامل لفهم الأبناء، حمايتهم، وبناء جسور الثقة معهم.</p>
+</header>
+
+<!-- ══ CARDS GRID ══ -->
+<div class="grid-container" id="grid">
+    <div class="category-card bg-positive"  onclick="showArticle('positive_discipline')">
+        <div class="card-overlay"><div class="card-title" id="ct0">التربية الإيجابية</div><div class="card-icon">🌱</div></div>
+    </div>
+    <div class="category-card bg-emotional" onclick="showArticle('emotional_intel')">
+        <div class="card-overlay"><div class="card-title" id="ct1">الذكاء العاطفي</div><div class="card-icon">❤️</div></div>
+    </div>
+    <div class="category-card bg-academic"  onclick="showArticle('academic')">
+        <div class="card-overlay"><div class="card-title" id="ct2">المتابعة الأكاديمية</div><div class="card-icon">📚</div></div>
+    </div>
+    <div class="category-card bg-behavior"  onclick="showArticle('behavior')">
+        <div class="card-overlay"><div class="card-title" id="ct3">الرقابة السلوكية</div><div class="card-icon">🕵️‍♂️</div></div>
+    </div>
+    <div class="category-card bg-digital"   onclick="showArticle('digital')">
+        <div class="card-overlay"><div class="card-title" id="ct4">الأمان الرقمي</div><div class="card-icon">💻</div></div>
+    </div>
+    <div class="category-card bg-peers"     onclick="showArticle('peers')">
+        <div class="card-overlay"><div class="card-title" id="ct5">رفاق السوء</div><div class="card-icon">👥</div></div>
+    </div>
+    <div class="category-card bg-school"    onclick="showArticle('school_link')">
+        <div class="card-overlay"><div class="card-title" id="ct6">الشراكة المدرسية</div><div class="card-icon">🤝</div></div>
+    </div>
+    <div class="category-card bg-drugs"     onclick="showArticle('drugs')">
+        <div class="card-overlay"><div class="card-title" id="ct7">الوقاية من السموم</div><div class="card-icon">🛡️</div></div>
+    </div>
+</div>
+
+<!-- ══ ARTICLE VIEWER ══ -->
+<div id="article-viewer">
+    <button class="back-btn" onclick="closeArticle()" id="backBtn">
+        <i class="fas fa-arrow-right"></i>
+        <span id="backLabel">العودة للرئيسية</span>
+    </button>
+    <div id="article-content" class="article-body"></div>
+</div>
+
+<footer>
+    <span id="footerCopy">© 2026 SITEJ ACADEMY — جميع الحقوق محفوظة</span>
+</footer>
 
 <script>
-/* ═══ DATA ═══ */
-const ARTICLES = {
-  positive_discipline: {
-    icon:'🌱', theme:'theme-green', eyebrow:'التربية الإيجابية',
-    img:'https://images.unsplash.com/photo-1536640712-4d4c36ff0e4e?w=800',
-    tag:{ ar:'بناء الشخصية', en:'Character Building' },
-    desc:{ ar:'بناء الشخصية لا تحطيمها — الحزم بقالب المحبة', en:'Build character, not break it — firmness wrapped in love' },
-    ar:{
-      title:'التربية الإيجابية: بناء الشخصية لا تحطيمها',
-      verse:'"فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ"',
-      verseRef:'آل عمران: 159',
-      p1:'التربية الإيجابية ليست تساهلاً أو تسيباً، بل هي حزم محبب يعتمد على فهم الدوافع الكامنة خلف السلوك بدلاً من معاقبته فحسب. عندما يشعر الطفل بالانتماء والأهمية داخل أسرته، يتلاشى تدريجياً الدافع وراء السلوكيات المزعجة.',
-      stats:[{v:'40%',l:'رفع في الإنجاز'},{v:'3x',l:'تعاون أكبر'},{v:'70%',l:'انخفاض التمرد'}],
-      steps:[
-        {t:'ركز على الحلول لا العقاب', d:'بدلاً من "لماذا فعلت ذلك؟" قل "كيف يمكننا إصلاح ما حدث؟"'},
-        {t:'امدح الجهد وليس النتيجة', d:'قل: "أحببت إصرارك" بدلاً من "أنت ذكي جداً"'},
-        {t:'خصص وقتاً نوعياً يومياً', d:'15 دقيقة بلا هواتف تساوي ساعات من المكافآت'},
-        {t:'وضح العواقب الطبيعية', d:'دعه يتعلم من التجربة ضمن حدود آمنة'},
-      ],
-      analysis:'العقاب البدني أو النفسي (التحقير والإهانة) يؤدي لنتائج عكسية — يتعلم الطفل الخوف والتمرد بدلاً من تحمل المسؤولية. الأبحاث تثبت أن الأطفال المُعاقبين بالإهانة تنخفض ثقتهم بأنفسهم بنسبة 65%.',
-      tip:'عند أي خطأ، اسأل: "كيف يمكننا إصلاح ما حدث؟" بدلاً من "لماذا فعلت ذلك؟". هذا يبني عقلية إصلاحية ومسؤولة بدلاً من عقلية دفاعية.',
-      warnings:['العقاب الجسدي يسبب صدمة نفسية مزمنة','التحقير والإهانة تضر أكثر مما تنفع','المقارنة بالأشقاء أو الأقران تدمر الثقة'],
-      p2:'تذكر أن طفلك يراقب أفعالك أكثر مما يسمع كلماتك، فكن أنت القدوة التي تتمنى أن يقتدي بها في كل لحظة.'
+/* ============================================================
+   BILINGUAL DATA
+============================================================ */
+const data = {
+    ar: {
+        school:    'مدرسة سالم الثانوية للبنين',
+        mainTitle: 'موسوعة التوعية الأسرية الشاملة',
+        subTitle:  'دليلك المتكامل لفهم الأبناء، حمايتهم، وبناء جسور الثقة معهم.',
+        back:      'العودة للرئيسية',
+        footerCopy:'© 2026 SITEJ ACADEMY — جميع الحقوق محفوظة',
+        stepsLabel:'💡 خطوات عملية للوالدين',
+        analysisLabel:'🔍 التحليل التربوي الاستراتيجي',
+        tipLabel:  '✨ النصيحة الذهبية لولي الأمر',
+        cardTitles:['التربية الإيجابية','الذكاء العاطفي','المتابعة الأكاديمية','الرقابة السلوكية','الأمان الرقمي','رفاق السوء','الشراكة المدرسية','الوقاية من السموم'],
+        articles: {
+            positive_discipline: {
+                h:'التربية الإيجابية: بناء الشخصية لا تحطيمها',
+                v:'"فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ"',
+                p1:'التربية الإيجابية ليست تساهلاً، بل هي حزم محبب. تعتمد على فهم دوافع السلوك بدلاً من معاقبة السلوك نفسه. عندما يشعر الطفل بالانتماء والأهمية، يتلاشى الدافع وراء السلوكيات المزعجة.',
+                steps:'1. ركز على الحلول لا العقاب.\n2. امدح الجهد وليس النتيجة — قل "أحببت إصرارك" بدلاً من "أنت ذكي".\n3. خصص وقتاً نوعياً يومياً بدون هواتف.',
+                analysis:'العقاب البدني أو النفسي يؤدي لنتائج عكسية، حيث يتعلم الطفل الخوف والتمرد بدلاً من تحمل المسؤولية.',
+                tip:'عند الخطأ، اسأل: "كيف يمكننا إصلاح ما حدث؟" بدلاً من "لماذا فعلت ذلك؟". هذا يبني عقلية إصلاحية ومسؤولة.',
+                p2:'تذكر أن طفلك يراقب أفعالك أكثر مما يسمع كلماتك، فكن أنت القدوة التي تتمنى أن يقتدي بها.'
+            },
+            emotional_intel: {
+                h:'الذكاء العاطفي: كيف نفهم لغة مشاعرهم؟',
+                v:'"وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ"',
+                p1:'الذكاء العاطفي هو قدرة الأبناء على التعرف على مشاعرهم وإدارتها. دورك كولي أمر هو "مدرب عاطفي" وليس مجرد "مصدر أوامر". المراهقون غالباً ما يترجمون خوفهم أو حزنهم إلى غضب.',
+                steps:'1. استمع بإنصات دون مقاطعة.\n2. سمِّ المشاعر — قل "يبدو أنك تشعر بالإحباط".\n3. علمهم تقنيات التنفس عند الغضب.',
+                analysis:'الأطفال ذوو الذكاء العاطفي المرتفع أقل عرضة للانجراف وراء ضغوط الأقران أو الإدمان.',
+                tip:'لا تسفه مشاعر ابنك — لا تقل "الأمر بسيط لا يستدعي البكاء"، بل قل "أنا أتفهم أن هذا أحزنك، أنا معك".',
+                p2:'بناء الأمان العاطفي هو أقوى درع يحمي ابنك من تقلبات الحياة الخارجية.'
+            },
+            academic: {
+                h:'المتابعة الأكاديمية الشاملة',
+                v:'"يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ"',
+                p1:'المتابعة الأكاديمية هي رحلة تشاركية. الأبحاث تؤكد أن الطالب الذي يجد اهتماماً من والديه يرتفع مستوى إنجازه بنسبة 40%. المتابعة ليست تفتيشاً، بل مساندة.',
+                steps:'1. ترتيب بيئة الدراسة (إضاءة جيدة، بلا مشتتات).\n2. تحديد جدول زمني مرن.\n3. ربط العلم بالواقع والحياة اليومية.',
+                analysis:'التراجع الأكاديمي المفاجئ هو صرخة استغاثة لمشكلة غير ظاهرة — تنمر أو تشتت رقمي. لا تتجاهل المؤشرات البسيطة.',
+                tip:'ناقش معهم ما تعلموه اليوم وكأنك تتعلم منهم، فهذا يعزز ثقتهم بأنفسهم.',
+                p2:'العلم هو السلاح الذي لا يصدأ، والمتابعة هي الوقود الذي يبقي شعلة الفضول متقدة.'
+            },
+            digital: {
+                h:'الأمان الرقمي: الرقابة في عصر الشاشات',
+                v:'"إِنَّ السَّمْعَ وَالْبَصَرَ وَالْفُؤَادَ كُلُّ أُولَٰئِكَ كَانَ عَنْهُ مَسْئُولًا"',
+                p1:'العالم الافتراضي هو غابة مفتوحة. الرقابة الرقمية لا تعني التجسس، بل وضع قوانين واضحة واستخدام برامج الرقابة الأبوية كحماية تقنية موازية للتوعية الفكرية.',
+                steps:'1. لا شاشات قبل النوم بساعة.\n2. الأجهزة تستخدم في الصالة وليس في الغرف المغلقة.\n3. علّم أبناءك عدم مشاركة الصور الشخصية أبداً.',
+                analysis:'التنمر الإلكتروني والمحتوى غير اللائق يسببان صدمات نفسية عميقة. يجب أن يثق ابنك بأنه يمكنه إخبارك بأي شيء دون خوف.',
+                tip:'كن "صديقاً رقمياً" لابنك — اطلب منه أن يعلمك لعبة أو تطبيقاً لتفهم عالمه من الداخل.',
+                p2:'الهدف هو بناء رقيب داخلي لدى الطفل يجعله يُغلق المحتوى السيئ بنفسه حتى لو كان وحده.'
+            },
+            behavior: {
+                h:'الرقابة السلوكية: لغة الجسد والتغيرات الخفية',
+                v:'"إِنَّ اللَّهَ كَانَ عَلَيْكُمْ رَقِيبًا"',
+                p1:'السلوك هو لغة المراهق غير المنطوقة. أي تغيير في نمط النوم، الشهية، أو المفردات المستخدمة هو رسالة. الرقابة الذكية تراقب دون خنق، وتوجه دون إحراج.',
+                steps:'1. الانطواء المفاجئ.\n2. ردود الفعل العنيفة غير المبررة.\n3. التغير الجذري في اختيار الملابس أو الموسيقى.',
+                analysis:'المراهقة مرحلة اضطراب هرموني، لذا فالصبر هو مفتاح الرقابة السلوكية الناجحة. اجعل القواعد واضحة ولكن كن مرناً في التفاصيل.',
+                tip:'استخدم أسلوب "الدردشة العابرة" (مثلاً أثناء ركوب السيارة) لمناقشة السلوكيات — فهي أقل ضغطاً من المواجهة المباشرة.',
+                p2:'السلوك القويم ينبع من بيت يسوده الحب والوضوح في القيم والمبادئ.'
+            },
+            peers: {
+                h:'رفاق السوء: حماية الدائرة الاجتماعية',
+                v:'"الْمَرْءُ عَلَى دِينِ خَلِيلِهِ فَلْيَنْظُرْ أَحَدُكُمْ مَنْ يُخَالِلُ"',
+                p1:'في سن المراهقة، يتفوق تأثير الصديق على تأثير الأب. "رفاق السوء" ليسوا دائماً مجرمين، بل قد يكونون مجرد أصدقاء غير مبالين أو محبطين.',
+                steps:'1. تعرف على أهالي أصدقاء ابنك.\n2. استضف أصدقاءه في المنزل لتراقب طباعهم عن قرب.\n3. شجع ابنك على ممارسة رياضات جماعية.',
+                analysis:'المراهق ينضم لمجموعات قد تضره ليشعر بالقبول. إذا وفرت له القبول والحب في المنزل، فلن يبحث عنه في الخارج بأي ثمن.',
+                tip:'لا تسب أصدقاءه مباشرة، بل انقد السلوك — قل "أنا قلق لأن هذا التصرف لا يشبه تربيتك".',
+                p2:'الصداقة الصالحة هي رئة يتنفس منها المراهق هواءً نقياً من القيم.'
+            },
+            school_link: {
+                h:'الشراكة بين البيت والمدرسة',
+                v:'"وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى"',
+                p1:'المدرسة ليست جهة تسليم واستلام، بل هي شريك استراتيجي. تواصلك مع المعلم يرفع من مكانة ابنك ويجعل المعلمين أكثر اهتماماً بحالته.',
+                steps:'1. حضور اجتماعات أولياء الأمور.\n2. متابعة المنصات الإلكترونية للمدرسة.\n3. التواصل مع المرشد الطلابي.',
+                analysis:'الفجوة بين البيت والمدرسة تسمح للطالب بالتلاعب بالحقائق أو إخفاء المشاكل. التنسيق المستمر يغلق هذه الفجوات.',
+                tip:'أخبر ابنك: "لقد تحدثت مع معلمك وأثنى على تميزك". هذا يشعره بأن عيون المحبة ترعاه في كل مكان.',
+                p2:'عندما تتحد رؤية البيت مع رسالة المدرسة، يكون النجاح حليف الطالب دائماً.'
+            },
+            drugs: {
+                h:'الوقاية من السموم: بناء جدار الصد النفسي',
+                v:'"وَلَا تُلْقُوا بِأَيْدِيكُمْ إِلَى التَّهْلُكَةِ"',
+                p1:'الوقاية تبدأ بكلمة "لا" الواثقة. تعليم الأبناء مخاطر التدخين والمواد المخدرة يجب أن يكون مبنياً على الحقائق العلمية وليس فقط الترهيب. الفراغ العاطفي هو المدخل الأول للسموم.',
+                steps:'1. كن قدوة — لا تدخن أمامهم.\n2. اشرح تأثير هذه المواد على الدماغ والمستقبل.\n3. علمهم مهارة رفض الضغط الاجتماعي بذكاء.',
+                analysis:'العلامات التحذيرية: احمرار العين، اضطراب النوم، فقدان الوزن، واختفاء مبالغ مالية. التدخل المبكر الهادئ ينقذ حياة.',
+                tip:'ابنِ علاقة تجعل ابنك يقول لك: "يا أبي، عرضوا عليّ كذا اليوم". هذه الصراحة هي أغلى ما تملك للوقاية.',
+                p2:'حماية الأبناء من السموم تبدأ بملء قلوبهم بالحب، وعقولهم بالوعي، وأوقاتهم بالهوايات النافعة.'
+            }
+        }
     },
-    en:{
-      title:'Positive Discipline: Building Character',
-      verse:'"By the mercy of Allah, you were lenient with them"',
-      verseRef:'Al-Imran: 159',
-      p1:'Positive discipline is not permissiveness — it is firm guidance wrapped in love, focused on understanding behavior instead of just punishing it.',
-      stats:[{v:'40%',l:'Achievement Boost'},{v:'3x',l:'More Cooperation'},{v:'70%',l:'Less Rebellion'}],
-      steps:[
-        {t:'Focus on solutions, not punishment', d:'Ask "How can we fix this?" instead of "Why did you do that?"'},
-        {t:'Praise effort, not results', d:'Say "I love your persistence" instead of "You\'re so smart"'},
-        {t:'Schedule daily quality time', d:'15 minutes phone-free equals hours of rewards'},
-        {t:'Allow natural consequences', d:'Let them learn from experience within safe boundaries'},
-      ],
-      analysis:'Physical or psychological punishment (humiliation) leads to opposite results — children learn fear and rebellion instead of responsibility.',
-      tip:'When a mistake happens, ask: "How can we fix this?" This builds a solution-focused mindset.',
-      warnings:['Physical punishment causes chronic trauma','Humiliation is more harmful than helpful','Comparing to siblings destroys confidence'],
-      p2:'Remember, your child watches your actions more than they hear your words — be the role model you wish them to follow.'
+    en: {
+        school:    'Salem Secondary School for Boys',
+        mainTitle: 'Family Awareness Encyclopedia',
+        subTitle:  'Your complete guide to understanding, protecting, and building trust with your children.',
+        back:      'Back to Home',
+        footerCopy:'© 2026 SITEJ ACADEMY — All Rights Reserved',
+        stepsLabel:'💡 Practical Steps for Parents',
+        analysisLabel:'🔍 Strategic Educational Analysis',
+        tipLabel:  '✨ The Golden Tip for Parents',
+        cardTitles:['Positive Discipline','Emotional Intelligence','Academic Follow-up','Behavioral Monitoring','Digital Safety','Peer Protection','School Partnership','Drug Prevention'],
+        articles: {
+            positive_discipline: {
+                h:'Positive Discipline: Building Character, Not Breaking It',
+                v:'"It is by God\'s mercy that you were gentle with them"',
+                p1:'Positive discipline is not permissiveness — it is firm, loving guidance. It focuses on understanding the motives behind behaviour rather than punishing the behaviour itself. When a child feels a sense of belonging and importance, the drive behind disruptive behaviours fades.',
+                steps:'1. Focus on solutions, not punishment.\n2. Praise effort, not results — say "I loved your persistence" instead of "you\'re smart".\n3. Set aside quality daily time without phones.',
+                analysis:'Physical or psychological punishment leads to opposite results: children learn fear and rebellion instead of responsibility.',
+                tip:'When a mistake happens, ask: "How can we fix what happened?" instead of "Why did you do that?" This builds a constructive, responsible mindset.',
+                p2:'Remember — your child watches what you do far more than what you say. Be the role model you wish them to follow.'
+            },
+            emotional_intel: {
+                h:'Emotional Intelligence: Understanding the Language of Their Feelings',
+                v:'"Had you been harsh and hard-hearted, they would have dispersed from around you"',
+                p1:'Emotional intelligence is the ability to recognise and manage feelings. Your role as a parent is that of an "emotional coach", not just an "authority figure". Teenagers often translate fear or sadness into anger.',
+                steps:'1. Listen attentively without interrupting.\n2. Name the feelings — say "It seems like you\'re feeling frustrated".\n3. Teach them breathing techniques when angry.',
+                analysis:'Children with high emotional intelligence are far less likely to be swept away by peer pressure or fall into addiction because they understand their own psychological needs.',
+                tip:'Never trivialise your child\'s feelings — don\'t say "it\'s nothing, stop crying". Instead say "I understand this made you sad — I\'m here with you".',
+                p2:'Building emotional safety is the strongest shield that protects your child from the turbulence of the outside world.'
+            },
+            academic: {
+                h:'Comprehensive Academic Follow-Up',
+                v:'"God raises those who believe among you and those given knowledge by degrees"',
+                p1:'Academic follow-up is a collaborative journey. Research confirms that students who find parental interest in their studies improve their achievement by 40%. Follow-up is not inspection — it is support.',
+                steps:'1. Organise the study environment (good lighting, no distractions).\n2. Set a flexible schedule.\n3. Connect academic subjects to real life and daily situations.',
+                analysis:'A sudden academic decline is often a cry for help about a hidden problem — bullying, poor vision, or digital distraction. Do not ignore small indicators.',
+                tip:'Discuss what they learned today as if you\'re learning from them. This boosts their confidence enormously.',
+                p2:'Knowledge is a weapon that never rusts, and follow-up is the fuel that keeps the flame of curiosity burning.'
+            },
+            digital: {
+                h:'Digital Safety: Supervision in the Age of Screens',
+                v:'"Hearing, sight, and heart — each of these will be questioned"',
+                p1:'The virtual world is an open jungle. Digital oversight does not mean spying — it means setting clear rules and using parental control tools as technical protection alongside intellectual awareness.',
+                steps:'1. No screens one hour before bedtime.\n2. Devices used in shared spaces, not closed rooms.\n3. Teach children never to share personal photos.',
+                analysis:'Cyberbullying and inappropriate content cause deep psychological trauma. Your child must trust that they can tell you anything they see without fear of losing their phone.',
+                tip:'Be your child\'s "digital friend" — ask them to teach you a game or app. This helps you understand their world from the inside.',
+                p2:'The goal is to build an internal conscience in your child that makes them close bad content themselves, even when alone.'
+            },
+            behavior: {
+                h:'Behavioural Monitoring: Body Language and Hidden Changes',
+                v:'"Indeed, God is ever a Watcher over you"',
+                p1:'Behaviour is the teenager\'s unspoken language. Any change in sleep patterns, appetite, or vocabulary is a message. Smart supervision watches without suffocating, and guides without embarrassing.',
+                steps:'1. Watch for sudden withdrawal.\n2. Unjustified aggressive reactions.\n3. Radical change in clothing or music choices.',
+                analysis:'Adolescence is a phase of hormonal turbulence, so patience is the key to successful behavioural supervision. Make rules clear but be flexible on details.',
+                tip:'Use casual conversation (e.g. during car rides) to discuss behaviours — it is far less pressurising than a direct confrontation.',
+                p2:'Upright behaviour grows from a home filled with love and clarity of values and principles.'
+            },
+            peers: {
+                h:'Peer Protection: Safeguarding Their Social Circle',
+                v:'"A person follows the religion of their close friend, so be careful who you befriend"',
+                p1:'In adolescence, the influence of a friend often outweighs that of a parent. "Bad peers" are not always criminals — they may simply be careless or discouraged friends.',
+                steps:'1. Get to know the families of your child\'s friends.\n2. Host their friends at home to observe their character close up.\n3. Encourage your child to take part in team sports.',
+                analysis:'Teenagers join groups that may harm them to feel accepted. If you provide that acceptance and love at home, they won\'t seek it outside at any cost.',
+                tip:'Don\'t insult their friends directly — critique the behaviour instead. Say "I\'m concerned because this action doesn\'t reflect your upbringing".',
+                p2:'A good friendship is a lung through which a teenager breathes pure air of values.'
+            },
+            school_link: {
+                h:'The Home–School Partnership',
+                v:'"Cooperate in righteousness and piety"',
+                p1:'School is not just a drop-off and pick-up service — it is a strategic partner. Your communication with teachers raises your child\'s standing and makes educators more attentive to their well-being.',
+                steps:'1. Attend parent–teacher meetings.\n2. Follow the school\'s digital platforms.\n3. Communicate with the student counsellor about personal development.',
+                analysis:'The gap between home and school allows students to manipulate facts or hide problems. Continuous coordination closes those gaps.',
+                tip:'Tell your child: "I spoke with your teacher and they praised your excellence in this area." This makes them feel that loving eyes watch over them everywhere.',
+                p2:'When the family\'s vision aligns with the school\'s mission, success becomes a permanent companion for the student.'
+            },
+            drugs: {
+                h:'Drug Prevention: Building a Psychological Defence Wall',
+                v:'"Do not throw yourselves into destruction with your own hands"',
+                p1:'Prevention begins with a confident "no". Teaching children the dangers of smoking, vaping, and drugs must be built on scientific facts, not fear alone. Emotional emptiness is the primary gateway to substances.',
+                steps:'1. Be a role model — do not smoke in front of them.\n2. Explain the effect of these substances on the brain and future.\n3. Teach them how to intelligently refuse social pressure.',
+                analysis:'Warning signs include red eyes, sleep disturbance, weight loss, and disappearing sums of money. Calm, early intervention saves lives.',
+                tip:'Build a relationship that makes your child say: "Dad, someone offered me something today." That openness is the most precious prevention tool you have.',
+                p2:'Protecting children from substances begins by filling their hearts with love, their minds with awareness, and their time with meaningful hobbies.'
+            }
+        }
     }
-  },
-  emotional_intel: {
-    icon:'❤️', theme:'theme-rose', eyebrow:'الذكاء العاطفي',
-    img:'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800',
-    tag:{ ar:'فهم المشاعر', en:'Understanding Emotions' },
-    desc:{ ar:'كيف نفهم لغة مشاعرهم ونكون "المدرب العاطفي" الأول لأبنائنا', en:'How to understand their emotional language and be their first emotional coach' },
-    ar:{
-      title:'الذكاء العاطفي: كيف نفهم لغة مشاعرهم؟',
-      verse:'"وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ"',
-      verseRef:'آل عمران: 159',
-      p1:'الذكاء العاطفي هو قدرة الأبناء على التعرف على مشاعرهم وإدارتها. دورك كولي أمر هو أن تكون "مدرباً عاطفياً" لا مجرد "مصدر أوامر". المراهقون غالباً ما يترجمون خوفهم أو حزنهم إلى غضب — فكن مترجمهم الأمين.',
-      stats:[{v:'85%',l:'نجاح مرتبط بالذكاء العاطفي'},{v:'3x',l:'أقل عرضة للإدمان'},{v:'2x',l:'علاقات أفضل'}],
-      steps:[
-        {t:'استمع بإنصات دون مقاطعة', d:'أغلق هاتفك وابحث في عينيه — هذا يقول "أنت مهم"'},
-        {t:'سمِّ المشاعر بوضوح', d:'قل: "يبدو أنك تشعر بالإحباط" لتساعده على فهم نفسه'},
-        {t:'علمه تقنيات التنفس', d:'التنفس العميق (4-7-8) يهدئ الجهاز العصبي خلال 90 ثانية'},
-        {t:'اخلق مساحة آمنة للتعبير', d:'أسبوعياً: "هل هناك شيء تريد أن تخبرني به؟"'},
-      ],
-      analysis:'الأطفال الذين يتمتعون بذكاء عاطفي عالٍ هم أقل عرضة للانجراف وراء ضغوط الأقران أو الوقوع في فخ الإدمان — لأنهم يفهمون حاجاتهم النفسية الحقيقية ولا يبحثون عن ملء الفراغ بطرق ضارة.',
-      tip:'لا تسفه مشاعر ابنك بقول "الأمر بسيط". بدلاً من ذلك قل: "أنا أتفهم أن هذا أحزنك، أنا هنا معك". هذه الجملة تبني جداراً واقياً صلباً في قلبه.',
-      warnings:['تسفيه المشاعر يُعلم الطفل إخفاءها','الغضب المكبوت يتحول لأمراض جسدية','الطفل الذي لا يُسمع يبحث عمن يسمعه خارج المنزل'],
-      p2:'بناء الأمان العاطفي داخل المنزل هو أقوى درع يحمي ابنك من تقلبات الحياة الخارجية.'
-    },
-    en:{
-      title:'Emotional Intelligence: Understanding Their Language',
-      verse:'"Had you been harsh-hearted, they would have dispersed from around you"',
-      verseRef:'Al-Imran: 159',
-      p1:'Emotional intelligence is the ability to recognize and manage emotions. Your role as a parent is to be an emotional coach, not just an authority figure.',
-      stats:[{v:'85%',l:'Success Linked to EQ'},{v:'3x',l:'Less Addiction Risk'},{v:'2x',l:'Better Relationships'}],
-      steps:[
-        {t:'Listen attentively without interrupting', d:'Put your phone down and look in their eyes — this says "you matter"'},
-        {t:'Name their emotions clearly', d:'Say: "It seems you feel frustrated" to help them understand themselves'},
-        {t:'Teach breathing techniques', d:'Deep breathing (4-7-8) calms the nervous system within 90 seconds'},
-        {t:'Create a safe expression space', d:'Weekly check-in: "Is there anything you want to tell me?"'},
-      ],
-      analysis:'Children with high emotional intelligence are less likely to fall prey to peer pressure or addiction because they understand their true psychological needs.',
-      tip:'Never dismiss feelings. Instead say: "I understand this made you sad, I\'m here with you." This builds a strong protective wall in their heart.',
-      warnings:['Dismissing feelings teaches children to hide them','Suppressed anger turns into physical illness','Unheard children seek listeners outside the home'],
-      p2:'Building emotional safety at home is the strongest shield protecting your child from life\'s external turbulences.'
-    }
-  },
-  academic: {
-    icon:'📚', theme:'theme-blue', eyebrow:'المتابعة الأكاديمية',
-    img:'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800',
-    tag:{ ar:'التفوق الدراسي', en:'Academic Excellence' },
-    desc:{ ar:'رحلة تشاركية نحو التفوق — المتابعة ليست تفتيشاً بل مساندة', en:'A collaborative journey toward excellence — monitoring is support, not surveillance' },
-    ar:{
-      title:'المتابعة الأكاديمية الشاملة',
-      verse:'"يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ"',
-      verseRef:'المجادلة: 11',
-      p1:'الأبحاث تؤكد أن الطالب الذي يجد اهتماماً حقيقياً من والديه بمهامه الدراسية يرتفع مستوى إنجازه بنسبة 40%. المتابعة ليست تفتيشاً أو ضغطاً، بل هي مساندة وشراكة في الرحلة.',
-      stats:[{v:'40%',l:'رفع في التحصيل'},{v:'60%',l:'تراجع المشتتات'},{v:'90%',l:'طلاب يريدون الاهتمام'}],
-      steps:[
-        {t:'رتب بيئة الدراسة المثالية', d:'إضاءة جيدة، درجة حرارة معتدلة، بعيداً عن مصادر الإلهاء'},
-        {t:'حدد جدولاً زمنياً مرناً', d:'40 دقيقة دراسة + 10 دقيقة راحة — أثبتت الأبحاث فاعليتها'},
-        {t:'اربط العلم بالواقع والحياة', d:'اجعله يرى تطبيق ما يدرسه في الحياة اليومية المحيطة به'},
-        {t:'احتفل بالتحسن لا فقط بالامتياز', d:'التقدم المستمر أهم من الدرجة المثالية'},
-      ],
-      analysis:'التراجع الأكاديمي المفاجئ هو صرخة استغاثة لمشكلة غير ظاهرة — قد يكون تنمراً، ضعفاً في البصر، تشتتاً رقمياً، أو ضغطاً اجتماعياً. لا تتجاهل المؤشرات البسيطة، فهي باب الحل.',
-      tip:'اجعل من مناقشة الدروس وقتاً ممتعاً: "علمني ما تعلمته اليوم!" — هذا الأسلوب يعزز الفهم العميق ويرفع الثقة بالنفس لأن المعلم يتذكر أكثر من الطالب.',
-      warnings:['الإفراط في الضغط يسبب قلق الأداء','المقارنة بالزملاء تقتل الدافعية الداخلية','إهمال المتابعة يعطي إشارة "الدراسة لا تهم"'],
-      p2:'العلم هو السلاح الذي لا يصدأ، والمتابعة الأبوية هي الوقود الذي يبقي شعلة الفضول متقدة في قلب ابنك.'
-    },
-    en:{
-      title:'Comprehensive Academic Follow-up',
-      verse:'"Allah raises those who believe and those given knowledge in degrees"',
-      verseRef:'Al-Mujadila: 11',
-      p1:'Research confirms that students who receive genuine parental interest in their studies show a 40% improvement in achievement. Follow-up is support and partnership, not surveillance.',
-      stats:[{v:'40%',l:'Achievement Boost'},{v:'60%',l:'Distraction Reduction'},{v:'90%',l:'Students Want Interest'}],
-      steps:[
-        {t:'Create an ideal study environment', d:'Good lighting, moderate temperature, away from distractions'},
-        {t:'Set a flexible study schedule', d:'40 minutes study + 10 minutes break — research-proven effectiveness'},
-        {t:'Connect learning to real life', d:'Help them see the practical application of what they study'},
-        {t:'Celebrate progress, not just perfection', d:'Continuous improvement matters more than perfect grades'},
-      ],
-      analysis:'A sudden academic decline is a cry for help about a hidden problem — bullying, poor vision, digital distraction, or social pressure. Don\'t ignore the small signs.',
-      tip:'"Teach me what you learned today!" This method deepens understanding and boosts confidence because teaching requires true comprehension.',
-      warnings:['Excessive pressure causes performance anxiety','Comparison with peers kills internal motivation','Ignoring follow-up signals "school doesn\'t matter"'],
-      p2:'Knowledge is the weapon that never rusts, and parental support is the fuel that keeps the flame of curiosity burning.'
-    }
-  },
-  digital: {
-    icon:'💻', theme:'theme-blue', eyebrow:'الأمان الرقمي',
-    img:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800',
-    tag:{ ar:'حماية رقمية', en:'Digital Protection' },
-    desc:{ ar:'الرقابة في عصر الشاشات — بناء الشرطي الداخلي لدى طفلك', en:'Monitoring in the age of screens — building your child\'s internal guardian' },
-    ar:{
-      title:'الأمان الرقمي: الرقابة في عصر الشاشات',
-      verse:'"إِنَّ السَّمْعَ وَالْبَصَرَ وَالْفُؤَادَ كُلُّ أُولَٰئِكَ كَانَ عَنْهُ مَسْئُولًا"',
-      verseRef:'الإسراء: 36',
-      p1:'العالم الافتراضي غابة مفتوحة بلا حراس. الرقابة الرقمية الذكية لا تعني التجسس، بل تعني وضع قوانين واضحة واستخدام برامج الرقابة الأبوية كحماية تقنية موازية للتوعية الفكرية.',
-      stats:[{v:'73%',l:'مراهقون يخفون نشاطهم'},{v:'4h',l:'متوسط الشاشة يومياً'},{v:'1/3',l:'تعرضوا للتنمر الإلكتروني'}],
-      steps:[
-        {t:'لا شاشات قبل النوم بساعة', d:'الضوء الأزرق يعطل هرمون الميلاتونين ويضر بجودة النوم'},
-        {t:'الأجهزة في الأماكن المشتركة', d:'الصالة وليس الغرف المغلقة — هذا يحمي دون إهانة'},
-        {t:'فعّل أدوات الرقابة الأبوية', d:'Family Link (Google) و Screen Time (Apple) — مجانية وفعالة'},
-        {t:'علمه عدم مشاركة بياناته', d:'الصور، الموقع، الاسم الكامل — لا تُشارك مع أحد'},
-      ],
-      analysis:'التنمر الإلكتروني والمحتوى غير اللائق يسببان صدمات نفسية عميقة. الأهم من الرقابة التقنية هو أن يثق ابنك بأنه يستطيع إخبارك بأي شيء يراه دون خوف من العقاب أو مصادرة الجهاز.',
-      tip:'كن "صديقاً رقمياً" لابنك — اطلب منه أن يعلمك لعبة أو تطبيقاً جديداً. هذا يفتح نافذة على عالمه الرقمي من الداخل ويجعله يثق بمشاركتك همومه الرقمية.',
-      warnings:['التجسس دون علمه يحطم الثقة إذا اكتشف','المحتوى الإباحي يُعيد برمجة الدماغ المراهق','مجهولو الهوية عبر الإنترنت قد يكونون مفترسين'],
-      p2:'الهدف الأسمى هو بناء "شرطي داخلي" لدى ابنك يجعله يُغلق المحتوى الضار بنفسه حتى لو كان وحيداً في الغرفة.'
-    },
-    en:{
-      title:'Digital Safety: Monitoring in the Age of Screens',
-      verse:'"Hearing, sight, and heart — each will be questioned"',
-      verseRef:'Al-Isra: 36',
-      p1:'The virtual world is an open jungle without guards. Smart digital monitoring means setting clear rules and using parental control tools as technical protection alongside intellectual awareness.',
-      stats:[{v:'73%',l:'Teens Hide Activity'},{v:'4h',l:'Daily Screen Average'},{v:'1/3',l:'Faced Cyberbullying'}],
-      steps:[
-        {t:'No screens one hour before sleep', d:'Blue light disrupts melatonin and harms sleep quality'},
-        {t:'Devices in shared spaces only', d:'Living room, not closed bedrooms — protects without humiliating'},
-        {t:'Enable parental control tools', d:'Family Link (Google) and Screen Time (Apple) — free and effective'},
-        {t:'Teach them not to share personal data', d:'Photos, location, full name — never share with anyone'},
-      ],
-      analysis:'Cyberbullying and inappropriate content cause deep psychological trauma. More important than technical monitoring is your child trusting they can tell you anything without fear of punishment.',
-      tip:'Be your child\'s "digital friend" — ask them to teach you a new game or app. This opens a window into their digital world and builds trust.',
-      warnings:['Secret spying destroys trust when discovered','Pornographic content reprograms the teenage brain','Online strangers may be predators'],
-      p2:'The ultimate goal is to build an "internal guardian" in your child who closes harmful content themselves, even when alone.'
-    }
-  },
-  behavior: {
-    icon:'🕵️', theme:'theme-amber', eyebrow:'الرقابة السلوكية',
-    img:'https://images.unsplash.com/photo-1484662020986-75935d2ebc66?w=800',
-    tag:{ ar:'قراءة السلوك', en:'Reading Behavior' },
-    desc:{ ar:'لغة الجسد والتغيرات الخفية — الرقابة الذكية تراقب دون خنق', en:'Body language and hidden changes — smart monitoring observes without suffocating' },
-    ar:{
-      title:'الرقابة السلوكية: قراءة اللغة غير المنطوقة',
-      verse:'"إِنَّ اللَّهَ كَانَ عَلَيْكُمْ رَقِيبًا"',
-      verseRef:'النساء: 1',
-      p1:'السلوك هو لغة المراهق غير المنطوقة. كل تغيير في نمط النوم، الشهية، المفردات، أو الأصدقاء هو رسالة مشفرة تنتظر من يفكها. الرقابة الذكية تراقب دون خنق، وتوجه دون إحراج.',
-      stats:[{v:'78%',l:'تغيرات تسبق الأزمات'},{v:'6 أشهر',l:'متوسط وقت الإخفاء'},{v:'90%',l:'يريدون أن يُلاحَظوا'}],
-      steps:[
-        {t:'راقب التغيرات الطارئة', d:'انطواء مفاجئ، ردود فعل عنيفة غير مبررة، تبدل المزاج'},
-        {t:'استخدم "الدردشة العابرة"', d:'في السيارة أو المطبخ — أقل ضغطاً من المواجهة المباشرة'},
-        {t:'راقب دائرة الأصدقاء', d:'تبدل الأصدقاء المفاجئ إشارة تستحق الاهتمام'},
-        {t:'تابع التطبيقات والمحادثات بعلمه', d:'حوّل الرقابة لاتفاق "أنا أهتم بك" لا "أنا لا أثق بك"'},
-      ],
-      analysis:'المراهقة مرحلة اضطراب هرموني حقيقي — التغيرات البيولوجية تؤثر على العواطف والقرارات. الصبر والثبات هما مفتاح الرقابة السلوكية الناجحة. ضع القواعد بوضوح ولكن كن مرناً في التفاصيل.',
-      tip:'بدلاً من "ماذا تفعل؟" قل "كيف حالك اليوم حقاً؟" — السؤال المفتوح يفتح باباً، والسؤال الرقابي يغلقه. اجعل نفسك الشخص الذي يريد ابنك أن يشاركه يومه.',
-      warnings:['الانطواء المفاجئ قد يدل على تنمر','تغيير الملابس جذرياً علامة تستحق الحوار','فقدان الشهية أو الإفراط فيها إشارة نفسية'],
-      p2:'السلوك القويم لا يُفرض بالخوف — ينبع من بيت يسوده الحب الواضح والمبادئ الراسخة التي يراها الأبناء مُطبَّقة أمامهم.'
-    },
-    en:{
-      title:'Behavioral Monitoring: Reading the Unspoken Language',
-      verse:'"Indeed, Allah is ever watchful over you"',
-      verseRef:'An-Nisa: 1',
-      p1:'Behavior is the teenager\'s unspoken language. Every change in sleep pattern, appetite, vocabulary, or friends is an encrypted message waiting to be decoded.',
-      stats:[{v:'78%',l:'Changes Precede Crises'},{v:'6 months',l:'Average Hiding Time'},{v:'90%',l:'Want to Be Noticed'}],
-      steps:[
-        {t:'Monitor sudden changes', d:'Withdrawal, violent reactions, mood swings — all are signals'},
-        {t:'Use "casual conversation"', d:'In the car or kitchen — less pressure than direct confrontation'},
-        {t:'Watch the friend circle', d:'Sudden friend changes deserve attention'},
-        {t:'Monitor apps and chats with their knowledge', d:'Turn monitoring into "I care about you" not "I don\'t trust you"'},
-      ],
-      analysis:'Adolescence involves real hormonal disruption — biological changes affect emotions and decisions. Patience and consistency are keys to successful behavioral monitoring.',
-      tip:'Instead of "What are you doing?" say "How are you really today?" Open questions open doors, monitoring questions close them.',
-      warnings:['Sudden withdrawal may indicate bullying','Radical wardrobe changes deserve a conversation','Appetite changes are psychological signals'],
-      p2:'Good behavior isn\'t imposed through fear — it flows from a home filled with clear love and firm principles the children see practiced before them.'
-    }
-  },
-  peers: {
-    icon:'👥', theme:'theme-teal', eyebrow:'رفاق السوء',
-    img:'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800',
-    tag:{ ar:'الدائرة الاجتماعية', en:'Social Circle' },
-    desc:{ ar:'في المراهقة، تأثير الصديق يفوق تأثير الأب — اعرف كيف تبني الدائرة الآمنة', en:'In adolescence, friends influence more than parents — learn to build the safe circle' },
-    ar:{
-      title:'رفاق السوء: حماية الدائرة الاجتماعية',
-      verse:'"الْمَرْءُ عَلَى دِينِ خَلِيلِهِ فَلْيَنْظُرْ أَحَدُكُمْ مَنْ يُخَالِلُ"',
-      verseRef:'أبو داود',
-      p1:'في سن المراهقة، يتفوق تأثير الأصدقاء على تأثير الوالدين بشكل ملحوظ. "رفاق السوء" ليسوا دائماً مجرمين — قد يكونون مجرد أصدقاء غير مبالين، محبطين، أو يعانون من فراغ عاطفي مشابه.',
-      stats:[{v:'60%',l:'القرارات تأثرت بالأصدقاء'},{v:'3x',l:'خطر ارتفع بالأقران السيئين'},{v:'80%',l:'انخفض مع البيئة الصالحة'}],
-      steps:[
-        {t:'تعرف على أهالي أصدقاء ابنك', d:'زيارة واحدة كافية لتكوين صورة واضحة عن البيئة التي ينشأون فيها'},
-        {t:'استضف أصدقاءه في المنزل', d:'الملاحظة عن قرب تكشف الطباع الحقيقية بشكل طبيعي'},
-        {t:'شجع الرياضة والأنشطة الجماعية', d:'الفرق الرياضية توفر أصدقاء يشاركونه القيم والأهداف'},
-        {t:'علمه مهارة قول "لا" بذكاء', d:'ضع معه سيناريوهات افتراضية كيف يرفض دون إحراج'},
-      ],
-      analysis:'المراهق ينضم لمجموعات قد تضره لشعوره بالوحدة أو الرفض. إذا وفرت له القبول والحب الكافيين في المنزل، قلت الحاجة للبحث عنهما بأي ثمن خارجاً.',
-      tip:'لا تسب أصدقاءه مباشرة — هذا يجعله يدافع عنهم ويبتعد عنك. بدلاً من ذلك انقد السلوك: "أنا قلق من هذا التصرف، هل هو يشبه تربيتنا؟" — هذا يجعله يُحكِّم ضميره لا مشاعره.',
-      warnings:['فوارق السن الكبيرة في الصداقات خطر حقيقي','الأصدقاء المنبوذون مدرسياً غالباً ما يجرون معهم المشاكل','الصداقات الرقمية مجهولة الهوية أخطر من الواقعية'],
-      p2:'الصداقة الصالحة رئة يتنفس منها المراهق هواءً نقياً من القيم، فاعمل جاهداً على توفير البيئة الاجتماعية الصحية لابنك.'
-    },
-    en:{
-      title:'Peer Influence: Protecting the Social Circle',
-      verse:'"A man is on the religion of his close friend, so let each of you look at whom he befriends"',
-      verseRef:'Abu Dawud',
-      p1:'In adolescence, peer influence significantly surpasses parental influence. "Bad companions" aren\'t always criminals — they may simply be indifferent, frustrated, or emotionally vacant.',
-      stats:[{v:'60%',l:'Decisions Peer-Influenced'},{v:'3x',l:'Risk With Bad Peers'},{v:'80%',l:'Risk Down With Good Environment'}],
-      steps:[
-        {t:'Meet your child\'s friends\' parents', d:'One visit is enough to form a clear picture of their environment'},
-        {t:'Host their friends at home', d:'Close observation naturally reveals true characters'},
-        {t:'Encourage team sports and activities', d:'Sports teams provide friends who share values and goals'},
-        {t:'Teach smart refusal skills', d:'Role-play scenarios on how to say no without embarrassment'},
-      ],
-      analysis:'Teenagers join harmful groups due to loneliness or rejection. Providing sufficient love and acceptance at home reduces the desperate search for it elsewhere.',
-      tip:'Don\'t insult his friends directly — this makes him defend them and pull away. Instead critique the behavior: "I\'m worried about this action, does it reflect our values?"',
-      warnings:['Large age gaps in friendships are a real risk','School-rejected friends often bring their problems with them','Anonymous online friendships are more dangerous than real ones'],
-      p2:'Good friendship is a lung through which the teenager breathes pure air of values — work hard to provide your child a healthy social environment.'
-    }
-  },
-  school_link: {
-    icon:'🤝', theme:'theme-gold', eyebrow:'الشراكة المدرسية',
-    img:'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800',
-    tag:{ ar:'بيت + مدرسة', en:'Home + School' },
-    desc:{ ar:'المدرسة شريك استراتيجي لا جهة تسليم — التنسيق يصنع الفارق الحقيقي', en:'School is a strategic partner, not a delivery service — coordination makes the real difference' },
-    ar:{
-      title:'الشراكة بين البيت والمدرسة',
-      verse:'"وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَى"',
-      verseRef:'المائدة: 2',
-      p1:'المدرسة ليست جهة "تسليم واستلام"، بل هي شريك استراتيجي في بناء مستقبل ابنك. تواصلك المستمر مع المعلمين يرفع من مكانة ابنك ويجعل المعلمين أكثر اهتماماً بحالته النفسية والأكاديمية.',
-      stats:[{v:'2x',l:'تحسن أكاديمي مع التواصل'},{v:'65%',l:'مشاكل مكتشفة مبكراً'},{v:'40%',l:'انخفاض التغيب'}],
-      steps:[
-        {t:'احضر اجتماعات أولياء الأمور', d:'حضورك رسالة واضحة لابنك: "تعليمك أولوية"'},
-        {t:'تابع المنصات الإلكترونية للمدرسة', d:'Nour أو iEN أو أي نظام مدرسي — تفعيل الإشعارات ضروري'},
-        {t:'تواصل مع المرشد الطلابي', d:'للتطور الشخصي لا للشكاوى فقط — هذا الفرق جوهري'},
-        {t:'اتصل بالمعلم إيجابياً', d:'"أريد أن أشكرك على اهتمامك بابني" تفتح أبواباً'},
-      ],
-      analysis:'الفجوة بين البيت والمدرسة تسمح للطالب بالتلاعب بالحقائق أو إخفاء المشاكل. التنسيق المستمر بين الجهتين يغلق هذه الثغرات ويجعل الطالب يعرف أن الجانبين يعملان كفريق واحد.',
-      tip:'أخبر ابنك: "لقد تحدثت مع أستاذك وأثنى على تميزك في كذا" — هذه الجملة تبني شعوراً بالرقابة المحبة والاهتمام الدائم، وتجعل المدرسة بيئة آمنة بدلاً من مكان الهروب.',
-      warnings:['التواصل فقط وقت المشاكل يعطي رسالة سلبية','انتقاد المعلمين أمام أبنائهم يُضعف سلطتهم','الغياب عن اجتماعات أولياء الأمور يُشعر الطالب بالإهمال'],
-      p2:'عندما تتحد رؤية البيت مع رسالة المدرسة وتتنسق جهودهما، يكون النجاح حليف الطالب في كل خطوة.'
-    },
-    en:{
-      title:'Home-School Partnership',
-      verse:'"Cooperate in righteousness and piety"',
-      verseRef:'Al-Maidah: 2',
-      p1:'School is not a "drop-off and pick-up" service — it\'s a strategic partner in building your child\'s future. Your ongoing communication with teachers elevates your child\'s standing.',
-      stats:[{v:'2x',l:'Academic Improvement'},{v:'65%',l:'Early Problem Detection'},{v:'40%',l:'Absence Reduction'}],
-      steps:[
-        {t:'Attend parent-teacher meetings', d:'Your presence sends a clear message: "Your education is a priority"'},
-        {t:'Follow the school\'s digital platforms', d:'Enable notifications on all school management systems'},
-        {t:'Contact the school counselor', d:'For personal development, not just complaints — this difference is essential'},
-        {t:'Call teachers positively', d:'"I want to thank you for your care for my child" opens doors'},
-      ],
-      analysis:'The gap between home and school allows students to manipulate facts or hide problems. Continuous coordination between both parties closes these gaps.',
-      tip:'Tell your child: "I spoke with your teacher and they praised your excellence in..." This builds a sense of loving oversight and makes school a safe environment.',
-      warnings:['Contacting school only during problems sends a negative message','Criticizing teachers in front of children weakens their authority','Missing parent meetings makes students feel neglected'],
-      p2:'When home vision aligns with school mission and their efforts coordinate, success becomes the student\'s constant companion.'
-    }
-  },
-  drugs: {
-    icon:'🛡️', theme:'theme-rose', eyebrow:'الوقاية من السموم',
-    img:'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=800',
-    tag:{ ar:'الوقاية أولاً', en:'Prevention First' },
-    desc:{ ar:'بناء جدار الصد النفسي — الوقاية تبدأ بعلاقة لا بتحذير', en:'Building the psychological defense wall — prevention starts with a relationship, not a warning' },
-    ar:{
-      title:'الوقاية من السموم: بناء جدار الصد النفسي',
-      verse:'"وَلَا تُلْقُوا بِأَيْدِيكُمْ إِلَى التَّهْلُكَةِ"',
-      verseRef:'البقرة: 195',
-      p1:'الوقاية تبدأ بكلمة "لا" الواثقة المبنية على الوعي لا الخوف. تعليم الأبناء مخاطر التدخين، الفيب، والمواد المخدرة يجب أن يكون مبنياً على الحقائق العلمية والحوار المفتوح — لا على الترهيب وحده. الفراغ العاطفي هو المدخل الأول.',
-      stats:[{v:'80%',l:'بدأوا قبل 18 سنة'},{v:'3x',l:'خطر ارتفع مع الفراغ'},{v:'90%',l:'كانت هناك إشارات مبكرة'}],
-      steps:[
-        {t:'كن القدوة الأولى والأخيرة', d:'لا تدخن، لا تشرب الكحول أمامهم — الفعل أبلغ من ألف كلمة'},
-        {t:'اشرح تأثيرها العلمي على الدماغ', d:'الفيب يحرق أنسجة الرئة، المخدرات تُعيد برمجة نظام المكافأة'},
-        {t:'علمه مهارة رفض الضغط الاجتماعي', d:'ضع معه سيناريوهات: "صديقك يعرض عليك..." — كيف تتصرف؟'},
-        {t:'اشغل وقته بهوايات حقيقية', d:'رياضة، فن، تقنية — الشغل الحقيقي يملأ الفراغ قبل أن يملأه غيره'},
-      ],
-      analysis:'العلامات التحذيرية تشمل: احمرار العيون، اضطراب النوم، فقدان الوزن المفاجئ، اختفاء مبالغ مالية، رائحة دخان غريبة. التدخل الهادئ والمبكر ينقذ حياة — لا تنتظر حتى تصبح المشكلة واضحة للجميع.',
-      tip:'ابنِ علاقة تجعل ابنك يجرؤ على القول لك: "يا أبي، عرضوا عليّ كذا اليوم". هذه الصراحة هي أغلى ما يمكن أن تمتلكه كمانع للإدمان — أهم من أي برنامج توعوي.',
-      warnings:['الفيب ليس "بديلاً آمناً" — هو مدخل للتدخين','حبوب منشطات الدراسة غير المشروعة خطرة جداً','العزلة والاكتئاب غير المعالجين يزيدان من خطر الإدمان بشكل كبير'],
-      p2:'حماية الأبناء من السموم تبدأ بملء قلوبهم بالحب، وعقولهم بالوعي، وأوقاتهم بالهوايات النافعة التي تمنح الحياة معنى.'
-    },
-    en:{
-      title:'Drug Prevention: Building the Psychological Defense Wall',
-      verse:'"Do not throw yourselves into destruction with your own hands"',
-      verseRef:'Al-Baqara: 195',
-      p1:'Prevention starts with a confident "no" built on awareness, not fear. Teaching children about tobacco, vaping, and drugs must be grounded in scientific facts and open dialogue.',
-      stats:[{v:'80%',l:'Started Before 18'},{v:'3x',l:'Risk Up With Emptiness'},{v:'90%',l:'Early Signs Were Present'}],
-      steps:[
-        {t:'Be the first and last role model', d:'Don\'t smoke or drink in front of them — actions speak louder than words'},
-        {t:'Explain the scientific brain effects', d:'Vaping burns lung tissue; drugs reprogram the reward system'},
-        {t:'Teach social pressure refusal skills', d:'Role-play: "Your friend offers you..." — how do you respond?'},
-        {t:'Fill their time with real hobbies', d:'Sports, art, technology — real engagement fills the void'},
-      ],
-      analysis:'Warning signs include red eyes, sleep disruption, sudden weight loss, disappearing money, strange smoke smell. Calm, early intervention saves lives.',
-      tip:'Build a relationship that lets your child say: "Dad, someone offered me something today." This openness is more valuable than any awareness program.',
-      warnings:['Vaping is not a "safe alternative" — it\'s a gateway','Unlicensed study stimulants are very dangerous','Untreated depression and isolation greatly increase addiction risk'],
-      p2:'Protecting children from toxins begins by filling their hearts with love, their minds with awareness, and their time with meaningful hobbies.'
-    }
-  }
 };
 
-/* ═══ STATE ═══ */
+/* ============================================================
+   LANG SELECTOR
+============================================================ */
 let currentLang = 'ar';
-let synth = window.speechSynthesis;
-let speaking = false;
 
-/* ═══ RENDER GRID ═══ */
-function renderGrid(){
-  const grid = document.getElementById('sectionsGrid');
-  grid.innerHTML = '';
-  Object.entries(ARTICLES).forEach(([key, art], i) => {
-    const card = document.createElement('div');
-    card.className = `section-card ${art.theme}`;
-    card.style.animationDelay = (i*0.07)+'s';
-    card.onclick = () => showArticle(key);
-    card.innerHTML = `
-      <img class="sc-img" src="${art.img}" alt="${art.eyebrow}" loading="lazy">
-      <div class="sc-body">
-        <div class="sc-icon-row">
-          <div class="sc-icon">${art.icon}</div>
-          <div class="sc-arrow"><i class="fas fa-arrow-left"></i></div>
-        </div>
-        <div class="sc-title">${art.eyebrow}</div>
-        <div class="sc-desc">${art.desc[currentLang]}</div>
-        <div class="sc-tag">${art.tag[currentLang]}</div>
-      </div>`;
-    grid.appendChild(card);
-  });
-}
-
-/* ═══ SHOW ARTICLE ═══ */
-function showArticle(key){
-  const art = ARTICLES[key];
-  const d = art[currentLang];
-
-  // banner
-  document.getElementById('artBannerImg').src = art.img;
-  document.getElementById('artEyebrow').textContent = art.eyebrow;
-  document.getElementById('artTitle').textContent = d.title;
-
-  // stats
-  const statsHtml = d.stats ? `<div class="stat-strip">${d.stats.map(s=>`<div class="stat-item"><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('')}</div>` : '';
-
-  // steps
-  const stepsHtml = `<div class="steps-box">
-    <div class="steps-title"><i class="fas fa-list-check"></i>${currentLang==='ar'?'خطوات عملية للوالدين':'Practical Steps for Parents'}</div>
-    ${d.steps.map((s,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text"><strong>${s.t}</strong>${s.d}</div></div>`).join('')}
-  </div>`;
-
-  // warnings
-  const warningsHtml = d.warnings ? `<div class="warning-box">
-    <div class="warning-title"><i class="fas fa-triangle-exclamation"></i>${currentLang==='ar'?'تحذيرات يجب أن تعرفها':'Warnings You Must Know'}</div>
-    <ul class="warning-list">${d.warnings.map(w=>`<li>${w}</li>`).join('')}</ul>
-  </div>` : '';
-
-  document.getElementById('artBody').innerHTML = `
-    <div class="audio-bar">
-      <button class="audio-play" onclick="toggleSpeak()" id="audioPlayBtn"><i class="fas fa-play"></i></button>
-      <div class="audio-info">
-        <div class="audio-title">${currentLang==='ar'?'الاستماع للمقال':'Listen to Article'}</div>
-        <div class="audio-sub">${currentLang==='ar'?'قراءة صوتية كاملة للمقال':'Full audio narration of the article'}</div>
-      </div>
-      <button class="audio-stop" onclick="stopSpeak()"><i class="fas fa-stop"></i></button>
-    </div>
-    <div class="quran-block">
-      <div class="quran-text">${d.verse}</div>
-      <div class="quran-ref">${d.verseRef}</div>
-    </div>
-    <p class="art-p">${d.p1}</p>
-    ${statsHtml}
-    ${stepsHtml}
-    <div class="analysis-box">
-      <div class="analysis-title"><i class="fas fa-magnifying-glass-chart"></i>${currentLang==='ar'?'التحليل التربوي الاستراتيجي':'Strategic Educational Analysis'}</div>
-      <div class="analysis-text">${d.analysis}</div>
-    </div>
-    <div class="golden-tip">
-      <div class="gt-title"><i class="fas fa-star"></i>${currentLang==='ar'?'النصيحة الذهبية لولي الأمر':'Golden Tip for Parents'}</div>
-      <div class="gt-text">${d.tip}</div>
-    </div>
-    ${warningsHtml}
-    <p class="art-p" style="color:var(--fog);font-style:italic;border-right:3px solid var(--gold2);padding-right:16px;">${d.p2}</p>
-  `;
-
-  document.getElementById('mainView').style.display = 'none';
-  document.getElementById('articleView').style.display = 'block';
-  window.scrollTo({top:68,behavior:'smooth'});
-}
-
-function closeArticle(){
-  stopSpeak();
-  document.getElementById('articleView').style.display = 'none';
-  document.getElementById('mainView').style.display = 'block';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ═══ AUDIO ═══ */
-function toggleSpeak(){
-  if(speaking){ stopSpeak(); return; }
-  const text = document.getElementById('artBody').innerText;
-  synth.cancel();
-  const ut = new SpeechSynthesisUtterance(text);
-  ut.lang = currentLang === 'ar' ? 'ar-SA' : 'en-US';
-  ut.rate = 0.95;
-  ut.onstart = () => {
-    speaking = true;
-    const btn = document.getElementById('audioPlayBtn');
-    if(btn){ btn.innerHTML = '<i class="fas fa-pause"></i>'; btn.style.background='linear-gradient(135deg,var(--rose),#c0274e)'; }
-  };
-  ut.onend = ut.onerror = () => {
-    speaking = false;
-    const btn = document.getElementById('audioPlayBtn');
-    if(btn){ btn.innerHTML = '<i class="fas fa-play"></i>'; btn.style.background=''; }
-  };
-  synth.speak(ut);
-}
-function stopSpeak(){
-  synth.cancel(); speaking = false;
-  const btn = document.getElementById('audioPlayBtn');
-  if(btn){ btn.innerHTML = '<i class="fas fa-play"></i>'; btn.style.background=''; }
-}
-window.toggleSpeak = toggleSpeak;
-window.stopSpeak = stopSpeak;
-window.closeArticle = closeArticle;
-
-/* ═══ LANG ═══ */
-function setLang(l){
-  currentLang = l;
-  document.documentElement.setAttribute('data-lang', l);
-  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
-  document.getElementById('btnAr').classList.toggle('on', l==='ar');
-  document.getElementById('btnEn').classList.toggle('on', l==='en');
-  document.getElementById('lsAr').classList.toggle('on', l==='ar');
-  document.getElementById('lsEn').classList.toggle('on', l==='en');
-  localStorage.setItem('sl', l);
-  renderGrid();
-  closeArticle();
-}
-window.setLang = setLang;
-
-/* ═══ HERO CANVAS ═══ */
-function initHeroCanvas(){
-  const cvs = document.getElementById('heroCanvas');
-  const ctx = cvs.getContext('2d');
-  let pts = [];
-  function resize(){ cvs.width=cvs.offsetWidth; cvs.height=cvs.offsetHeight; }
-  resize(); window.addEventListener('resize', resize);
-  for(let i=0;i<80;i++){
-    pts.push({
-      x: Math.random()*cvs.width, y: Math.random()*cvs.height,
-      vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
-      r: Math.random()*1.5+.5,
-      c: ['rgba(16,185,129,.4)','rgba(0,212,184,.3)','rgba(61,127,255,.25)','rgba(200,168,74,.2)'][Math.floor(Math.random()*4)]
-    });
-  }
-  function draw(){
-    requestAnimationFrame(draw);
-    ctx.clearRect(0,0,cvs.width,cvs.height);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>cvs.width) p.vx*=-1;
-      if(p.y<0||p.y>cvs.height) p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.c; ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++){
-      for(let j=i+1;j<pts.length;j++){
-        const dx=pts[j].x-pts[i].x, dy=pts[j].y-pts[i].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<90){
-          ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
-          ctx.strokeStyle=`rgba(16,185,129,${.12*(1-dist/90)})`; ctx.lineWidth=.4; ctx.stroke();
-        }
-      }
-    }
-  }
-  draw();
-}
-
-/* ═══ TOAST ═══ */
-function showToast(msg,type='ok'){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className=`show ${type}`;
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-/* ═══ CURSOR ═══ */
-const Cur=document.getElementById('cur'), CurR=document.getElementById('curR');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;Cur.style.left=mx+'px';Cur.style.top=my+'px';});
-(function raf(){requestAnimationFrame(raf);rx+=(mx-rx)*.13;ry+=(my-ry)*.13;CurR.style.left=rx+'px';CurR.style.top=ry+'px';})();
-document.querySelectorAll('a,button,.section-card,.art-back').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+const langWrap = document.getElementById('langSelectorWrap');
+document.getElementById('langTriggerBtn').addEventListener('click', e => {
+    e.stopPropagation();
+    langWrap.classList.toggle('open');
+});
+document.addEventListener('click', e => {
+    if (!langWrap.contains(e.target)) langWrap.classList.remove('open');
 });
 
-/* ═══ SIDENAV ═══ */
-function toggleMenu(){
-  const sn=document.getElementById('SIDENAV'),ov=document.getElementById('OVERLAY'),bg=document.getElementById('burger');
-  sn.classList.toggle('on');ov.classList.toggle('on');bg.classList.toggle('on');
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('SIDENAV').classList.contains('on'))toggleMenu();});
-window.toggleMenu = toggleMenu;
-function doLogout(){if(confirm('تسجيل الخروج؟'))location.href='login.html';}
-window.doLogout = doLogout;
+const sidebarKeys = {
+    navHome:      'الصفحة الرئيسية|Home',
+    navVideos:    'الفيديوهات التعليمية|Educational Videos',
+    navArticles:  'المقالات الحصرية|Exclusive Articles',
+    navGames:     'ساحة الألعاب|Games Arena',
+    navExams:     'مركز الاختبارات|Exams Center',
+    navSign:      'مركز لغة الإشارة|Sign Language Hub',
+    navQuran:     'اسلاميات|Islamic Studies',
+    navVoice:     'الغرف الصوتية|Voice Rooms',
+    navQuestions: 'قسم الاستفسارات|Q&A Section',
+    navFamily:    'توعية في الرقابة الأبوية|Parental Awareness',
+    navSupport:   'تعريف عن الراعي|About the Sponsor',
+    navLogout:    'تسجيل خروج|Log Out'
+};
 
-/* ═══ INIT ═══ */
-const _sl = localStorage.getItem('sl');
-if(_sl) setLang(_sl);
-else { renderGrid(); }
-initHeroCanvas();
+function setLang(lang) {
+    if (lang === currentLang) { langWrap.classList.remove('open'); return; }
+    currentLang = lang;
+
+    const html = document.getElementById('mainHtml');
+    html.setAttribute('lang', lang);
+    html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+    const d = data[lang];
+
+    document.getElementById('schoolName').innerText  = d.school;
+    document.getElementById('mainTitle').innerText   = d.mainTitle;
+    document.getElementById('subTitle').innerText    = d.subTitle;
+    document.getElementById('backLabel').innerText   = d.back;
+    document.getElementById('footerCopy').innerText  = d.footerCopy;
+
+    const arrow = document.querySelector('.back-btn i');
+    if (arrow) arrow.className = lang === 'ar' ? 'fas fa-arrow-right' : 'fas fa-arrow-left';
+
+    d.cardTitles.forEach((t, i) => {
+        const el = document.getElementById('ct' + i);
+        if (el) el.innerText = t;
+    });
+
+    document.getElementById('langFlag').textContent      = lang === 'ar' ? '🇸🇦' : '🇬🇧';
+    document.getElementById('langLabelText').textContent = lang === 'ar' ? 'العربية' : 'English';
+
+    document.querySelectorAll('.lang-option-item').forEach(o =>
+        o.classList.toggle('lang-active', o.dataset.lang === lang)
+    );
+
+    const sideNavTitle = document.getElementById('sideNavTitle');
+    if (sideNavTitle) sideNavTitle.innerText = lang === 'ar' ? 'القائمة' : 'Main Menu';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (sidebarKeys[key]) {
+            const parts = sidebarKeys[key].split('|');
+            el.innerText = lang === 'ar' ? parts[0] : parts[1];
+        }
+    });
+
+    document.querySelectorAll('.sn-links a').forEach(a => {
+        a.style.justifyContent = lang === 'ar' ? 'flex-end' : 'flex-start';
+    });
+
+    if (document.getElementById('article-viewer').style.display !== 'none' && currentArticleKey) {
+        showArticle(currentArticleKey);
+    }
+
+    langWrap.classList.remove('open');
+}
+
+/* ============================================================
+   ARTICLE LOGIC
+============================================================ */
+let currentArticleKey = '';
+
+function showArticle(key) {
+    currentArticleKey = key;
+    const d   = data[currentLang];
+    const art = d.articles[key] || d.articles['positive_discipline'];
+
+    document.getElementById('grid').style.display       = 'none';
+    document.getElementById('headerArea').style.display = 'none';
+    document.getElementById('article-viewer').style.display = 'block';
+
+    document.getElementById('article-content').innerHTML = `
+        <h2>${art.h}</h2>
+        <div class="quran-verse">${art.v}</div>
+        <p>${art.p1}</p>
+        <div class="parenting-steps">
+            <h4>${d.stepsLabel}:</h4>
+            <p style="white-space:pre-line">${art.steps}</p>
+        </div>
+        <div class="analysis-box">
+            <h3>${d.analysisLabel}</h3>
+            <p>${art.analysis}</p>
+        </div>
+        <div class="golden-tip">
+            <strong>${d.tipLabel}</strong>
+            <p>${art.tip}</p>
+        </div>
+        <p>${art.p2}</p>
+    `;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeArticle() {
+    document.getElementById('grid').style.display       = '';
+    document.getElementById('headerArea').style.display = '';
+    document.getElementById('article-viewer').style.display = 'none';
+    currentArticleKey = '';
+}
+
+/* ============================================================
+   NAVBAR SCROLL
+============================================================ */
+window.addEventListener('scroll', () =>
+    document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50)
+);
+
+/* ============================================================
+   UNIFIED SIDENAV + SETTINGS
+============================================================ */
+(function(){
+    var STEPS = ['small','medium','large','xlarge'];
+    var SIZES = {small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+
+    function loadS(){
+        try { return Object.assign({theme:'light',graphics:'full',fontSize:'medium'}, JSON.parse(localStorage.getItem('siteSettings')||'{}')); }
+        catch(e) { return {theme:'light',graphics:'full',fontSize:'medium'}; }
+    }
+    function saveS(s){ localStorage.setItem('siteSettings', JSON.stringify(s)); }
+
+    window.snClose = function(){
+        var d=document.getElementById('snDrawer');
+        var o=document.getElementById('snOverlay');
+        var b=document.getElementById('snBurger');
+        if(d) d.classList.remove('show');
+        if(o) o.classList.remove('show');
+        if(b){ b.classList.remove('open'); b.setAttribute('aria-expanded','false'); }
+    };
+
+    window.snOpen = function(){
+        var d=document.getElementById('snDrawer');
+        var o=document.getElementById('snOverlay');
+        var b=document.getElementById('snBurger');
+        if(d) d.classList.add('show');
+        if(o) o.classList.add('show');
+        if(b){ b.classList.add('open'); b.setAttribute('aria-expanded','true'); }
+        snRenderSettings();
+    };
+
+    window.snToggle = function(){
+        var d=document.getElementById('snDrawer');
+        if(d && d.classList.contains('show')) snClose(); else snOpen();
+    };
+
+    window.snToggleSettings = function(){
+        var panel  = document.getElementById('snSettingsPanel');
+        var toggle = document.getElementById('snSettingsToggle');
+        if(!panel) return;
+        panel.classList.toggle('open');
+        if(toggle) toggle.classList.toggle('open');
+    };
+
+    function snRenderSettings(){
+        var s = loadS();
+        ['light','dark'].forEach(function(t){
+            var el = document.getElementById('sn-th-'+t);
+            if(el) el.classList.toggle('sel', s.theme===t);
+        });
+        ['full','reduced','minimal'].forEach(function(g){
+            var el = document.getElementById('sn-gr-'+g);
+            if(el) el.classList.toggle('sel', s.graphics===g);
+        });
+        var idx = STEPS.indexOf(s.fontSize); if(idx<0) idx=1;
+        var sl = document.getElementById('snFontSlider');
+        if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+        snUpdateFontLabels(idx);
+    }
+
+    function snUpdateSliderTrack(sl,idx){
+        sl.style.setProperty('--pct',(idx/3*100)+'%');
+    }
+    function snUpdateFontLabels(idx){
+        document.querySelectorAll('.sn-font-labels span').forEach(function(s,i){
+            s.classList.toggle('act', i===idx);
+        });
+    }
+
+    window.snFontInput = function(val){
+        var idx = parseInt(val);
+        var sl = document.getElementById('snFontSlider');
+        if(sl) snUpdateSliderTrack(sl,idx);
+        snUpdateFontLabels(idx);
+        document.documentElement.style.fontSize = SIZES[STEPS[idx]];
+    };
+    window.snSetFont = function(idx){
+        var sl = document.getElementById('snFontSlider');
+        if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+        snUpdateFontLabels(idx);
+        document.documentElement.style.fontSize = SIZES[STEPS[idx]];
+    };
+    window.snPickTheme = function(t){
+        ['light','dark'].forEach(function(x){
+            var el = document.getElementById('sn-th-'+x);
+            if(el) el.classList.toggle('sel', x===t);
+        });
+        var s=loadS(); s.theme=t; saveS(s);
+        snShowToast(t==='dark' ? '🌙 تم تفعيل الوضع الداكن' : '☀️ تم تفعيل الوضع الفاتح');
+    };
+    window.snPickGraphics = function(g){
+        ['full','reduced','minimal'].forEach(function(x){
+            var el = document.getElementById('sn-gr-'+x);
+            if(el) el.classList.toggle('sel', x===g);
+        });
+        var s=loadS(); s.graphics=g; saveS(s);
+    };
+    window.snSave = function(){
+        var s=loadS();
+        var sl=document.getElementById('snFontSlider');
+        if(sl) s.fontSize = STEPS[parseInt(sl.value)];
+        saveS(s);
+        snShowToast('✅ تم حفظ الإعدادات!');
+    };
+    window.snLogout = function(){
+        if(typeof firebase!=='undefined' && firebase.auth){
+            firebase.auth().signOut().then(function(){ window.location.href='login.html'; });
+        } else {
+            window.location.href='login.html';
+        }
+    };
+
+    function snShowToast(msg){
+        var t=document.getElementById('snToast');
+        var m=document.getElementById('snToastMsg');
+        if(!t||!m) return;
+        m.textContent=msg;
+        t.classList.add('show');
+        setTimeout(function(){ t.classList.remove('show'); }, 2500);
+    }
+
+    document.addEventListener('keydown', function(e){
+        if(e.key==='Escape') snClose();
+    });
+
+    document.addEventListener('DOMContentLoaded', function(){
+        snRenderSettings();
+    });
+})();
 </script>
+
 </body>
 </html>

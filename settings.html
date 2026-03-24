@@ -1,346 +1,1251 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUCORE | الإعدادات الشاملة (v5.0)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root {
-            --neon-blue: #00f2fe;
-            --neon-purple: #7000ff;
-            --dark-bg: #050510;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(0, 242, 254, 0.3);
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>الإعدادات | Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<script src="settings-apply.js"></script>
+<style>
+/* ── CSS VARIABLES ── */
+:root {
+  --accent-blue:#4a90e2; --accent-light:#6fa8ec; --accent-sky:#87ceeb;
+  --navy-dark:#1a2942; --navy-mid:#233554; --navy-light:#3d5a7f;
+  --gradient-blue:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  --gradient-navy:linear-gradient(135deg,#1a2942 0%,#3d5a7f 50%,#b8c9dc 100%);
+  --border-blue:rgba(74,144,226,0.3);
+  --shadow-blue:rgba(74,144,226,0.2);
+  /* dynamic — set by settings-apply.js */
+  --body-bg:linear-gradient(180deg,#fff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);
+  --nav-bg:rgba(255,255,255,0.82);
+  --card-bg:rgba(255,255,255,0.95);
+  --card-border:rgba(74,144,226,0.3);
+  --text-primary:#0a1628;
+  --text-secondary:#6b7c93;
+  --sidenav-bg:linear-gradient(180deg,rgba(255,255,255,0.98) 0%,rgba(232,238,245,0.98) 100%);
+  --sidenav-text:#0a1628;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cairo','Tajawal',sans-serif;
+  background:var(--body-bg);
+  background-attachment:fixed;
+  color:var(--text-primary);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:color .3s;
+}
 
-        body {
-            margin: 0; background: var(--dark-bg); color: white;
-            font-family: 'Cairo', sans-serif; overflow-x: hidden;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-        }
+/* ── NAV ── */
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 60px;position:fixed;width:100%;top:0;z-index:1000;
+  background:var(--nav-bg);backdrop-filter:blur(30px) saturate(180%);
+  border-bottom:1px solid var(--border-blue);
+  box-shadow:0 4px 30px rgba(26,41,66,0.08);
+  transition:padding .4s,box-shadow .4s,background .4s;
+}
+nav.scrolled{padding:13px 60px;box-shadow:0 8px 40px rgba(26,41,66,0.15);}
+.logo-link{display:flex;align-items:center;gap:15px;text-decoration:none;}
+.logo-icon{width:52px;height:52px;background:var(--gradient-blue);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px var(--shadow-blue);}
+.logo-icon i{font-size:1.5rem;color:#fff;}
+.logo-name{font-size:1.8rem;font-weight:900;letter-spacing:4px;background:var(--gradient-navy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-tag{font-size:0.7rem;color:var(--text-secondary);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
+.nav-right{display:flex;align-items:center;gap:16px;}
 
-        /* خلفية الانفجار اللوني */
-        .bg-gradient {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 20% 30%, #1a1a40 0%, #050510 100%);
-        }
+/* bell */
+.bell-btn{position:relative;width:46px;height:46px;background:rgba(255,255,255,0.12);border:1px solid var(--border-blue);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;}
+.bell-btn:hover{background:rgba(255,255,255,0.25);transform:translateY(-2px);}
+.bell-btn i{color:var(--accent-blue);font-size:1.2rem;}
+.bell-badge{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;}
 
-        .settings-card {
-            width: 95%; max-width: 1200px; height: 85vh;
-            background: var(--glass); backdrop-filter: blur(40px);
-            border-radius: 40px; border: 1px solid var(--border);
-            display: grid; grid-template-columns: 320px 1fr; overflow: hidden;
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-        }
+/* lang dropdown */
+.lang-wrap{position:relative;}
+.lang-btn{display:flex;align-items:center;gap:7px;padding:9px 14px;background:rgba(255,255,255,0.12);border:1px solid var(--border-blue);border-radius:13px;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.85rem;font-weight:700;color:var(--accent-blue);transition:all .3s;white-space:nowrap;}
+.lang-btn:hover{background:rgba(255,255,255,0.25);transform:translateY(-2px);}
+.lang-btn .chevron{width:13px;height:13px;transition:transform .3s;}
+.lang-wrap.open .chevron{transform:rotate(180deg);}
+.lang-menu{
+  position:absolute;top:calc(100% + 8px);
+  /* always drop from the left edge of the button in RTL */
+  right:0;
+  min-width:145px;
+  background:#fff;border:1.5px solid var(--border-blue);border-radius:14px;
+  overflow:hidden;box-shadow:0 14px 40px rgba(26,41,66,0.18);
+  transform-origin:top right;transform:scaleY(0) translateY(-6px);opacity:0;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s;
+  z-index:9999;pointer-events:none;
+}
+.lang-wrap.open .lang-menu{transform:scaleY(1) translateY(0);opacity:1;pointer-events:all;}
+.lang-item{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;font-size:0.9rem;font-weight:600;color:#0a1628;transition:background .2s;}
+.lang-item:hover{background:rgba(74,144,226,0.08);}
+.lang-item.active{color:var(--accent-blue);background:rgba(74,144,226,0.06);}
+.lang-item .chk{margin-inline-start:auto;opacity:0;color:var(--accent-blue);}
+.lang-item.active .chk{opacity:1;}
+.lang-sep{height:1px;background:var(--border-blue);margin:0 12px;}
 
-        /* Sidebar */
-        .sidebar {
-            background: rgba(0, 0, 0, 0.4); padding: 40px 20px;
-            border-left: 1px solid var(--border); display: flex; flex-direction: column;
-        }
+/* burger */
+.burger{cursor:pointer;width:36px;height:30px;display:flex;flex-direction:column;justify-content:space-between;}
+.bline{width:100%;height:3px;background:var(--gradient-blue);border-radius:4px;transition:all .45s cubic-bezier(.68,-.55,.265,1.55);}
+.burger.open .bline:nth-child(1){transform:rotate(45deg) translate(10px,10px);}
+.burger.open .bline:nth-child(2){opacity:0;transform:translateX(20px);}
+.burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(10px,-10px);}
 
-        .avatar-container {
-            position: relative; width: 150px; height: 150px; margin: 0 auto 20px;
-        }
+/* ── SIDE NAV ── */
+.overlay{position:fixed;inset:0;background:rgba(26,41,66,0.7);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .5s;}
+.overlay.show{opacity:1;pointer-events:all;}
+.sidenav{
+  position:fixed;top:0;right:-420px;width:390px;height:100%;z-index:3000;
+  background:var(--sidenav-bg);backdrop-filter:blur(30px);
+  border-inline-start:3px solid var(--accent-blue);
+  padding:32px 28px;overflow-y:auto;
+  transition:right .6s cubic-bezier(.68,-.55,.265,1.55);
+  box-shadow:-12px 0 50px rgba(26,41,66,0.2);
+}
+.sidenav.show{right:0;}
+.sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:22px;border-bottom:2px solid var(--border-blue);}
+.sn-head h2{background:var(--gradient-navy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.6rem;}
+.sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
+.sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg);}
+.sn-user{display:flex;align-items:center;gap:15px;padding:20px;background:rgba(74,144,226,0.07);border:1.5px solid var(--border-blue);border-radius:18px;margin-bottom:24px;}
+.sn-avatar{width:60px;height:60px;border-radius:50%;background:var(--gradient-blue);display:flex;align-items:center;justify-content:center;font-size:1.7rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 20px var(--shadow-blue);flex-shrink:0;}
+.sn-uname{color:var(--sidenav-text);font-size:1.1rem;font-weight:700;}
+.sn-urole{color:var(--text-secondary);font-size:0.85rem;}
+.sn-links{list-style:none;}
+.sn-links li{margin-bottom:6px;}
+.sn-links a{
+  display:flex;align-items:center;justify-content:flex-end;gap:16px;
+  padding:17px 18px;text-decoration:none;font-size:1.05rem;font-weight:600;
+  color:var(--sidenav-text);border-radius:14px;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-links a:hover{background:rgba(74,144,226,0.1);transform:translateX(-8px);}
+.sn-links a i{color:var(--accent-blue);font-size:1.3rem;width:30px;text-align:center;}
+.sn-logout{margin-top:20px;padding-top:20px;border-top:1.5px solid rgba(238,90,111,0.2);}
+.sn-logout a,.sn-logout a i{color:#ee5a6f;}
+.sn-logout a:hover{background:rgba(238,90,111,0.1);}
 
-        .avatar-container img {
-            width: 100%; height: 100%; border-radius: 45px;
-            object-fit: cover; border: 3px solid var(--neon-blue);
-            transition: 0.5s; cursor: pointer;
-        }
+/* ── MAIN ── */
+.page{padding:120px 50px 100px;max-width:1050px;margin:0 auto;position:relative;z-index:1;}
 
-        .avatar-container:hover img { filter: drop-shadow(0 0 15px var(--neon-blue)) brightness(1.2); }
+/* hero */
+.pg-hero{text-align:center;margin-bottom:55px;animation:fadeUp .6s ease-out both;}
+.pg-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 26px;background:rgba(255,255,255,0.9);
+  border:2px solid var(--accent-blue);border-radius:50px;
+  color:var(--accent-blue);font-size:0.88rem;font-weight:700;
+  letter-spacing:1.5px;margin-bottom:20px;
+  box-shadow:0 5px 18px rgba(74,144,226,0.2);
+}
+.pg-hero h1{
+  font-size:3rem;font-weight:900;letter-spacing:2px;margin-bottom:12px;
+  background:var(--gradient-navy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pg-hero p{font-size:1.1rem;color:var(--text-secondary);max-width:560px;margin:0 auto;line-height:1.8;}
 
-        .cam-btn {
-            position: absolute; bottom: -5px; right: -5px;
-            background: var(--neon-blue); color: black; width: 40px; height: 40px;
-            border-radius: 15px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; border: 3px solid var(--dark-bg);
-        }
+/* section */
+.s-block{margin-bottom:44px;animation:fadeUp .5s ease-out both;}
+.s-block:nth-child(1){animation-delay:.05s;}.s-block:nth-child(2){animation-delay:.12s;}
+.s-block:nth-child(3){animation-delay:.19s;}.s-block:nth-child(4){animation-delay:.26s;}
+.s-label{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  font-size:0.76rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent-blue);
+}
+.s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,var(--border-blue));}
+.s-card{
+  background:var(--card-bg);border:1.5px solid var(--card-border);border-radius:22px;
+  padding:28px;box-shadow:0 6px 25px rgba(26,41,66,0.07);
+  transition:background .4s,border-color .4s;
+}
 
-        .nav-menu { flex: 1; margin-top: 20px; }
-        .nav-btn {
-            padding: 15px; margin: 8px 0; border-radius: 18px; cursor: pointer;
-            transition: 0.3s; display: flex; align-items: center; gap: 12px; color: #888;
-        }
-        .nav-btn.active { background: rgba(0, 242, 254, 0.15); color: var(--neon-blue); font-weight: bold; }
+/* ── THEME PICKER ── */
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.t-opt{
+  position:relative;border-radius:16px;overflow:hidden;cursor:pointer;
+  border:2.5px solid transparent;height:120px;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.t-opt:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(74,144,226,0.2);}
+.t-opt.sel{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
+.t-preview{width:100%;height:100%;display:flex;flex-direction:column;}
+.t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+.t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+.t-bar{height:16px;display:flex;align-items:center;padding:0 9px;gap:4px;}
+.t-light .t-bar{background:rgba(255,255,255,0.8);}
+.t-dark  .t-bar{background:rgba(10,22,40,0.85);}
+.t-dot{width:5px;height:5px;border-radius:50%;}
+.t-body{flex:1;padding:9px;display:flex;flex-direction:column;gap:5px;}
+.t-line{height:4px;border-radius:99px;}
+.t-light .t-line{background:rgba(26,41,66,0.22);}
+.t-dark  .t-line{background:rgba(255,255,255,0.18);}
+.t-label{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-size:0.82rem;font-weight:700;}
+.t-light .t-label{color:#1a2942;}
+.t-dark  .t-label{color:#e8eef5;}
+.t-check{
+  position:absolute;top:9px;left:9px;width:24px;height:24px;
+  border-radius:50%;background:var(--accent-blue);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:0.7rem;
+  opacity:0;transform:scale(.4);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.t-opt.sel .t-check{opacity:1;transform:scale(1);}
 
-        /* Content Area */
-        .content { padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
-        .section { display: none; animation: fadeIn 0.5s ease forwards; }
-        .section.active { display: block; }
+/* ── GRAPHICS PICKER ── */
+.g-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+.g-opt{
+  padding:20px 14px;border-radius:16px;cursor:pointer;
+  border:2px solid var(--card-border);text-align:center;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.g-opt:hover{transform:translateY(-4px);border-color:var(--accent-blue);box-shadow:0 10px 28px var(--shadow-blue);}
+.g-opt.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.07);}
+.g-icon{font-size:1.9rem;margin-bottom:9px;display:block;}
+.g-name{font-size:0.88rem;font-weight:700;color:var(--text-primary);}
+.g-desc{font-size:0.72rem;color:var(--text-secondary);margin-top:4px;line-height:1.35;}
+.g-chk{
+  position:absolute;top:9px;left:9px;width:20px;height:20px;
+  border-radius:50%;background:var(--accent-blue);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:0.6rem;
+  opacity:0;transform:scale(0);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.g-opt.sel .g-chk{opacity:1;transform:scale(1);}
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* ── FONT SLIDER ── */
+/* Force the slider track to always go left→right regardless of page direction */
+.font-slider-container{direction:ltr;}
+.font-slider{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:6px;border-radius:99px;outline:none;cursor:pointer;
+  background:linear-gradient(to right, var(--accent-blue) var(--pct,33%), rgba(74,144,226,0.18) var(--pct,33%));
+  transition:background .15s;
+}
+.font-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+  background:var(--gradient-blue);box-shadow:0 3px 14px rgba(74,144,226,0.55);
+  cursor:pointer;transition:transform .2s;
+}
+.font-slider::-webkit-slider-thumb:hover{transform:scale(1.2);}
+.font-slider::-moz-range-thumb{
+  width:26px;height:26px;border-radius:50%;border:none;
+  background:var(--gradient-blue);box-shadow:0 3px 14px rgba(74,144,226,0.55);cursor:pointer;
+}
+/* Labels always LTR: Small on left, X-Large on right */
+.font-labels{
+  display:flex;justify-content:space-between;
+  margin-top:11px;
+  direction:ltr; /* force left=small right=xlarge */
+}
+.font-labels span{
+  font-size:0.76rem;color:var(--text-secondary);font-weight:600;
+  cursor:pointer;padding:4px 8px;border-radius:8px;transition:all .2s;
+  /* Override any RTL weirdness for the label text themselves */
+  direction:ltr;
+}
+.font-labels span:hover{background:rgba(74,144,226,0.1);color:var(--accent-blue);}
+.font-labels span.act{background:rgba(74,144,226,0.12);color:var(--accent-blue);font-weight:800;}
+.font-preview{
+  margin-top:16px;padding:14px 18px;
+  background:rgba(74,144,226,0.04);border:1px solid var(--border-blue);
+  border-radius:13px;color:var(--text-primary);line-height:1.7;
+  transition:font-size .3s;
+  /* preview text shows both directions */
+  text-align:center;
+}
 
-        .input-group { margin-bottom: 25px; }
-        label { display: block; margin-bottom: 10px; color: var(--neon-blue); font-size: 0.9rem; }
-        
-        input, select, textarea {
-            width: 100%; padding: 15px; background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border); border-radius: 15px; color: white;
-            font-family: inherit; transition: 0.3s;
-        }
+/* ── LANG PICKER ── */
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 
-        input:focus { border-color: white; outline: none; box-shadow: 0 0 15px rgba(0,242,254,0.2); }
+/* ── SAVE BANNER ── */
+.save-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:600;
+  padding:18px 50px;background:var(--card-bg);
+  border-top:1.5px solid var(--border-blue);
+  display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(20px);box-shadow:0 -6px 28px rgba(26,41,66,0.1);
+  transform:translateY(100%);transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+.save-bar.show{transform:translateY(0);}
+.save-msg{font-size:0.95rem;color:var(--text-secondary);}
+.save-msg strong{color:var(--text-primary);}
+.save-btns{display:flex;gap:12px;}
+.btn-save{
+  padding:12px 30px;background:var(--gradient-blue);color:#fff;
+  border:none;border-radius:50px;font-size:0.95rem;font-weight:700;
+  cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;
+  transition:all .35s;box-shadow:0 6px 18px var(--shadow-blue);
+}
+.btn-save:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 10px 28px rgba(74,144,226,0.4);}
+.btn-reset{
+  padding:12px 24px;background:transparent;color:var(--text-secondary);
+  border:1.5px solid var(--border-blue);border-radius:50px;font-size:0.95rem;
+  font-weight:600;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;transition:all .3s;
+}
+.btn-reset:hover{border-color:#ee5a6f;color:#ee5a6f;}
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:100px;left:50%;
+  transform:translateX(-50%) translateY(-20px);
+  background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;
+  padding:14px 28px;border-radius:50px;font-size:0.9rem;font-weight:600;
+  opacity:0;pointer-events:none;z-index:99999;
+  box-shadow:0 8px 28px rgba(26,41,66,0.3);
+  display:flex;align-items:center;gap:9px;
+  transition:all .38s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-        .social-link {
-            display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03);
-            padding: 10px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;
-        }
+/* ── BG ── */
+.bg-anim{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.bg-shape{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.09;animation:bgFloat 28s infinite ease-in-out;}
+.s1{width:550px;height:550px;background:radial-gradient(circle,rgba(74,144,226,.5),transparent 70%);top:-180px;right:-180px;}
+.s2{width:480px;height:480px;background:radial-gradient(circle,rgba(26,41,66,.4),transparent 70%);bottom:-140px;left:-140px;animation-delay:-12s;}
+@keyframes bgFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(-40px,40px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
 
-        /* زر الحفظ الخارق */
-        .save-footer {
-            padding: 20px 40px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
+/* ── SCROLL TOP ── */
+.scroll-top{
+  position:fixed;bottom:90px;left:32px;width:52px;height:52px;
+  background:var(--gradient-blue);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;pointer-events:none;
+  transition:all .4s;z-index:400;box-shadow:0 6px 20px var(--shadow-blue);
+}
+.scroll-top.show{opacity:1;pointer-events:all;}
+.scroll-top i{color:#fff;font-size:1.3rem;}
 
-        .btn-glow {
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            border: none; padding: 15px 45px; border-radius: 20px; color: white;
-            font-weight: bold; cursor: pointer; font-size: 1.1rem;
-            box-shadow: 0 5px 25px rgba(112, 0, 255, 0.4); transition: 0.3s;
-        }
+/* ── FOOTER ── */
+footer{
+  background:linear-gradient(180deg,rgba(26,41,66,.97),rgba(10,22,40,1));
+  border-top:2px solid var(--accent-blue);
+  padding:36px 50px 28px;position:relative;z-index:1;margin-bottom:76px;
+}
+.footer-bottom{text-align:center;color:#9bb4d0;font-size:0.95rem;}
 
-        .btn-glow:hover { transform: scale(1.05); filter: brightness(1.2); }
+@media(max-width:768px){
+  nav{padding:16px 22px;}nav.scrolled{padding:12px 22px;}
+  .page{padding:100px 18px 90px;}
+  .pg-hero h1{font-size:2rem;}
+  .g-grid{grid-template-columns:1fr 1fr;}
+  .save-bar{padding:14px 18px;flex-direction:column;gap:12px;}
+  .save-btns{width:100%;justify-content:stretch;}
+  .btn-save,.btn-reset{flex:1;text-align:center;}
+  .sidenav{width:320px;}
+}
+@media(max-width:480px){
+  .theme-grid,.lang-grid{grid-template-columns:1fr;}
+  .g-grid{grid-template-columns:1fr;}
+}
 
-        @media (max-width: 900px) {
-            .settings-card { grid-template-columns: 1fr; height: auto; }
-            .sidebar { border: none; border-bottom: 1px solid var(--border); }
-        }
-    </style>
+        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:all 0.3s;flex-shrink:0;}
+        .profile-nav-btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 8px 22px var(--shadow-glow);}
+        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+    
+/* ══════════════════════════════════════════════
+   UNIFIED NAV + SIDENAV + SETTINGS PANEL STYLES
+   ══════════════════════════════════════════════ */
+
+/* ── NAV BASE ── */
+nav.top-bar,nav#topNav,header.top-bar{
+  display:flex!important;justify-content:space-between;align-items:center;
+  padding:20px 60px;position:fixed;width:100%;top:0;z-index:1000;
+  background:rgba(255,255,255,0.82);backdrop-filter:blur(30px) saturate(180%);
+  border-bottom:1px solid rgba(74,144,226,0.3);
+  box-shadow:0 4px 30px rgba(26,41,66,0.08);
+  transition:padding .4s,box-shadow .4s,background .4s;
+}
+nav.top-bar.scrolled,nav#topNav.scrolled,header.top-bar.scrolled{
+  padding:13px 60px!important;
+  box-shadow:0 8px 40px rgba(26,41,66,0.15);
+  background:rgba(248,249,250,0.97)!important;
+  border-bottom:2px solid #4a90e2!important;
+}
+
+/* ── LOGO ── */
+.logo-container,.logo-link{display:flex;align-items:center;gap:15px;text-decoration:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.logo-container:hover,.logo-link:hover{transform:scale(1.06);}
+.logo-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 25px rgba(74,144,226,0.3);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
+}
+.logo-icon:hover{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 35px rgba(74,144,226,0.45);}
+.logo-icon i{font-size:1.5rem;color:#fff;}
+.logo-text,.logo-name{
+  font-size:1.8rem;font-weight:900;letter-spacing:3px;
+  background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ── NAV RIGHT CLUSTER ── */
+.nav-right{display:flex;align-items:center;gap:16px;}
+
+/* profile btn */
+.profile-nav-btn{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 4px 15px rgba(74,144,226,0.3);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
+}
+.profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px rgba(74,144,226,0.5);}
+.profile-nav-btn i{color:#fff;font-size:1.1rem;}
+
+/* bell */
+.bell-btn,.notification-btn{
+  position:relative;width:42px;height:42px;
+  background:rgba(255,255,255,0.7);border:1.5px solid rgba(74,144,226,0.3);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.bell-btn:hover,.notification-btn:hover{
+  background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);
+  box-shadow:0 8px 22px rgba(74,144,226,0.25);
+}
+.bell-btn i,.notification-btn i{color:#4a90e2;font-size:1.2rem;}
+.bell-badge,.notification-badge{
+  position:absolute;top:-5px;right:-5px;width:19px;height:19px;
+  background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;color:#fff;
+}
+
+/* ── BURGER ── */
+.burger,.burger-menu{
+  cursor:pointer;width:36px;height:28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:2px 0;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.burger:hover,.burger-menu:hover{transform:scale(1.15);}
+.bline{
+  width:100%;height:3px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border-radius:4px;
+  transition:all .45s cubic-bezier(.68,-.55,.265,1.55);
+  transform-origin:center;
+}
+/* when burger is a Font Awesome icon fallback */
+.burger-menu i,.burger i{color:#4a90e2;font-size:1.6rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.burger-menu:hover i,.burger:hover i{transform:rotate(90deg);}
+
+/* open state */
+.burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+.burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
+.burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
+
+/* ── OVERLAY ── */
+.overlay,#overlay-bg{
+  position:fixed;inset:0;background:rgba(26,41,66,0.65);
+  backdrop-filter:blur(8px);z-index:2500;
+  opacity:0;pointer-events:none;transition:opacity .45s;
+}
+.overlay.show,#overlay-bg.active,.overlay.active{opacity:1;pointer-events:all;}
+
+/* ── SIDENAV ── */
+.sidenav,.side-nav{
+  position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
+  background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+  backdrop-filter:blur(35px);
+  border-inline-start:3px solid #4a90e2;
+  padding:28px 24px;overflow-y:auto;
+  transition:right .55s cubic-bezier(.68,-.55,.265,1.55);
+  box-shadow:-12px 0 50px rgba(26,41,66,0.15);
+}
+.sidenav.show,.side-nav.active{right:0!important;}
+
+/* sidenav head */
+.sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3);}
+.sn-head h2{background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+
+.sn-close{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(74,144,226,0.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#4a90e2;font-size:1.4rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
+
+/* sidenav user card */
+.sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.3);border-radius:18px;margin-bottom:20px;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,226,0.18);border-color:#4a90e2;}
+.sn-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(74,144,226,0.3);flex-shrink:0;}
+.sn-uname{color:#0a1628;font-size:1.05rem;font-weight:700;}
+.sn-urole{color:#6b7c93;font-size:0.82rem;}
+
+/* sidenav nav links */
+.sn-links,.side-nav ul{list-style:none;padding:0;margin:0;}
+.sn-links li,.side-nav ul li{margin-bottom:4px;}
+.sn-links a,.side-nav a{
+  display:flex;align-items:center;justify-content:flex-end;gap:14px;
+  padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
+  color:#0a1628;border-radius:14px;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.sn-links a::before,.side-nav a::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
+  transform:translateX(110%);border-radius:14px;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-links a:hover::before,.side-nav a:hover::before{transform:translateX(0);}
+.sn-links a:hover,.side-nav a:hover{transform:translateX(-8px);color:#4a90e2;}
+.sn-links a i,.side-nav a i{
+  color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-links a:hover i,.side-nav a:hover i{transform:scale(1.3) rotate(-5deg);}
+
+/* logout */
+.sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
+.sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
+.sn-logout a:hover{background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important;}
+
+/* ── SETTINGS PANEL (inside sidenav) ── */
+.sn-settings-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-radius:14px;cursor:pointer;
+  background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
+  margin-bottom:4px;color:#0a1628;font-weight:700;font-size:0.95rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:#4a90e2;}
+.sn-settings-toggle i{color:#4a90e2;}
+.sn-settings-chevron{
+  color:#4a90e2;font-size:0.8rem;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
+
+.sn-settings-panel{
+  max-height:0;overflow:hidden;
+  transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;
+  opacity:0;
+}
+.sn-settings-panel.open{max-height:800px;opacity:1;}
+
+.sn-settings-inner{
+  padding:18px 14px;
+  background:rgba(248,249,250,0.9);
+  border:1.5px solid rgba(74,144,226,0.2);
+  border-radius:16px;margin-top:8px;margin-bottom:8px;
+}
+
+.sn-s-label{
+  font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:#4a90e2;margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;
+}
+.sn-s-label:first-child{margin-top:0;}
+.sn-s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3));}
+
+/* theme mini cards */
+.sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sn-t-opt{
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  border:2px solid transparent;height:70px;position:relative;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-t-opt:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,144,226,0.2);}
+.sn-t-opt.sel{border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
+.sn-t-preview{width:100%;height:100%;}
+.sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+.sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+.sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
+.sn-t-light .sn-t-label{color:#1a2942;}
+.sn-t-dark  .sn-t-label{color:#e8eef5;}
+.sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
+
+/* graphics mini options */
+.sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sn-g-opt{
+  padding:10px 6px;border-radius:12px;cursor:pointer;
+  border:1.5px solid rgba(74,144,226,0.25);text-align:center;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.sn-g-opt:hover{transform:translateY(-3px);border-color:#4a90e2;box-shadow:0 6px 16px rgba(74,144,226,0.2);}
+.sn-g-opt.sel{border-color:#4a90e2;background:rgba(74,144,226,0.08);}
+.sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
+.sn-g-name{font-size:0.65rem;font-weight:700;color:#0a1628;}
+.sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
+
+/* font mini slider */
+.sn-font-row{padding:6px 2px;}
+.sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background .15s;direction:ltr;}
+.sn-font-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);box-shadow:0 2px 10px rgba(74,144,226,0.5);cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+.sn-font-slider::-webkit-slider-thumb:hover{transform:scale(1.3);}
+.sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
+.sn-font-labels span{font-size:0.62rem;color:#6b7c93;font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .2s;}
+.sn-font-labels span:hover,.sn-font-labels span.act{background:rgba(74,144,226,0.1);color:#4a90e2;font-weight:800;}
+
+/* save btn */
+.sn-save-btn{
+  width:100%;margin-top:14px;padding:12px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border:none;border-radius:12px;color:#fff;font-weight:700;
+  font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;
+  cursor:pointer;box-shadow:0 5px 16px rgba(74,144,226,0.35);
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-save-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(74,144,226,0.45);}
+
+/* ── GENERIC HOVER ANIMATIONS ── */
+/* any button with .btn or class containing btn */
+button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             background .3s,
+             color .3s,
+             border-color .3s;
+}
+/* nav links in side nav already handled above */
+/* general interactive cards */
+.dash-card,.info-box,.course-item,.feed-item,.item-card,
+.g-opt,.t-opt,.stat-mini,.panel,.s-card,.post-box{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             border-color .35s!important;
+}
+
+/* ── TOAST (unified) ── */
+.sn-toast{
+  position:fixed;top:90px;left:50%;
+  transform:translateX(-50%) translateY(-16px);
+  background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;
+  padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;
+  opacity:0;pointer-events:none;z-index:99999;
+  box-shadow:0 8px 28px rgba(26,41,66,0.3);
+  display:flex;align-items:center;gap:9px;
+  transition:all .38s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:768px){
+  nav.top-bar,nav#topNav,header.top-bar{padding:14px 20px!important;}
+  nav.top-bar.scrolled,nav#topNav.scrolled{padding:10px 20px!important;}
+  .sidenav,.side-nav{width:100%;right:-100%!important;}
+  .sidenav.show,.side-nav.active{right:0!important;}
+}
+
+</style>
 </head>
 <body>
 
-<div class="bg-gradient"></div>
-
-<div class="settings-card">
-    <div class="sidebar">
-        <div class="avatar-container">
-            <img id="pfp-preview" src="https://via.placeholder.com/150" onclick="document.getElementById('file-input').click()">
-            <label for="file-input" class="cam-btn"><i class="fas fa-camera"></i></label>
-            <input type="file" id="file-input" accept="image/*" style="display: none;">
-        </div>
-        <center><h3 id="display-name" style="font-family: 'Orbitron';">GUEST_01</h3></center>
-        
-        <div class="nav-menu">
-            <div class="nav-btn active" onclick="showTab('tab1', this)"><i class="fas fa-user-ninja"></i> الملف الشخصي</div>
-            <div class="nav-btn" onclick="showTab('tab2', this)"><i class="fas fa-graduation-cap"></i> التعليم والمهارات</div>
-            <div class="nav-btn" onclick="showTab('tab3', this)"><i class="fas fa-link"></i> الروابط الرقمية</div>
-            <div class="nav-item" style="padding: 10px; opacity: 0.5; font-size: 0.8rem;">إعدادات متقدمة</div>
-            <div class="nav-btn" onclick="showTab('tab4', this)"><i class="fas fa-palette"></i> المظهر (UI)</div>
-            <div class="nav-btn" onclick="showTab('tab5', this)"><i class="fas fa-shield-alt"></i> الأمان والخصوصية</div>
-        </div>
-    </div>
-
-    <div style="display: flex; flex-direction: column;">
-        <div class="content">
-            <div id="tab1" class="section active">
-                <h2><i class="fas fa-id-card"></i> بيانات الهوية الرقمية</h2>
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>الاسم المستعار</label>
-                        <input type="text" id="nick" placeholder="أدخل اسمك هنا..">
-                    </div>
-                    <div class="input-group">
-                        <label>الحالة المخصصة (Status Emoji)</label>
-                        <input type="text" id="status" placeholder="مثلاً: متوفر 🟢">
-                    </div>
-                    <div class="input-group" style="grid-column: span 2;">
-                        <label>السيرة الذاتية (Bio)</label>
-                        <textarea id="bio" rows="4" placeholder="اكتب نبذة عنك وعن شغفك.."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab2" class="section">
-                <h2><i class="fas fa-brain"></i> المسار المعرفي</h2>
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>المستوى الدراسي</label>
-                        <select id="edu">
-                            <option>طالب ثانوي</option>
-                            <option>طالب جامعي</option>
-                            <option>مبرمج تعلم ذاتي</option>
-                            <option>باحث محترف</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>المهارة الأساسية</label>
-                        <input type="text" id="main-skill" placeholder="مثل: Python, Figma..">
-                    </div>
-                    <div class="input-group">
-                        <label>ساعات التعلم الأسبوعية</label>
-                        <input type="number" id="study-hours" placeholder="مثلاً: 25">
-                    </div>
-                    <div class="input-group">
-                        <label>الشهادات (Links)</label>
-                        <input type="text" id="certs" placeholder="رابط شهاداتك..">
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab3" class="section">
-                <h2><i class="fas fa-globe"></i> التواجد على الشبكة</h2>
-                <div class="social-link"><i class="fab fa-github"></i><input type="text" id="github" placeholder="حساب GitHub"></div>
-                <div class="social-link"><i class="fab fa-discord"></i><input type="text" id="discord" placeholder="Discord Tag"></div>
-                <div class="social-link"><i class="fab fa-instagram"></i><input type="text" id="insta" placeholder="حساب Instagram"></div>
-                <div class="social-link"><i class="fab fa-telegram"></i><input type="text" id="telegram" placeholder="رابط Telegram"></div>
-                <div class="social-link"><i class="fab fa-tiktok"></i><input type="text" id="tiktok" placeholder="حساب TikTok"></div>
-            </div>
-
-            <div id="tab4" class="section">
-                <h2><i class="fas fa-magic"></i> تخصيص الواجهة</h2>
-                <div class="grid-2">
-                    <div class="input-group">
-                        <label>لون السمة</label>
-                        <input type="color" id="theme-color" value="#00f2fe">
-                    </div>
-                    <div class="input-group">
-                        <label>نمط الخط</label>
-                        <select id="font">
-                            <option>Cairo (Modern)</option>
-                            <option>Orbitron (Tech)</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label>شفافية البطاقات</label>
-                        <input type="range" id="opacity" min="10" max="95">
-                    </div>
-                </div>
-            </div>
-
-            <div id="tab5" class="section">
-                <h2><i class="fas fa-user-shield"></i> الأمان</h2>
-                <div class="input-group">
-                    <label><input type="checkbox" id="private-acc"> حساب خاص (Private Account)</label>
-                </div>
-                <div class="input-group">
-                    <label><input type="checkbox" id="show-activity" checked> إظهار النشاط الأكاديمي للعامة</label>
-                </div>
-                <div class="input-group">
-                    <label>من يمكنه مراسلتي؟</label>
-                    <select id="msg-privacy">
-                        <option>الجميع</option>
-                        <option>الأصدقاء فقط</option>
-                        <option>لا أحد</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="save-footer">
-            <div id="status-msg" style="font-size: 0.8rem; color: var(--neon-blue);"></div>
-            <button class="btn-glow" id="save-all">مزامنة وحفظ البيانات ⚡</button>
-        </div>
-    </div>
+<div class="bg-anim">
+  <div class="bg-shape s1"></div>
+  <div class="bg-shape s2"></div>
 </div>
 
-<script type="module">
-    // --- التنقل بين التبويبات ---
-    window.showTab = (tabId, btn) => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-    };
+<!-- NAV -->
+<nav id="topNav">
+  <a href="index.html" class="logo-link">
+    <div class="logo-icon"><i class="fas fa-brain"></i></div>
+    <div>
+      <div class="logo-name">SITEJ</div>
+      <div class="logo-tag" data-ar="منصة التعلم الذكي" data-en="Smart Learning Platform">منصة التعلم الذكي</div>
+    </div>
+  </a>
+  <div class="nav-right">
+    <!-- Lang dropdown -->
+    <div class="lang-wrap" id="langWrap">
+      <button class="lang-btn" id="langBtn" type="button">
+        <span id="navFlag">🇸🇦</span>
+        <span id="navLabel">العربية</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <div class="lang-item active" data-l="ar" onclick="pickLang('ar')">
+          <span>🇸🇦</span><span>العربية</span>
+          <svg class="chk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="lang-sep"></div>
+        <div class="lang-item" data-l="en" onclick="pickLang('en')">
+          <span>🇬🇧</span><span>English</span>
+          <svg class="chk" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="bell-btn"><i class="fas fa-bell"></i><span class="bell-badge">3</span></div>
+        <a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a>
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false"><div class="bline"></div><div class="bline"></div><div class="bline"></div></div>
+    </div>
+  </div>
+</nav>
 
-    // --- Firebase Logic ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    const firebaseConfig = { /* الصق إعداداتك هنا */ };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
 
-    let currentUID;
-    let selectedFile = null;
+<!-- ══ UNIFIED OVERLAY + SIDENAV ══ -->
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+  <div class="sn-head">
+    <h2>القائمة</h2>
+    <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+  </div>
+  <div class="sn-user">
+    <div class="sn-avatar">👤</div>
+    <div>
+      <div class="sn-uname">مرحباً بك</div>
+      <div class="sn-urole">طالب متميز</div>
+    </div>
+  </div>
+  <ul class="sn-links">
+    <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+    <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+    <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+    <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+    <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+    <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+    <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+    <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+    <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+    <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+    <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+    <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
+    <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+  </ul>
 
-    // إصلاح رفع الصورة: المعاينة اللحظية
-    document.getElementById('file-input').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            selectedFile = file;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                document.getElementById('pfp-preview').src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
+  <!-- ── SETTINGS TOGGLE ── -->
+  <div style="margin-top:12px;">
+    <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+      <span style="display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-sliders-h"></i> الإعدادات
+      </span>
+      <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+    </div>
+    <div class="sn-settings-panel" id="snSettingsPanel">
+      <div class="sn-settings-inner">
+
+        <!-- THEME -->
+        <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+        <div class="sn-theme-row">
+          <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+            <div class="sn-t-preview sn-t-light"></div>
+            <div class="sn-t-label">فاتح</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+            <div class="sn-t-preview sn-t-dark"></div>
+            <div class="sn-t-label">داكن</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
+        </div>
+
+        <!-- GRAPHICS -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+        <div class="sn-g-row">
+          <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
+            <span class="sn-g-icon">✨</span>
+            <div class="sn-g-name">كامل</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
+            <span class="sn-g-icon">🌤</span>
+            <div class="sn-g-name">مخفف</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
+            <span class="sn-g-icon">⚡</span>
+            <div class="sn-g-name">بسيط</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+        </div>
+
+        <!-- FONT SIZE -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+        <div class="sn-font-row">
+          <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1"
+                 oninput="snFontInput(this.value)">
+          <div class="sn-font-labels">
+            <span onclick="snSetFont(0)" data-idx="0">S</span>
+            <span onclick="snSetFont(1)" data-idx="1">M</span>
+            <span onclick="snSetFont(2)" data-idx="2">L</span>
+            <span onclick="snSetFont(3)" data-idx="3">XL</span>
+          </div>
+        </div>
+
+        <!-- SAVE -->
+        <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="sn-links sn-logout" style="margin-top:16px;">
+    <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+  </ul>
+</div>
+
+<!-- TOAST -->
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
+
+<!-- OVERLAY + SIDE NAV -->
+<div class="sn-user">
+    <div class="sn-avatar">👤</div>
+    <div>
+      <div class="sn-uname" data-ar="مرحباً بك" data-en="Welcome">مرحباً بك</div>
+      <div class="sn-urole" data-ar="طالب متميز" data-en="Distinguished Student">طالب متميز</div>
+    </div>
+  </div>
+  <ul class="sn-links">
+    <li><a href="index.html"><i class="fas fa-home"></i><span data-ar="الصفحة الرئيسية" data-en="Home">الصفحة الرئيسية</span></a></li>
+    <li><a href="videos.html"><i class="fas fa-play-circle"></i><span data-ar="الفيديوهات" data-en="Videos">الفيديوهات</span></a></li>
+    <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span data-ar="المقالات" data-en="Articles">المقالات</span></a></li>
+    <li><a href="games.html"><i class="fas fa-chess"></i><span data-ar="الألعاب" data-en="Games">الألعاب</span></a></li>
+    <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span data-ar="الاختبارات" data-en="Exams">الاختبارات</span></a></li>
+    <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span data-ar="لغة الإشارة" data-en="Sign Language">لغة الإشارة</span></a></li>
+    <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span data-ar="اسلاميات" data-en="Islamic Studies">اسلاميات</span></a></li>
+    <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span data-ar="الغرف الصوتية" data-en="Voice Rooms">الغرف الصوتية</span></a></li>
+    <li><a href="questions.html"><i class="fas fa-question-circle"></i><span data-ar="الأسئلة" data-en="Questions">الأسئلة</span></a></li>
+    <li><a href="family.html"><i class="fas fa-users"></i><span data-ar="العائلة" data-en="Family">العائلة</span></a></li>
+    <li><a href="settings.html"><i class="fas fa-cog"></i><span data-ar="الإعدادات" data-en="Settings">الإعدادات</span></a></li>
+  </ul>
+  <ul class="sn-links sn-logout">
+    <li><a href="#"><i class="fas fa-sign-out-alt"></i><span data-ar="تسجيل الخروج" data-en="Logout">تسجيل الخروج</span></a></li>
+  </ul>
+</div>
+
+<!-- MAIN -->
+<main class="page">
+
+  <!-- HERO -->
+  <div class="pg-hero">
+    <div class="pg-badge"><i class="fas fa-sliders-h"></i><span data-ar="تخصيص التجربة" data-en="Customize Experience">تخصيص التجربة</span></div>
+    <h1 data-ar="الإعدادات" data-en="Settings">الإعدادات</h1>
+    <p data-ar="خصّص مظهر المنصة من هنا — التغييرات تُطبَّق على جميع الصفحات تلقائياً." data-en="Customize your platform experience here — changes apply to all pages automatically.">خصّص مظهر المنصة من هنا — التغييرات تُطبَّق على جميع الصفحات تلقائياً.</p>
+  </div>
+
+  <!-- 1. THEME -->
+  <div class="s-block">
+    <div class="s-label"><i class="fas fa-circle-half-stroke"></i><span data-ar="المظهر" data-en="Theme">المظهر</span></div>
+    <div class="s-card">
+      <div class="theme-grid">
+        <div class="t-opt" id="th-light" onclick="pickTheme('light')">
+          <div class="t-preview t-light">
+            <div class="t-bar"><div class="t-dot" style="background:#4a90e2"></div><div class="t-dot" style="background:#b8c9dc"></div></div>
+            <div class="t-body"><div class="t-line" style="width:65%"></div><div class="t-line" style="width:45%;opacity:.5"></div></div>
+          </div>
+          <div class="t-label" data-ar="فاتح" data-en="Light">فاتح</div>
+          <div class="t-check"><i class="fas fa-check"></i></div>
+        </div>
+        <div class="t-opt" id="th-dark" onclick="pickTheme('dark')">
+          <div class="t-preview t-dark">
+            <div class="t-bar"><div class="t-dot" style="background:#4a90e2"></div><div class="t-dot" style="background:#3d5a7f"></div></div>
+            <div class="t-body"><div class="t-line" style="width:65%"></div><div class="t-line" style="width:45%;opacity:.5"></div></div>
+          </div>
+          <div class="t-label" data-ar="داكن" data-en="Dark">داكن</div>
+          <div class="t-check"><i class="fas fa-check"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. FONT SIZE -->
+  <div class="s-block">
+    <div class="s-label"><i class="fas fa-text-height"></i><span data-ar="حجم الخط" data-en="Font Size">حجم الخط</span></div>
+    <div class="s-card">
+      <!-- direction:ltr wrapper keeps Small on left, X-Large on right in all locales -->
+      <div class="font-slider-container">
+        <input type="range" class="font-slider" id="fontSlider" min="0" max="3" step="1" value="1"/>
+        <div class="font-labels">
+          <span onclick="setFont(0)" data-idx="0">Small</span>
+          <span onclick="setFont(1)" data-idx="1">Medium</span>
+          <span onclick="setFont(2)" data-idx="2">Large</span>
+          <span onclick="setFont(3)" data-idx="3">X-Large</span>
+        </div>
+      </div>
+      <div class="font-preview" id="fontPreview">
+        بسم الله الرحمن الرحيم — In the name of God, the Most Gracious.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LANGUAGE -->
+  <div class="s-block">
+    <div class="s-label"><i class="fas fa-language"></i><span data-ar="اللغة" data-en="Language">اللغة</span></div>
+    <div class="s-card">
+      <div class="lang-grid">
+        <div class="t-opt" id="lg-ar" onclick="pickLang('ar')">
+          <div class="t-preview" style="background:linear-gradient(135deg,#006c35,#007a3d,#00993d);display:flex;align-items:center;justify-content:center;font-size:2.8rem;">JO</div>
+          <div class="t-label" style="color:#fff;">العربية</div>
+          <div class="t-check"><i class="fas fa-check"></i></div>
+        </div>
+        <div class="t-opt" id="lg-en" onclick="pickLang('en')">
+          <div class="t-preview" style="background:linear-gradient(135deg,#012169,#c8102e 50%,#012169);display:flex;align-items:center;justify-content:center;font-size:2.8rem;">🇬🇧</div>
+          <div class="t-label" style="color:#fff;">English</div>
+          <div class="t-check"><i class="fas fa-check"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- SAVE BANNER -->
+<div class="save-bar" id="saveBar">
+  <div class="save-msg">
+    <strong data-ar="لديك تغييرات غير محفوظة" data-en="Unsaved changes">لديك تغييرات غير محفوظة</strong>
+    <span data-ar=" — احفظ لتطبيقها على جميع الصفحات" data-en=" — save to apply across all pages"> — احفظ لتطبيقها على جميع الصفحات</span>
+  </div>
+  <div class="save-btns">
+    <button class="btn-reset" onclick="resetAll()" data-ar="إعادة الضبط" data-en="Reset">إعادة الضبط</button>
+    <button class="btn-save" onclick="saveAll()" data-ar="💾 حفظ" data-en="💾 Save">💾 حفظ</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
+
+<footer>
+  <div class="footer-bottom">
+    <p data-ar="© 2026 SITEJ — منصة التعلم الذكي. جميع الحقوق محفوظة." data-en="© 2026 SITEJ — Smart Learning Platform. All rights reserved.">© 2026 SITEJ — منصة التعلم الذكي. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+<script>
+// ── STATE ──
+var STEPS = ['small','medium','large','xlarge'];
+var SIZES = {small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+var draft = {};
+var dirty = false;
+
+function loadDraft() {
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('siteSettings') || '{}'); } catch(e){}
+  draft = Object.assign({theme:'light',graphics:'full',fontSize:'medium',lang:'ar'}, saved);
+}
+
+// ── RENDER UI FROM DRAFT ──
+function renderUI() {
+  // theme
+  document.querySelectorAll('.t-opt[id^="th-"]').forEach(function(el){ el.classList.remove('sel'); });
+  var te = document.getElementById('th-'+draft.theme);
+  if (te) te.classList.add('sel');
+
+  // graphics
+  document.querySelectorAll('.g-opt').forEach(function(el){ el.classList.remove('sel'); });
+  var ge = document.getElementById('gr-'+draft.graphics);
+  if (ge) ge.classList.add('sel');
+
+  // font
+  var idx = STEPS.indexOf(draft.fontSize);
+  if (idx < 0) idx = 1;
+  document.getElementById('fontSlider').value = idx;
+  updateSlider(idx);
+  updateFontLabels(idx);
+  document.getElementById('fontPreview').style.fontSize = SIZES[STEPS[idx]];
+
+  // lang
+  document.querySelectorAll('.t-opt[id^="lg-"]').forEach(function(el){ el.classList.remove('sel'); });
+  var le = document.getElementById('lg-'+draft.lang);
+  if (le) le.classList.add('sel');
+
+  // nav lang
+  syncNavLang(draft.lang);
+
+  // page direction + translate
+  applyLangDOM(draft.lang);
+}
+
+// ── FONT SLIDER ──
+function updateSlider(idx) {
+  var pct = (idx / 3) * 100;
+  document.getElementById('fontSlider').style.setProperty('--pct', pct + '%');
+}
+function updateFontLabels(idx) {
+  document.querySelectorAll('.font-labels span').forEach(function(s, i) {
+    s.classList.toggle('act', i === idx);
+  });
+}
+document.getElementById('fontSlider').addEventListener('input', function() {
+  var idx = parseInt(this.value);
+  draft.fontSize = STEPS[idx];
+  updateSlider(idx);
+  updateFontLabels(idx);
+  document.getElementById('fontPreview').style.fontSize = SIZES[STEPS[idx]];
+  // live preview only, don't call applyAll until save
+  document.documentElement.style.fontSize = SIZES[STEPS[idx]];
+  markDirty();
+});
+function setFont(idx) {
+  document.getElementById('fontSlider').value = idx;
+  draft.fontSize = STEPS[idx];
+  updateSlider(idx);
+  updateFontLabels(idx);
+  document.getElementById('fontPreview').style.fontSize = SIZES[STEPS[idx]];
+  document.documentElement.style.fontSize = SIZES[STEPS[idx]];
+  markDirty();
+}
+
+// ── PICKERS ──
+function pickTheme(t) {
+  draft.theme = t;
+  document.querySelectorAll('.t-opt[id^="th-"]').forEach(function(el){ el.classList.remove('sel'); });
+  var el = document.getElementById('th-'+t);
+  if (el) el.classList.add('sel');
+  if (window.SiteSettings) window.SiteSettings.applyAll(draft);
+  markDirty();
+}
+
+function pickGraphics(g) {
+  draft.graphics = g;
+  document.querySelectorAll('.g-opt').forEach(function(el){ el.classList.remove('sel'); });
+  var el = document.getElementById('gr-'+g);
+  if (el) el.classList.add('sel');
+  if (window.SiteSettings) window.SiteSettings.applyAll(draft);
+  markDirty();
+}
+
+function pickLang(lang) {
+  draft.lang = lang;
+  // update lang section cards
+  document.querySelectorAll('.t-opt[id^="lg-"]').forEach(function(el){ el.classList.remove('sel'); });
+  var el = document.getElementById('lg-'+lang);
+  if (el) el.classList.add('sel');
+  // update nav dropdown items
+  document.querySelectorAll('#langMenu .lang-item').forEach(function(el){
+    el.classList.toggle('active', el.getAttribute('data-l') === lang);
+  });
+  syncNavLang(lang);
+  applyLangDOM(lang);
+  markDirty();
+  closeLangMenu();
+}
+
+function syncNavLang(lang) {
+  document.getElementById('navFlag').textContent  = lang === 'ar' ? 'JO' : '🇬🇧';
+  document.getElementById('navLabel').textContent = lang === 'ar' ? 'العربية' : 'English';
+  document.querySelectorAll('#langMenu .lang-item').forEach(function(el){
+    el.classList.toggle('active', el.getAttribute('data-l') === lang);
+  });
+}
+
+function applyLangDOM(lang) {
+  var isAr = lang === 'ar';
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = isAr ? 'rtl' : 'ltr';
+  document.title = isAr ? 'الإعدادات | SITEJ' : 'Settings | SITEJ';
+  document.querySelectorAll('[data-ar]').forEach(function(el) {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') return;
+    // If element is a button using data-ar for its own text
+    if (el.hasAttribute('data-ar') && !el.children.length) {
+      el.textContent = isAr ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    } else if (el.hasAttribute('data-ar')) {
+      el.textContent = isAr ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    }
+  });
+}
+
+// ── LANG DROPDOWN (nav) ──
+document.getElementById('langBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  document.getElementById('langWrap').classList.toggle('open');
+});
+document.addEventListener('click', function(){ closeLangMenu(); });
+function closeLangMenu(){ document.getElementById('langWrap').classList.remove('open'); }
+
+// ── DIRTY / SAVE / RESET ──
+function markDirty() {
+  dirty = true;
+  document.getElementById('saveBar').classList.add('show');
+}
+function saveAll() {
+  if (window.SiteSettings) {
+    window.SiteSettings.save(draft);
+  } else {
+    localStorage.setItem('siteSettings', JSON.stringify(draft));
+  }
+  dirty = false;
+  document.getElementById('saveBar').classList.remove('show');
+  showToast(draft.lang === 'ar' ? '✅ تم حفظ الإعدادات!' : '✅ Settings saved!');
+}
+function resetAll() {
+  var defaults = {theme:'light',graphics:'full',fontSize:'medium',lang:'ar'};
+  draft = Object.assign({}, defaults);
+  if (window.SiteSettings) window.SiteSettings.save(defaults);
+  else localStorage.setItem('siteSettings', JSON.stringify(defaults));
+  dirty = false;
+  document.getElementById('saveBar').classList.remove('show');
+  renderUI();
+  showToast('🔄 ' + (draft.lang === 'ar' ? 'تم إعادة الضبط' : 'Reset to defaults'));
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+// ── SIDE NAV ──
+function toggleNav() {
+  document.getElementById('burger').classList.toggle('open');
+  document.getElementById('sidenav').classList.toggle('show');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeNav() {
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('sidenav').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ── SCROLL ──
+window.addEventListener('scroll', function(){
+  document.getElementById('topNav').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 280);
+});
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', function(){
+  loadDraft();
+  renderUI();
+});
+</script>
+<script>if(typeof toggleMenu==="undefined" && typeof toggleNav!=="undefined"){window.toggleMenu=toggleNav;}</script>
+
+<script>
+/* ══ UNIFIED SIDENAV + SETTINGS JS ══ */
+(function(){
+  var STEPS = ['small','medium','large','xlarge'];
+  var SIZES = {small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+
+  function loadS(){ try{return Object.assign({theme:'light',graphics:'full',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}catch(e){return {theme:'light',graphics:'full',fontSize:'medium',lang:'ar'};} }
+  function saveS(s){ localStorage.setItem('siteSettings',JSON.stringify(s)); if(window.SiteSettings) window.SiteSettings.applyAll(s); }
+
+  // open / close
+  window.snClose = function(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(d) d.classList.remove('show');
+    if(o) o.classList.remove('show');
+    if(b){b.classList.remove('open');b.setAttribute('aria-expanded','false');}
+    // legacy ids
+    ['sideNav','sidenav'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
+    ['overlay-bg','overlay'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
+  };
+  window.snOpen = function(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(d) d.classList.add('show');
+    if(o) o.classList.add('show');
+    if(b){b.classList.add('open');b.setAttribute('aria-expanded','true');}
+    snRenderSettings();
+  };
+  window.snToggle = function(){ var d=document.getElementById('snDrawer'); if(d && d.classList.contains('show')) snClose(); else snOpen(); };
+
+  // keep legacy toggleMenu / toggleNav working
+  window.toggleMenu = window.toggleNav = window.snToggle;
+  window.closeNav = window.snClose;
+
+  // settings panel toggle
+  window.snToggleSettings = function(){
+    var panel=document.getElementById('snSettingsPanel');
+    var toggle=document.getElementById('snSettingsToggle');
+    if(!panel) return;
+    panel.classList.toggle('open');
+    toggle.classList.toggle('open');
+  };
+
+  // render settings UI
+  function snRenderSettings(){
+    var s = loadS();
+    // theme
+    ['light','dark'].forEach(function(t){
+      var el=document.getElementById('sn-th-'+t);
+      if(el) el.classList.toggle('sel', s.theme===t);
     });
-
-    // جلب البيانات
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUID = user.uid;
-            const snap = await getDoc(doc(db, "users", currentUID));
-            if (snap.exists()) {
-                const d = snap.data();
-                document.getElementById('nick').value = d.nickname || "";
-                document.getElementById('display-name').innerText = d.nickname || "GUEST_01";
-                document.getElementById('status').value = d.status || "";
-                document.getElementById('bio').value = d.bio || "";
-                document.getElementById('pfp-preview').src = d.photoURL || "https://via.placeholder.com/150";
-                // تعبئة الروابط...
-                document.getElementById('github').value = d.github || "";
-                document.getElementById('discord').value = d.discord || "";
-                document.getElementById('insta').value = d.instagram || "";
-                document.getElementById('telegram').value = d.telegram || "";
-                document.getElementById('tiktok').value = d.tiktok || "";
-            }
-        }
+    // graphics
+    ['full','reduced','minimal'].forEach(function(g){
+      var el=document.getElementById('sn-gr-'+g);
+      if(el) el.classList.toggle('sel', s.graphics===g);
     });
+    // font
+    var idx=STEPS.indexOf(s.fontSize); if(idx<0)idx=1;
+    var sl=document.getElementById('snFontSlider');
+    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+    snUpdateFontLabels(idx);
+  }
 
-    // عملية الحفظ الشاملة
-    document.getElementById('save-all').addEventListener('click', async () => {
-        const btn = document.getElementById('save-all');
-        const msg = document.getElementById('status-msg');
-        btn.disabled = true;
-        msg.innerText = "⏳ جاري الرفع والمزامنة...";
+  function snUpdateSliderTrack(sl,idx){
+    sl.style.setProperty('--pct',(idx/3*100)+'%');
+  }
+  function snUpdateFontLabels(idx){
+    document.querySelectorAll('.sn-font-labels span').forEach(function(s,i){ s.classList.toggle('act',i===idx); });
+  }
 
-        try {
-            let photoURL = document.getElementById('pfp-preview').src;
+  window.snFontInput = function(val){
+    var idx=parseInt(val);
+    var sl=document.getElementById('snFontSlider');
+    if(sl) snUpdateSliderTrack(sl,idx);
+    snUpdateFontLabels(idx);
+    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
+  };
+  window.snSetFont = function(idx){
+    var sl=document.getElementById('snFontSlider');
+    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+    snUpdateFontLabels(idx);
+    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
+  };
 
-            // إذا اختار العضو صورة جديدة، نرفعها لـ Storage
-            if (selectedFile) {
-                const sRef = ref(storage, `profiles/${currentUID}`);
-                const upSnap = await uploadBytes(sRef, selectedFile);
-                photoURL = await getDownloadURL(upSnap.ref);
-            }
+  window.snPickTheme = function(t){
+    ['light','dark'].forEach(function(x){ var el=document.getElementById('sn-th-'+x); if(el) el.classList.toggle('sel',x===t); });
+    var s=loadS(); s.theme=t; saveS(s);
+    snShowToast(t==='dark'? '🌙 تم تفعيل الوضع الداكن':'☀️ تم تفعيل الوضع الفاتح');
+  };
+  window.snPickGraphics = function(g){
+    ['full','reduced','minimal'].forEach(function(x){ var el=document.getElementById('sn-gr-'+x); if(el) el.classList.toggle('sel',x===g); });
+    var s=loadS(); s.graphics=g; saveS(s);
+  };
 
-            // تحديث Firestore بجميع الحقول (لا حذف، فقط إضافة)
-            await updateDoc(doc(db, "users", currentUID), {
-                nickname: document.getElementById('nick').value,
-                status: document.getElementById('status').value,
-                bio: document.getElementById('bio').value,
-                photoURL: photoURL,
-                edu: document.getElementById('edu').value,
-                skill: document.getElementById('main-skill').value,
-                hours: document.getElementById('study-hours').value,
-                github: document.getElementById('github').value,
-                discord: document.getElementById('discord').value,
-                instagram: document.getElementById('insta').value,
-                telegram: document.getElementById('telegram').value,
-                tiktok: document.getElementById('tiktok').value,
-                theme: document.getElementById('theme-color').value,
-                isPrivate: document.getElementById('private-acc').checked,
-                updatedAt: new Date()
-            });
+  window.snSave = function(){
+    var s=loadS();
+    var sl=document.getElementById('snFontSlider');
+    if(sl) s.fontSize=STEPS[parseInt(sl.value)];
+    saveS(s);
+    snShowToast('✅ تم حفظ الإعدادات!');
+  };
 
-            msg.innerText = "✅ تم حفظ التغييرات بنجاح!";
-            setTimeout(() => { msg.innerText = ""; btn.disabled = false; }, 3000);
-        } catch (err) {
-            msg.innerText = "❌ خطأ في الاتصال!";
-            btn.disabled = false;
-        }
+  window.snLogout = function(){
+    if(typeof firebase!=='undefined' && firebase.auth){ firebase.auth().signOut().then(function(){ window.location.href='login.html'; }); }
+    else { window.location.href='login.html'; }
+  };
+
+  function snShowToast(msg){
+    var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');
+    if(!t||!m) return;
+    m.textContent=msg; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); },2500);
+  }
+
+  // scroll: shrink nav
+  window.addEventListener('scroll',function(){
+    var nav=document.querySelector('nav.top-bar,nav#topNav,header.top-bar');
+    if(nav) nav.classList.toggle('scrolled', window.scrollY>50);
+  },{passive:true});
+
+  // init on DOM ready
+  document.addEventListener('DOMContentLoaded', function(){
+    snRenderSettings();
+    // update burger id reference
+    var burgers = document.querySelectorAll('.burger,.burger-menu');
+    burgers.forEach(function(b){
+      if(!b.id) b.id='snBurger';
+      b.setAttribute('onclick','snToggle()');
     });
+  });
+})();
 </script>
 
 </body>

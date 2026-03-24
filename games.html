@@ -1,990 +1,1496 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SITAJ | ساحة الألعاب</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Josefin+Sans:wght@100;200;300;400;600;700&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-/* ══════════════════════════════════════════
-   VARIABLES
-══════════════════════════════════════════ */
-:root{
-  --void:#03060f;--abyss:#060c1e;--deep:#0a1428;--navy:#0f1e3d;
-  --white:#f0f4ff;--mist:#a8bce0;--fog:#6880a8;
-  --gold:#c8a84a;--gold2:#e8ca78;--gold3:#f5dfa0;
-  --azure:#3d7fff;--azure2:#5b94ff;--sapphire:#1a4fc4;
-  --teal:#00d4b8;--rose:#ff3d6e;--violet:#7c3aed;
-  --amber:#f59e0b;--emerald:#059669;--lime:#84cc16;
-  --font-ar:'Cairo','Tajawal',sans-serif;
-  --font-cin:'Cinzel',serif;--font-cind:'Cinzel Decorative',serif;
-  --font-jos:'Josefin Sans',sans-serif;--font-orb:'Orbitron',sans-serif;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITEJ - ساحة الألعاب التعليمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS VARIABLES (MATCHING INDEX PAGE) --- */
+        :root {
+            /* Navy Blue Palette */
+            --navy-darkest: #0a1628;
+            --navy-darker: #112240;
+            --navy-dark: #1a2942;
+            --navy-medium: #233554;
+            --navy-light: #2d4263;
+            --navy-lighter: #3d5a7f;
+            
+            /* White to Navy Gradient Colors */
+            --white-pure: #ffffff;
+            --white-soft: #f8f9fa;
+            --white-light: #e8eef5;
+            --blue-lightest: #d4dfe9;
+            --blue-lighter: #b8c9dc;
+            --blue-light: #9bb4d0;
+            --blue-medium: #7a9ac2;
+            --blue-navy: #5a7fa8;
+            
+            /* Accent Colors */
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #a78bfa;
+            
+            /* Gradients */
+            --gradient-navy-white: linear-gradient(135deg, #0a1628 0%, #1a2942 25%, #3d5a7f 50%, #7a9ac2 75%, #e8eef5 100%);
+            --gradient-white-navy: linear-gradient(135deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 50%, #5a7fa8 75%, #1a2942 100%);
+            --gradient-soft: linear-gradient(180deg, #f8f9fa 0%, #e8eef5 50%, #d4dfe9 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            
+            /* Glass Effects */
+            --glass-white: rgba(255, 255, 255, 0.95);
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-medium: rgba(255, 255, 255, 0.15);
+            --glass-strong: rgba(255, 255, 255, 0.25);
+            --glass-navy: rgba(26, 41, 66, 0.8);
+            
+            /* Border Colors */
+            --border-white: rgba(255, 255, 255, 0.3);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --border-navy: rgba(26, 41, 66, 0.3);
+            
+            /* Shadow Colors */
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --shadow-navy: rgba(26, 41, 66, 0.3);
+            --shadow-glow: rgba(74, 144, 226, 0.5);
+            
+            /* Text Colors */
+            --text-navy: #0a1628;
+            --text-blue: #1a2942;
+            --text-gray: #6b7c93;
+            --text-light: #9bb4d0;
+            
+            --error: #ff6b6b;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            color: var(--text-navy);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(74, 144, 226, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(26, 41, 66, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(155, 180, 208, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(111, 168, 236, 0.04) 0%, transparent 35%);
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.4) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(26, 41, 66, 0.3) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -10s;
+        }
+
+        .shape-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(155, 180, 208, 0.25) 0%, transparent 70%);
+            top: 35%;
+            left: 45%;
+            animation-delay: -20s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 70px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-blue);
+            box-shadow: 0 4px 30px rgba(26, 41, 66, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: 14px 70px;
+            background: rgba(248, 249, 250, 0.95);
+            box-shadow: 0 8px 40px rgba(26, 41, 66, 0.12);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            cursor: pointer;
+            transition: 0.3s;
+            width: 48px;
+            height: 48px;
+            background: var(--glass-light);
+            border: 1px solid var(--border-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-icon:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--shadow-blue);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) translateY(-2px);
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px var(--shadow-blue);
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: var(--gradient-blue-glow);
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(15px)
+        }
+
+        .logo-icon i {
+            font-size: 1.6rem;
+            color: var(--white-pure);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+        }
+
+        
+                transform: scale(1.05); 
+                box-shadow: 0 15px 45px var(--shadow-glow);
+            }
+        }
+
+        
+                opacity: 0.9;
+                filter: blur(20px);
+            }
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .logo-main {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.3));
+        }
+
+        .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        #authSlot {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s;
+            font-family: inherit;
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px var(--shadow-glow);
+        }
+
+        .nav-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-blue);
+            object-fit: cover;
+            box-shadow: 0 4px 15px var(--shadow-blue);
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: var(--glass-light);
+            transition: all 0.3s;
+        }
+
+        .profile-trigger:hover {
+            background: var(--glass-medium);
+            transform: translateY(-2px);
+        }
+
+        .profile-trigger span {
+            font-weight: 700;
+            color: var(--text-navy);
+        }
+
+        /* --- SIDE NAVIGATION --- */
+        .side-nav {
+            height: 100%;
+            width: 400px;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            right: -400px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(232, 238, 245, 0.98) 100%);
+            backdrop-filter: blur(35px);
+            border-left: 3px solid var(--accent-blue);
+            overflow-x: hidden;
+            overflow-y: auto;
+            transition: right 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 35px 30px;
+            box-shadow: -15px 0 60px rgba(26, 41, 66, 0.25);
+        }
+
+        .side-nav::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-track {
+            background: rgba(26, 41, 66, 0.05);
+            border-radius: 10px;
+        }
+
+        .side-nav::-webkit-scrollbar-thumb {
+            background: var(--gradient-blue-glow);
+            border-radius: 10px;
+        }
+
+        .side-nav.active {
+            right: 0;
+        }
+
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid var(--border-blue);
+        }
+
+        .nav-header h2 {
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: var(--accent-blue);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--glass-light);
+        }
+
+        .close-btn:hover {
+            color: #ee5a6f;
+            transform: rotate(90deg) scale(1.2);
+            background: rgba(238, 90, 111, 0.1);
+        }
+
+        .side-nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 8px;
+        }
+
+        .side-nav a {
+            padding: 20px 22px;
+            text-decoration: none;
+            font-size: 1.15rem;
+            color: var(--text-navy);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 18px;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 15px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .side-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2));
+            transition: width 0.6s ease;
+            z-index: 0;
+        }
+
+        .side-nav a:hover::before {
+            width: 100%;
+        }
+
+        .side-nav a > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .side-nav a i {
+            width: 35px;
+            color: var(--accent-blue);
+            text-align: center;
+            font-size: 1.4rem;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .side-nav a:hover {
+            color: var(--navy-dark);
+            background: var(--glass-strong);
+            transform: translateX(-12px);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.2);
+        }
+
+        .side-nav a:hover i {
+            transform: scale(1.3) rotate(10deg);
+            filter: drop-shadow(0 0 15px var(--accent-blue));
+        }
+
+        #logoutBtn a {
+            color: var(--error);
+        }
+
+        #logoutBtn a i {
+            color: var(--error);
+        }
+
+        #logoutBtn a:hover {
+            background: rgba(238, 90, 111, 0.15);
+            color: #d63447;
+        }
+
+        /* --- OVERLAY --- */
+        .overlay-bg {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 41, 66, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 2500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .overlay-bg.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            padding: 120px 50px 80px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: 2px;
+            filter: drop-shadow(0 0 30px rgba(74, 144, 226, 0.2));
+        }
+
+        .page-header p {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .back-btn {
+            display: none;
+            background: transparent;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-bottom: 30px;
+            transition: all 0.4s;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .back-btn:hover {
+            background: var(--glass-strong);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .back-btn i {
+            margin-left: 8px;
+        }
+
+        /* --- GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--border-blue);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26, 41, 66, 0.08);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-blue-glow);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(74, 144, 226, 0.3);
+            border-color: var(--accent-blue);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card i {
+            font-size: 4rem;
+            background: var(--gradient-blue-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            display: block;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover i {
+            transform: scale(1.2) rotateY(360deg);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text-navy);
+            font-weight: 800;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .play-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: var(--gradient-blue-glow);
+            color: var(--white-pure);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px var(--shadow-blue);
+        }
+
+        .play-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--shadow-glow);
+        }
+
+        .play-link i {
+            font-size: 1rem;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            color: var(--white-pure);
+            margin: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 18px 30px;
+            }
+
+            .container {
+                padding: 100px 25px 60px 25px;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .logo-text {
+                display: none;
+            }
+
+            .side-nav {
+                width: 340px;
+                right: -340px;
+            }
+        }
+    
+        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:all 0.3s;flex-shrink:0;}
+        .profile-nav-btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 8px 22px var(--shadow-glow);}
+        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+    
+        .notification-btn{position:relative;width:42px;height:42px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;flex-shrink:0;}
+        .notification-btn:hover{background:rgba(255,255,255,0.95);transform:translateY(-2px);box-shadow:0 6px 18px var(--shadow-blue);}
+        .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
+        .notification-badge{position:absolute;top:-5px;right:-5px;width:19px;height:19px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;}
+    
+/* ══════════════════════════════════════════════
+   UNIFIED NAV + SIDENAV + SETTINGS PANEL STYLES
+   ══════════════════════════════════════════════ */
+
+/* ── NAV BASE ── */
+nav.top-bar,nav#topNav,header.top-bar{
+  display:flex!important;justify-content:space-between;align-items:center;
+  padding:20px 60px;position:fixed;width:100%;top:0;z-index:1000;
+  background:rgba(255,255,255,0.82);backdrop-filter:blur(30px) saturate(180%);
+  border-bottom:1px solid rgba(74,144,226,0.3);
+  box-shadow:0 4px 30px rgba(26,41,66,0.08);
+  transition:padding .4s,box-shadow .4s,background .4s;
+}
+nav.top-bar.scrolled,nav#topNav.scrolled,header.top-bar.scrolled{
+  padding:13px 60px!important;
+  box-shadow:0 8px 40px rgba(26,41,66,0.15);
+  background:rgba(248,249,250,0.97)!important;
+  border-bottom:2px solid #4a90e2!important;
 }
 
-/* ══ RESET ══ */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html{scroll-behavior:smooth;}
-body{background:var(--void);color:var(--white);font-family:var(--font-ar);overflow-x:hidden;cursor:none;min-height:100vh;}
-
-/* ══ NOISE ══ */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
-  opacity:.5;}
-
-/* ══ CURSOR ══ */
-#cur{position:fixed;width:8px;height:8px;background:var(--gold2);border-radius:50%;pointer-events:none;z-index:999999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference;}
-#curR{position:fixed;width:36px;height:36px;border:1px solid rgba(200,168,74,.5);border-radius:50%;pointer-events:none;z-index:999998;transform:translate(-50%,-50%);transition:all .14s cubic-bezier(.22,1,.36,1);}
-body.hov #cur{width:20px;height:20px;}
-body.hov #curR{width:60px;height:60px;border-color:rgba(200,168,74,.25);}
-
-/* ══ NAVBAR ══ */
-#NAV{position:fixed;top:0;left:0;right:0;z-index:800;height:68px;padding:0 44px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,6,15,0);backdrop-filter:blur(0px);border-bottom:1px solid rgba(200,168,74,0);transition:all .5s cubic-bezier(.22,1,.36,1);}
-#NAV.solid{background:rgba(3,6,15,.92);backdrop-filter:blur(28px) saturate(2);border-bottom-color:rgba(200,168,74,.1);box-shadow:0 4px 60px rgba(0,0,0,.6);}
-.n-logo{font-family:var(--font-cind);font-size:1.35rem;font-weight:700;letter-spacing:5px;background:linear-gradient(135deg,var(--white),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;user-select:none;flex-shrink:0;text-decoration:none;}
-.n-links{display:flex;gap:32px;list-style:none;}
-.n-links a{font-family:var(--font-ar);font-size:13.5px;font-weight:500;color:var(--fog);text-decoration:none;position:relative;padding-bottom:3px;transition:color .3s;}
-.n-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold));transition:width .35s;}
-.n-links a:hover{color:var(--white);}
-.n-links a:hover::after,.n-links a.act::after{width:100%;right:auto;left:0;}
-.n-links a.act{color:var(--gold2);}
-.n-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.n-lang{display:flex;border:1px solid rgba(200,168,74,.22);border-radius:50px;overflow:hidden;background:rgba(200,168,74,.04);}
-.n-lang button{font-family:var(--font-jos);font-size:11px;font-weight:300;letter-spacing:2.5px;padding:7px 13px;background:transparent;border:none;color:var(--fog);cursor:pointer;transition:all .3s;}
-.n-lang button.on{background:rgba(200,168,74,.18);color:var(--gold2);}
-.n-bell{position:relative;width:42px;height:42px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--azure2);font-size:1rem;transition:all .3s;}
-.n-bell:hover{background:rgba(61,127,255,.12);border-color:rgba(61,127,255,.4);transform:translateY(-2px);}
-.n-bell-badge{position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--rose),#c0274e);display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800;color:#fff;animation:bp 2.5s infinite;}
-@keyframes bp{0%,100%{box-shadow:0 0 0 0 rgba(255,61,110,.5);}50%{box-shadow:0 0 0 6px rgba(255,61,110,0);}}
-.n-burger{width:34px;height:22px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;}
-.n-bline{width:100%;height:2px;border-radius:4px;background:linear-gradient(90deg,var(--gold2),var(--azure2));transition:all .55s cubic-bezier(.68,-.55,.265,1.55);}
-.n-burger.on .n-bline:nth-child(1){transform:rotate(45deg) translate(7px,7px);background:linear-gradient(90deg,var(--rose),#e0274e);}
-.n-burger.on .n-bline:nth-child(2){opacity:0;transform:translateX(-20px);}
-.n-burger.on .n-bline:nth-child(3){transform:rotate(-45deg) translate(7px,-7px);background:linear-gradient(90deg,var(--rose),#e0274e);}
-
-/* ══ OVERLAY + SIDENAV ══ */
-#OVERLAY{position:fixed;inset:0;z-index:1500;background:rgba(3,6,15,.88);backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .45s;}
-#OVERLAY.on{opacity:1;pointer-events:all;}
-#SIDENAV{position:fixed;top:0;right:-460px;width:420px;height:100vh;z-index:1600;background:linear-gradient(170deg,#0d1a35 0%,#080f22 60%,#040810 100%);border-left:1px solid rgba(200,168,74,.14);box-shadow:-30px 0 100px rgba(0,0,0,.7);transition:right .65s cubic-bezier(.68,-.55,.265,1.55);display:flex;flex-direction:column;overflow:hidden;}
-#SIDENAV.on{right:0;}
-.sn-deco{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--azure2),var(--gold),transparent);}
-.sn-deco2{position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(200,168,74,.07),transparent 70%);pointer-events:none;}
-.sn-body{flex:1;overflow-y:auto;padding:28px 24px 24px;scrollbar-width:thin;scrollbar-color:rgba(200,168,74,.25) transparent;}
-.sn-body::-webkit-scrollbar{width:3px;}
-.sn-body::-webkit-scrollbar-thumb{background:rgba(200,168,74,.25);border-radius:3px;}
-.sn-top{display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;margin-bottom:20px;border-bottom:1px solid rgba(200,168,74,.1);}
-.sn-logo-txt{font-family:var(--font-cind);font-size:1.2rem;letter-spacing:4px;background:linear-gradient(135deg,var(--gold2),var(--white));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sn-x{width:38px;height:38px;border-radius:50%;background:rgba(255,61,110,.08);border:1px solid rgba(255,61,110,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--rose);font-size:1rem;transition:all .3s;flex-shrink:0;}
-.sn-x:hover{background:rgba(255,61,110,.2);transform:rotate(90deg);}
-.sn-profile{display:flex;align-items:center;gap:14px;padding:18px;background:rgba(255,255,255,.03);border:1px solid rgba(200,168,74,.1);border-radius:18px;margin-bottom:20px;text-decoration:none;transition:all .35s;cursor:pointer;}
-.sn-profile:hover{background:rgba(200,168,74,.06);border-color:rgba(200,168,74,.28);transform:translateX(-5px);}
-.sn-av{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--azure),var(--sapphire));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 0 20px rgba(61,127,255,.3);}
-.sn-info h3{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:3px;}
-.sn-info p{font-size:.75rem;color:var(--fog);}
-.sn-sec-label{font-family:var(--font-jos);font-size:.55rem;letter-spacing:5px;color:rgba(200,168,74,.3);text-transform:uppercase;padding:14px 6px 8px;}
-.sn-ul{list-style:none;}
-.sn-li{margin-bottom:2px;}
-.sn-a{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:13px 14px;text-decoration:none;border-radius:14px;font-size:.92rem;font-weight:600;color:var(--fog);transition:all .3s;position:relative;overflow:hidden;}
-.sn-a::before{content:'';position:absolute;right:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,transparent,rgba(61,127,255,.08));border-radius:14px;transition:width .3s;}
-.sn-a:hover::before{width:100%;}
-.sn-a:hover{color:var(--white);transform:translateX(-5px);}
-.sn-a.current{color:var(--gold2);background:rgba(200,168,74,.05);}
-.sn-a.current .sn-ic{background:rgba(200,168,74,.15);border-color:rgba(200,168,74,.3);color:var(--gold2);}
-.sn-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;background:rgba(61,127,255,.08);border:1px solid rgba(61,127,255,.15);color:var(--azure2);transition:all .3s;}
-.sn-a:hover .sn-ic{background:rgba(61,127,255,.18);border-color:rgba(61,127,255,.35);transform:scale(1.1);}
-.sn-li.logout .sn-a{color:rgba(255,100,120,.7);}
-.sn-li.logout .sn-a .sn-ic{background:rgba(255,61,110,.08);border-color:rgba(255,61,110,.15);color:var(--rose);}
-.sn-li.logout .sn-a:hover{color:var(--rose);}
-.sn-hr{height:1px;background:rgba(255,255,255,.05);margin:12px 0;}
-
-/* ══════════════════════════════════════════
-   HERO SECTION
-══════════════════════════════════════════ */
-.hero{
-  position:relative;min-height:72vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:110px 24px 60px;overflow:hidden;z-index:1;
+/* ── LOGO ── */
+.logo-container,.logo-link{display:flex;align-items:center;gap:15px;text-decoration:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.logo-container:hover,.logo-link:hover{transform:scale(1.06);}
+.logo-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 25px rgba(74,144,226,0.3);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
 }
-#heroCanvas{position:absolute;inset:0;z-index:0;}
-.h-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:1;}
-.h-orb.a{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.09),transparent 70%);top:5%;right:-15%;animation:oA 18s ease-in-out infinite;}
-.h-orb.b{width:500px;height:500px;background:radial-gradient(circle,rgba(200,168,74,.08),transparent 70%);bottom:10%;left:-10%;animation:oB 22s ease-in-out infinite;}
-.h-orb.c{width:300px;height:300px;background:radial-gradient(circle,rgba(255,61,110,.06),transparent 70%);top:40%;left:10%;animation:oA 14s ease-in-out infinite 4s;}
-@keyframes oA{0%,100%{transform:translate(0,0);}33%{transform:translate(-40px,30px);}66%{transform:translate(25px,-20px);}}
-@keyframes oB{0%,100%{transform:translate(0,0);}33%{transform:translate(30px,-35px);}66%{transform:translate(-20px,25px);}}
-.h-mesh{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 60% at 75% 25%,rgba(124,58,237,.06),transparent 55%),radial-gradient(ellipse 50% 55% at 20% 80%,rgba(200,168,74,.06),transparent 55%);}
-.h-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 0%,transparent 40%,rgba(3,6,15,.8) 100%);}
-
-/* Badge */
-.h-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(124,58,237,.3);background:rgba(124,58,237,.06);backdrop-filter:blur(10px);border-radius:50px;padding:9px 26px;font-family:var(--font-jos);font-size:10.5px;letter-spacing:5.5px;color:#c4b5fd;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:2;animation:fD .9s ease both;}
-.h-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#7c3aed;box-shadow:0 0 10px #7c3aed;animation:bp 2s infinite;}
-@keyframes fD{from{opacity:0;transform:translateY(-18px);}to{opacity:1;transform:translateY(0);}}
-
-/* عنوان هيرو خاص بالألعاب */
-.h-title{font-family:var(--font-ar);font-size:clamp(3rem,9vw,7.5rem);font-weight:900;line-height:1.05;margin-bottom:22px;position:relative;z-index:2;animation:fD .95s ease both .1s;}
-.h-grad{display:block;background:linear-gradient(140deg,#fff 0%,#d8c4ff 20%,#a78bfa 50%,var(--gold2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 60px rgba(124,58,237,.3));}
-.h-sub-txt{display:block;font-size:.3em;font-weight:300;color:rgba(168,188,224,.5);letter-spacing:2px;margin-top:12px;-webkit-text-fill-color:rgba(168,188,224,.5);}
-
-.h-desc{font-size:clamp(1rem,2vw,1.2rem);color:var(--mist);max-width:580px;line-height:2;margin:0 auto 40px;font-weight:300;position:relative;z-index:2;animation:fD 1s ease both .18s;}
-
-/* إحصائيات Hero */
-.h-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;animation:fD 1.05s ease both .26s;}
-.h-stat{text-align:center;padding:0 20px;}
-.h-stat-n{font-family:var(--font-orb);font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--violet),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px;}
-.h-stat-l{font-size:11px;color:var(--fog);letter-spacing:1.5px;font-family:var(--font-jos);}
-.h-stat-div{width:1px;background:rgba(255,255,255,.08);align-self:stretch;}
-
-/* ══ MARQUEE ══ */
-.mq-wrap{border-top:1px solid rgba(124,58,237,.15);border-bottom:1px solid rgba(124,58,237,.15);background:rgba(3,6,15,.7);backdrop-filter:blur(10px);padding:16px 0;overflow:hidden;position:relative;z-index:2;}
-.mq-wrap::before,.mq-wrap::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none;}
-.mq-wrap::before{left:0;background:linear-gradient(90deg,rgba(3,6,15,.9),transparent);}
-.mq-wrap::after{right:0;background:linear-gradient(-90deg,rgba(3,6,15,.9),transparent);}
-.mq-track{display:flex;width:max-content;gap:70px;animation:mq 34s linear infinite;}
-.mq-wrap:hover .mq-track{animation-play-state:paused;}
-.mq-item{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--mist);flex-shrink:0;}
-.mq-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);}
-@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,74,.15),transparent);position:relative;z-index:2;}
-
-/* ══ MAIN WRAP ══ */
-.main-wrap{max-width:1320px;margin:0 auto;padding:0 28px 100px;position:relative;z-index:2;}
-
-/* ══ LEADERBOARD BAR (top) ══ */
-.lb-bar{
-  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  padding:18px 26px;
-  background:linear-gradient(145deg,rgba(124,58,237,.08),rgba(124,58,237,.03));
-  border:1px solid rgba(124,58,237,.2);border-radius:20px;
-  margin:44px 0 30px;backdrop-filter:blur(12px);
-  animation:fD .8s ease both;
+.logo-icon:hover{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 35px rgba(74,144,226,0.45);}
+.logo-icon i{font-size:1.5rem;color:#fff;}
+.logo-text,.logo-name{
+  font-size:1.8rem;font-weight:900;letter-spacing:3px;
+  background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.lb-title{font-family:var(--font-jos);font-size:.6rem;letter-spacing:5px;color:rgba(167,139,250,.5);text-transform:uppercase;white-space:nowrap;margin-left:auto;}
-.lb-players{display:flex;gap:10px;flex-wrap:wrap;}
-.lb-player{
-  display:flex;align-items:center;gap:8px;
-  padding:7px 14px;background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);border-radius:50px;
-  font-size:.8rem;font-weight:700;color:var(--mist);
-  transition:all .3s;
+
+/* ── NAV RIGHT CLUSTER ── */
+.nav-right{display:flex;align-items:center;gap:16px;}
+
+/* profile btn */
+.profile-nav-btn{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 4px 15px rgba(74,144,226,0.3);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
 }
-.lb-player:hover{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.3);}
-.lb-player span.crown{font-size:.9rem;}
-.lb-xp{font-family:var(--font-orb);font-size:.7rem;color:#a78bfa;}
-.lb-av{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--violet),#a78bfa);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;}
+.profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px rgba(74,144,226,0.5);}
+.profile-nav-btn i{color:#fff;font-size:1.1rem;}
 
-/* ══ SEARCH + FILTER ══ */
-.sf-bar{
-  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  padding:20px 24px;
-  background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.08);border-radius:24px;
-  margin-bottom:36px;backdrop-filter:blur(12px);
-  position:sticky;top:76px;z-index:100;
-  box-shadow:0 8px 40px rgba(0,0,0,.3);
+/* bell */
+.bell-btn,.notification-btn{
+  position:relative;width:42px;height:42px;
+  background:rgba(255,255,255,0.7);border:1.5px solid rgba(74,144,226,0.3);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);
 }
-.sf-search{flex:1;min-width:200px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:11px 18px;transition:all .3s;}
-.sf-search:focus-within{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.4);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
-.sf-search i{color:#a78bfa;font-size:.95rem;}
-.sf-search input{background:none;border:none;outline:none;color:var(--white);font-family:var(--font-ar);font-size:.93rem;width:100%;}
-.sf-search input::placeholder{color:var(--fog);}
-.sf-pills{display:flex;gap:7px;flex-wrap:wrap;}
-.sf-pill{
-  padding:8px 16px;border-radius:50px;font-family:var(--font-ar);font-size:12px;
-  font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);
-  background:transparent;color:var(--fog);transition:all .3s;
-  display:flex;align-items:center;gap:5px;white-space:nowrap;
+.bell-btn:hover,.notification-btn:hover{
+  background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);
+  box-shadow:0 8px 22px rgba(74,144,226,0.25);
 }
-.sf-pill:hover{background:rgba(255,255,255,.06);color:var(--white);}
-.sf-pill.on{background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(124,58,237,.08));border-color:rgba(124,58,237,.45);color:var(--white);box-shadow:0 4px 16px rgba(124,58,237,.2);}
-.sf-sort{padding:8px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:var(--fog);font-family:var(--font-ar);font-size:.82rem;cursor:pointer;transition:all .3s;}
-.sf-sort:hover{background:rgba(255,255,255,.08);color:var(--white);}
-.sf-sort.on{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.35);color:#a78bfa;}
-.sf-count{font-family:var(--font-jos);font-size:.68rem;letter-spacing:2px;color:rgba(167,139,250,.4);white-space:nowrap;margin-right:auto;}
-
-/* ══ SECTION HEADER ══ */
-.sec-h{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
-.sec-h-icon{width:44px;height:44px;border-radius:14px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);display:flex;align-items:center;justify-content:center;color:#a78bfa;font-size:1.1rem;}
-.sec-h-txt h2{font-family:var(--font-ar);font-size:1.5rem;font-weight:900;color:var(--white);}
-.sec-h-txt p{font-size:12px;color:var(--fog);margin-top:2px;}
-.sec-h-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(124,58,237,.3),transparent);}
-
-/* ══ GAMES GRID ══ */
-.g-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;}
-
-/* ══ GAME CARD — بطاقة ثلاثية الأبعاد خرافية ══ */
-.gc{
-  border-radius:28px;overflow:hidden;cursor:pointer;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:all .5s cubic-bezier(.22,1,.36,1);
-  background:linear-gradient(155deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.08);
-  will-change:transform;
-}
-/* الخط العلوي الملون يتبدل حسب اللون */
-.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .4s;z-index:2;}
-.gc:hover::before{opacity:1;}
-.gc[data-clr="violet"]::before{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
-.gc[data-clr="azure"]::before{background:linear-gradient(90deg,var(--azure),var(--azure2));}
-.gc[data-clr="gold"]::before{background:linear-gradient(90deg,var(--gold),var(--gold2));}
-.gc[data-clr="teal"]::before{background:linear-gradient(90deg,var(--teal),#67e8f9);}
-.gc[data-clr="rose"]::before{background:linear-gradient(90deg,var(--rose),#fb7185);}
-.gc[data-clr="lime"]::before{background:linear-gradient(90deg,var(--lime),#bef264);}
-
-.gc:hover{transform:translateY(-12px) rotateX(3deg);border-color:rgba(255,255,255,.2);}
-.gc[data-clr="violet"]:hover{box-shadow:0 28px 70px rgba(124,58,237,.25);}
-.gc[data-clr="azure"]:hover{box-shadow:0 28px 70px rgba(61,127,255,.25);}
-.gc[data-clr="gold"]:hover{box-shadow:0 28px 70px rgba(200,168,74,.2);}
-.gc[data-clr="teal"]:hover{box-shadow:0 28px 70px rgba(0,212,184,.2);}
-.gc[data-clr="rose"]:hover{box-shadow:0 28px 70px rgba(255,61,110,.2);}
-.gc[data-clr="lime"]:hover{box-shadow:0 28px 70px rgba(132,204,22,.2);}
-
-/* thumbnail */
-.gc-thumb{
-  position:relative;height:190px;overflow:hidden;
-  background:linear-gradient(135deg,var(--deep),var(--navy));
-}
-.gc-thumb-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.22,1,.36,1);}
-.gc:hover .gc-thumb-bg{transform:scale(1.08);}
-/* الخلفية اللونية لكل لعبة */
-.gc-thumb-bg.bg-violet{background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(167,139,250,.08));}
-.gc-thumb-bg.bg-azure{background:linear-gradient(135deg,rgba(61,127,255,.2),rgba(91,148,255,.08));}
-.gc-thumb-bg.bg-gold{background:linear-gradient(135deg,rgba(200,168,74,.2),rgba(232,202,120,.08));}
-.gc-thumb-bg.bg-teal{background:linear-gradient(135deg,rgba(0,212,184,.18),rgba(103,232,249,.06));}
-.gc-thumb-bg.bg-rose{background:linear-gradient(135deg,rgba(255,61,110,.18),rgba(251,113,133,.06));}
-.gc-thumb-bg.bg-lime{background:linear-gradient(135deg,rgba(132,204,22,.18),rgba(190,242,100,.06));}
-
-/* أيقونة اللعبة الكبيرة */
-.gc-icon-big{font-size:5rem;filter:drop-shadow(0 0 30px currentColor);opacity:.85;transition:all .4s;}
-.gc[data-clr="violet"] .gc-icon-big{color:#a78bfa;}
-.gc[data-clr="azure"] .gc-icon-big{color:var(--azure2);}
-.gc[data-clr="gold"] .gc-icon-big{color:var(--gold2);}
-.gc[data-clr="teal"] .gc-icon-big{color:var(--teal);}
-.gc[data-clr="rose"] .gc-icon-big{color:var(--rose);}
-.gc[data-clr="lime"] .gc-icon-big{color:var(--lime);}
-.gc:hover .gc-icon-big{transform:scale(1.15) rotateY(15deg);opacity:1;}
-
-/* شارة الفئة */
-.gc-cat-badge{
-  position:absolute;top:14px;right:14px;z-index:3;
-  padding:5px 12px;border-radius:50px;
-  font-family:var(--font-jos);font-size:.58rem;letter-spacing:2px;font-weight:600;
-  text-transform:uppercase;backdrop-filter:blur(10px);
-}
-.gc[data-clr="violet"] .gc-cat-badge{background:rgba(124,58,237,.25);color:#c4b5fd;border:1px solid rgba(124,58,237,.4);}
-.gc[data-clr="azure"] .gc-cat-badge{background:rgba(61,127,255,.2);color:var(--azure2);border:1px solid rgba(61,127,255,.35);}
-.gc[data-clr="gold"] .gc-cat-badge{background:rgba(200,168,74,.2);color:var(--gold2);border:1px solid rgba(200,168,74,.35);}
-.gc[data-clr="teal"] .gc-cat-badge{background:rgba(0,212,184,.15);color:var(--teal);border:1px solid rgba(0,212,184,.3);}
-.gc[data-clr="rose"] .gc-cat-badge{background:rgba(255,61,110,.15);color:var(--rose);border:1px solid rgba(255,61,110,.3);}
-.gc[data-clr="lime"] .gc-cat-badge{background:rgba(132,204,22,.15);color:var(--lime);border:1px solid rgba(132,204,22,.3);}
-
-/* شارة جديد + HOT */
-.gc-new-badge{position:absolute;top:14px;left:14px;z-index:3;padding:4px 10px;border-radius:50px;font-family:var(--font-jos);font-size:.56rem;letter-spacing:2px;font-weight:700;}
-.gc-new-badge.new{background:rgba(5,150,105,.2);color:#34d399;border:1px solid rgba(5,150,105,.3);}
-.gc-new-badge.hot{background:rgba(255,61,110,.18);color:var(--rose);border:1px solid rgba(255,61,110,.28);animation:bp .8s infinite;}
-
-/* play overlay on hover */
-.gc-play-overlay{
-  position:absolute;inset:0;z-index:4;
+.bell-btn i,.notification-btn i{color:#4a90e2;font-size:1.2rem;}
+.bell-badge,.notification-badge{
+  position:absolute;top:-5px;right:-5px;width:19px;height:19px;
+  background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  background:rgba(3,6,15,.6);opacity:0;transition:opacity .3s;
+  font-size:.65rem;font-weight:700;color:#fff;
 }
-.gc:hover .gc-play-overlay{opacity:1;}
-.gc-play-btn{
-  width:62px;height:62px;border-radius:50%;
-  background:linear-gradient(135deg,var(--azure),var(--sapphire));
+
+/* ── BURGER ── */
+.burger,.burger-menu{
+  cursor:pointer;width:36px;height:28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:2px 0;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.burger:hover,.burger-menu:hover{transform:scale(1.15);}
+.bline{
+  width:100%;height:3px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border-radius:4px;
+  transition:all .45s cubic-bezier(.68,-.55,.265,1.55);
+  transform-origin:center;
+}
+/* when burger is a Font Awesome icon fallback */
+.burger-menu i,.burger i{color:#4a90e2;font-size:1.6rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.burger-menu:hover i,.burger:hover i{transform:rotate(90deg);}
+
+/* open state */
+.burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+.burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
+.burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
+
+/* ── OVERLAY ── */
+.overlay,#overlay-bg{
+  position:fixed;inset:0;background:rgba(26,41,66,0.65);
+  backdrop-filter:blur(8px);z-index:2500;
+  opacity:0;pointer-events:none;transition:opacity .45s;
+}
+.overlay.show,#overlay-bg.active,.overlay.active{opacity:1;pointer-events:all;}
+
+/* ── SIDENAV ── */
+.sidenav,.side-nav{
+  position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
+  background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+  backdrop-filter:blur(35px);
+  border-inline-start:3px solid #4a90e2;
+  padding:28px 24px;overflow-y:auto;
+  transition:right .55s cubic-bezier(.68,-.55,.265,1.55);
+  box-shadow:-12px 0 50px rgba(26,41,66,0.15);
+}
+.sidenav.show,.side-nav.active{right:0!important;}
+
+/* sidenav head */
+.sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3);}
+.sn-head h2{background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+
+.sn-close{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(74,144,226,0.1);
   display:flex;align-items:center;justify-content:center;
-  font-size:1.4rem;color:#fff;
-  box-shadow:0 8px 28px rgba(61,127,255,.6);
-  transform:scale(.8);transition:transform .35s cubic-bezier(.22,1,.36,1);
+  cursor:pointer;color:#4a90e2;font-size:1.4rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
 }
-.gc:hover .gc-play-btn{transform:scale(1);}
+.sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
 
-/* جسم البطاقة */
-.gc-body{padding:22px 20px 18px;}
-.gc-title{font-family:var(--font-ar);font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.3;}
-.gc-desc{font-size:.82rem;color:var(--mist);line-height:1.7;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+/* sidenav user card */
+.sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.3);border-radius:18px;margin-bottom:20px;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,226,0.18);border-color:#4a90e2;}
+.sn-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(74,144,226,0.3);flex-shrink:0;}
+.sn-uname{color:#0a1628;font-size:1.05rem;font-weight:700;}
+.sn-urole{color:#6b7c93;font-size:0.82rem;}
 
-/* التقييم بالنجوم */
-.gc-stars{display:flex;align-items:center;gap:3px;margin-bottom:10px;}
-.gc-star{font-size:.75rem;cursor:pointer;transition:transform .15s;}
-.gc-star.filled{color:var(--gold2);}
-.gc-star.empty{color:rgba(255,255,255,.15);}
-.gc-star:hover{transform:scale(1.3);}
-.gc-rating-n{font-family:var(--font-jos);font-size:.68rem;color:var(--fog);margin-right:6px;}
-
-/* معلومات البطاقة */
-.gc-meta{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
-.gc-meta-i{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--fog);}
-.gc-meta-i i{font-size:.72rem;color:#a78bfa;}
-
-/* شريط التقدم */
-.gc-prog-wrap{margin-bottom:14px;}
-.gc-prog-label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--fog);margin-bottom:5px;}
-.gc-prog-bar{height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
-.gc-prog-fill{height:100%;border-radius:4px;transition:width 1s ease;}
-.gc[data-clr="violet"] .gc-prog-fill{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
-.gc[data-clr="azure"] .gc-prog-fill{background:linear-gradient(90deg,var(--azure),var(--azure2));}
-.gc[data-clr="gold"] .gc-prog-fill{background:linear-gradient(90deg,var(--gold),var(--gold2));}
-.gc[data-clr="teal"] .gc-prog-fill{background:linear-gradient(90deg,var(--teal),#67e8f9);}
-.gc[data-clr="rose"] .gc-prog-fill{background:linear-gradient(90deg,var(--rose),#fb7185);}
-.gc[data-clr="lime"] .gc-prog-fill{background:linear-gradient(90deg,var(--lime),#bef264);}
-
-/* زر اللعب */
-.gc-play-link{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:11px;border-radius:14px;font-family:var(--font-ar);
-  font-size:.88rem;font-weight:800;text-decoration:none;
-  transition:all .35s;position:relative;overflow:hidden;
-}
-.gc-play-link::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.08);opacity:0;transition:opacity .3s;}
-.gc-play-link:hover::after{opacity:1;}
-.gc-play-link:hover{transform:translateY(-2px);}
-.gc[data-clr="violet"] .gc-play-link{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(124,58,237,.12));border:1px solid rgba(124,58,237,.4);color:#c4b5fd;}
-.gc[data-clr="azure"] .gc-play-link{background:linear-gradient(135deg,rgba(61,127,255,.3),rgba(61,127,255,.12));border:1px solid rgba(61,127,255,.4);color:var(--azure2);}
-.gc[data-clr="gold"] .gc-play-link{background:linear-gradient(135deg,rgba(200,168,74,.3),rgba(200,168,74,.12));border:1px solid rgba(200,168,74,.4);color:var(--gold2);}
-.gc[data-clr="teal"] .gc-play-link{background:linear-gradient(135deg,rgba(0,212,184,.25),rgba(0,212,184,.1));border:1px solid rgba(0,212,184,.35);color:var(--teal);}
-.gc[data-clr="rose"] .gc-play-link{background:linear-gradient(135deg,rgba(255,61,110,.25),rgba(255,61,110,.1));border:1px solid rgba(255,61,110,.35);color:var(--rose);}
-.gc[data-clr="lime"] .gc-play-link{background:linear-gradient(135deg,rgba(132,204,22,.22),rgba(132,204,22,.08));border:1px solid rgba(132,204,22,.32);color:var(--lime);}
-
-/* حالة فارغة */
-.empty-g{grid-column:1/-1;text-align:center;padding:80px 24px;color:var(--fog);}
-.empty-g i{font-size:3.5rem;margin-bottom:20px;opacity:.2;display:block;}
-
-/* ══ ACHIEVEMENTS SECTION ══ */
-.ach-wrap{margin-top:60px;}
-.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:20px;}
-.ach-card{
-  background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.07);border-radius:20px;
-  padding:22px 18px;text-align:center;transition:all .4s;
+/* sidenav nav links */
+.sn-links,.side-nav ul{list-style:none;padding:0;margin:0;}
+.sn-links li,.side-nav ul li{margin-bottom:4px;}
+.sn-links a,.side-nav a{
+  display:flex;align-items:center;justify-content:flex-end;gap:14px;
+  padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
+  color:#0a1628;border-radius:14px;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
   position:relative;overflow:hidden;
 }
-.ach-card.unlocked{border-color:rgba(200,168,74,.25);background:linear-gradient(145deg,rgba(200,168,74,.07),rgba(200,168,74,.02));}
-.ach-card:hover{transform:translateY(-6px);}
-.ach-card.locked{opacity:.45;filter:grayscale(.7);}
-.ach-icon{font-size:2.2rem;margin-bottom:12px;display:block;}
-.ach-name{font-size:.88rem;font-weight:800;color:var(--white);margin-bottom:5px;}
-.ach-desc{font-size:.72rem;color:var(--fog);line-height:1.5;}
-.ach-badge{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--void);font-weight:900;}
-.ach-card.unlocked .ach-badge{animation:bp 3s infinite;}
-
-/* ══ WEEKLY CHALLENGE ══ */
-.challenge-box{
-  background:linear-gradient(135deg,rgba(255,61,110,.08),rgba(124,58,237,.06));
-  border:1px solid rgba(255,61,110,.2);border-radius:28px;
-  padding:36px;margin-top:50px;position:relative;overflow:hidden;
+.sn-links a::before,.side-nav a::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
+  transform:translateX(110%);border-radius:14px;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
 }
-.challenge-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--violet),var(--rose));}
-.ch-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
-.ch-icon{width:52px;height:52px;border-radius:16px;background:rgba(255,61,110,.15);border:1px solid rgba(255,61,110,.3);display:flex;align-items:center;justify-content:center;color:var(--rose);font-size:1.4rem;}
-.ch-title{font-family:var(--font-ar);font-size:1.4rem;font-weight:900;color:var(--white);}
-.ch-sub{font-size:.82rem;color:var(--fog);margin-top:3px;}
-.ch-timer{font-family:var(--font-orb);font-size:1.1rem;color:var(--rose);margin-right:auto;background:rgba(255,61,110,.1);padding:8px 16px;border-radius:10px;border:1px solid rgba(255,61,110,.2);}
-.ch-games{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;}
-.ch-game{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;font-size:.85rem;font-weight:700;color:var(--white);cursor:pointer;transition:all .3s;text-decoration:none;}
-.ch-game:hover{background:rgba(255,61,110,.1);border-color:rgba(255,61,110,.3);}
-.ch-game i{color:var(--rose);}
-.ch-prog{margin-top:10px;}
-.ch-prog-label{display:flex;justify-content:space-between;font-size:.75rem;color:var(--fog);margin-bottom:6px;}
-.ch-prog-bar{height:8px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;}
-.ch-prog-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--violet));border-radius:8px;width:35%;transition:width 1.5s ease 1s;}
-.ch-reward{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(200,168,74,.06);border:1px solid rgba(200,168,74,.18);border-radius:14px;margin-top:16px;}
-.ch-reward-icon{font-size:1.4rem;}
-.ch-reward-txt{font-size:.85rem;color:var(--mist);}
-.ch-reward-pts{font-family:var(--font-orb);font-size:.9rem;color:var(--gold2);font-weight:700;}
-
-/* ══ SCROLL TO TOP ══ */
-.stb{position:fixed;bottom:30px;left:30px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--sapphire));border:none;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:500;opacity:0;pointer-events:none;transition:all .35s;box-shadow:0 8px 28px rgba(124,58,237,.4);}
-.stb.show{opacity:1;pointer-events:all;}
-.stb:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(124,58,237,.6);}
-
-/* ══ REVEAL ══ */
-.reveal{opacity:0;transform:translateY(38px);transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1);}
-.reveal.in{opacity:1;transform:translateY(0);}
-
-/* ══ LANG ══ */
-[data-lang="en"] .ar{display:none!important;}
-[data-lang="ar"] .en{display:none!important;}
-.en{display:none;}
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:900px){
-  #NAV{padding:0 18px;} .n-links{display:none;}
-  .sf-bar{position:static;flex-direction:column;align-items:stretch;}
-  .g-grid{grid-template-columns:1fr;}
-  .main-wrap{padding:0 16px 80px;}
-  #SIDENAV{width:100%;right:-105%;}
-  .h-stats{gap:16px;}
-  .ach-grid{grid-template-columns:repeat(2,1fr);}
+.sn-links a:hover::before,.side-nav a:hover::before{transform:translateX(0);}
+.sn-links a:hover,.side-nav a:hover{transform:translateX(-8px);color:#4a90e2;}
+.sn-links a i,.side-nav a i{
+  color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
 }
-@media(max-width:480px){
-  .h-title{font-size:2.5rem;}
-  .ach-grid{grid-template-columns:1fr;}
+.sn-links a:hover i,.side-nav a:hover i{transform:scale(1.3) rotate(-5deg);}
+
+/* logout */
+.sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
+.sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
+.sn-logout a:hover{background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important;}
+
+/* ── SETTINGS PANEL (inside sidenav) ── */
+.sn-settings-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-radius:14px;cursor:pointer;
+  background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
+  margin-bottom:4px;color:#0a1628;font-weight:700;font-size:0.95rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:#4a90e2;}
+.sn-settings-toggle i{color:#4a90e2;}
+.sn-settings-chevron{
+  color:#4a90e2;font-size:0.8rem;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
+
+.sn-settings-panel{
+  max-height:0;overflow:hidden;
+  transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;
+  opacity:0;
+}
+.sn-settings-panel.open{max-height:800px;opacity:1;}
+
+.sn-settings-inner{
+  padding:18px 14px;
+  background:rgba(248,249,250,0.9);
+  border:1.5px solid rgba(74,144,226,0.2);
+  border-radius:16px;margin-top:8px;margin-bottom:8px;
 }
 
-/* ══ MODAL (لعبة مباشرة داخل الصفحة) ══ */
-#gameModal{display:none;position:fixed;inset:0;background:rgba(3,6,15,.97);z-index:5000;align-items:center;justify-content:center;backdrop-filter:blur(20px);animation:mFd .3s ease;}
-@keyframes mFd{from{opacity:0;}to{opacity:1;}}
-#gameModal.open{display:flex;}
-.gm-wrap{position:relative;width:96%;max-width:1100px;animation:mZm .5s cubic-bezier(.22,1,.36,1);}
-@keyframes mZm{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
-.gm-close{position:absolute;top:-50px;right:0;font-size:2rem;color:#a78bfa;cursor:pointer;transition:all .3s;}
-.gm-close:hover{transform:rotate(90deg) scale(1.2);color:var(--gold2);}
-.gm-frame{width:100%;aspect-ratio:16/9;border-radius:20px;border:1px solid rgba(124,58,237,.3);box-shadow:0 20px 80px rgba(124,58,237,.3);}
+.sn-s-label{
+  font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:#4a90e2;margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;
+}
+.sn-s-label:first-child{margin-top:0;}
+.sn-s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3));}
 
-/* ══ TOAST ══ */
-#toast{position:fixed;bottom:30px;right:50%;transform:translateX(50%);z-index:9000;background:rgba(6,12,30,.98);border:1px solid rgba(124,58,237,.3);border-radius:14px;padding:12px 24px;font-size:.88rem;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,.5);pointer-events:none;opacity:0;transition:opacity .3s;display:flex;align-items:center;gap:10px;color:#a78bfa;}
-#toast.show{opacity:1;}
+/* theme mini cards */
+.sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sn-t-opt{
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  border:2px solid transparent;height:70px;position:relative;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-t-opt:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,144,226,0.2);}
+.sn-t-opt.sel{border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
+.sn-t-preview{width:100%;height:100%;}
+.sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+.sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+.sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
+.sn-t-light .sn-t-label{color:#1a2942;}
+.sn-t-dark  .sn-t-label{color:#e8eef5;}
+.sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
+
+/* graphics mini options */
+.sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sn-g-opt{
+  padding:10px 6px;border-radius:12px;cursor:pointer;
+  border:1.5px solid rgba(74,144,226,0.25);text-align:center;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.sn-g-opt:hover{transform:translateY(-3px);border-color:#4a90e2;box-shadow:0 6px 16px rgba(74,144,226,0.2);}
+.sn-g-opt.sel{border-color:#4a90e2;background:rgba(74,144,226,0.08);}
+.sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
+.sn-g-name{font-size:0.65rem;font-weight:700;color:#0a1628;}
+.sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
+
+/* font mini slider */
+.sn-font-row{padding:6px 2px;}
+.sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background .15s;direction:ltr;}
+.sn-font-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);box-shadow:0 2px 10px rgba(74,144,226,0.5);cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+.sn-font-slider::-webkit-slider-thumb:hover{transform:scale(1.3);}
+.sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
+.sn-font-labels span{font-size:0.62rem;color:#6b7c93;font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .2s;}
+.sn-font-labels span:hover,.sn-font-labels span.act{background:rgba(74,144,226,0.1);color:#4a90e2;font-weight:800;}
+
+/* save btn */
+.sn-save-btn{
+  width:100%;margin-top:14px;padding:12px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border:none;border-radius:12px;color:#fff;font-weight:700;
+  font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;
+  cursor:pointer;box-shadow:0 5px 16px rgba(74,144,226,0.35);
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-save-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(74,144,226,0.45);}
+
+/* ── GENERIC HOVER ANIMATIONS ── */
+/* any button with .btn or class containing btn */
+button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             background .3s,
+             color .3s,
+             border-color .3s;
+}
+/* nav links in side nav already handled above */
+/* general interactive cards */
+.dash-card,.info-box,.course-item,.feed-item,.item-card,
+.g-opt,.t-opt,.stat-mini,.panel,.s-card,.post-box{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             border-color .35s!important;
+}
+
+/* ── TOAST (unified) ── */
+.sn-toast{
+  position:fixed;top:90px;left:50%;
+  transform:translateX(-50%) translateY(-16px);
+  background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;
+  padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;
+  opacity:0;pointer-events:none;z-index:99999;
+  box-shadow:0 8px 28px rgba(26,41,66,0.3);
+  display:flex;align-items:center;gap:9px;
+  transition:all .38s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:768px){
+  nav.top-bar,nav#topNav,header.top-bar{padding:14px 20px!important;}
+  nav.top-bar.scrolled,nav#topNav.scrolled{padding:10px 20px!important;}
+  .sidenav,.side-nav{width:100%;right:-100%!important;}
+  .sidenav.show,.side-nav.active{right:0!important;}
+}
+
 </style>
+    <script src="settings-apply.js"></script>
 </head>
 <body>
 
-<div id="cur"></div>
-<div id="curR"></div>
-
-<!-- ══ NAVBAR ══ -->
-<nav id="NAV">
-  <a href="index.html" class="n-logo">SITAJ</a>
-  <ul class="n-links">
-    <li><a href="index.html"><span class="ar">الرئيسية</span><span class="en">Home</span></a></li>
-    <li><a href="videos.html"><span class="ar">فيديوهات</span><span class="en">Videos</span></a></li>
-    <li><a href="games.html" class="act"><span class="ar">ألعاب</span><span class="en">Games</span></a></li>
-    <li><a href="exams.html"><span class="ar">اختبارات</span><span class="en">Exams</span></a></li>
-    <li><a href="partys.html"><span class="ar">الغرف الصوتية</span><span class="en">Rooms</span></a></li>
+<!-- ══ UNIFIED OVERLAY + SIDENAV ══ -->
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+  <div class="sn-head">
+    <h2>القائمة</h2>
+    <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+  </div>
+  <div class="sn-user">
+    <div class="sn-avatar">👤</div>
+    <div>
+      <div class="sn-uname">مرحباً بك</div>
+      <div class="sn-urole">طالب متميز</div>
+    </div>
+  </div>
+  <ul class="sn-links">
+    <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+    <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+    <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+    <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+    <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+    <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+    <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+    <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+    <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+    <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+    <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+    <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
+    <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
   </ul>
-  <div class="n-right">
-    <div class="n-lang">
-      <button id="btnAr" class="on" onclick="setLang('ar')">AR</button>
-      <button id="btnEn" onclick="setLang('en')">EN</button>
+
+  <!-- ── SETTINGS TOGGLE ── -->
+  <div style="margin-top:12px;">
+    <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+      <span style="display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-sliders-h"></i> الإعدادات
+      </span>
+      <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
     </div>
-    <div class="n-bell"><i class="fas fa-bell"></i><span class="n-bell-badge">3</span></div>
-    <div class="n-burger" id="burger" onclick="toggleMenu()">
-      <div class="n-bline"></div><div class="n-bline"></div><div class="n-bline"></div>
-    </div>
-  </div>
-</nav>
+    <div class="sn-settings-panel" id="snSettingsPanel">
+      <div class="sn-settings-inner">
 
-<!-- ══ OVERLAY + SIDENAV ══ -->
-<div id="OVERLAY" onclick="toggleMenu()"></div>
-<div id="SIDENAV">
-  <div class="sn-deco"></div><div class="sn-deco2"></div>
-  <div class="sn-body">
-    <div class="sn-top">
-      <div class="sn-logo-txt">SITAJ</div>
-      <div class="sn-x" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
-    </div>
-    <a href="profile.html" class="sn-profile">
-      <div class="sn-av"><i class="fas fa-user"></i></div>
-      <div class="sn-info">
-        <h3 class="ar">ملفك الشخصي</h3><h3 class="en">Your Profile</h3>
-        <p class="ar">عرض وتعديل البيانات</p><p class="en">View & edit your data</p>
-      </div>
-    </a>
-    <div class="sn-sec-label ar">القائمة الرئيسية</div><div class="sn-sec-label en">MAIN MENU</div>
-    <ul class="sn-ul">
-      <li class="sn-li"><a href="index.html" class="sn-a"><span class="ar">الصفحة الرئيسية</span><span class="en">Home</span><div class="sn-ic"><i class="fas fa-home"></i></div></a></li>
-      <li class="sn-li"><a href="videos.html" class="sn-a"><span class="ar">الفيديوهات التعليمية</span><span class="en">Educational Videos</span><div class="sn-ic"><i class="fas fa-play-circle"></i></div></a></li>
-      <li class="sn-li"><a href="articals.html" class="sn-a"><span class="ar">المقالات الحصرية</span><span class="en">Exclusive Articles</span><div class="sn-ic"><i class="fas fa-feather-alt"></i></div></a></li>
-      <li class="sn-li"><a href="games.html" class="sn-a current"><span class="ar">ساحة الألعاب</span><span class="en">Games Arena</span><div class="sn-ic"><i class="fas fa-chess"></i></div></a></li>
-      <li class="sn-li"><a href="exams.html" class="sn-a"><span class="ar">مركز الاختبارات</span><span class="en">Exam Center</span><div class="sn-ic"><i class="fas fa-pen-fancy"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <div class="sn-sec-label ar">تطوير المسار</div><div class="sn-sec-label en">PATH DEVELOPMENT</div>
-      <li class="sn-li"><a href="masarat.html" class="sn-a"><span class="ar">هندسة المسارات</span><span class="en">Academic Paths</span><div class="sn-ic"><i class="fas fa-road"></i></div></a></li>
-      <li class="sn-li"><a href="sign language hub.html" class="sn-a"><span class="ar">مركز لغة الإشارة</span><span class="en">Sign Language Hub</span><div class="sn-ic"><i class="fas fa-hands"></i></div></a></li>
-      <li class="sn-li"><a href="quraan.html" class="sn-a"><span class="ar">إسلاميات</span><span class="en">Islamic Studies</span><div class="sn-ic"><i class="fas fa-book-quran"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <div class="sn-sec-label ar">المجتمع والتواصل</div><div class="sn-sec-label en">COMMUNITY</div>
-      <li class="sn-li"><a href="partys.html" class="sn-a"><span class="ar">الغرف الصوتية</span><span class="en">Voice Rooms</span><div class="sn-ic"><i class="fas fa-microphone-alt"></i></div></a></li>
-      <li class="sn-li"><a href="questions.html" class="sn-a"><span class="ar">قسم الاستفسارات</span><span class="en">Q&A</span><div class="sn-ic"><i class="fas fa-comment-dots"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <div class="sn-sec-label ar">أدوات ذكية</div><div class="sn-sec-label en">AI & TOOLS</div>
-      <li class="sn-li"><a href="AI.html" class="sn-a"><span class="ar">المساعد الذكي</span><span class="en">AI Assistant</span><div class="sn-ic"><i class="fas fa-robot"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li logout"><a href="#" class="sn-a"><span class="ar">تسجيل خروج</span><span class="en">Logout</span><div class="sn-ic"><i class="fas fa-power-off"></i></div></a></li>
-    </ul>
-  </div>
-</div>
-
-<!-- ══ HERO ══ -->
-<section class="hero">
-  <canvas id="heroCanvas"></canvas>
-  <div class="h-mesh"></div>
-  <div class="h-vignette"></div>
-  <div class="h-orb a"></div><div class="h-orb b"></div><div class="h-orb c"></div>
-
-  <div class="h-badge ar">✦ التعلم بالمرح ✦</div>
-  <div class="h-badge en">✦ LEARNING THROUGH FUN ✦</div>
-
-  <h1 class="h-title">
-    <span class="h-grad ar">ساحة الألعاب</span>
-    <span class="h-grad en">Games Arena</span>
-    <span class="h-sub-txt ar">العب · تعلّم · تفوّق</span>
-    <span class="h-sub-txt en">Play · Learn · Excel</span>
-  </h1>
-
-  <p class="h-desc ar">ألعاب تعليمية تفاعلية تجعلك تتعلم دون أن تشعر — ابدأ مغامرتك الآن وارتقِ بمستواك</p>
-  <p class="h-desc en">Interactive educational games that make you learn without feeling it — start your adventure now</p>
-
-  <div class="h-stats">
-    <div class="h-stat"><div class="h-stat-n">8</div><div class="h-stat-l ar">ألعاب متاحة</div><div class="h-stat-l en">Games</div></div>
-    <div class="h-stat-div"></div>
-    <div class="h-stat"><div class="h-stat-n">6</div><div class="h-stat-l ar">تخصصات</div><div class="h-stat-l en">Categories</div></div>
-    <div class="h-stat-div"></div>
-    <div class="h-stat"><div class="h-stat-n">XP</div><div class="h-stat-l ar">نظام نقاط</div><div class="h-stat-l en">Points</div></div>
-    <div class="h-stat-div"></div>
-    <div class="h-stat"><div class="h-stat-n">🏆</div><div class="h-stat-l ar">إنجازات</div><div class="h-stat-l en">Achievements</div></div>
-  </div>
-</section>
-
-<!-- ══ MARQUEE ══ -->
-<div class="mq-wrap">
-  <div class="mq-track">
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">ألعاب تعليمية تفاعلية</span><span class="en">Interactive educational games</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">نظام نقاط وإنجازات</span><span class="en">Points and achievements system</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تعلّم بينما تلعب</span><span class="en">Learn while you play</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تحديات أسبوعية</span><span class="en">Weekly challenges</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">منافسة مع الأصدقاء</span><span class="en">Compete with friends</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">رياضيات · لغات · علوم · تاريخ</span><span class="en">Math · Languages · Science · History</span></div>
-    <!-- duplicate -->
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">ألعاب تعليمية تفاعلية</span><span class="en">Interactive educational games</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">نظام نقاط وإنجازات</span><span class="en">Points and achievements system</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تعلّم بينما تلعب</span><span class="en">Learn while you play</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">تحديات أسبوعية</span><span class="en">Weekly challenges</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">منافسة مع الأصدقاء</span><span class="en">Compete with friends</span></div>
-    <div class="mq-item"><span class="mq-dot"></span><span class="ar">رياضيات · لغات · علوم · تاريخ</span><span class="en">Math · Languages · Science · History</span></div>
-  </div>
-</div>
-<div class="divider"></div>
-
-<!-- ══ MAIN CONTENT ══ -->
-<div class="main-wrap">
-
-  <!-- Leaderboard Bar -->
-  <div class="lb-bar reveal">
-    <span class="lb-title ar">🏆 المتصدرون</span>
-    <span class="lb-title en">🏆 LEADERBOARD</span>
-    <div class="lb-players" id="lbPlayers">
-      <div class="lb-player"><span class="crown">🥇</span><div class="lb-av">أ</div><span>أحمد</span><span class="lb-xp">4820 XP</span></div>
-      <div class="lb-player"><span class="crown">🥈</span><div class="lb-av">س</div><span>سارة</span><span class="lb-xp">4100 XP</span></div>
-      <div class="lb-player"><span class="crown">🥉</span><div class="lb-av">م</div><span>محمد</span><span class="lb-xp">3750 XP</span></div>
-      <div class="lb-player"><div class="lb-av">ل</div><span>ليلى</span><span class="lb-xp">3200 XP</span></div>
-      <div class="lb-player"><div class="lb-av">ع</div><span>عمر</span><span class="lb-xp">2890 XP</span></div>
-    </div>
-  </div>
-
-  <!-- Search + Filter -->
-  <div class="sf-bar reveal">
-    <div class="sf-search">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInp" placeholder="ابحث عن لعبة..." oninput="filterGames()" class="ar">
-      <input type="text" id="searchInpEn" placeholder="Search games..." oninput="filterGames()" class="en" style="display:none">
-    </div>
-    <div class="sf-pills" id="catPills">
-      <button class="sf-pill on" data-cat="all"><i class="fas fa-layer-group"></i><span class="ar">الكل</span><span class="en">All</span></button>
-      <button class="sf-pill" data-cat="languages"><i class="fas fa-language"></i><span class="ar">لغات</span><span class="en">Languages</span></button>
-      <button class="sf-pill" data-cat="math"><i class="fas fa-calculator"></i><span class="ar">رياضيات</span><span class="en">Math</span></button>
-      <button class="sf-pill" data-cat="sciences"><i class="fas fa-flask"></i><span class="ar">علوم</span><span class="en">Sciences</span></button>
-      <button class="sf-pill" data-cat="social"><i class="fas fa-globe"></i><span class="ar">اجتماعيات</span><span class="en">Social</span></button>
-      <button class="sf-pill" data-cat="skills"><i class="fas fa-keyboard"></i><span class="ar">مهارات</span><span class="en">Skills</span></button>
-      <button class="sf-pill" data-cat="arcade"><i class="fas fa-rocket"></i><span class="ar">أكشن</span><span class="en">Arcade</span></button>
-    </div>
-    <div style="display:flex;gap:6px;">
-      <button class="sf-sort" id="sortNew" onclick="toggleSort('new')" title="الأحدث"><i class="fas fa-clock"></i></button>
-      <button class="sf-sort" id="sortTop" onclick="toggleSort('top')" title="الأعلى تقييماً"><i class="fas fa-star"></i></button>
-      <button class="sf-sort" id="sortPlay" onclick="toggleSort('play')" title="الأكثر لعباً"><i class="fas fa-fire"></i></button>
-    </div>
-    <span class="sf-count" id="gCount">0 / 0</span>
-  </div>
-
-  <!-- Games section -->
-  <div class="sec-h reveal">
-    <div class="sec-h-icon"><i class="fas fa-gamepad"></i></div>
-    <div class="sec-h-txt">
-      <h2 class="ar">الألعاب المتاحة</h2><h2 class="en">Available Games</h2>
-      <p class="ar">اختر لعبتك وابدأ التعلم الآن</p><p class="en">Choose your game and start learning</p>
-    </div>
-    <div class="sec-h-line"></div>
-  </div>
-  <div class="g-grid" id="gGrid"></div>
-
-  <!-- Weekly Challenge -->
-  <div class="challenge-box reveal">
-    <div class="ch-header">
-      <div class="ch-icon"><i class="fas fa-fire-flame-curved"></i></div>
-      <div>
-        <div class="ch-title ar">التحدي الأسبوعي 🔥</div>
-        <div class="ch-title en">Weekly Challenge 🔥</div>
-        <div class="ch-sub ar">أكمل الألعاب الثلاثة للفوز بـ 500 XP إضافي!</div>
-        <div class="ch-sub en">Complete all 3 games to win 500 bonus XP!</div>
-      </div>
-      <div class="ch-timer" id="chTimer">05:12:44</div>
-    </div>
-    <div class="ch-games">
-      <a href="game2.html" class="ch-game"><i class="fas fa-check-circle" style="color:var(--emerald)"></i><span class="ar">Math Blaster ✓</span></a>
-      <a href="game3.html" class="ch-game"><i class="fas fa-clock"></i><span class="ar">Typing Racer</span></a>
-      <a href="game7.html" class="ch-game"><i class="fas fa-clock"></i><span class="ar">رحلة حول العالم</span></a>
-    </div>
-    <div class="ch-prog">
-      <div class="ch-prog-label"><span class="ar">التقدم: 1 / 3</span><span class="en">Progress: 1 / 3</span><span>33%</span></div>
-      <div class="ch-prog-bar"><div class="ch-prog-fill"></div></div>
-    </div>
-    <div class="ch-reward">
-      <span class="ch-reward-icon">🏆</span>
-      <div class="ch-reward-txt ar">مكافأة الإكمال:</div>
-      <div class="ch-reward-txt en">Completion Reward:</div>
-      <span class="ch-reward-pts">+500 XP + شارة "المتحدي"</span>
-    </div>
-  </div>
-
-  <!-- Achievements -->
-  <div class="ach-wrap reveal">
-    <div class="sec-h">
-      <div class="sec-h-icon"><i class="fas fa-medal"></i></div>
-      <div class="sec-h-txt">
-        <h2 class="ar">الإنجازات</h2><h2 class="en">Achievements</h2>
-        <p class="ar">اجمع الإنجازات وأثبت تفوقك</p><p class="en">Collect achievements and prove your excellence</p>
-      </div>
-      <div class="sec-h-line"></div>
-    </div>
-    <div class="ach-grid" id="achGrid"></div>
-  </div>
-
-</div>
-
-<!-- ══ GAME MODAL ══ -->
-<div id="gameModal">
-  <div class="gm-wrap">
-    <div class="gm-close" onclick="closeGame()"><i class="fas fa-times-circle"></i></div>
-    <iframe id="gFrame" class="gm-frame" src="" frameborder="0" allowfullscreen></iframe>
-  </div>
-</div>
-
-<!-- ══ SCROLL TO TOP ══ -->
-<button class="stb" id="stb" onclick="scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
-
-<!-- ══ TOAST ══ -->
-<div id="toast"></div>
-
-<!-- ══════════════════ JS ══════════════════ -->
-<script>
-/* ── CURSOR ── */
-const C=document.getElementById('cur'),CR=document.getElementById('curR');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;C.style.left=mx+'px';C.style.top=my+'px';});
-(function raf(){requestAnimationFrame(raf);rx+=(mx-rx)*.13;ry+=(my-ry)*.13;CR.style.left=rx+'px';CR.style.top=ry+'px';})();
-
-/* ── HERO CANVAS — نفس كانفاس الصفحات الأخرى ── */
-(()=>{
-  const cv=document.getElementById('heroCanvas');
-  const ctx=cv.getContext('2d');
-  let W,H,pts=[];
-  const resize=()=>{W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;};
-  resize(); addEventListener('resize',resize);
-  for(let i=0;i<65;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:.4+Math.random()*1.6,a:.05+Math.random()*.2,ph:Math.random()*Math.PI*2,clr:Math.random()>.5?'124,58,237':'200,168,74'});
-  let fr=0;
-  (function loop(){
-    requestAnimationFrame(loop); fr++;
-    cv.width=cv.offsetWidth; cv.height=cv.offsetHeight;
-    W=cv.width; H=cv.height;
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${p.clr},${p.a*(0.5+0.5*Math.sin(fr*.014+p.ph))})`;
-      ctx.fill();
-    });
-    // grid
-    ctx.strokeStyle=`rgba(124,58,237,${.012+.004*Math.sin(fr*.006)})`; ctx.lineWidth=1;
-    for(let x=0;x<W;x+=72){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-    for(let y=0;y<H;y+=72){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  })();
-})();
-
-/* ── PARALLAX ORBS ── */
-document.addEventListener('mousemove',e=>{
-  const x=(e.clientX/innerWidth-.5)*22,y=(e.clientY/innerHeight-.5)*22;
-  document.querySelectorAll('.h-orb').forEach((el,i)=>{const d=(i+1)*.4;el.style.transform=`translate(${x*d}px,${y*d}px)`;});
-},{passive:true});
-
-/* ── 3D CARD TILT ── */
-document.addEventListener('mousemove',e=>{
-  document.querySelectorAll('.gc').forEach(card=>{
-    const r=card.getBoundingClientRect();
-    if(e.clientX<r.left-80||e.clientX>r.right+80||e.clientY<r.top-80||e.clientY>r.bottom+80) return;
-    const cx=r.left+r.width/2, cy=r.top+r.height/2;
-    const dx=(e.clientX-cx)/(r.width/2), dy=(e.clientY-cy)/(r.height/2);
-    card.style.transform=`translateY(-12px) rotateY(${dx*6}deg) rotateX(${-dy*4}deg)`;
-  });
-},{passive:true});
-document.querySelectorAll('.gc').forEach(card=>{
-  card.addEventListener('mouseleave',()=>{ card.style.transform=''; },{passive:true});
-});
-
-/* ── GAMES DATA ── */
-const GAMES = [
-  { id:'space',    title:'Space Defender',         titleEn:'Space Defender',       cat:'arcade',    clr:'rose',   icon:'fa-rocket',       link:'game1.html', desc:'دافع عن الأرض من الكويكبات المتساقطة',              descEn:'Defend Earth from incoming asteroids',           rating:4.8, plays:2340, progress:0,   badge:'hot',  isNew:false },
-  { id:'math',     title:'Math Blaster',            titleEn:'Math Blaster',         cat:'math',      clr:'azure',  icon:'fa-square-root-variable', link:'game2.html', desc:'حل المسائل الرياضية السريعة قبل انتهاء الوقت', descEn:'Solve fast math problems before time runs out',  rating:4.6, plays:1890, progress:45,  badge:'hot',  isNew:false },
-  { id:'typing',   title:'Typing Speed Racer',     titleEn:'Typing Speed Racer',   cat:'skills',    clr:'teal',   icon:'fa-keyboard',     link:'game3.html', desc:'طور سرعتك في الكتابة وتنافس على المراكز الأولى',    descEn:'Improve your typing speed and compete for top ranks', rating:4.5, plays:1620, progress:72,  badge:'',     isNew:false },
-  { id:'arabic',   title:'أكاديمية اللغة العربية', titleEn:'Arabic Language Academy',cat:'languages',clr:'gold',  icon:'fa-book-open',    link:'game4.html', desc:'تعلم قواعد اللغة العربية وتطبيقها في مغامرة ممتعة', descEn:'Learn Arabic grammar through a fun adventure',   rating:4.7, plays:1430, progress:20,  badge:'',     isNew:false },
-  { id:'english',  title:'English Academy',        titleEn:'English Academy',      cat:'languages', clr:'violet', icon:'fa-language',     link:'game5.html', desc:'تعلم الإنجليزية عبر ألعاب تفاعلية وكلمات ومحادثات', descEn:'Learn English via interactive games',            rating:4.4, plays:1200, progress:0,   badge:'new',  isNew:true  },
-  { id:'solar',    title:'مستكشف النظام الشمسي',   titleEn:'Solar System Explorer', cat:'sciences', clr:'azure',  icon:'fa-sun',          link:'game6.html', desc:'اكتشف أسرار الكواكب والنظام الشمسي في رحلة فضائية',  descEn:'Explore planetary secrets in a space journey',   rating:4.9, plays:980,  progress:0,   badge:'new',  isNew:true  },
-  { id:'world',    title:'رحلة حول العالم',         titleEn:'World Journey',        cat:'social',    clr:'teal',   icon:'fa-map-marked-alt',link:'game7.html', desc:'استكشف دول العالم وعواصمها وثقافاتها بطريقة ممتعة',   descEn:'Explore countries, capitals, and cultures',     rating:4.3, plays:870,  progress:15,  badge:'',     isNew:false },
-  { id:'history',  title:'رحلة عبر التاريخ',        titleEn:'History Journey',      cat:'social',    clr:'gold',   icon:'fa-landmark',     link:'game8.html', desc:'سافر عبر الزمن واكتشف الحضارات العريقة والأحداث',     descEn:'Travel through time and discover ancient civilizations', rating:4.2, plays:760, progress:0, badge:'new', isNew:true },
-];
-
-/* ratings stored locally */
-const userRatings = JSON.parse(localStorage.getItem('sitaj_gr')||'{}');
-let activeCat='all', activeSort='', searchQ='';
-
-/* ── RENDER GAMES ── */
-function renderGames(){
-  const grid=document.getElementById('gGrid');
-  const lang=document.documentElement.getAttribute('data-lang')||'ar';
-  let list=[...GAMES];
-  if(activeCat!=='all') list=list.filter(g=>g.cat===activeCat);
-  if(searchQ) list=list.filter(g=>(g.title+g.titleEn+g.desc+g.descEn).toLowerCase().includes(searchQ));
-  if(activeSort==='top') list.sort((a,b)=>b.rating-a.rating);
-  else if(activeSort==='play') list.sort((a,b)=>b.plays-a.plays);
-  else if(activeSort==='new') list.sort((a,b)=>b.isNew-a.isNew);
-
-  document.getElementById('gCount').textContent=list.length+' / '+GAMES.length;
-  grid.innerHTML='';
-
-  if(!list.length){
-    grid.innerHTML='<div class="empty-g"><i class="fas fa-gamepad"></i><p>'+(lang==='ar'?'لا توجد ألعاب في هذه الفئة':'No games in this category')+'</p></div>';
-    return;
-  }
-
-  list.forEach((g,i)=>{
-    const title=lang==='ar'?g.title:g.titleEn;
-    const desc=lang==='ar'?g.desc:g.descEn;
-    const ur=userRatings[g.id]||0;
-    const rating=ur||g.rating;
-    const catNames={ar:{all:'كل',languages:'لغات',math:'رياضيات',sciences:'علوم',social:'اجتماعيات',skills:'مهارات',arcade:'أكشن'},en:{all:'All',languages:'Languages',math:'Math',sciences:'Sciences',social:'Social',skills:'Skills',arcade:'Arcade'}};
-    const catLabel=catNames[lang][g.cat]||g.cat;
-    const stars=[1,2,3,4,5].map(s=>`<span class="gc-star ${s<=Math.round(rating)?'filled':'empty'}" onclick="rateGame('${g.id}',${s},event)">★</span>`).join('');
-
-    const card=document.createElement('div');
-    card.className='gc reveal';
-    card.setAttribute('data-cat',g.cat);
-    card.setAttribute('data-clr',g.clr);
-    card.style.animationDelay=(i*.06)+'s';
-    card.innerHTML=`
-      <div class="gc-thumb">
-        <div class="gc-thumb-bg bg-${g.clr}">
-          <i class="fas ${g.icon} gc-icon-big"></i>
+        <!-- THEME -->
+        <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+        <div class="sn-theme-row">
+          <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+            <div class="sn-t-preview sn-t-light"></div>
+            <div class="sn-t-label">فاتح</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+            <div class="sn-t-preview sn-t-dark"></div>
+            <div class="sn-t-label">داكن</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
         </div>
-        <span class="gc-cat-badge">${catLabel}</span>
-        ${g.badge?`<span class="gc-new-badge ${g.badge}">${g.badge==='new'?'NEW':'🔥 HOT'}</span>`:''}
-        <div class="gc-play-overlay"><div class="gc-play-btn"><i class="fas fa-play" style="margin-right:3px"></i></div></div>
+
+        <!-- GRAPHICS -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+        <div class="sn-g-row">
+          <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
+            <span class="sn-g-icon">✨</span>
+            <div class="sn-g-name">كامل</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
+            <span class="sn-g-icon">🌤</span>
+            <div class="sn-g-name">مخفف</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
+            <span class="sn-g-icon">⚡</span>
+            <div class="sn-g-name">بسيط</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+        </div>
+
+        <!-- FONT SIZE -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+        <div class="sn-font-row">
+          <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1"
+                 oninput="snFontInput(this.value)">
+          <div class="sn-font-labels">
+            <span onclick="snSetFont(0)" data-idx="0">S</span>
+            <span onclick="snSetFont(1)" data-idx="1">M</span>
+            <span onclick="snSetFont(2)" data-idx="2">L</span>
+            <span onclick="snSetFont(3)" data-idx="3">XL</span>
+          </div>
+        </div>
+
+        <!-- SAVE -->
+        <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
       </div>
-      <div class="gc-body">
-        <div class="gc-title">${title}</div>
-        <div class="gc-desc">${desc}</div>
-        <div class="gc-stars">
-          ${stars}
-          <span class="gc-rating-n">${rating.toFixed(1)} (${g.plays.toLocaleString()})</span>
-        </div>
-        <div class="gc-meta">
-          <span class="gc-meta-i"><i class="fas fa-gamepad"></i>${g.plays.toLocaleString()} ${lang==='ar'?'لاعب':'players'}</span>
-          <span class="gc-meta-i"><i class="fas fa-clock"></i>${lang==='ar'?'متوسط 15 دقيقة':'~15 min'}</span>
-          ${g.progress>0?`<span class="gc-meta-i"><i class="fas fa-chart-line"></i>${g.progress}%</span>`:''}
-        </div>
-        ${g.progress>0?`
-        <div class="gc-prog-wrap">
-          <div class="gc-prog-label"><span>${lang==='ar'?'تقدمك':'Your progress'}</span><span>${g.progress}%</span></div>
-          <div class="gc-prog-bar"><div class="gc-prog-fill" style="width:${g.progress}%"></div></div>
-        </div>`:''}
-        <a href="${g.link}" class="gc-play-link" onclick="handlePlay(event,'${g.id}','${g.link}')">
-          <i class="fas fa-play-circle"></i>
-          <span>${lang==='ar'?'العب الآن':'Play Now'}</span>
+    </div>
+  </div>
+
+  <ul class="sn-links sn-logout" style="margin-top:16px;">
+    <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+  </ul>
+</div>
+
+<!-- TOAST -->
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
+
+
+<!-- Animated Background -->
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+</div>
+
+<header id="navbar">
+    <div class="header-left">
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false"><div class="bline"></div><div class="bline"></div><div class="bline"></div></div>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">
+                <div class="logo-main">SITEJ</div>
+                <div class="logo-tagline">منصة التعليم الذكية</div>
+            </div>
         </a>
-      </div>`;
-    grid.appendChild(card);
-  });
+    </div>
 
-  // re-observe reveals
-  grid.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  // re-apply hover
-  addHovTargets();
-}
+    <div id="authSlot"><a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a></div>
+</header>
 
-/* ── RATING ── */
-function rateGame(id,stars,e){
-  e.stopPropagation(); e.preventDefault();
-  userRatings[id]=stars;
-  localStorage.setItem('sitaj_gr',JSON.stringify(userRatings));
-  showToast('⭐ قيّمت اللعبة بـ '+stars+' نجوم');
-  renderGames();
-}
+<div class="container">
+    <button id="back-btn" class="back-btn" onclick="goBack()"><i class="fas fa-arrow-right"></i> العودة</button>
+    
+    <div class="page-header">
+        <h1 id="page-title">ساحة الألعاب التعليمية</h1>
+        <p>استمتع بالتعلم من خلال ألعاب تفاعلية وممتعة</p>
+    </div>
 
-/* ── PLAY ── */
-function handlePlay(e,id,link){
-  // open in new tab (games are separate html files)
-  // we let default link behavior happen
-}
+    <div id="categories" class="grid">
+        <div class="card" onclick="openCategory('languages')">
+            <div class="card-content">
+                <i class="fas fa-language"></i>
+                <h3>اللغات</h3>
+                <p>ألعاب اللغة العربية والإنجليزية</p>
+            </div>
+        </div>
 
-function openGame(link){
-  // kept for reference
-  window.open(link,'_blank');
-}
+        <div class="card" onclick="openCategory('sciences')">
+            <div class="card-content">
+                <i class="fas fa-flask"></i>
+                <h3>العلوم</h3>
+                <p>ألعاب العلوم والفضاء</p>
+            </div>
+        </div>
 
-function closeGame(){
-  document.getElementById('gameModal').classList.remove('open');
-  document.getElementById('gFrame').src='';
-  document.body.style.overflow='';
-}
+        <div class="card" onclick="openCategory('social')">
+            <div class="card-content">
+                <i class="fas fa-globe-americas"></i>
+                <h3>الاجتماعيات</h3>
+                <p>ألعاب الجغرافيا والتاريخ</p>
+            </div>
+        </div>
 
-/* ── FILTER ── */
-document.getElementById('catPills').addEventListener('click',e=>{
-  const pill=e.target.closest('.sf-pill');
-  if(!pill) return;
-  document.querySelectorAll('.sf-pill').forEach(p=>p.classList.remove('on'));
-  pill.classList.add('on');
-  activeCat=pill.dataset.cat;
-  renderGames();
-});
+        <div class="card" onclick="openCategory('math')">
+            <div class="card-content">
+                <i class="fas fa-calculator"></i>
+                <h3>الرياضيات</h3>
+                <p>ألعاب الرياضيات والحساب</p>
+            </div>
+        </div>
 
-function filterGames(){
-  const lang=document.documentElement.getAttribute('data-lang')||'ar';
-  const inp=lang==='ar'?document.getElementById('searchInp'):document.getElementById('searchInpEn');
-  searchQ=inp.value.toLowerCase();
-  renderGames();
-}
+        <div class="card" onclick="openCategory('skills')">
+            <div class="card-content">
+                <i class="fas fa-keyboard"></i>
+                <h3>المهارات</h3>
+                <p>ألعاب المهارات والسرعة</p>
+            </div>
+        </div>
 
-function toggleSort(type){
-  activeSort=activeSort===type?'':type;
-  document.querySelectorAll('.sf-sort').forEach(b=>b.classList.remove('on'));
-  if(activeSort) document.getElementById('sort'+type.charAt(0).toUpperCase()+type.slice(1)).classList.add('on');
-  renderGames();
-}
+        <div class="card" onclick="openCategory('arcade')">
+            <div class="card-content">
+                <i class="fas fa-rocket"></i>
+                <h3>الترفيه</h3>
+                <p>ألعاب الحركة والمغامرات</p>
+            </div>
+        </div>
+    </div>
 
-/* ── ACHIEVEMENTS ── */
-const ACHIEVEMENTS=[
-  {id:'first',icon:'🎮',name:'أول لعبة',nameEn:'First Game',desc:'العب أي لعبة لأول مرة',unlocked:true},
-  {id:'speed',icon:'⚡',name:'البرق',nameEn:'Lightning',desc:'اكتب 60 كلمة في الدقيقة',unlocked:true},
-  {id:'math100',icon:'🔢',name:'عبقري الأرقام',nameEn:'Math Genius',desc:'احصل على 100 في الرياضيات',unlocked:false},
-  {id:'solar',icon:'🌍',name:'عالم الفضاء',nameEn:'Space Scientist',desc:'اجتز لعبة النظام الشمسي',unlocked:false},
-  {id:'world',icon:'🗺️',name:'المسافر',nameEn:'World Traveler',desc:'تعرّف على 50 دولة',unlocked:false},
-  {id:'week',icon:'🏆',name:'بطل الأسبوع',nameEn:'Weekly Champion',desc:'أكمل التحدي الأسبوعي',unlocked:false},
-  {id:'lang',icon:'🌐',name:'متعدد اللغات',nameEn:'Multilingual',desc:'العب ألعاب اللغات الثلاثة',unlocked:false},
-  {id:'perfect',icon:'💎',name:'الكمال',nameEn:'Perfection',desc:'احصل على 5 نجوم في 3 ألعاب',unlocked:false},
-];
+    <div id="content-grid" class="grid" style="display: none;"></div>
+</div>
 
-function renderAchievements(){
-  const grid=document.getElementById('achGrid');
-  grid.innerHTML=ACHIEVEMENTS.map(a=>`
-    <div class="ach-card ${a.unlocked?'unlocked':'locked'}">
-      ${a.unlocked?'<div class="ach-badge">✓</div>':''}
-      <span class="ach-icon">${a.icon}</span>
-      <div class="ach-name">${a.name}</div>
-      <div class="ach-desc">${a.desc}</div>
-    </div>`).join('');
-}
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ── WEEKLY CHALLENGE TIMER ── */
-function updateTimer(){
-  const now=new Date();
-  const endOfDay=new Date(now);
-  endOfDay.setHours(23,59,59,999);
-  const diff=endOfDay-now;
-  const h=Math.floor(diff/3600000).toString().padStart(2,'0');
-  const m=Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
-  const s=Math.floor((diff%60000)/1000).toString().padStart(2,'0');
-  const el=document.getElementById('chTimer');
-  if(el) el.textContent=h+':'+m+':'+s;
-}
-setInterval(updateTimer,1000); updateTimer();
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+        authDomain: "eliteacademy-37bfc.firebaseapp.com",
+        projectId: "eliteacademy-37bfc",
+        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+        messagingSenderId: "203080953628",
+        appId: "1:203080953628:web:69efebccc336b79f0554d9"
+    };
 
-/* ── TOAST ── */
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-/* ── LANG ── */
-function setLang(l){
-  document.documentElement.setAttribute('data-lang',l);
-  document.documentElement.dir=l==='ar'?'rtl':'ltr';
-  document.getElementById('btnAr').classList.toggle('on',l==='ar');
-  document.getElementById('btnEn').classList.toggle('on',l==='en');
-  localStorage.setItem('sl',l);
-  renderGames();
-}
-const _sl=localStorage.getItem('sl');if(_sl)setLang(_sl);
+    // قاعدة بيانات الألعاب مصنفة حسب الفئات
+    const gameDatabase = {
+        languages: [
+            { name: "أكاديمية اللغة العربية", icon: "fa-book-open", link: "game4.html", desc: "تعلم قواعد اللغة العربية بطريقة تفاعلية" },
+            { name: "English Learning Academy", icon: "fa-language", link: "game5.html", desc: "Learn English through interactive games" }
+        ],
+        sciences: [
+            { name: "مستكشف النظام الشمسي", icon: "fa-sun", link: "game6.html", desc: "اكتشف أسرار الكواكب والنظام الشمسي" }
+        ],
+        social: [
+            { name: "رحلة حول العالم", icon: "fa-map-marked-alt", link: "game7.html", desc: "استكشف دول العالم وعواصمها" },
+            { name: "رحلة عبر التاريخ", icon: "fa-landmark", link: "game8.html", desc: "سافر عبر الزمن واكتشف الحضارات" }
+        ],
+        math: [
+            { name: "Math Blaster", icon: "fa-square-root-alt", link: "game2.html", desc: "حل المسائل الرياضية بسرعة" }
+        ],
+        skills: [
+            { name: "Typing Speed Racer", icon: "fa-keyboard", link: "game3.html", desc: "طور سرعتك في الكتابة" }
+        ],
+        arcade: [
+            { name: "Space Defender", icon: "fa-rocket", link: "game1.html", desc: "دافع عن الأرض من الكويكبات" }
+        ]
+    };
 
-/* ── NAVBAR ── */
-window.addEventListener('scroll',()=>{
-  document.getElementById('NAV').classList.toggle('solid',scrollY>60);
-  document.getElementById('stb').classList.toggle('show',scrollY>400);
-},{passive:true});
+    let currentView = 'categories';
 
-/* ── MENU ── */
-function toggleMenu(){
-  const sn=document.getElementById('SIDENAV'),ov=document.getElementById('OVERLAY'),bg=document.getElementById('burger');
-  sn.classList.toggle('on');ov.classList.toggle('on');bg.classList.toggle('on');
-  document.body.style.overflow=sn.classList.contains('on')?'hidden':'';
-}
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    if(document.getElementById('gameModal').classList.contains('open')) closeGame();
-    else if(document.getElementById('SIDENAV').classList.contains('on')) toggleMenu();
-  }
-});
-let _tx=0;
-document.getElementById('SIDENAV').addEventListener('touchstart',e=>{_tx=e.changedTouches[0].screenX;},{passive:true});
-document.getElementById('SIDENAV').addEventListener('touchend',e=>{if(e.changedTouches[0].screenX>_tx+70&&document.getElementById('SIDENAV').classList.contains('on'))toggleMenu();},{passive:true});
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }, { passive: true });
 
-/* ── REVEAL ── */
-const io=new IntersectionObserver(ee=>ee.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.06});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    // Check user authentication and display profile
+    onAuthStateChanged(auth, async (user) => {
+        const slot = document.getElementById('authSlot');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-/* ── HOVER TARGETS ── */
-function addHovTargets(){
-  document.querySelectorAll('a,button,.gc,.sf-pill,.sn-a,.ach-card,.lb-player').forEach(el=>{
-    el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-    el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
-  });
-}
-addHovTargets();
+        if (user) {
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                const userData = userDoc.data();
+                
+                slot.innerHTML = `
+                    <div class="profile-trigger">
+                        <img src="${userData?.photoURL || 'https://ui-avatars.com/api/?name=' + (userData?.nickname || 'User')}" class="nav-avatar">
+                        <span>${userData?.nickname || 'عضو'}</span>
+                    </div>`;
+                
+                logoutBtn.classList.remove('hidden');
+            } catch (e) {
+                console.error("Error fetching user:", e);
+                slot.innerHTML = `<a href="login.html" class="btn-primary">دخول الحساب</a>`;
+            }
+        } else {
+            slot.innerHTML = `<a href="login.html" class="btn-primary">دخول الحساب</a>`;
+            logoutBtn.classList.add('hidden');
+        }
+    });
 
-/* ── INIT ── */
-renderGames();
-renderAchievements();
+    // Toggle menu function
+    window.toggleMenu = function() {
+        const sideNav = document.getElementById('sideNav');
+        const overlay = document.getElementById('overlay');
+        sideNav.classList.toggle('active');
+        overlay.classList.toggle('active');
+
+        if (sideNav.classList.contains("active")) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    // فتح الفئة وعرض الألعاب
+    window.openCategory = function(category) {
+        currentView = 'games';
+        document.getElementById('categories').style.display = 'none';
+        document.getElementById('back-btn').style.display = 'inline-block';
+        const grid = document.getElementById('content-grid');
+        grid.style.display = 'grid';
+        grid.innerHTML = '';
+
+        const games = gameDatabase[category];
+        
+        if (games && games.length > 0) {
+            games.forEach(game => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-content">
+                            <i class="fas ${game.icon}"></i>
+                            <h3>${game.name}</h3>
+                            <p>${game.desc}</p>
+                            <a href="${game.link}" target="_blank" class="play-link">
+                                <span>العب الآن</span>
+                                <i class="fas fa-play-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            grid.innerHTML = '<p style="color: var(--text-gray); grid-column: 1/-1; text-align: center; font-size: 1.2rem;">لا توجد ألعاب في هذه الفئة حالياً</p>';
+        }
+    }
+
+    window.goBack = function() {
+        if (currentView === 'games') {
+            document.getElementById('categories').style.display = 'grid';
+            document.getElementById('content-grid').style.display = 'none';
+            document.getElementById('back-btn').style.display = 'none';
+            currentView = 'categories';
+        }
+    }
+
+    window.logout = function() {
+        if (confirm("هل أنت متأكد من تسجيل الخروج؟")) {
+            signOut(auth).then(() => {
+                alert("تم تسجيل الخروج بنجاح ✓");
+                location.reload();
+            });
+        }
+    }
+
+    // Close menu on ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const sideNav = document.getElementById("sideNav");
+            const overlay = document.getElementById("overlay");
+            
+            if (sideNav.classList.contains('active')) {
+                sideNav.classList.remove("active");
+                overlay.classList.remove("active");
+                document.body.style.overflow = '';
+            }
+        }
+    });
 </script>
 
-<!-- Firebase: XP tracking (optional, graceful fail) -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const FB={apiKey:"AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",authDomain:"eliteacademy-37bfc.firebaseapp.com",projectId:"eliteacademy-37bfc",storageBucket:"eliteacademy-37bfc.firebasestorage.app",messagingSenderId:"203080953628",appId:"1:203080953628:web:69efebccc336b79f0554d9"};
-try{
-  const app=initializeApp(FB);
-  const auth=getAuth(app);
-  const db=getFirestore(app);
-  onAuthStateChanged(auth,async user=>{
-    if(user){
-      try{
-        const ud=await getDoc(doc(db,'users',user.uid));
-        const d=ud.data();
-        if(d){
-          // show XP in leaderboard
-          const xp=d.xp||0;
-          const name=d.nickname||'أنت';
-          const myEntry=document.createElement('div');
-          myEntry.className='lb-player';
-          myEntry.style.borderColor='rgba(200,168,74,.3)';
-          myEntry.innerHTML=`<span>⭐</span><div class="lb-av" style="background:linear-gradient(135deg,var(--gold),var(--amber))">${name[0]}</div><span>${name}</span><span class="lb-xp">${xp} XP</span>`;
-          document.getElementById('lbPlayers').prepend(myEntry);
-        }
-      }catch(e){}
-    }
+
+<script>
+/* ══ UNIFIED SIDENAV + SETTINGS JS ══ */
+(function(){
+  var STEPS = ['small','medium','large','xlarge'];
+  var SIZES = {small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+
+  function loadS(){ try{return Object.assign({theme:'light',graphics:'full',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}catch(e){return {theme:'light',graphics:'full',fontSize:'medium',lang:'ar'};} }
+  function saveS(s){ localStorage.setItem('siteSettings',JSON.stringify(s)); if(window.SiteSettings) window.SiteSettings.applyAll(s); }
+
+  // open / close
+  window.snClose = function(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(d) d.classList.remove('show');
+    if(o) o.classList.remove('show');
+    if(b){b.classList.remove('open');b.setAttribute('aria-expanded','false');}
+    // legacy ids
+    ['sideNav','sidenav'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
+    ['overlay-bg','overlay'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
+  };
+  window.snOpen = function(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(d) d.classList.add('show');
+    if(o) o.classList.add('show');
+    if(b){b.classList.add('open');b.setAttribute('aria-expanded','true');}
+    snRenderSettings();
+  };
+  window.snToggle = function(){ var d=document.getElementById('snDrawer'); if(d && d.classList.contains('show')) snClose(); else snOpen(); };
+
+  // keep legacy toggleMenu / toggleNav working
+  window.toggleMenu = window.toggleNav = window.snToggle;
+  window.closeNav = window.snClose;
+
+  // settings panel toggle
+  window.snToggleSettings = function(){
+    var panel=document.getElementById('snSettingsPanel');
+    var toggle=document.getElementById('snSettingsToggle');
+    if(!panel) return;
+    panel.classList.toggle('open');
+    toggle.classList.toggle('open');
+  };
+
+  // render settings UI
+  function snRenderSettings(){
+    var s = loadS();
+    // theme
+    ['light','dark'].forEach(function(t){
+      var el=document.getElementById('sn-th-'+t);
+      if(el) el.classList.toggle('sel', s.theme===t);
+    });
+    // graphics
+    ['full','reduced','minimal'].forEach(function(g){
+      var el=document.getElementById('sn-gr-'+g);
+      if(el) el.classList.toggle('sel', s.graphics===g);
+    });
+    // font
+    var idx=STEPS.indexOf(s.fontSize); if(idx<0)idx=1;
+    var sl=document.getElementById('snFontSlider');
+    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+    snUpdateFontLabels(idx);
+  }
+
+  function snUpdateSliderTrack(sl,idx){
+    sl.style.setProperty('--pct',(idx/3*100)+'%');
+  }
+  function snUpdateFontLabels(idx){
+    document.querySelectorAll('.sn-font-labels span').forEach(function(s,i){ s.classList.toggle('act',i===idx); });
+  }
+
+  window.snFontInput = function(val){
+    var idx=parseInt(val);
+    var sl=document.getElementById('snFontSlider');
+    if(sl) snUpdateSliderTrack(sl,idx);
+    snUpdateFontLabels(idx);
+    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
+  };
+  window.snSetFont = function(idx){
+    var sl=document.getElementById('snFontSlider');
+    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
+    snUpdateFontLabels(idx);
+    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
+  };
+
+  window.snPickTheme = function(t){
+    ['light','dark'].forEach(function(x){ var el=document.getElementById('sn-th-'+x); if(el) el.classList.toggle('sel',x===t); });
+    var s=loadS(); s.theme=t; saveS(s);
+    snShowToast(t==='dark'? '🌙 تم تفعيل الوضع الداكن':'☀️ تم تفعيل الوضع الفاتح');
+  };
+  window.snPickGraphics = function(g){
+    ['full','reduced','minimal'].forEach(function(x){ var el=document.getElementById('sn-gr-'+x); if(el) el.classList.toggle('sel',x===g); });
+    var s=loadS(); s.graphics=g; saveS(s);
+  };
+
+  window.snSave = function(){
+    var s=loadS();
+    var sl=document.getElementById('snFontSlider');
+    if(sl) s.fontSize=STEPS[parseInt(sl.value)];
+    saveS(s);
+    snShowToast('✅ تم حفظ الإعدادات!');
+  };
+
+  window.snLogout = function(){
+    if(typeof firebase!=='undefined' && firebase.auth){ firebase.auth().signOut().then(function(){ window.location.href='login.html'; }); }
+    else { window.location.href='login.html'; }
+  };
+
+  function snShowToast(msg){
+    var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');
+    if(!t||!m) return;
+    m.textContent=msg; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); },2500);
+  }
+
+  // scroll: shrink nav
+  window.addEventListener('scroll',function(){
+    var nav=document.querySelector('nav.top-bar,nav#topNav,header.top-bar');
+    if(nav) nav.classList.toggle('scrolled', window.scrollY>50);
+  },{passive:true});
+
+  // init on DOM ready
+  document.addEventListener('DOMContentLoaded', function(){
+    snRenderSettings();
+    // update burger id reference
+    var burgers = document.querySelectorAll('.burger,.burger-menu');
+    burgers.forEach(function(b){
+      if(!b.id) b.id='snBurger';
+      b.setAttribute('onclick','snToggle()');
+    });
   });
-}catch(e){}
+})();
 </script>
 
 </body>

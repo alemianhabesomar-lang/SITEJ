@@ -1,2113 +1,1359 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SITAJ — منصة التعليم الذكي</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="SITEJ - منصة التعليم الذكية">
+    <meta name="theme-color" content="#1a2942">
+    <title>SITEJ - منصة التعليم الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6.5.2 — updated with integrity hash + crossorigin for Edge/Brave/Firefox -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <style>
+        /* ── CROSS-BROWSER ICON FIX ──
+           Edge shows squares when webfont hasn't loaded or font-weight is wrong.
+           Force correct font-family, weight, rendering on ALL icon elements. */
+        .fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands,
+        [class^="fa-"], [class*=" fa-"] {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "FontAwesome", sans-serif !important;
+            font-style: normal !important;
+            font-variant: normal !important;
+            text-rendering: auto !important;
+            line-height: 1 !important;
+            -webkit-font-smoothing: antialiased !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            /* Prevent invisible/square glyphs on Edge */
+            speak: never;
+            font-display: block;
+        }
+        .fas, .fa-solid  { font-weight: 900 !important; }
+        .far, .fa-regular{ font-weight: 400 !important; }
+        .fab, .fa-brands { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; }
 
-/* ══════════════════════════════════════════
-   CSS VARIABLES
-══════════════════════════════════════════ */
-:root {
-  --font-ar: 'Cairo', sans-serif;
-  --font-serif: 'DM Serif Display', serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --trans: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        /* Ensure icons inside gradient text spans still render (Edge clips them) */
+        .card-icon i, .stat-icon i {
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            -webkit-text-fill-color: unset !important;
+            color: inherit !important;
+        }
+        /* Re-apply gradient only where WebKit properly supports it */
+        @supports (-webkit-background-clip: text) {
+            .card-icon i {
+                background: linear-gradient(135deg,#ffffff 0%,#e8eef5 25%,#b8c9dc 50%,#5a7fa8 75%,#1a2942 100%);
+                -webkit-background-clip: text !important;
+                background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+            }
+            .stat-icon i {
+                background: linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+                -webkit-background-clip: text !important;
+                background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+            }
+        }
 
-[data-theme="light"] {
-  --bg:        #f5f0e8;
-  --bg2:       #ede7d9;
-  --bg3:       #e4dccb;
-  --surface:   #faf7f2;
-  --surface2:  #fff;
-  --text:      #1a1510;
-  --text2:     #4a3f30;
-  --text3:     #8a7a66;
-  --text4:     #b8a898;
-  --accent:    #2d5a3d;
-  --accent2:   #3d7a55;
-  --accent3:   #c8a84a;
-  --accent4:   #e8c460;
-  --red:       #c0392b;
-  --blue:      #2c5282;
-  --border:    rgba(90, 70, 40, 0.12);
-  --border2:   rgba(90, 70, 40, 0.22);
-  --shadow:    0 4px 24px rgba(60, 40, 10, 0.10);
-  --shadow2:   0 12px 48px rgba(60, 40, 10, 0.14);
-  --nav-bg:    rgba(245, 240, 232, 0.96);
-  --card:      #faf7f2;
-  --math-op:   #2d5a3d;
-}
+        :root {
+            --navy-darkest:#0a1628; --navy-darker:#112240; --navy-dark:#1a2942;
+            --navy-medium:#233554; --navy-light:#2d4263; --navy-lighter:#3d5a7f;
+            --white-pure:#ffffff; --white-soft:#f8f9fa; --white-light:#e8eef5;
+            --blue-lightest:#d4dfe9; --blue-lighter:#b8c9dc; --blue-light:#9bb4d0;
+            --blue-medium:#7a9ac2; --blue-navy:#5a7fa8;
+            --accent-blue:#4a90e2; --accent-light-blue:#6fa8ec; --accent-sky:#87ceeb;
+            --gradient-navy-soft:linear-gradient(135deg,#1a2942 0%,#3d5a7f 50%,#b8c9dc 100%);
+            --gradient-blue-glow:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+            --gradient-white-navy:linear-gradient(135deg,#ffffff 0%,#e8eef5 25%,#b8c9dc 50%,#5a7fa8 75%,#1a2942 100%);
+            --glass-white:rgba(255,255,255,0.95); --glass-light:rgba(255,255,255,0.1);
+            --glass-medium:rgba(255,255,255,0.15); --glass-strong:rgba(255,255,255,0.25);
+            --border-blue:rgba(74,144,226,0.3); --border-white:rgba(255,255,255,0.3);
+            --shadow-blue:rgba(74,144,226,0.2); --shadow-glow:rgba(74,144,226,0.5);
+            --text-navy:#0a1628; --text-gray:#6b7c93;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+        body{
+            font-family:'Cairo','Tajawal',sans-serif;
+            background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);
+            background-attachment:fixed;
+            color:#0a1628;min-height:100vh;overflow-x:hidden;
+        }
 
-[data-theme="dark"] {
-  --bg:        #151210;
-  --bg2:       #1c1814;
-  --bg3:       #221e18;
-  --surface:   #1f1b16;
-  --surface2:  #2a2420;
-  --text:      #f0ebe2;
-  --text2:     #c8bfb0;
-  --text3:     #8a7e6e;
-  --text4:     #5a5040;
-  --accent:    #4a9e6a;
-  --accent2:   #5dbf80;
-  --accent3:   #c8a84a;
-  --accent4:   #e8c460;
-  --red:       #e05a4e;
-  --blue:      #5a8fd4;
-  --border:    rgba(255, 240, 200, 0.08);
-  --border2:   rgba(255, 240, 200, 0.16);
-  --shadow:    0 4px 24px rgba(0, 0, 0, 0.35);
-  --shadow2:   0 12px 48px rgba(0, 0, 0, 0.50);
-  --nav-bg:    rgba(21, 18, 16, 0.96);
-  --card:      #1f1b16;
-  --math-op:   #4a9e6a;
-}
+        /* Background — static, no animation */
+        .bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;}
+        .bg-shape{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.10;}
+        .shape-1{width:600px;height:600px;background:radial-gradient(circle,rgba(74,144,226,0.35) 0%,transparent 70%);top:-200px;right:-200px;}
+        .shape-2{width:500px;height:500px;background:radial-gradient(circle,rgba(26,41,66,0.25) 0%,transparent 70%);bottom:-150px;left:-150px;}
+        .shape-3{width:450px;height:450px;background:radial-gradient(circle,rgba(155,180,208,0.2) 0%,transparent 70%);top:35%;left:45%;}
 
-/* ══════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-ar);
-  overflow-x: hidden;
-  transition: background var(--trans), color var(--trans);
-  line-height: 1.6;
-}
+        /* Nav */
+        nav.top-bar{display:flex;justify-content:space-between;align-items:center;padding:22px 70px;position:fixed;width:100%;top:0;z-index:1000;background:rgba(255,255,255,0.82);backdrop-filter:blur(30px) saturate(180%);border-bottom:1px solid var(--border-blue);box-shadow:0 4px 30px rgba(26,41,66,0.08);transition:all 0.4s ease;}
+        nav.top-bar.scrolled{padding:14px 70px;background:rgba(248,249,250,0.97);border-bottom:2px solid var(--accent-blue);}
+        .logo-container{display:flex;align-items:center;gap:18px;cursor:pointer;transition:transform 0.3s;}
+        .logo-container:hover{transform:scale(1.06);}
+        .logo-icon{width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px var(--shadow-blue);position:relative;}
+        .logo-icon::before{content:'';position:absolute;inset:-4px;background:var(--gradient-blue-glow);border-radius:18px;z-index:-1;opacity:0.5;filter:blur(15px);}
+        .logo-icon i{font-size:1.6rem;color:#fff;}
+        .logo-text{display:flex;flex-direction:column;gap:4px;}
+        .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .logo::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:3px;background:var(--gradient-blue-glow);transition:width 0.4s;}
+        .logo-container:hover .logo::after{width:100%;}
+        .logo-tagline{font-size:0.75rem;color:var(--text-gray);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
+        .nav-actions{display:flex;align-items:center;gap:20px;}
 
-/* ══════════════════════════════════════════
-   MATH BACKGROUND PATTERN
-══════════════════════════════════════════ */
-.math-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-  opacity: 1;
-}
+        /* Notification */
+        .notification-btn{position:relative;width:46px;height:46px;background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;}
+        .notification-btn:hover{background:var(--glass-strong);transform:translateY(-2px);box-shadow:0 8px 20px var(--shadow-blue);}
+        .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
+        .notification-badge{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;}
 
-.math-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 60px),
-    repeating-linear-gradient(90deg, var(--border) 0, var(--border) 1px, transparent 1px, transparent 60px);
-  opacity: 0.6;
-}
+        /* Profile btn */
+        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:all 0.3s;flex-shrink:0;}
+        .profile-nav-btn:hover{transform:translateY(-2px) scale(1.08);}
+        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
 
-.math-symbol {
-  position: absolute;
-  font-family: var(--font-mono);
-  color: var(--text4);
-  font-size: 1.1rem;
-  font-weight: 300;
-  opacity: 0.35;
-  user-select: none;
-  animation: floatMath var(--d, 20s) ease-in-out infinite var(--delay, 0s);
-}
+        /* Burger — the ONLY element in the nav with highest z-index, pointer-events forced */
+        .burger{cursor:pointer;width:38px;height:28px;display:flex;flex-direction:column;justify-content:space-between;z-index:10000;position:relative;transition:transform 0.3s;pointer-events:auto;}
+        .burger:hover{transform:scale(1.1);}
+        .line{width:100%;height:3px;background:var(--accent-blue);border-radius:4px;transition:all 0.45s cubic-bezier(0.68,-0.55,0.265,1.55);}
+        .burger.active .line:nth-child(1){transform:rotate(45deg) translate(9px,9px);background:#ee5a6f;}
+        .burger.active .line:nth-child(2){opacity:0;transform:translateX(20px);}
+        .burger.active .line:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);background:#ee5a6f;}
 
-@keyframes floatMath {
-  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.25; }
-  33% { transform: translateY(-18px) rotate(3deg); opacity: 0.45; }
-  66% { transform: translateY(8px) rotate(-2deg); opacity: 0.30; }
-}
+        /* Overlay */
+        #overlay-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,41,66,0.75);backdrop-filter:blur(10px);z-index:2500;opacity:0;pointer-events:none;transition:opacity 0.5s;}
+        #overlay-bg.active{opacity:1;pointer-events:all;}
 
-/* ══════════════════════════════════════════
-   NAVBAR
-══════════════════════════════════════════ */
-#nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 900;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 clamp(20px, 4vw, 60px);
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  transition: all 0.4s ease;
-}
-#nav.scrolled {
-  background: var(--nav-bg);
-  border-bottom-color: var(--border2);
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
-}
+        /* Side nav */
+        .side-nav{height:100%;width:400px;position:fixed;z-index:3000;top:0;right:-400px;background:linear-gradient(180deg,rgba(255,255,255,0.98) 0%,rgba(232,238,245,0.98) 100%);backdrop-filter:blur(35px);border-left:3px solid var(--accent-blue);overflow-x:hidden;overflow-y:auto;transition:right 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);padding:35px 30px;box-shadow:-15px 0 60px rgba(26,41,66,0.25);}
+        .side-nav::-webkit-scrollbar{width:8px;}
+        .side-nav::-webkit-scrollbar-thumb{background:var(--gradient-blue-glow);border-radius:8px;}
+        .side-nav.active{right:0;}
+        .nav-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:22px;border-bottom:2px solid var(--border-blue);}
+        .nav-header h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.6rem;}
+        .close-btn{cursor:pointer;color:var(--accent-blue);font-size:1.8rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--glass-light);transition:all 0.4s;}
+        .close-btn:hover{color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
+        .user-profile{display:flex;align-items:center;gap:18px;padding:22px;background:var(--glass-medium);border:2px solid var(--border-blue);border-radius:20px;margin-bottom:28px;transition:all 0.3s;text-decoration:none;color:inherit;}
+        .user-profile:hover{background:var(--glass-strong);transform:translateX(-6px);}
+        .user-avatar{width:64px;height:64px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 20px var(--shadow-blue);}
+        .user-info h3{color:var(--text-navy);font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+        .user-info p{color:var(--text-gray);font-size:0.85rem;}
+        .side-nav ul{list-style:none;padding:0;}
+        .side-nav li{margin-bottom:6px;}
+        .side-nav a{padding:18px 20px;text-decoration:none;font-size:1.1rem;color:var(--text-navy);display:flex;align-items:center;justify-content:flex-end;gap:16px;transition:all 0.4s;border-radius:14px;font-weight:600;position:relative;overflow:hidden;}
+        .side-nav a::before{content:'';position:absolute;right:0;top:0;height:100%;width:0;background:linear-gradient(90deg,transparent,rgba(74,144,226,0.18));transition:width 0.5s;z-index:0;}
+        .side-nav a:hover::before{width:100%;}
+        .side-nav a>*{position:relative;z-index:1;}
+        .side-nav a i{color:var(--accent-blue);width:32px;text-align:center;font-size:1.3rem;transition:all 0.4s;}
+        .side-nav a:hover{color:var(--navy-dark);background:var(--glass-strong);transform:translateX(-10px);}
+        .side-nav a:hover i{transform:scale(1.2) rotate(8deg);}
+        #logoutBtn{margin-top:22px;padding-top:22px;border-top:2px solid rgba(238,90,111,0.2);}
+        #logoutBtn a{color:#ee5a6f;}
+        #logoutBtn a i{color:#ee5a6f;}
+        #logoutBtn a:hover{background:rgba(238,90,111,0.12);}
 
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  cursor: pointer;
-}
-.nav-logo-mark {
-  width: 38px; height: 38px;
-  background: var(--accent);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-serif);
-  color: #fff;
-  font-size: 1.1rem;
-  font-style: italic;
-  flex-shrink: 0;
-  transition: transform 0.3s;
-}
-.nav-logo:hover .nav-logo-mark { transform: rotate(-5deg) scale(1.05); }
-.nav-logo-name {
-  font-family: var(--font-serif);
-  font-size: 1.35rem;
-  color: var(--text);
-  letter-spacing: 1px;
-}
+        /* Language selector */
+        .lang-selector-wrap{position:relative;user-select:none;}
+        .lang-trigger-btn{
+            display:flex;align-items:center;gap:8px;padding:10px 16px;
+            background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;
+            cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;
+            color:var(--accent-blue);white-space:nowrap;min-width:110px;justify-content:space-between;
+            transition:background 0.3s, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+        .lang-trigger-btn:hover{
+            background:rgba(74,144,226,0.14);border-color:var(--accent-blue);
+            transform:translateY(-2px);box-shadow:0 8px 20px var(--shadow-blue);
+        }
+        .lang-selector-wrap.open .lang-trigger-btn{
+            background:rgba(74,144,226,0.12);border-color:var(--accent-blue);
+            box-shadow:0 4px 16px var(--shadow-blue);
+        }
+        .lang-flag{font-size:1.1rem;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+        .lang-selector-wrap.open .lang-flag{transform:scale(1.2);}
+        .lang-label{flex:1;text-align:center;transition:color 0.25s;}
+        .lang-chevron{width:14px;height:14px;color:var(--accent-blue);transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0;}
+        .lang-selector-wrap.open .lang-chevron{transform:rotate(180deg);}
+        /* Dropdown: smooth spring scale from top-right */
+        .lang-dropdown-menu{
+            position:absolute;top:calc(100% + 10px);right:0;min-width:155px;
+            background:rgba(255,255,255,0.99);border:1.5px solid var(--border-blue);
+            border-radius:14px;overflow:hidden;
+            box-shadow:0 16px 45px rgba(26,41,66,0.18);
+            transform-origin:top right;
+            transform:scale(0.85) translateY(-10px);opacity:0;
+            transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;
+            z-index:9999;pointer-events:none;
+        }
+        .lang-selector-wrap.open .lang-dropdown-menu{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+        /* Items: staggered slide-in when dropdown opens */
+        .lang-option-item{
+            display:flex;align-items:center;gap:12px;padding:13px 17px;cursor:pointer;
+            font-size:0.92rem;font-weight:600;color:var(--text-navy);
+            transition:background 0.2s, color 0.2s, padding-right 0.25s, transform 0.25s;
+            opacity:0;transform:translateX(8px);
+            animation:none;
+        }
+        .lang-selector-wrap.open .lang-option-item:nth-child(1){animation:itemSlideIn 0.3s 0.05s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+        .lang-selector-wrap.open .lang-option-item:nth-child(2){animation:itemSlideIn 0.3s 0.02s ease forwards;}
+        .lang-selector-wrap.open .lang-option-item:nth-child(3){animation:itemSlideIn 0.3s 0.12s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+        @keyframes itemSlideIn{
+            from{opacity:0;transform:translateX(10px);}
+            to{opacity:1;transform:translateX(0);}
+        }
+        .lang-option-item:hover{background:rgba(74,144,226,0.09);color:var(--accent-blue);padding-right:20px;}
+        .lang-option-item.lang-active{color:var(--accent-blue);background:rgba(74,144,226,0.07);}
+        .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);transform:scale(0.5);}
+        .lang-option-item.lang-active .lang-check{opacity:1;transform:scale(1);}
+        .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
 
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-}
-@media (max-width: 860px) { .nav-links { display: none; } }
-.nav-links a {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text3);
-  text-decoration: none;
-  transition: color 0.3s;
-  position: relative;
-}
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px; right: 0;
-  width: 0; height: 1.5px;
-  background: var(--accent);
-  transition: width 0.3s;
-}
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
+        /* Hero */
+        .hero{padding-top:200px;padding-bottom:100px;text-align:center;position:relative;z-index:1;}
+        .hero-content{max-width:950px;margin:0 auto;padding:0 30px;}
+        .hero-badge{display:inline-block;padding:12px 30px;background:rgba(255,255,255,0.95);border:2px solid var(--accent-blue);border-radius:50px;color:var(--accent-blue);font-size:0.95rem;font-weight:700;letter-spacing:1.5px;margin-bottom:30px;animation:fadeInDown 0.8s ease-out;box-shadow:0 6px 20px rgba(74,144,226,0.25);}
+        .hero h1{font-size:4.5rem;margin-bottom:25px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;letter-spacing:3px;line-height:1.2;animation:fadeInUp 0.8s ease-out 0.2s backwards;}
+        .hero p{font-size:1.5rem;color:var(--text-gray);font-weight:500;line-height:1.9;animation:fadeInUp 0.8s ease-out 0.4s backwards;margin-bottom:40px;max-width:800px;margin-left:auto;margin-right:auto;}
+        .hero-cta{display:flex;gap:25px;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease-out 0.6s backwards;}
+        .cta-btn{padding:18px 45px;border-radius:50px;font-size:1.15rem;font-weight:700;cursor:pointer;transition:all 0.4s;text-decoration:none;display:inline-flex;align-items:center;gap:12px;border:none;position:relative;overflow:hidden;}
+        .cta-btn>*{position:relative;z-index:1;}
+        .cta-primary{background:var(--gradient-blue-glow);color:#fff;box-shadow:0 12px 35px var(--shadow-blue);}
+        .cta-primary:hover{transform:translateY(-5px);box-shadow:0 18px 45px var(--shadow-glow);}
+        .cta-secondary{background:transparent;color:var(--accent-blue);border:3px solid var(--accent-blue);}
+        .cta-secondary:hover{background:var(--glass-strong);transform:translateY(-5px);}
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+        /* Stats */
+        .stats-section{max-width:1300px;margin:-50px auto 80px;padding:0 50px;position:relative;z-index:2;}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;direction:ltr;}
+        .stat-card{background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:25px;padding:35px 25px;text-align:center;transition:all 0.4s;direction:rtl;box-shadow:0 8px 25px rgba(26,41,66,0.08);position:relative;overflow:hidden;}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:var(--gradient-blue-glow);transform:scaleX(0);transition:transform 0.4s;}
+        .stat-card:hover::before{transform:scaleX(1);}
+        .stat-card:hover{transform:translateY(-12px);box-shadow:0 18px 45px rgba(74,144,226,0.25);border-color:var(--accent-blue);}
+        .stat-icon{font-size:3rem;background:var(--gradient-blue-glow);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;}
+        .stat-number{font-size:1.8rem;font-weight:100;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+        .stat-label{color:var(--text-gray);font-size:1.05rem;font-weight:600;}
 
-/* theme toggle */
-.theme-btn {
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--border2);
-  background: var(--surface);
-  color: var(--text2);
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s;
-}
-.theme-btn:hover { background: var(--surface2); border-color: var(--accent3); color: var(--accent3); }
+        /* Explore section */
+        .section-header{text-align:center;margin-bottom:60px;}
+        .section-title{font-size:3rem;font-weight:900;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;letter-spacing:2px;}
+        .section-subtitle{color:var(--text-gray);font-size:1.2rem;font-weight:500;max-width:700px;margin:0 auto;line-height:1.8;}
+        .grid-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:40px;max-width:1500px;margin:0 auto;padding:0 50px 120px;direction:ltr;position:relative;z-index:1;}
+        .card{background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:30px;overflow:hidden;transition:all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);position:relative;height:420px;cursor:pointer;text-decoration:none;direction:rtl;display:flex;align-items:flex-end;box-shadow:0 12px 45px rgba(26,41,66,0.15);}
+        .card::after{content:'';position:absolute;inset:-3px;background:var(--gradient-blue-glow);border-radius:30px;z-index:-1;opacity:0;transition:opacity 0.5s;}
+        .card:hover::after{opacity:1;}
+        .card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,rgba(26,41,66,0.8) 100%);opacity:0;transition:opacity 0.5s;z-index:1;}
+        .card:hover{transform:translateY(-20px) scale(1.02);box-shadow:0 30px 70px rgba(74,144,226,0.4);}
+        .card:hover::before{opacity:1;}
+        .card-img{position:absolute;width:100%;height:100%;object-fit:cover;opacity:0.35;transition:all 0.6s;filter:grayscale(20%) brightness(0.9);}
+        .card:hover .card-img{opacity:0.12;transform:scale(1.1);filter:grayscale(0%) brightness(0.5);}
+        .card-content{position:relative;z-index:2;width:100%;padding:45px 35px;background:linear-gradient(to top,rgba(26,41,66,0.98) 0%,rgba(26,41,66,0.85) 40%,transparent 100%);text-align:right;display:flex;flex-direction:column;gap:16px;transition:all 0.5s;}
+        .card:hover .card-content{padding-bottom:55px;}
+        .card-header{display:flex;align-items:center;justify-content:flex-end;gap:20px;}
+        .card-icon{font-size:3.5rem;background:var(--gradient-white-navy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:all 0.5s;}
+        .card:hover .card-icon{transform:scale(1.25) rotate(10deg);}
+        .card-title{color:#fff;font-size:2.2rem;font-weight:900;text-shadow:0 4px 20px rgba(0,0,0,0.8);letter-spacing:1px;}
+        .card:hover .card-title{transform:translateX(-8px);}
+        .card-description{color:var(--blue-lightest);font-size:1.05rem;line-height:1.8;opacity:0;transform:translateY(20px);transition:all 0.5s 0.1s;max-height:0;overflow:hidden;}
+        .card:hover .card-description{opacity:1;transform:translateY(0);max-height:200px;}
+        .card-badge{position:absolute;top:25px;left:25px;padding:8px 20px;background:var(--gradient-blue-glow);color:#fff;border-radius:50px;font-size:0.85rem;font-weight:700;z-index:3;opacity:0;transform:translateY(-20px);transition:all 0.4s 0.2s;}
+        .card:hover .card-badge{opacity:1;transform:translateY(0);}
 
-/* lang */
-.lang-btn {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 1px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  background: var(--surface);
-  color: var(--text3);
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.lang-btn:hover { background: var(--surface2); color: var(--text); }
+        /* Footer */
+        .footer{background:linear-gradient(180deg,rgba(26,41,66,0.98) 0%,rgba(10,22,40,1) 100%);border-top:2px solid var(--accent-blue);padding:60px 50px 35px;position:relative;z-index:1;}
+        .footer-content{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:50px;margin-bottom:40px;}
+        .footer-section h3{color:var(--accent-light-blue);font-size:1.3rem;margin-bottom:22px;font-weight:800;}
+        .footer-section p,.footer-section a{color:var(--blue-lightest);line-height:2.2;text-decoration:none;display:block;font-size:1rem;}
+        .footer-section a:hover{color:#fff;transform:translateX(-6px);}
+        .footer-bottom{text-align:center;padding-top:30px;border-top:1px solid var(--border-white);color:var(--blue-lightest);font-size:1rem;}
 
-/* cta nav */
-.btn-nav {
-  padding: 9px 22px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  font-family: var(--font-ar);
-  font-size: 13px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-decoration: none;
-  display: flex; align-items: center; gap: 6px;
-}
-.btn-nav:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45, 90, 61, 0.3); }
+        /* Scroll top */
+        .scroll-top{position:fixed;bottom:100px;left:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all 0.4s;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);}
+        .scroll-top.visible{opacity:1;pointer-events:all;}
+        .scroll-top:hover{transform:translateY(-5px) scale(1.1);}
+        .scroll-top i{color:#fff;font-size:1.4rem;}
 
-/* burger */
-.burger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  width: 28px;
-  padding: 4px;
-}
-@media (max-width: 860px) { .burger { display: flex; } }
-.burger span {
-  height: 2px;
-  background: var(--text2);
-  border-radius: 2px;
-  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-.burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-40px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
 
-/* mobile nav */
-.mobile-nav {
-  position: fixed;
-  top: 68px; left: 0; right: 0;
-  background: var(--nav-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border2);
-  z-index: 850;
-  padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s;
-}
-.mobile-nav.open { max-height: 440px; padding: 16px 0 20px; }
-.mobile-nav a {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 28px;
-  font-size: 14px; font-weight: 600;
-  color: var(--text2);
-  text-decoration: none;
-  transition: all 0.25s;
-  border-right: 3px solid transparent;
-}
-.mobile-nav a:hover { color: var(--accent); background: rgba(45, 90, 61, 0.05); border-right-color: var(--accent); }
+        /* ── CROSS-BROWSER GRADIENT TEXT FALLBACK ──
+           Browsers that don't support -webkit-text-fill-color will show a solid colour fallback */
+        @supports not (-webkit-background-clip: text) {
+            .hero h1, .section-title, .stat-number,
+            .logo, .logo-text, .logo-name,
+            .sn-head h2, .sp-header h2, .nav-header h2,
+            .sn-uname { color: #1a2942 !important; background: none !important; }
+        }
 
-/* ══════════════════════════════════════════
-   HERO
-══════════════════════════════════════════ */
-.hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 20px 80px;
-  text-align: center;
-  z-index: 1;
-}
+        /* ── BACKDROP-FILTER FALLBACK (Firefox < 103, older Edge) ── */
+        @supports not (backdrop-filter: blur(1px)) {
+            nav.top-bar, .side-nav, .sidenav, .settings-panel, .sn-toast {
+                background: rgba(255,255,255,0.97) !important;
+            }
+            #overlay-bg, .overlay { background: rgba(26,41,66,0.88) !important; }
+        }
 
-.hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 50px;
-  padding: 6px 18px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--accent);
-  letter-spacing: 2px;
-  margin-bottom: 28px;
-  animation: fadeUp 0.7s ease both;
-}
-.hero-eyebrow-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse-dot 2s ease infinite;
-}
-@keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 90, 61, 0.4); }
-  50% { box-shadow: 0 0 0 5px rgba(45, 90, 61, 0); }
-}
+        /* ── SCROLL-BEHAVIOR FALLBACK ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
 
-.hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 8vw, 7rem);
-  line-height: 1.05;
-  color: var(--text);
-  margin-bottom: 10px;
-  animation: fadeUp 0.8s ease 0.1s both;
-  letter-spacing: -1px;
-}
-.hero-title .highlight {
-  color: var(--accent);
-  font-style: italic;
-}
-.hero-title .line2 {
-  display: block;
-  font-size: 0.5em;
-  font-family: var(--font-ar);
-  font-weight: 300;
-  color: var(--text3);
-  letter-spacing: 3px;
-  margin-top: 12px;
-  font-style: normal;
-}
+        /* ═══ INLINE SETTINGS PANEL ═══ */
+        .settings-fab{position:fixed;bottom:35px;right:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);transition:all 0.3s;border:none;}
+        .settings-fab:hover{transform:scale(1.1) rotate(30deg);box-shadow:0 10px 28px var(--shadow-glow);}
+        .settings-fab i{color:#fff;font-size:1.3rem;}
+        .settings-panel{position:fixed;top:0;left:0;width:400px;height:100%;z-index:4000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-right:3px solid var(--accent-blue);overflow-y:auto;padding:32px 28px;box-shadow:15px 0 50px rgba(26,41,66,0.2);transform:translateX(-100%);transition:transform 0.55s cubic-bezier(0.68,-0.55,0.265,1.55);}
+        .settings-panel.open{transform:translateX(0);}
+        .settings-panel::-webkit-scrollbar{width:8px;}
+        .settings-panel::-webkit-scrollbar-thumb{background:var(--gradient-blue-glow);border-radius:8px;}
+        .sp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border-blue);}
+        .sp-header h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+        .sp-close{width:40px;height:40px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all 0.3s;}
+        .sp-close:hover{background:rgba(238,90,111,0.12);color:#ee5a6f;transform:rotate(90deg);}
+        .sp-section{margin-bottom:26px;}
+        .sp-label{font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent-blue);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+        .sp-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-blue),transparent);}
+        .sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .sp-opt{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid var(--border-blue);height:85px;transition:all 0.3s;}
+        .sp-opt:hover{transform:translateY(-3px);box-shadow:0 8px 22px var(--shadow-blue);}
+        .sp-opt.sel{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(74,144,226,0.15);}
+        .sp-preview{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+        .sp-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+        .sp-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+        .sp-ar{background:linear-gradient(135deg,#006c35,#00993d);}
+        .sp-en{background:linear-gradient(135deg,#012169,#c8102e 50%,#012169);}
+        .sp-opt-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:0.75rem;font-weight:700;}
+        .sp-light .sp-opt-label{color:#1a2942;}
+        .sp-dark .sp-opt-label,.sp-ar .sp-opt-label,.sp-en .sp-opt-label{color:#fff;}
+        .sp-check{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.6rem;opacity:0;transform:scale(0.3);transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);}
+        .sp-opt.sel .sp-check{opacity:1;transform:scale(1);}
+        .sp-font-row{display:flex;gap:8px;}
+        .sp-font-btn{flex:1;padding:11px 6px;border:2px solid var(--border-blue);border-radius:11px;background:rgba(255,255,255,0.6);cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-weight:600;color:var(--text-navy);transition:all 0.3s;text-align:center;font-size:0.82rem;}
+        .sp-font-btn:hover{border-color:var(--accent-blue);}
+        .sp-font-btn.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.1);color:var(--accent-blue);}
+        .sp-save-btn{width:100%;padding:13px;background:var(--gradient-blue-glow);border:none;border-radius:13px;color:#fff;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;transition:all 0.3s;box-shadow:0 5px 16px var(--shadow-blue);}
+        .sp-save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--shadow-glow);}
+        .sp-saved{color:var(--accent-blue);font-size:0.85rem;text-align:center;margin-top:10px;height:20px;opacity:0;transition:opacity 0.3s;}
+        .sp-saved.show{opacity:1;}
 
-.hero-desc {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  color: var(--text2);
-  max-width: 560px;
-  margin: 22px auto 44px;
-  line-height: 2;
-  font-weight: 300;
-  animation: fadeUp 0.9s ease 0.2s both;
-}
+        @media(max-width:768px){
+            nav.top-bar{padding:16px 28px;}
+            nav.top-bar.scrolled{padding:12px 28px;}
+            .hero{padding-top:160px;padding-bottom:60px;}
+            .hero h1{font-size:2.5rem;}
+            .hero p{font-size:1.15rem;}
+            .hero-cta{flex-direction:column;align-items:center;}
+            .cta-btn{width:100%;max-width:320px;justify-content:center;}
+            .stats-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
+            .stats-section{padding:0 20px;}
+            .section-title{font-size:2.2rem;}
+            .grid-container{grid-template-columns:1fr;gap:22px;padding:0 22px 60px;}
+            .card{height:340px;}
+            .side-nav{width:320px;right:-320px;}
+            .settings-panel{width:100%;}
+            .lang-trigger-btn{min-width:90px;padding:8px 12px;font-size:0.8rem;}
+        }
+        @media(max-width:480px){
+            .hero h1{font-size:2rem;}
+            .stats-grid{grid-template-columns:1fr;}
+            .lang-label{display:none;}
+            .lang-trigger-btn{min-width:auto;}
+        }
+    
+/* ══════════════════════════════════════════════
+   UNIFIED NAV + SIDENAV + SETTINGS PANEL STYLES
+   ══════════════════════════════════════════════ */
 
-.hero-cta {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  animation: fadeUp 0.95s ease 0.3s both;
+/* ── NAV BASE ── */
+nav.top-bar,nav#topNav,header.top-bar{
+  display:flex!important;justify-content:space-between;align-items:center;
+  padding:20px 60px;position:fixed;width:100%;top:0;z-index:1000;
+  background:rgba(255,255,255,0.82);backdrop-filter:blur(30px) saturate(180%);
+  border-bottom:1px solid rgba(74,144,226,0.3);
+  box-shadow:0 4px 30px rgba(26,41,66,0.08);
+  transition:padding .4s,box-shadow .4s,background .4s;
 }
-
-.btn-primary {
-  padding: 14px 34px;
-  background: var(--accent);
-  color: #fff;
-  font-family: var(--font-ar);
-  font-size: 15px;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none;
-}
-.btn-primary:hover {
-  background: var(--accent2);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(45, 90, 61, 0.35);
+nav.top-bar.scrolled,nav#topNav.scrolled,header.top-bar.scrolled{
+  padding:13px 60px!important;
+  box-shadow:0 8px 40px rgba(26,41,66,0.15);
+  background:rgba(248,249,250,0.97)!important;
+  border-bottom:2px solid #4a90e2!important;
 }
 
-.btn-secondary {
-  padding: 14px 34px;
-  background: var(--surface2);
-  color: var(--text2);
-  font-family: var(--font-ar);
-  font-size: 15px;
-  font-weight: 600;
-  border: 1px solid var(--border2);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none;
+/* ── LOGO ── */
+.logo-container,.logo-link{display:flex;align-items:center;gap:15px;text-decoration:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.logo-container:hover,.logo-link:hover{transform:scale(1.06);}
+.logo-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 25px rgba(74,144,226,0.3);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
 }
-.btn-secondary:hover {
-  background: var(--bg3);
-  border-color: var(--accent3);
-  color: var(--text);
-  transform: translateY(-2px);
+.logo-icon:hover{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 35px rgba(74,144,226,0.45);}
+.logo-icon i{font-size:1.5rem;color:#fff;}
+.logo-text,.logo-name{
+  font-size:1.8rem;font-weight:900;letter-spacing:3px;
+  background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
-/* hero stats */
-.hero-stats {
-  display: flex;
-  gap: clamp(28px, 5vw, 60px);
-  justify-content: center;
-  margin-top: 60px;
-  flex-wrap: wrap;
-  animation: fadeUp 1s ease 0.45s both;
+/* ── NAV RIGHT CLUSTER ── */
+.nav-right{display:flex;align-items:center;gap:16px;}
+
+/* profile btn */
+.profile-nav-btn{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 4px 15px rgba(74,144,226,0.3);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
 }
-.hero-stat {
-  text-align: center;
+.profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px rgba(74,144,226,0.5);}
+.profile-nav-btn i{color:#fff;font-size:1.1rem;}
+
+/* bell */
+.bell-btn,.notification-btn{
+  position:relative;width:42px;height:42px;
+  background:rgba(255,255,255,0.7);border:1.5px solid rgba(74,144,226,0.3);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);
 }
-.hero-stat-num {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  color: var(--text);
-  line-height: 1;
-  margin-bottom: 4px;
+.bell-btn:hover,.notification-btn:hover{
+  background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);
+  box-shadow:0 8px 22px rgba(74,144,226,0.25);
 }
-.hero-stat-num sup {
-  font-size: 0.5em;
-  color: var(--accent);
-  font-family: var(--font-mono);
-}
-.hero-stat-label {
-  font-size: 12px;
-  color: var(--text3);
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-.hero-stat-div {
-  width: 1px;
-  background: var(--border2);
-  align-self: stretch;
+.bell-btn i,.notification-btn i{color:#4a90e2;font-size:1.2rem;}
+.bell-badge,.notification-badge{
+  position:absolute;top:-5px;right:-5px;width:19px;height:19px;
+  background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;color:#fff;
 }
 
-/* scroll hint */
-.scroll-hint {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  animation: fadeUp 1.2s ease 0.7s both;
+/* ── BURGER ── */
+.burger,.burger-menu{
+  cursor:pointer;width:36px;height:28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:2px 0;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
 }
-.scroll-hint-line {
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(180deg, var(--accent3), transparent);
-  animation: scrollDrop 2s ease infinite;
+.burger:hover,.burger-menu:hover{transform:scale(1.15);}
+.bline{
+  width:100%;height:3px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border-radius:4px;
+  transition:all .45s cubic-bezier(.68,-.55,.265,1.55);
+  transform-origin:center;
 }
-@keyframes scrollDrop {
-  0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
-  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
-  51% { transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+/* when burger is a Font Awesome icon fallback */
+.burger-menu i,.burger i{color:#4a90e2;font-size:1.6rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.burger-menu:hover i,.burger:hover i{transform:rotate(90deg);}
+
+/* open state */
+.burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+.burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
+.burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
+
+/* ── OVERLAY ── */
+.overlay,#overlay-bg{
+  position:fixed;inset:0;background:rgba(26,41,66,0.65);
+  backdrop-filter:blur(8px);z-index:2500;
+  opacity:0;pointer-events:none;transition:opacity .45s;
 }
-.scroll-hint-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--text4);
-  text-transform: uppercase;
+.overlay.show,#overlay-bg.active,.overlay.active{opacity:1;pointer-events:all;}
+
+/* ── SIDENAV ── */
+.sidenav,.side-nav{
+  position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
+  background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+  backdrop-filter:blur(35px);
+  border-inline-start:3px solid #4a90e2;
+  padding:28px 24px;overflow-y:auto;
+  transition:right .55s cubic-bezier(.68,-.55,.265,1.55);
+  box-shadow:-12px 0 50px rgba(26,41,66,0.15);
+}
+.sidenav.show,.side-nav.active{right:0!important;}
+
+/* sidenav head */
+.sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3);}
+.sn-head h2{background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+
+.sn-close{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(74,144,226,0.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#4a90e2;font-size:1.4rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
+
+/* sidenav user card */
+.sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.3);border-radius:18px;margin-bottom:20px;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
+.sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,226,0.18);border-color:#4a90e2;}
+.sn-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(74,144,226,0.3);flex-shrink:0;}
+.sn-uname{color:#0a1628;font-size:1.05rem;font-weight:700;}
+.sn-urole{color:#6b7c93;font-size:0.82rem;}
+
+/* sidenav nav links */
+.sn-links,.side-nav ul{list-style:none;padding:0;margin:0;}
+.sn-links li,.side-nav ul li{margin-bottom:4px;}
+.sn-links a,.side-nav a{
+  display:flex;align-items:center;justify-content:flex-end;gap:14px;
+  padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
+  color:#0a1628;border-radius:14px;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.sn-links a::before,.side-nav a::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
+  transform:translateX(110%);border-radius:14px;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-links a:hover::before,.side-nav a:hover::before{transform:translateX(0);}
+.sn-links a:hover,.side-nav a:hover{transform:translateX(-8px);color:#4a90e2;}
+.sn-links a i,.side-nav a i{
+  color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-links a:hover i,.side-nav a:hover i{transform:scale(1.3) rotate(-5deg);}
+
+/* logout */
+.sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
+.sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
+.sn-logout a:hover{background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important;}
+
+/* ── SETTINGS PANEL (inside sidenav) ── */
+.sn-settings-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-radius:14px;cursor:pointer;
+  background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
+  margin-bottom:4px;color:#0a1628;font-weight:700;font-size:0.95rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:#4a90e2;}
+.sn-settings-toggle i{color:#4a90e2;}
+.sn-settings-chevron{
+  color:#4a90e2;font-size:0.8rem;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
+
+.sn-settings-panel{
+  max-height:0;overflow:hidden;
+  transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;
+  opacity:0;
+}
+.sn-settings-panel.open{max-height:800px;opacity:1;}
+
+.sn-settings-inner{
+  padding:18px 14px;
+  background:rgba(248,249,250,0.9);
+  border:1.5px solid rgba(74,144,226,0.2);
+  border-radius:16px;margin-top:8px;margin-bottom:8px;
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+.sn-s-label{
+  font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:#4a90e2;margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;
+}
+.sn-s-label:first-child{margin-top:0;}
+.sn-s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3));}
+
+/* theme mini cards */
+.sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sn-t-opt{
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  border:2px solid transparent;height:70px;position:relative;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-t-opt:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,144,226,0.2);}
+.sn-t-opt.sel{border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
+.sn-t-preview{width:100%;height:100%;}
+.sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+.sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+.sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
+.sn-t-light .sn-t-label{color:#1a2942;}
+.sn-t-dark  .sn-t-label{color:#e8eef5;}
+.sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
+
+/* graphics mini options */
+.sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sn-g-opt{
+  padding:10px 6px;border-radius:12px;cursor:pointer;
+  border:1.5px solid rgba(74,144,226,0.25);text-align:center;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+.sn-g-opt:hover{transform:translateY(-3px);border-color:#4a90e2;box-shadow:0 6px 16px rgba(74,144,226,0.2);}
+.sn-g-opt.sel{border-color:#4a90e2;background:rgba(74,144,226,0.08);}
+.sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
+.sn-g-name{font-size:0.65rem;font-weight:700;color:#0a1628;}
+.sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+.sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
+
+/* font mini slider */
+.sn-font-row{padding:6px 2px;}
+.sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background .15s;direction:ltr;}
+.sn-font-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);box-shadow:0 2px 10px rgba(74,144,226,0.5);cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
+.sn-font-slider::-webkit-slider-thumb:hover{transform:scale(1.3);}
+.sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
+.sn-font-labels span{font-size:0.62rem;color:#6b7c93;font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .2s;}
+.sn-font-labels span:hover,.sn-font-labels span.act{background:rgba(74,144,226,0.1);color:#4a90e2;font-weight:800;}
+
+/* save btn */
+.sn-save-btn{
+  width:100%;margin-top:14px;padding:12px;
+  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+  border:none;border-radius:12px;color:#fff;font-weight:700;
+  font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;
+  cursor:pointer;box-shadow:0 5px 16px rgba(74,144,226,0.35);
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.sn-save-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(74,144,226,0.45);}
+
+/* ── GENERIC HOVER ANIMATIONS ── */
+/* any button with .btn or class containing btn */
+button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             background .3s,
+             color .3s,
+             border-color .3s;
+}
+/* nav links in side nav already handled above */
+/* general interactive cards */
+.dash-card,.info-box,.course-item,.feed-item,.item-card,
+.g-opt,.t-opt,.stat-mini,.panel,.s-card,.post-box{
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s,
+             border-color .35s!important;
 }
 
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
-.ticker {
-  background: var(--accent);
-  padding: 12px 0;
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
+/* ── TOAST (unified) ── */
+.sn-toast{
+  position:fixed;top:90px;left:50%;
+  transform:translateX(-50%) translateY(-16px);
+  background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;
+  padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;
+  opacity:0;pointer-events:none;z-index:99999;
+  box-shadow:0 8px 28px rgba(26,41,66,0.3);
+  display:flex;align-items:center;gap:9px;
+  transition:all .38s cubic-bezier(.34,1.56,.64,1);
 }
-.ticker-track {
-  display: flex;
-  width: max-content;
-  gap: 0;
-  animation: tickerMove 30s linear infinite;
-}
-.ticker:hover .ticker-track { animation-play-state: paused; }
-.ticker-item {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 0 30px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: rgba(255,255,255,0.8);
-  white-space: nowrap;
-  letter-spacing: 1px;
-}
-.ticker-item strong { color: #fff; }
-.ticker-sep { color: rgba(255,255,255,0.3); font-size: 18px; }
-@keyframes tickerMove {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+.sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:768px){
+  nav.top-bar,nav#topNav,header.top-bar{padding:14px 20px!important;}
+  nav.top-bar.scrolled,nav#topNav.scrolled{padding:10px 20px!important;}
+  .sidenav,.side-nav{width:100%;right:-100%!important;}
+  .sidenav.show,.side-nav.active{right:0!important;}
 }
 
-/* ══════════════════════════════════════════
-   SECTION COMMON
-══════════════════════════════════════════ */
-.section {
-  position: relative;
-  z-index: 2;
-  padding: clamp(70px, 9vw, 110px) clamp(20px, 5vw, 80px);
-  max-width: 1240px;
-  margin: 0 auto;
+/* ── ICON HOVER ANIMATIONS ── */
+@keyframes iconBounce {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.35) rotate(-12deg); }
+  60%  { transform: scale(1.2) rotate(8deg); }
+  80%  { transform: scale(1.28) rotate(-5deg); }
+  100% { transform: scale(1.25) rotate(0deg); }
 }
-.section-full {
-  position: relative;
-  z-index: 2;
+@keyframes iconBounceOut {
+  0%   { transform: scale(1.25) rotate(0deg); }
+  40%  { transform: scale(0.9) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
-.section-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: clamp(70px, 9vw, 110px) clamp(20px, 5vw, 80px);
+@keyframes navIconPop {
+  0%   { transform: scale(1) translateY(0); }
+  40%  { transform: scale(1.4) translateY(-4px); }
+  70%  { transform: scale(1.2) translateY(-2px); }
+  100% { transform: scale(1.3) translateY(-3px); }
 }
-
-.section-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-  display: block;
-  text-align: center;
+@keyframes navIconPopOut {
+  0%   { transform: scale(1.3) translateY(-3px); }
+  50%  { transform: scale(0.9) translateY(1px); }
+  100% { transform: scale(1) translateY(0); }
 }
-.section-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  color: var(--text);
-  text-align: center;
-  margin-bottom: 14px;
-  line-height: 1.15;
-}
-.section-desc {
-  text-align: center;
-  color: var(--text3);
-  font-size: 15px;
-  max-width: 500px;
-  margin: 0 auto 52px;
-  line-height: 2;
-  font-weight: 300;
-}
-.divider {
-  height: 1px;
-  background: var(--border);
-  max-width: 1240px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
+@keyframes statIconSpin {
+  0%   { transform: scale(1) rotate(0deg); }
+  25%  { transform: scale(1.3) rotate(-15deg); }
+  50%  { transform: scale(1.4) rotate(10deg); }
+  75%  { transform: scale(1.3) rotate(-5deg); }
+  100% { transform: scale(1.3) rotate(0deg); }
 }
 
-/* ══════════════════════════════════════════
-   FEATURES GRID (BENTO)
-══════════════════════════════════════════ */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 16px;
-}
+/* Card icons get their own hover-able zone */
+.card-icon { cursor: default; display: inline-block; }
+.card-icon.icon-hover { animation: iconBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.card-icon.icon-out   { animation: iconBounceOut 0.4s ease forwards; }
 
-@media (max-width: 960px) {
-  .features-grid { grid-template-columns: 1fr 1fr; }
-  .feat-wide { grid-column: span 2 !important; }
-  .feat-tall { grid-row: span 1 !important; }
-}
-@media (max-width: 600px) {
-  .features-grid { grid-template-columns: 1fr; }
-  .feat-wide { grid-column: span 1 !important; }
-}
+/* Nav icons */
+.nav-icon-wrap { display: inline-flex; align-items: center; justify-content: center; }
+.nav-icon-wrap.icon-hover i { animation: navIconPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.nav-icon-wrap.icon-out   i { animation: navIconPopOut 0.35s ease forwards; }
 
-.feat-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  transition: all 0.35s;
-  cursor: default;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: block;
-  color: inherit;
+/* Sidenav link icons */
+.sn-links a i, .side-nav a i {
+  display: inline-block;
+  transition: none !important;
 }
-.feat-card:hover {
-  border-color: var(--border2);
-  box-shadow: var(--shadow2);
-  transform: translateY(-4px);
-}
+.sn-link-icon-hover { animation: iconBounce 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards !important; }
+.sn-link-icon-out   { animation: iconBounceOut 0.35s ease forwards !important; }
 
-.feat-card-1 { grid-column: span 7; }
-.feat-card-2 { grid-column: span 5; }
-.feat-card-3 { grid-column: span 4; }
-.feat-card-4 { grid-column: span 4; }
-.feat-card-5 { grid-column: span 4; }
+/* Stat card icons */
+.stat-icon i { display: inline-block; }
+.stat-icon-hover { animation: statIconSpin 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards !important; }
+.stat-icon-out   { animation: iconBounceOut 0.4s ease forwards !important; }
 
-.feat-icon-wrap {
-  width: 52px; height: 52px;
-  border-radius: 12px;
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 18px;
-  transition: all 0.35s;
-}
-.feat-card:hover .feat-icon-wrap { transform: scale(1.1) rotate(-3deg); }
+/* Logo icon bounce */
+.logo-icon { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s !important; }
+.logo-icon.icon-hover { animation: iconBounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
 
-.feat-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent3);
-  margin-bottom: 8px;
-}
-.feat-title {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  color: var(--text);
-  margin-bottom: 10px;
-  line-height: 1.3;
-}
-.feat-desc {
-  font-size: 13.5px;
-  color: var(--text3);
-  line-height: 1.85;
-  font-weight: 300;
-}
-.feat-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 16px;
-}
-.feat-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: var(--bg2);
-  color: var(--text3);
-  border: 1px solid var(--border);
-}
-
-/* big feature accent bar */
-.feat-card.accent-green { border-left: 3px solid var(--accent); }
-.feat-card.accent-gold  { border-left: 3px solid var(--accent3); }
-.feat-card.accent-red   { border-left: 3px solid var(--red); }
-.feat-card.accent-blue  { border-left: 3px solid var(--blue); }
-
-/* ══════════════════════════════════════════
-   COURSES SECTION
-══════════════════════════════════════════ */
-.tabs {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-}
-.tab-btn {
-  padding: 8px 22px;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  background: var(--surface);
-  color: var(--text3);
-  font-family: var(--font-ar);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.tab-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-.tab-btn:hover:not(.active) { background: var(--surface2); color: var(--text); }
-
-.courses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.course-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  transition: all 0.35s;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-}
-.course-card:hover {
-  box-shadow: var(--shadow2);
-  transform: translateY(-5px);
-  border-color: var(--border2);
-}
-
-.course-thumb {
-  height: 140px;
-  background: var(--bg2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3.5rem;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-.course-thumb::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
-}
-.course-thumb-icon {
-  position: relative;
-  z-index: 1;
-}
-.course-thumb-math {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--text4);
-  opacity: 0.5;
-  z-index: 0;
-}
-
-.course-body {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.course-subject {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-.course-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-.course-desc {
-  font-size: 13px;
-  color: var(--text3);
-  line-height: 1.75;
-  font-weight: 300;
-  flex: 1;
-  margin-bottom: 16px;
-}
-.course-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-}
-.course-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.course-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text3);
-}
-.course-arrow {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text3);
-  font-size: 0.85rem;
-  transition: all 0.3s;
-}
-.course-card:hover .course-arrow {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-/* ══════════════════════════════════════════
-   ABOUT SECTION
-══════════════════════════════════════════ */
-.about-section {
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 80px);
-  align-items: center;
-}
-@media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
-
-.about-text h2 {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 3rem);
-  color: var(--text);
-  line-height: 1.2;
-  margin-bottom: 20px;
-}
-.about-text h2 em { font-style: italic; color: var(--accent); }
-.about-text p {
-  font-size: 14.5px;
-  color: var(--text2);
-  line-height: 2;
-  margin-bottom: 14px;
-  font-weight: 300;
-}
-.about-text .learn-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 14px;
-  text-decoration: none;
-  border-bottom: 1px solid var(--accent);
-  padding-bottom: 2px;
-  transition: all 0.3s;
-  margin-top: 10px;
-}
-.about-text .learn-more:hover { gap: 14px; }
-
-.about-visual {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.about-stat-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px 18px;
-  text-align: center;
-  transition: all 0.35s;
-}
-.about-stat-card:hover {
-  border-color: var(--accent);
-  box-shadow: var(--shadow);
-  transform: scale(1.03);
-}
-.about-stat-num {
-  font-family: var(--font-serif);
-  font-size: 2.4rem;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.about-stat-label {
-  font-size: 12px;
-  color: var(--text3);
-  font-weight: 600;
-}
-
-/* ══════════════════════════════════════════
-   TESTIMONIALS
-══════════════════════════════════════════ */
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 18px;
-}
-.testimonial-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 26px;
-  transition: all 0.35s;
-}
-.testimonial-card:hover {
-  border-color: var(--border2);
-  box-shadow: var(--shadow);
-  transform: translateY(-3px);
-}
-.testimonial-quote {
-  font-family: var(--font-serif);
-  font-size: 3rem;
-  color: var(--accent3);
-  line-height: 0.8;
-  margin-bottom: 14px;
-  opacity: 0.6;
-}
-.testimonial-text {
-  font-size: 14px;
-  color: var(--text2);
-  line-height: 1.9;
-  font-weight: 300;
-  margin-bottom: 18px;
-}
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.testimonial-avatar {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: var(--bg2);
-  border: 2px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-.testimonial-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.testimonial-role {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text4);
-  letter-spacing: 1px;
-}
-
-/* ══════════════════════════════════════════
-   CTA SECTION
-══════════════════════════════════════════ */
-.cta-section {
-  background: var(--accent);
-  position: relative;
-  overflow: hidden;
-}
-.cta-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 50px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 50px);
-}
-.cta-math-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  z-index: 0;
-}
-.cta-math-sym {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
-  color: rgba(255,255,255,0.08);
-  font-weight: 300;
-}
-.cta-inner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: clamp(70px, 10vw, 110px) clamp(20px, 5vw, 80px);
-  max-width: 700px;
-  margin: 0 auto;
-}
-.cta-inner h2 {
-  font-family: var(--font-serif);
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  color: #fff;
-  margin-bottom: 16px;
-  line-height: 1.1;
-}
-.cta-inner p {
-  font-size: 16px;
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 40px;
-  line-height: 2;
-  font-weight: 300;
-}
-.btn-white {
-  padding: 14px 36px;
-  background: #fff;
-  color: var(--accent);
-  font-family: var(--font-ar);
-  font-size: 15px;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-}
-.btn-white:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
-}
-.btn-outline-white {
-  padding: 14px 36px;
-  background: transparent;
-  color: #fff;
-  font-family: var(--font-ar);
-  font-size: 15px;
-  font-weight: 600;
-  border: 1.5px solid rgba(255,255,255,0.45);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-}
-.btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.7); }
-
-/* ══════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════ */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 2;
-}
-.footer-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: clamp(50px, 6vw, 72px) clamp(20px, 5vw, 80px) clamp(30px, 4vw, 48px);
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: clamp(30px, 4vw, 60px);
-}
-@media (max-width: 860px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 540px) { .footer-inner { grid-template-columns: 1fr; } }
-
-.footer-brand .nav-logo { margin-bottom: 14px; display: inline-flex; }
-.footer-brand p {
-  font-size: 13px;
-  color: var(--text3);
-  line-height: 1.85;
-  font-weight: 300;
-  margin-bottom: 18px;
-}
-
-.footer-socials {
-  display: flex;
-  gap: 8px;
-}
-.social-btn {
-  width: 36px; height: 36px;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  background: var(--surface);
-  color: var(--text3);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-.social-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
-
-.footer-col h5 {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text4);
-  margin-bottom: 16px;
-}
-.footer-col a {
-  display: block;
-  font-size: 13.5px;
-  color: var(--text3);
-  text-decoration: none;
-  padding: 4px 0;
-  transition: color 0.3s;
-}
-.footer-col a:hover { color: var(--accent); }
-
-.footer-bottom {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 20px clamp(20px, 5vw, 80px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.footer-bottom p {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text4);
-  letter-spacing: 1px;
-}
-.footer-bottom-links {
-  display: flex;
-  gap: 20px;
-}
-.footer-bottom-links a {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text4);
-  text-decoration: none;
-  transition: color 0.3s;
-  letter-spacing: 1px;
-}
-.footer-bottom-links a:hover { color: var(--text2); }
-
-/* ══════════════════════════════════════════
-   SCROLL TO TOP + REVEAL
-══════════════════════════════════════════ */
-.stb {
-  position: fixed;
-  bottom: 28px; left: 28px;
-  width: 44px; height: 44px;
-  border-radius: 10px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--text2);
-  font-size: 0.9rem;
-  cursor: pointer;
-  z-index: 500;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s;
-  box-shadow: var(--shadow);
-}
-.stb.show { opacity: 1; pointer-events: all; }
-.stb:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-2px); }
-
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
-}
-.reveal.in {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-
-/* ══════════════════════════════════════════
-   HIDDEN LANGUAGE CLASSES
-══════════════════════════════════════════ */
-[data-lang="ar"] .en { display: none; }
-[data-lang="en"] .ar { display: none; }
-
-/* ══════════════════════════════════════════
-   SUBJECT ICONS COLOR BANDS
-══════════════════════════════════════════ */
-.thumb-math   { background: linear-gradient(135deg, #e8f4e8, #c8e8d0) !important; }
-.thumb-science { background: linear-gradient(135deg, #e8eef8, #c8d8f0) !important; }
-.thumb-arabic { background: linear-gradient(135deg, #f8f0e0, #f0e0c0) !important; }
-.thumb-english { background: linear-gradient(135deg, #f0e8f8, #e0d0f0) !important; }
-.thumb-history { background: linear-gradient(135deg, #f8ece8, #f0d8d0) !important; }
-.thumb-ai     { background: linear-gradient(135deg, #e8f8f5, #c8eee8) !important; }
-
-[data-theme="dark"] .thumb-math    { background: linear-gradient(135deg, #1a2e1a, #22381e) !important; }
-[data-theme="dark"] .thumb-science { background: linear-gradient(135deg, #1a1e2e, #1e2438) !important; }
-[data-theme="dark"] .thumb-arabic  { background: linear-gradient(135deg, #2e2818, #382e18) !important; }
-[data-theme="dark"] .thumb-english { background: linear-gradient(135deg, #22182e, #2c1e38) !important; }
-[data-theme="dark"] .thumb-history { background: linear-gradient(135deg, #2e1e1a, #381e1a) !important; }
-[data-theme="dark"] .thumb-ai      { background: linear-gradient(135deg, #182e2a, #1e3830) !important; }
-
-/* ══════════════════════════════════════════
-   INFO ROW (below hero)
-══════════════════════════════════════════ */
-.info-row {
-  background: var(--surface2);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  z-index: 2;
-}
-.info-row-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  display: flex;
-  divide-x: 1px solid var(--border);
-}
-.info-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 22px clamp(20px, 3vw, 40px);
-  border-left: 1px solid var(--border);
-  transition: background 0.3s;
-}
-.info-item:last-child { border-left: none; }
-.info-item:hover { background: var(--bg2); }
-.info-item-icon {
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
-}
-.info-item-text h4 {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.info-item-text p {
-  font-size: 12px;
-  color: var(--text3);
-  font-weight: 300;
-}
-@media (max-width: 768px) {
-  .info-row-inner { flex-direction: column; }
-  .info-item { border-left: none; border-top: 1px solid var(--border); }
-  .info-item:first-child { border-top: none; }
-}
-
-/* tab panels */
-.tab-panel { display: none; }
-.tab-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-
-/* notification badge (small) */
-.badge-new {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: var(--red);
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 1px;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-.badge-hot {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: var(--accent3);
-  color: #1a1000;
-  font-weight: 700;
-  letter-spacing: 1px;
-  vertical-align: middle;
-  margin-right: 6px;
-}
+/* Profile & bell bounce */
+.profile-nav-btn i, .bell-btn i, .notification-btn i {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.profile-nav-btn:hover i { animation: navIconPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.notification-btn:hover i, .bell-btn:hover i { animation: iconBounce 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
 
 </style>
+    <script src="settings-apply.js"></script>
+    <script>
+    /* Font Awesome webfont fallback — fires after DOM ready.
+       If Edge/Brave blocked the CDN font, inject a backup source. */
+    (function(){
+      function checkFA(){
+        var probe = document.createElement('span');
+        probe.setAttribute('style',
+          'font-family:"Font Awesome 6 Free";font-weight:900;font-size:16px;' +
+          'position:absolute;left:-9999px;top:-9999px;visibility:hidden;');
+        probe.innerHTML = '&#xf00c;'; // fa-check codepoint
+        document.body.appendChild(probe);
+        var computed = window.getComputedStyle(probe).fontFamily;
+        var width = probe.offsetWidth;
+        document.body.removeChild(probe);
+        /* If rendered width is 0, or looks like a box/missing glyph → load backup */
+        var faLoaded = computed && computed.toLowerCase().indexOf('font awesome') !== -1 && width > 0 && width < 25;
+        if (!faLoaded) {
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.crossOrigin = 'anonymous';
+          link.href = 'https://use.fontawesome.com/releases/v6.5.2/css/all.css';
+          document.head.appendChild(link);
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkFA);
+      } else {
+        checkFA();
+      }
+    })();
+    </script>
 </head>
 <body>
 
-<!-- Math background -->
-<div class="math-bg" id="mathBg"></div>
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+</div>
 
-<!-- ═══ NAV ═══ -->
-<nav id="nav">
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-mark">S</div>
-    <span class="nav-logo-name">SITAJ</span>
-  </a>
-
-  <ul class="nav-links">
-    <li><a href="#features"><span class="ar">المميزات</span><span class="en">Features</span></a></li>
-    <li><a href="#courses"><span class="ar">الأقسام</span><span class="en">Sections</span></a></li>
-    <li><a href="#about"><span class="ar">عن المنصة</span><span class="en">About</span></a></li>
-    <li><a href="#contact"><span class="ar">تواصل</span><span class="en">Contact</span></a></li>
-  </ul>
-
-  <div class="nav-right">
-    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-    <a href="#" class="btn-nav"><span class="ar">ابدأ مجاناً</span><span class="en">Start Free</span></a>
-    <div class="burger" id="burger" onclick="toggleMobile()">
-      <span></span><span></span><span></span>
+<nav class="top-bar" id="navbar">
+    <div class="logo-container" onclick="window.location.href='index.html'">
+        <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="logo-text">
+            <div class="logo" style="position:relative;">SITEJ</div>
+            <div class="logo-tagline" data-i18n="logoTagline">منصة التعليم الذكية</div>
+        </div>
     </div>
-  </div>
+    <div class="nav-actions">
+        <div class="lang-selector-wrap" id="langSelectorWrap">
+            <div class="lang-trigger-btn" id="langTriggerBtn">
+                <span class="lang-flag" id="langFlag">🇸🇦</span>
+                <span class="lang-label" id="langLabelText">العربية</span>
+                <svg class="lang-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="lang-dropdown-menu" id="langDropdownMenu">
+                <div class="lang-option-item lang-active" data-lang="ar" onclick="setLang('ar')">
+                    <span>🇸🇦</span><span>العربية</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="lang-divider-line"></div>
+                <div class="lang-option-item" data-lang="en" onclick="setLang('en')">
+                    <span>🇬🇧</span><span>English</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+            </div>
+        </div>
+        <a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a>
+        <div class="notification-btn" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false"><div class="bline"></div><div class="bline"></div><div class="bline"></div></div>
+    </div>
 </nav>
 
-<!-- Mobile nav -->
-<div class="mobile-nav" id="mobileNav">
-  <a href="#features" onclick="closeMobile()"><i class="fas fa-star fa-fw" style="color:var(--accent3)"></i> <span class="ar">المميزات</span><span class="en">Features</span></a>
-  <a href="#courses" onclick="closeMobile()"><i class="fas fa-book-open fa-fw" style="color:var(--accent)"></i> <span class="ar">الأقسام</span><span class="en">Sections</span></a>
-  <a href="#about" onclick="closeMobile()"><i class="fas fa-info-circle fa-fw" style="color:var(--blue)"></i> <span class="ar">عن المنصة</span><span class="en">About</span></a>
-  <a href="videos.html" onclick="closeMobile()"><i class="fas fa-play-circle fa-fw" style="color:var(--red)"></i> <span class="ar">الفيديوهات</span><span class="en">Videos</span></a>
-  <a href="AI.html" onclick="closeMobile()"><i class="fas fa-robot fa-fw" style="color:var(--accent)"></i> <span class="ar">المساعد الذكي</span><span class="en">AI Assistant</span></a>
+
+
+<!-- ══ UNIFIED OVERLAY + SIDENAV ══ -->
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+  <div class="sn-head">
+    <h2>القائمة</h2>
+    <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+  </div>
+  <div class="sn-user">
+    <div class="sn-avatar">👤</div>
+    <div>
+      <div class="sn-uname">مرحباً بك</div>
+      <div class="sn-urole">طالب متميز</div>
+    </div>
+  </div>
+  <ul class="sn-links">
+    <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+    <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+    <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+    <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+    <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+    <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+    <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+    <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+    <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+    <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+    <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+    <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
+    <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+  </ul>
+
+  <!-- ── SETTINGS TOGGLE ── -->
+  <div style="margin-top:12px;">
+    <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+      <span style="display:flex;align-items:center;gap:10px;">
+        <i class="fas fa-sliders-h"></i> الإعدادات
+      </span>
+      <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+    </div>
+    <div class="sn-settings-panel" id="snSettingsPanel">
+      <div class="sn-settings-inner">
+
+        <!-- THEME -->
+        <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+        <div class="sn-theme-row">
+          <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+            <div class="sn-t-preview sn-t-light"></div>
+            <div class="sn-t-label">فاتح</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+            <div class="sn-t-preview sn-t-dark"></div>
+            <div class="sn-t-label">داكن</div>
+            <div class="sn-t-check"><i class="fas fa-check"></i></div>
+          </div>
+        </div>
+
+        <!-- GRAPHICS -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+        <div class="sn-g-row">
+          <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
+            <span class="sn-g-icon">✨</span>
+            <div class="sn-g-name">كامل</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
+            <span class="sn-g-icon">🌤</span>
+            <div class="sn-g-name">مخفف</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
+            <span class="sn-g-icon">⚡</span>
+            <div class="sn-g-name">بسيط</div>
+            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
+          </div>
+        </div>
+
+        <!-- FONT SIZE -->
+        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+        <div class="sn-font-row">
+          <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1"
+                 oninput="snFontInput(this.value)">
+          <div class="sn-font-labels">
+            <span onclick="snSetFont(0)" data-idx="0">S</span>
+            <span onclick="snSetFont(1)" data-idx="1">M</span>
+            <span onclick="snSetFont(2)" data-idx="2">L</span>
+            <span onclick="snSetFont(3)" data-idx="3">XL</span>
+          </div>
+        </div>
+
+        <!-- SAVE -->
+        <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="sn-links sn-logout" style="margin-top:16px;">
+    <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+  </ul>
 </div>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot"></span>
-    <span class="ar">منصة التعليم الذكي — الأردن</span>
-    <span class="en">Intelligent Education Platform — Jordan</span>
-  </div>
+<!-- TOAST -->
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
 
-  <h1 class="hero-title">
-    <span class="ar">تعلّم بذكاء،<br><span class="highlight">ارتقِ</span> بعزيمة</span>
-    <span class="en">Learn Smart,<br><span class="highlight">Rise</span> with Purpose</span>
-    <span class="line2 ar">المنصة التعليمية الأكثر تكاملاً في المنطقة</span>
-    <span class="line2 en">The Most Complete Educational Platform in the Region</span>
-  </h1>
-
-  <p class="hero-desc ar">
-    فيديوهات تعليمية، ذكاء اصطناعي، ألعاب ذهنية، مسارات أكاديمية، ومركز لغة الإشارة — كل ما يحتاجه الطالب في مكان واحد مصمم للتميز.
-  </p>
-  <p class="hero-desc en">
-    Educational videos, AI assistant, mental games, academic paths, and sign language hub — everything a student needs in one place built for excellence.
-  </p>
-
-  <div class="hero-cta">
-    <a href="#courses" class="btn-primary">
-      <i class="fas fa-rocket"></i>
-      <span class="ar">ابدأ رحلتك</span><span class="en">Begin Your Journey</span>
-    </a>
-    <a href="#about" class="btn-secondary">
-      <span class="ar">اعرف أكثر</span><span class="en">Learn More</span>
-      <i class="fas fa-arrow-left" style="font-size:12px"></i>
-    </a>
-  </div>
-
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num">600<sup>+</sup></div>
-      <div class="hero-stat-label ar">طالب نشيط</div>
-      <div class="hero-stat-label en">Active Learners</div>
+<header class="hero">
+    <div class="hero-content">
+        <div class="hero-badge" data-i18n="heroBadge">✨ مرحباً بك في المستقبل</div>
+        <h1 data-i18n="heroTitle">رحلتك التعليمية تبدأ هنا</h1>
+        <p data-i18n="heroSubtitle">اكتشف عالماً من المعرفة والإبداع مع أفضل منصة تعليمية ذكية في المنطقة</p>
+        <div class="hero-cta">
+            <a href="#explore" class="cta-btn cta-primary"><span data-i18n="ctaStart">ابدأ الآن</span><i class="fas fa-arrow-left" id="ctaArrow1"></i></a>
+            <a href="#explore" class="cta-btn cta-secondary"><span data-i18n="ctaDiscover">اكتشف المزيد</span><i class="fas fa-compass"></i></a>
+        </div>
     </div>
-    <div class="hero-stat-div"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">50<sup>+</sup></div>
-      <div class="hero-stat-label ar">فيديو تعليمي</div>
-      <div class="hero-stat-label en">Educational Videos</div>
-    </div>
-    <div class="hero-stat-div"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">12<sup>+</sup></div>
-      <div class="hero-stat-label ar">قسم متخصص</div>
-      <div class="hero-stat-label en">Specialised Sections</div>
-    </div>
-    <div class="hero-stat-div"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">95<sup>%</sup></div>
-      <div class="hero-stat-label ar">رضا المستخدمين</div>
-      <div class="hero-stat-label en">User Satisfaction</div>
-    </div>
-  </div>
+</header>
 
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    <div class="scroll-hint-label ar">استكشف</div>
-    <div class="scroll-hint-label en">Explore</div>
-  </div>
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" data-i18n="stat1Title">مجتمعٌ عالمي نُعيد صياغته</div>
+            <div class="stat-label" data-i18n="stat1Desc">نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-video"></i></div>
+            <div class="stat-number" data-i18n="stat2Title">المحتوى الذي لم يجرؤ أحد على تقديمه</div>
+            <div class="stat-label" data-i18n="stat2Desc">أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق والعمل الدؤوب.</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-certificate"></i></div>
+            <div class="stat-number" data-i18n="stat3Title">اعترافاتٌ تليق بكبار الطموح</div>
+            <div class="stat-label" data-i18n="stat3Desc">أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-award"></i></div>
+            <div class="stat-number" data-i18n="stat4Title">صرامة الإتقان</div>
+            <div class="stat-label" data-i18n="stat4Desc">نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.</div>
+        </div>
+    </div>
 </section>
 
-<!-- INFO ROW -->
-<div class="info-row">
-  <div class="info-row-inner">
-    <div class="info-item">
-      <div class="info-item-icon">🎬</div>
-      <div class="info-item-text">
-        <h4 class="ar">فيديوهات HD</h4><h4 class="en">HD Videos</h4>
-        <p class="ar">شروحات بصرية لكل المواد</p><p class="en">Visual explanations for all subjects</p>
-      </div>
+<section id="explore">
+    <div class="section-header">
+        <h2 class="section-title" data-i18n="exploreTitle">استكشف عالمك التعليمي</h2>
+        <p class="section-subtitle" data-i18n="exploreSubtitle">اختر المجال الذي يناسب اهتماماتك وابدأ رحلتك نحو التميز</p>
     </div>
-    <div class="info-item">
-      <div class="info-item-icon">🤖</div>
-      <div class="info-item-text">
-        <h4 class="ar">ذكاء اصطناعي</h4><h4 class="en">AI Assistant</h4>
-        <p class="ar">متاح 24/7 للإجابة الفورية</p><p class="en">Available 24/7 for instant answers</p>
-      </div>
-    </div>
-    <div class="info-item">
-      <div class="info-item-icon">🎮</div>
-      <div class="info-item-text">
-        <h4 class="ar">ألعاب تعليمية</h4><h4 class="en">Educational Games</h4>
-        <p class="ar">تعلّم بطريقة ممتعة وتفاعلية</p><p class="en">Learn in a fun, interactive way</p>
-      </div>
-    </div>
-    <div class="info-item">
-      <div class="info-item-icon">🤟</div>
-      <div class="info-item-text">
-        <h4 class="ar">لغة الإشارة</h4><h4 class="en">Sign Language</h4>
-        <p class="ar">تعليم شامل للجميع بلا استثناء</p><p class="en">Inclusive education for everyone</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <div class="ticker-item"><strong>SITAJ</strong><span class="ticker-sep">·</span> <span class="ar">العلم نور</span><span class="en">Knowledge is Light</span> <span class="ticker-sep">+</span></div>
-    <div class="ticker-item"><span class="ar">∑ التعليم = مستقبل أفضل</span><span class="en">∑ Education = Better Future</span><span class="ticker-sep">×</span></div>
-    <div class="ticker-item"><strong>600+</strong> <span class="ar">طالب متعلم</span><span class="en">Learners</span><span class="ticker-sep">÷</span></div>
-    <div class="ticker-item"><span class="ar">√ الفهم قبل الحفظ</span><span class="en">√ Understand Before Memorise</span><span class="ticker-sep">±</span></div>
-    <div class="ticker-item"><span class="ar">π المعرفة لا نهاية لها</span><span class="en">π Knowledge is Infinite</span><span class="ticker-sep">+</span></div>
-    <div class="ticker-item"><strong>AI</strong> <span class="ar">مساعدك الذكي 24/7</span><span class="en">Your Smart Assistant 24/7</span><span class="ticker-sep">×</span></div>
-    <!-- dup -->
-    <div class="ticker-item"><strong>SITAJ</strong><span class="ticker-sep">·</span> <span class="ar">العلم نور</span><span class="en">Knowledge is Light</span> <span class="ticker-sep">+</span></div>
-    <div class="ticker-item"><span class="ar">∑ التعليم = مستقبل أفضل</span><span class="en">∑ Education = Better Future</span><span class="ticker-sep">×</span></div>
-    <div class="ticker-item"><strong>600+</strong> <span class="ar">طالب متعلم</span><span class="en">Learners</span><span class="ticker-sep">÷</span></div>
-    <div class="ticker-item"><span class="ar">√ الفهم قبل الحفظ</span><span class="en">√ Understand Before Memorise</span><span class="ticker-sep">±</span></div>
-    <div class="ticker-item"><span class="ar">π المعرفة لا نهاية لها</span><span class="en">π Knowledge is Infinite</span><span class="ticker-sep">+</span></div>
-    <div class="ticker-item"><strong>AI</strong> <span class="ar">مساعدك الذكي 24/7</span><span class="en">Your Smart Assistant 24/7</span><span class="ticker-sep">×</span></div>
-  </div>
-</div>
-
-<!-- ═══ FEATURES ═══ -->
-<div id="features">
-  <div class="section reveal">
-    <span class="section-eyebrow ar">✦ لماذا SITAJ</span>
-    <span class="section-eyebrow en">✦ WHY SITAJ</span>
-    <h2 class="section-title ar">منصة تعليمية متكاملة</h2>
-    <h2 class="section-title en">A Complete Educational Platform</h2>
-    <p class="section-desc ar">كل ما تحتاجه في رحلتك التعليمية — مُجمَّع بذكاء في منصة واحدة</p>
-    <p class="section-desc en">Everything you need on your learning journey — smartly unified in one platform</p>
-
-    <div class="features-grid">
-      <!-- Big card -->
-      <a href="AI.html" class="feat-card feat-card-1 accent-green">
-        <div class="feat-icon-wrap" style="background: var(--bg2);">🤖</div>
-        <div class="feat-label ar">مميز · AI</div>
-        <div class="feat-label en">FEATURED · AI</div>
-        <div class="feat-title ar">المساعد التعليمي بالذكاء الاصطناعي</div>
-        <div class="feat-title en">AI-Powered Educational Assistant</div>
-        <div class="feat-desc ar">مساعد ذكي يفهم أسئلتك ويشرح المفاهيم الصعبة ويجيبك فوراً في أي وقت — كمعلم خاص في جيبك.</div>
-        <div class="feat-desc en">An intelligent assistant that understands your questions, explains difficult concepts, and answers instantly — like a personal tutor in your pocket.</div>
-        <div class="feat-tags">
-          <span class="feat-tag">GPT-Powered</span>
-          <span class="feat-tag">24/7</span>
-          <span class="feat-tag ar">عربي / إنجليزي</span><span class="feat-tag en">Arabic / English</span>
-        </div>
-      </a>
-
-      <!-- Medium card -->
-      <a href="masarat.html" class="feat-card feat-card-2 accent-gold">
-        <div class="feat-icon-wrap">🗺️</div>
-        <div class="feat-label ar">حصري</div>
-        <div class="feat-label en">EXCLUSIVE</div>
-        <div class="feat-title ar">هندسة المسارات الأكاديمية</div>
-        <div class="feat-title en">Academic Path Engineering</div>
-        <div class="feat-desc ar">اكتشف تخصصك المناسب من بين 50+ مسار أكاديمي مصمم بعناية.</div>
-        <div class="feat-desc en">Discover your best specialty from 50+ carefully designed academic paths.</div>
-      </a>
-
-      <!-- 3 small cards -->
-      <a href="videos.html" class="feat-card feat-card-3 accent-blue">
-        <div class="feat-icon-wrap">🎬</div>
-        <div class="feat-label ar">الأكثر مشاهدة</div>
-        <div class="feat-label en">MOST VIEWED</div>
-        <div class="feat-title ar">مكتبة الفيديوهات</div>
-        <div class="feat-title en">Video Library</div>
-        <div class="feat-desc ar">50+ فيديو HD بشرح واضح يغطي جميع المواد الدراسية.</div>
-        <div class="feat-desc en">50+ HD videos clearly covering all academic subjects.</div>
-      </a>
-
-      <a href="games.html" class="feat-card feat-card-4">
-        <div class="feat-icon-wrap">🎮</div>
-        <div class="feat-label ar">ممتع</div>
-        <div class="feat-label en">FUN</div>
-        <div class="feat-title ar">ساحة الألعاب الذهنية</div>
-        <div class="feat-title en">Mental Games Arena</div>
-        <div class="feat-desc ar">ألعاب تفاعلية تجعل المعرفة متعة حقيقية.</div>
-        <div class="feat-desc en">Interactive games making knowledge genuinely fun.</div>
-      </a>
-
-      <a href="sign language hub.html" class="feat-card feat-card-5 accent-red">
-        <div class="feat-icon-wrap">🤟</div>
-        <div class="feat-label ar">شامل</div>
-        <div class="feat-label en">INCLUSIVE</div>
-        <div class="feat-title ar">مركز لغة الإشارة</div>
-        <div class="feat-title en">Sign Language Hub</div>
-        <div class="feat-desc ar">التعليم حق للجميع — مركز متخصص للطلاب ذوي الاحتياجات الخاصة.</div>
-        <div class="feat-desc en">Education is a right for all — dedicated center for special needs students.</div>
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ═══ COURSES ═══ -->
-<div id="courses">
-  <div class="section reveal">
-    <span class="section-eyebrow ar">✦ استكشف وتعلّم</span>
-    <span class="section-eyebrow en">✦ EXPLORE & LEARN</span>
-    <h2 class="section-title ar">أقسام المنصة</h2>
-    <h2 class="section-title en">Platform Sections</h2>
-    <p class="section-desc ar">كل قسم عالم قائم بذاته — اختر ما يناسبك</p>
-    <p class="section-desc en">Each section is its own world — choose what suits you</p>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('all', this)" data-tab="all">
-        <span class="ar">📚 الكل</span><span class="en">📚 All</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('learn', this)" data-tab="learn">
-        <span class="ar">🎓 التعلم</span><span class="en">🎓 Learning</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('interact', this)" data-tab="interact">
-        <span class="ar">🎮 التفاعل</span><span class="en">🎮 Interactive</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('community', this)" data-tab="community">
-        <span class="ar">🤝 المجتمع</span><span class="en">🤝 Community</span>
-      </button>
-    </div>
-
-    <!-- all -->
-    <div class="tab-panel active" id="tab-all">
-      <a href="videos.html" class="course-card">
-        <div class="course-thumb thumb-science">
-          <span class="course-thumb-icon">🎬</span>
-          <span class="course-thumb-math" style="top:10%;left:10%">∑</span>
-          <span class="course-thumb-math" style="bottom:10%;right:10%">f(x)</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">الفيديوهات التعليمية</div>
-          <div class="course-subject en">EDUCATIONAL VIDEOS</div>
-          <div class="course-title ar"><span class="badge-hot">HOT</span>مكتبة الدروس المرئية</div>
-          <div class="course-title en"><span class="badge-hot">HOT</span>Visual Lessons Library</div>
-          <div class="course-desc ar">50+ فيديو HD بشرح واضح لكل المواد الدراسية — الرياضيات، العلوم، اللغة، والمزيد.</div>
-          <div class="course-desc en">50+ HD videos with clear explanations for all subjects — Maths, Science, Language, and more.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-play"></i> 50+</div>
-              <div class="course-meta-item"><i class="fas fa-clock"></i> HD</div>
+    <div class="grid-container">
+        <a href="videos.html" class="card">
+            <span class="card-badge" data-i18n="badge1">جديد</span>
+            <img src="https://images.pexels.com/photos/3769714/pexels-photo-3769714.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Videos" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-play-circle"></i></span><div class="card-title" data-i18n="card1Title">الفيديوهات التعليمية</div></div>
+                <p class="card-description" data-i18n="card1Desc">مكتبة شاملة من الدروس المرئية عالية الجودة مع شروحات تفاعلية ومبسطة</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="articals.html" class="course-card">
-        <div class="course-thumb thumb-arabic">
-          <span class="course-thumb-icon">📝</span>
-          <span class="course-thumb-math" style="top:12%;right:12%">α</span>
-          <span class="course-thumb-math" style="bottom:12%;left:12%">β</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">المقالات الحصرية</div>
-          <div class="course-subject en">EXCLUSIVE ARTICLES</div>
-          <div class="course-title ar"><span class="badge-new">NEW</span>مقالات من خبراء متخصصين</div>
-          <div class="course-title en"><span class="badge-new">NEW</span>Articles from Expert Educators</div>
-          <div class="course-desc ar">محتوى علمي متعمق كتبه متخصصون لمساعدتك على الفهم الحقيقي.</div>
-          <div class="course-desc en">In-depth academic content written by specialists to help you truly understand.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-book"></i> <span class="ar">متنوع</span><span class="en">Varied</span></div>
+        </a>
+        <a href="articals.html" class="card">
+            <span class="card-badge" data-i18n="badge2">مميز</span>
+            <img src="https://images.pexels.com/photos/267669/pexels-photo-267669.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Articles" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-feather-alt"></i></span><div class="card-title" data-i18n="card2Title">المقالات الحصرية</div></div>
+                <p class="card-description" data-i18n="card2Desc">محتوى تعليمي متخصص ومقالات علمية متميزة من خبراء في مختلف المجالات</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="exams.html" class="course-card">
-        <div class="course-thumb thumb-math">
-          <span class="course-thumb-icon">📋</span>
-          <span class="course-thumb-math" style="top:10%;left:15%">∫</span>
-          <span class="course-thumb-math" style="bottom:10%;right:15%">Δ</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">مركز الاختبارات</div>
-          <div class="course-subject en">EXAM CENTER</div>
-          <div class="course-title ar">اختبر مستواك الحقيقي</div>
-          <div class="course-title en">Test Your Real Level</div>
-          <div class="course-desc ar">اختبارات شاملة مع تحليل فوري ودقيق لنقاط القوة والضعف.</div>
-          <div class="course-desc en">Comprehensive tests with instant and precise analysis of strengths and weaknesses.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-chart-bar"></i> <span class="ar">تحليل دقيق</span><span class="en">Detailed Analysis</span></div>
+        </a>
+        <a href="games.html" class="card">
+            <span class="card-badge" data-i18n="badge3">ممتع</span>
+            <img src="https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Games" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-chess"></i></span><div class="card-title" data-i18n="card3Title">ساحة الألعاب</div></div>
+                <p class="card-description" data-i18n="card3Desc">تعلم بطريقة ممتعة من خلال الألعاب التفاعلية والتحديات الذهنية المثيرة</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="masarat.html" class="course-card">
-        <div class="course-thumb thumb-english">
-          <span class="course-thumb-icon">🗺️</span>
-          <span class="course-thumb-math" style="top:10%;right:10%">→</span>
-          <span class="course-thumb-math" style="bottom:10%;left:10%">∞</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">هندسة المسارات</div>
-          <div class="course-subject en">PATH ENGINEERING</div>
-          <div class="course-title ar">اكتشف مسارك الأكاديمي</div>
-          <div class="course-title en">Discover Your Academic Path</div>
-          <div class="course-desc ar">50+ مسار أكاديمي متنوع — من الطب والهندسة إلى الفنون والتقنية.</div>
-          <div class="course-desc en">50+ diverse academic paths — from Medicine and Engineering to Arts and Technology.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-road"></i> 50+</div>
+        </a>
+        <a href="exams.html" class="card">
+            <span class="card-badge" data-i18n="badge4">تقييم</span>
+            <img src="https://images.pexels.com/photos/3747435/pexels-photo-3747435.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Exams" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-pen-fancy"></i></span><div class="card-title" data-i18n="card4Title">مركز الاختبارات</div></div>
+                <p class="card-description" data-i18n="card4Desc">اختبارات تقييمية شاملة لقياس مستواك وتتبع تقدمك في مسيرتك التعليمية</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="AI.html" class="course-card">
-        <div class="course-thumb thumb-ai">
-          <span class="course-thumb-icon">🤖</span>
-          <span class="course-thumb-math" style="top:12%;left:12%">AI</span>
-          <span class="course-thumb-math" style="bottom:12%;right:12%">∑</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">المساعد الذكي</div>
-          <div class="course-subject en">AI ASSISTANT</div>
-          <div class="course-title ar">معلمك الذكي الشخصي</div>
-          <div class="course-title en">Your Personal Smart Tutor</div>
-          <div class="course-desc ar">اسأل وتعلّم في أي وقت — ذكاء اصطناعي يشرح ويجيب ويساعدك.</div>
-          <div class="course-desc en">Ask and learn anytime — AI that explains, answers, and guides you.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-clock"></i> 24/7</div>
+        </a>
+        <a href="sign_language_hub.html" class="card">
+            <span class="card-badge" data-i18n="badge5">شامل</span>
+            <img src="https://images.pexels.com/photos/8422149/pexels-photo-8422149.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Sign Language" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-hands"></i></span><div class="card-title" data-i18n="card5Title">مركز لغة الإشارة</div></div>
+                <p class="card-description" data-i18n="card5Desc">تعلم لغة الإشارة بطريقة تفاعلية ومبسطة مع دروس عملية ومتخصصة</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
-
-      <a href="quraan.html" class="course-card">
-        <div class="course-thumb thumb-arabic">
-          <span class="course-thumb-icon">📖</span>
-          <span class="course-thumb-math" style="top:10%;left:10%">﷽</span>
-        </div>
-        <div class="course-body">
-          <div class="course-subject ar">الإسلاميات</div>
-          <div class="course-subject en">ISLAMIC STUDIES</div>
-          <div class="course-title ar">قرآن · سيرة · فقه · عقيدة</div>
-          <div class="course-title en">Quran · Seerah · Fiqh · Aqeedah</div>
-          <div class="course-desc ar">محتوى إسلامي متكامل للتعمق في الدراسات الشرعية والقرآنية.</div>
-          <div class="course-desc en">Comprehensive Islamic content for deep study of Sharia and Quranic studies.</div>
-          <div class="course-footer">
-            <div class="course-meta">
-              <div class="course-meta-item"><i class="fas fa-star"></i> <span class="ar">مجاني</span><span class="en">Free</span></div>
+        </a>
+        <a href="questions.html" class="card">
+            <span class="card-badge" data-i18n="badge6">تواصل</span>
+            <img src="https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Questions" onerror="this.style.display='none'">
+            <div class="card-content">
+                <div class="card-header"><span class="card-icon"><i class="fas fa-comment-dots"></i></span><div class="card-title" data-i18n="card6Title">قسم الاستفسارات</div></div>
+                <p class="card-description" data-i18n="card6Desc">تواصل معنا وشارك أفكارك واستفساراتك مع مجتمع SITEJ</p>
             </div>
-            <div class="course-arrow"><i class="fas fa-arrow-left"></i></div>
-          </div>
-        </div>
-      </a>
+        </a>
     </div>
+</section>
 
-    <!-- learn -->
-    <div class="tab-panel" id="tab-learn">
-      <a href="videos.html" class="course-card">
-        <div class="course-thumb thumb-science"><span class="course-thumb-icon">🎬</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الفيديوهات</div><div class="course-subject en">VIDEOS</div>
-          <div class="course-title ar">مكتبة الفيديوهات التعليمية</div><div class="course-title en">Educational Video Library</div>
-          <div class="course-desc ar">شروحات مرئية لكل مادة دراسية.</div><div class="course-desc en">Visual explanations for every subject.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item">50+ <span class="ar">فيديو</span><span class="en">Videos</span></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3 data-i18n="footerAboutTitle">عن SITEJ</h3>
+            <p data-i18n="footerAboutDesc">منصة تعليمية ذكية رائدة توفر تجربة تعليمية فريدة ومتطورة للطلاب في جميع أنحاء المنطقة.</p>
         </div>
-      </a>
-      <a href="articals.html" class="course-card">
-        <div class="course-thumb thumb-arabic"><span class="course-thumb-icon">📝</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">المقالات</div><div class="course-subject en">ARTICLES</div>
-          <div class="course-title ar">المقالات الحصرية</div><div class="course-title en">Exclusive Articles</div>
-          <div class="course-desc ar">مقالات علمية من خبراء متخصصين.</div><div class="course-desc en">Scientific articles from specialist experts.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-book"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
+        <div class="footer-section">
+            <h3 data-i18n="footerLinksTitle">روابط سريعة</h3>
+            <a href="videos.html" data-i18n="navVideos">الفيديوهات التعليمية</a>
+            <a href="articals.html" data-i18n="navArticles">المقالات الحصرية</a>
+            <a href="games.html" data-i18n="navGames">ساحة الألعاب</a>
+            <a href="exams.html" data-i18n="navExams">مركز الاختبارات</a>
         </div>
-      </a>
-      <a href="exams.html" class="course-card">
-        <div class="course-thumb thumb-math"><span class="course-thumb-icon">📋</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الاختبارات</div><div class="course-subject en">EXAMS</div>
-          <div class="course-title ar">مركز الاختبارات</div><div class="course-title en">Exam Center</div>
-          <div class="course-desc ar">قيّم مستواك مع تحليل فوري.</div><div class="course-desc en">Assess your level with instant analysis.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-chart-line"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
+        <div class="footer-section">
+            <h3 data-i18n="footerSupportTitle">الدعم</h3>
+            <a href="questions.html" data-i18n="footerHelp">مركز المساعدة</a>
+            <a href="questions.html" data-i18n="footerFaq">الأسئلة الشائعة</a>
+            <a href="settings.html" data-i18n="navSettings">الإعدادات</a>
         </div>
-      </a>
-      <a href="quraan.html" class="course-card">
-        <div class="course-thumb thumb-arabic"><span class="course-thumb-icon">📖</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">إسلاميات</div><div class="course-subject en">ISLAMIC STUDIES</div>
-          <div class="course-title ar">الدراسات الإسلامية</div><div class="course-title en">Islamic Studies</div>
-          <div class="course-desc ar">قرآن وسيرة وعقيدة وفقه.</div><div class="course-desc en">Quran, Seerah, Aqeedah, Fiqh.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-star"></i> <span class="ar">مجاني</span><span class="en">Free</span></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
+        <div class="footer-section">
+            <h3 data-i18n="footerContactTitle">تواصل معنا</h3>
+            <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="21444554424055484e4f424e53521061464c40484d0f424e4c">[email&#160;protected]</a></p>
+            <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footerLocation">قرية سالم, مدرسة سالم الثانوية للبنين</span></p>
         </div>
-      </a>
     </div>
-
-    <!-- interact -->
-    <div class="tab-panel" id="tab-interact">
-      <a href="games.html" class="course-card">
-        <div class="course-thumb thumb-english"><span class="course-thumb-icon">🎮</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الألعاب</div><div class="course-subject en">GAMES</div>
-          <div class="course-title ar">ساحة الألعاب الذهنية</div><div class="course-title en">Mental Games Arena</div>
-          <div class="course-desc ar">ألعاب تعليمية تجعل التعلم متعة.</div><div class="course-desc en">Educational games making learning fun.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-gamepad"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="AI.html" class="course-card">
-        <div class="course-thumb thumb-ai"><span class="course-thumb-icon">🤖</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الذكاء الاصطناعي</div><div class="course-subject en">AI ASSISTANT</div>
-          <div class="course-title ar">المساعد التعليمي الذكي</div><div class="course-title en">Smart Educational Assistant</div>
-          <div class="course-desc ar">تفاعل مع الذكاء الاصطناعي وتعلّم.</div><div class="course-desc en">Interact with AI and learn.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item">24/7</div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="partys.html" class="course-card">
-        <div class="course-thumb thumb-history"><span class="course-thumb-icon">🎙️</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الغرف الصوتية</div><div class="course-subject en">VOICE ROOMS</div>
-          <div class="course-title ar">جلسات تعليمية مباشرة</div><div class="course-title en">Live Learning Sessions</div>
-          <div class="course-desc ar">انضم إلى جلسات صوتية مباشرة مع الطلاب.</div><div class="course-desc en">Join live voice sessions with other students.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-microphone"></i> <span class="ar">مباشر</span><span class="en">Live</span></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="sign language hub.html" class="course-card">
-        <div class="course-thumb thumb-science"><span class="course-thumb-icon">🤟</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">لغة الإشارة</div><div class="course-subject en">SIGN LANGUAGE</div>
-          <div class="course-title ar">مركز لغة الإشارة</div><div class="course-title en">Sign Language Hub</div>
-          <div class="course-desc ar">تعليم شامل للجميع بلا استثناء.</div><div class="course-desc en">Inclusive education for everyone.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-universal-access"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-    </div>
-
-    <!-- community -->
-    <div class="tab-panel" id="tab-community">
-      <a href="questions.html" class="course-card">
-        <div class="course-thumb thumb-ai"><span class="course-thumb-icon">💬</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الاستفسارات</div><div class="course-subject en">Q&A</div>
-          <div class="course-title ar">قسم الأسئلة والأجوبة</div><div class="course-title en">Questions & Answers</div>
-          <div class="course-desc ar">اسأل واحصل على إجابات من المجتمع والمعلمين.</div><div class="course-desc en">Ask and get answers from community and teachers.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-comments"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="family.html" class="course-card">
-        <div class="course-thumb thumb-math"><span class="course-thumb-icon">👨‍👩‍👧</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الأسرة</div><div class="course-subject en">FAMILY</div>
-          <div class="course-title ar">الرقابة الأبوية</div><div class="course-title en">Parental Control</div>
-          <div class="course-desc ar">دعم أبوي شامل لمتابعة تقدم أبنائك.</div><div class="course-desc en">Comprehensive parental support to track your children's progress.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-users"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="partys.html" class="course-card">
-        <div class="course-thumb thumb-history"><span class="course-thumb-icon">🎙️</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">المجتمع</div><div class="course-subject en">COMMUNITY</div>
-          <div class="course-title ar">الغرف الصوتية</div><div class="course-title en">Voice Rooms</div>
-          <div class="course-desc ar">تواصل مع الطلاب وتعلّم معاً.</div><div class="course-desc en">Connect with students and learn together.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-microphone"></i> <span class="ar">مباشر</span><span class="en">Live</span></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-      <a href="support.html" class="course-card">
-        <div class="course-thumb thumb-arabic"><span class="course-thumb-icon">🤝</span></div>
-        <div class="course-body">
-          <div class="course-subject ar">الشركاء</div><div class="course-subject en">PARTNERS</div>
-          <div class="course-title ar">الشركاء والرعاة</div><div class="course-title en">Partners & Sponsors</div>
-          <div class="course-desc ar">اكتشف الشركاء الداعمين لرسالة SITAJ.</div><div class="course-desc en">Discover the partners supporting SITAJ's mission.</div>
-          <div class="course-footer"><div class="course-meta"><div class="course-meta-item"><i class="fas fa-handshake"></i></div></div><div class="course-arrow"><i class="fas fa-arrow-left"></i></div></div>
-        </div>
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ═══ ABOUT ═══ -->
-<div class="section-full about-section" id="about">
-  <div class="section-inner reveal">
-    <div class="about-grid">
-      <div class="about-text">
-        <span class="section-eyebrow" style="text-align:right; display:block; margin-bottom:12px">
-          <span class="ar">✦ عن المنصة</span><span class="en">✦ ABOUT</span>
-        </span>
-        <h2 class="ar">ما هو <em>SITAJ</em>؟</h2>
-        <h2 class="en">What is <em>SITAJ</em>?</h2>
-        <p class="ar">
-          سيتاج منصة تعليمية ذكية تُقدّم تجربة متكاملة لكل طالب طموح — فيديوهات عالية الجودة، مقالات علمية، ألعاب ذهنية تفاعلية، اختبارات شاملة، وذكاء اصطناعي يجيبك على مدار الساعة.
-        </p>
-        <p class="en">
-          SITAJ is an intelligent educational platform offering a complete experience for every ambitious student — high-quality videos, scientific articles, interactive mental games, comprehensive exams, and AI available around the clock.
-        </p>
-        <p class="ar">
-          نؤمن أن التعليم الجيد حق للجميع — لذلك أضفنا مركزاً متخصصاً للغة الإشارة ليكون التعلم حقاً شاملاً بلا استثناء.
-        </p>
-        <p class="en">
-          We believe quality education is a right for all — which is why we added a dedicated Sign Language Hub, making learning truly inclusive without exception.
-        </p>
-        <a href="#courses" class="learn-more ar">استكشف الأقسام <i class="fas fa-arrow-left"></i></a>
-        <a href="#courses" class="learn-more en">Explore Sections <i class="fas fa-arrow-left"></i></a>
-      </div>
-      <div class="about-visual">
-        <div class="about-stat-card">
-          <div class="about-stat-num">600+</div>
-          <div class="about-stat-label ar">طالب نشيط</div>
-          <div class="about-stat-label en">Active Learners</div>
-        </div>
-        <div class="about-stat-card">
-          <div class="about-stat-num">50+</div>
-          <div class="about-stat-label ar">فيديو تعليمي</div>
-          <div class="about-stat-label en">Educational Videos</div>
-        </div>
-        <div class="about-stat-card">
-          <div class="about-stat-num">12+</div>
-          <div class="about-stat-label ar">قسم متخصص</div>
-          <div class="about-stat-label en">Specialised Sections</div>
-        </div>
-        <div class="about-stat-card">
-          <div class="about-stat-num">95%</div>
-          <div class="about-stat-label ar">رضا المستخدمين</div>
-          <div class="about-stat-label en">User Satisfaction</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ═══ TESTIMONIALS ═══ -->
-<div class="section reveal">
-  <span class="section-eyebrow ar">✦ آراء المتعلمين</span>
-  <span class="section-eyebrow en">✦ LEARNER REVIEWS</span>
-  <h2 class="section-title ar">ماذا قال طلابنا؟</h2>
-  <h2 class="section-title en">What Our Students Say</h2>
-  <p class="section-desc ar">كلمات حقيقية من طلاب حقيقيين</p>
-  <p class="section-desc en">Real words from real students</p>
-
-  <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="testimonial-quote">"</div>
-      <div class="testimonial-text ar">المساعد الذكي غيّر طريقة دراستي كلياً — صار عندي معلم خاص متاح 24 ساعة يشرح لي كل ما أحتاج.</div>
-      <div class="testimonial-text en">The AI assistant completely changed the way I study — I now have a personal tutor available 24 hours explaining everything I need.</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">👩‍🎓</div>
-        <div>
-          <div class="testimonial-name ar">سارة أحمد</div>
-          <div class="testimonial-name en">Sara Ahmad</div>
-          <div class="testimonial-role ar">طالبة توجيهي</div>
-          <div class="testimonial-role en">Tawjihi Student</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <div class="testimonial-quote">"</div>
-      <div class="testimonial-text ar">فيديوهات سيتاج من أفضل ما شاهدت — شرح واضح، جودة ممتازة، ومواضيع تغطي كل ما نحتاجه في المنهج.</div>
-      <div class="testimonial-text en">SITAJ's videos are among the best I've seen — clear explanation, excellent quality, and topics covering everything we need in the curriculum.</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">👨‍🎓</div>
-        <div>
-          <div class="testimonial-name ar">محمد خالد</div>
-          <div class="testimonial-name en">Mohammad Khaled</div>
-          <div class="testimonial-role ar">طالب جامعي</div>
-          <div class="testimonial-role en">University Student</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <div class="testimonial-quote">"</div>
-      <div class="testimonial-text ar">ابنتي استخدمت مركز لغة الإشارة وكان تحولاً حقيقياً — أخيراً منصة تعليمية تفكر بالجميع.</div>
-      <div class="testimonial-text en">My daughter used the Sign Language Hub and it was a real turning point — finally an educational platform that thinks of everyone.</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">👨‍👧</div>
-        <div>
-          <div class="testimonial-name ar">أبو نور</div>
-          <div class="testimonial-name en">Abu Noor</div>
-          <div class="testimonial-role ar">ولي أمر</div>
-          <div class="testimonial-role en">Parent</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <div class="testimonial-quote">"</div>
-      <div class="testimonial-text ar">هندسة المسارات ساعدتني أعرف تخصصي المناسب — شيء ما كان عندي من قبل وفرّق معي كثير في قرارات مستقبلي.</div>
-      <div class="testimonial-text en">Path Engineering helped me figure out my right specialty — something I never had before, and it made a huge difference in my future decisions.</div>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">👩‍💼</div>
-        <div>
-          <div class="testimonial-name ar">لين مصطفى</div>
-          <div class="testimonial-name en">Leen Mustafa</div>
-          <div class="testimonial-role ar">خريجة ثانوية</div>
-          <div class="testimonial-role en">High School Graduate</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ CTA ═══ -->
-<div class="cta-section">
-  <div class="cta-math-bg" id="ctaMath"></div>
-  <div class="cta-inner">
-    <h2 class="ar">رحلتك التعليمية<br>تبدأ اليوم</h2>
-    <h2 class="en">Your Educational Journey<br>Begins Today</h2>
-    <p class="ar">انضم إلى أكثر من 600 طالب اختاروا التميز — ابدأ مجاناً الآن</p>
-    <p class="en">Join over 600 students who chose excellence — start free today</p>
-    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-      <a href="#courses" class="btn-white">
-        🚀 <span class="ar">ابدأ مجاناً</span><span class="en">Start Free</span>
-      </a>
-      <a href="#about" class="btn-outline-white">
-        <span class="ar">اعرف أكثر</span><span class="en">Learn More</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ FOOTER ═══ -->
-<footer id="contact">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="nav-logo">
-        <div class="nav-logo-mark">S</div>
-        <span class="nav-logo-name">SITAJ</span>
-      </div>
-      <p class="ar">منصة تعليمية ذكية للطلاب في المنطقة العربية وخارجها — نؤمن أن التعليم حق للجميع.</p>
-      <p class="en">Smart educational platform for students across the Arab world and beyond — we believe education is a right for all.</p>
-      <div class="footer-socials">
-        <a class="social-btn" href="#"><i class="fab fa-instagram"></i></a>
-        <a class="social-btn" href="#"><i class="fab fa-twitter"></i></a>
-        <a class="social-btn" href="#"><i class="fab fa-youtube"></i></a>
-        <a class="social-btn" href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a class="social-btn" href="#"><i class="fab fa-facebook-f"></i></a>
-      </div>
-    </div>
-
-    <div class="footer-col">
-      <h5 class="ar">أقسام المنصة</h5><h5 class="en">PLATFORM</h5>
-      <a href="videos.html"><span class="ar">الفيديوهات</span><span class="en">Videos</span></a>
-      <a href="articals.html"><span class="ar">المقالات</span><span class="en">Articles</span></a>
-      <a href="games.html"><span class="ar">الألعاب</span><span class="en">Games</span></a>
-      <a href="exams.html"><span class="ar">الاختبارات</span><span class="en">Exams</span></a>
-      <a href="masarat.html"><span class="ar">المسارات</span><span class="en">Paths</span></a>
-    </div>
-
-    <div class="footer-col">
-      <h5 class="ar">المجتمع</h5><h5 class="en">COMMUNITY</h5>
-      <a href="AI.html"><span class="ar">المساعد الذكي</span><span class="en">AI Assistant</span></a>
-      <a href="partys.html"><span class="ar">الغرف الصوتية</span><span class="en">Voice Rooms</span></a>
-      <a href="questions.html"><span class="ar">الاستفسارات</span><span class="en">Q&A</span></a>
-      <a href="family.html"><span class="ar">الرقابة الأبوية</span><span class="en">Parental Control</span></a>
-      <a href="sign language hub.html"><span class="ar">لغة الإشارة</span><span class="en">Sign Language</span></a>
-    </div>
-
-    <div class="footer-col">
-      <h5 class="ar">تواصل معنا</h5><h5 class="en">CONTACT</h5>
-      <a href="mailto:educationcors1@gmail.com">educationcors1@gmail.com</a>
-      <a href="tel:0778351617">0778351617</a>
-      <a href="#"><span class="ar">عمان، الأردن</span><span class="en">Amman, Jordan</span></a>
-      <a href="support.html"><span class="ar">الشركاء والرعاة</span><span class="en">Partners</span></a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p class="ar">© 2026 SITAJ — صُمِّمت بشغف لكل طالب يسعى نحو التميز</p>
-    <p class="en">© 2026 SITAJ — Crafted with passion for every student striving for excellence</p>
-    <div class="footer-bottom-links">
-      <a href="#"><span class="ar">الخصوصية</span><span class="en">Privacy</span></a>
-      <a href="#"><span class="ar">الشروط</span><span class="en">Terms</span></a>
-    </div>
-  </div>
+    <div class="footer-bottom"><p data-i18n="footerCopy">© 2026 SITEJ. جميع الحقوق محفوظة</p></div>
 </footer>
 
-<button class="stb" id="stb" onclick="scrollTo({top:0,behavior:'smooth'})">
-  <i class="fas fa-arrow-up"></i>
-</button>
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
-<script>
-/* ══ MATH BACKGROUND SYMBOLS ══ */
-(function() {
-  const bg = document.getElementById('mathBg');
-  const syms = ['+', '−', '×', '÷', '=', '∑', '∫', '√', 'π', 'Δ', '∞', 'α', 'β', 'θ', '±', '≠', '≤', '≥', 'f(x)', 'ax²', 'log', 'sin', 'cos'];
-  for (let i = 0; i < 38; i++) {
-    const el = document.createElement('div');
-    el.className = 'math-symbol';
-    el.textContent = syms[Math.floor(Math.random() * syms.length)];
-    el.style.cssText = `
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 100}%;
-      --d: ${14 + Math.random() * 18}s;
-      --delay: -${Math.random() * 18}s;
-      font-size: ${0.7 + Math.random() * 1}rem;
-    `;
-    bg.appendChild(el);
-  }
+<!-- Settings FAB + Panel -->
+<button class="settings-fab" onclick="toggleSettingsPanel()"><i class="fas fa-cog"></i></button>
+<div class="settings-panel" id="settingsPanel">
+    <div class="sp-header">
+        <h2>⚙ الإعدادات</h2>
+        <div class="sp-close" onclick="toggleSettingsPanel()"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="sp-section">
+        <div class="sp-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+        <div class="sp-grid">
+            <div class="sp-opt" id="sp-th-light" onclick="spPickTheme('light')">
+                <div class="sp-preview sp-light"></div>
+                <div class="sp-opt-label">فاتح</div>
+                <div class="sp-check"><i class="fas fa-check"></i></div>
+            </div>
+            <div class="sp-opt" id="sp-th-dark" onclick="spPickTheme('dark')">
+                <div class="sp-preview sp-dark"></div>
+                <div class="sp-opt-label">داكن</div>
+                <div class="sp-check"><i class="fas fa-check"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="sp-section">
+        <div class="sp-label"><i class="fas fa-text-height"></i> حجم الخط</div>
+        <div class="sp-font-row">
+            <div class="sp-font-btn" id="sp-fs-small"  onclick="spPickFont('small')">صغير</div>
+            <div class="sp-font-btn" id="sp-fs-medium" onclick="spPickFont('medium')">متوسط</div>
+            <div class="sp-font-btn" id="sp-fs-large"  onclick="spPickFont('large')">كبير</div>
+            <div class="sp-font-btn" id="sp-fs-xlarge" onclick="spPickFont('xlarge')">أكبر</div>
+        </div>
+    </div>
+    <div class="sp-section">
+        <div class="sp-label"><i class="fas fa-language"></i> اللغة</div>
+        <div class="sp-grid">
+            <div class="sp-opt" id="sp-lg-ar" onclick="spPickLang('ar')">
+                <div class="sp-preview sp-ar">🇸🇦</div>
+                <div class="sp-opt-label">العربية</div>
+                <div class="sp-check"><i class="fas fa-check"></i></div>
+            </div>
+            <div class="sp-opt" id="sp-lg-en" onclick="spPickLang('en')">
+                <div class="sp-preview sp-en">🇬🇧</div>
+                <div class="sp-opt-label">English</div>
+                <div class="sp-check"><i class="fas fa-check"></i></div>
+            </div>
+        </div>
+    </div>
+    <button class="sp-save-btn" onclick="spSave()">💾 حفظ الإعدادات</button>
+    <div class="sp-saved" id="spSaved">✅ تم الحفظ!</div>
+    <p style="text-align:center;margin-top:18px;"><a href="settings.html" style="color:var(--accent-blue);font-size:0.9rem;font-weight:600;">إعدادات متقدمة ←</a></p>
+</div>
 
-  /* CTA math symbols */
-  const ctaMath = document.getElementById('ctaMath');
-  if (ctaMath) {
-    for (let i = 0; i < 20; i++) {
-      const el = document.createElement('div');
-      el.className = 'cta-math-sym';
-      el.textContent = syms[Math.floor(Math.random() * syms.length)];
-      el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;`;
-      ctaMath.appendChild(el);
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── SETTINGS PANEL ── */
+(function(){
+    var SIZES={small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+    var draft={};
+    function load(){
+        try{draft=Object.assign({theme:'light',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}
+        catch(e){draft={theme:'light',fontSize:'medium',lang:'ar'};}
+        render();
     }
-  }
+    function render(){
+        ['light','dark'].forEach(function(t){var el=document.getElementById('sp-th-'+t);if(el)el.classList.toggle('sel',draft.theme===t);});
+        ['small','medium','large','xlarge'].forEach(function(s){var el=document.getElementById('sp-fs-'+s);if(el)el.classList.toggle('sel',draft.fontSize===s);});
+        ['ar','en'].forEach(function(l){var el=document.getElementById('sp-lg-'+l);if(el)el.classList.toggle('sel',draft.lang===l);});
+    }
+    window.toggleSettingsPanel=function(){document.getElementById('settingsPanel').classList.toggle('open');};
+    window.spPickTheme=function(t){draft.theme=t;render();if(window.SiteSettings)window.SiteSettings.applyAll(draft);};
+    window.spPickFont=function(s){draft.fontSize=s;render();document.documentElement.style.fontSize=SIZES[s];};
+    window.spPickLang=function(l){draft.lang=l;render();};
+    window.spSave=function(){
+        if(window.SiteSettings)window.SiteSettings.save(draft);
+        else localStorage.setItem('siteSettings',JSON.stringify(draft));
+        var el=document.getElementById('spSaved');el.classList.add('show');
+        setTimeout(function(){el.classList.remove('show');},2500);
+    };
+    document.addEventListener('DOMContentLoaded',load);
 })();
 
-/* ══ LANGUAGE ══ */
-let lang = localStorage.getItem('sitaj_lang') || 'ar';
-function applyLang(l) {
-  lang = l;
-  document.documentElement.setAttribute('data-lang', l);
-  document.documentElement.setAttribute('lang', l);
-  document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
-  document.getElementById('langBtn').textContent = l === 'ar' ? 'EN' : 'AR';
-  localStorage.setItem('sitaj_lang', l);
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll',function(){
+    var nb=document.getElementById('navbar');
+    var st=document.getElementById('scrollTop');
+    if(nb) nb.classList.toggle('scrolled', window.scrollY>50);
+    if(st) st.classList.toggle('visible', window.scrollY>400);
+},{passive:true});
+
+/* ── SIDENAV FUNCTIONS ── */
+function snToggle(){
+    var drawer  = document.getElementById('snDrawer');
+    var overlay = document.getElementById('snOverlay');
+    var burger  = document.getElementById('snBurger');
+    if(!drawer) return;
+    var opening = !drawer.classList.contains('show');
+    drawer.classList.toggle('show', opening);
+    if(overlay) overlay.classList.toggle('show', opening);
+    if(burger)  burger.classList.toggle('open', opening);
+    burger && burger.setAttribute('aria-expanded', opening);
+    document.body.style.overflow = opening ? 'hidden' : '';
 }
-function toggleLang() { applyLang(lang === 'ar' ? 'en' : 'ar'); }
-applyLang(lang);
-
-/* ══ THEME ══ */
-let theme = localStorage.getItem('sitaj_theme') || 'light';
-function applyTheme(t) {
-  theme = t;
-  document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('themeBtn').textContent = t === 'dark' ? '☀️' : '🌙';
-  localStorage.setItem('sitaj_theme', t);
+function snClose(){
+    var drawer  = document.getElementById('snDrawer');
+    var overlay = document.getElementById('snOverlay');
+    var burger  = document.getElementById('snBurger');
+    if(drawer)  drawer.classList.remove('show');
+    if(overlay) overlay.classList.remove('show');
+    if(burger){ burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+    document.body.style.overflow = '';
 }
-function toggleTheme() { applyTheme(theme === 'dark' ? 'light' : 'dark'); }
-applyTheme(theme);
-
-/* ══ NAVBAR SCROLL ══ */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', scrollY > 50);
-  document.getElementById('stb').classList.toggle('show', scrollY > 400);
-}, { passive: true });
-
-/* ══ MOBILE NAV ══ */
-function toggleMobile() {
-  const mn = document.getElementById('mobileNav');
-  const b = document.getElementById('burger');
-  mn.classList.toggle('open');
-  b.classList.toggle('open');
+function snToggleSettings(){
+    var panel   = document.getElementById('snSettingsPanel');
+    var toggle  = document.getElementById('snSettingsToggle');
+    var chevron = document.getElementById('snChevron');
+    if(!panel) return;
+    var open = panel.classList.toggle('open');
+    if(toggle)  toggle.classList.toggle('open', open);
+    if(chevron) chevron.style.transform = open ? 'rotate(180deg)' : '';
 }
-function closeMobile() {
-  document.getElementById('mobileNav').classList.remove('open');
-  document.getElementById('burger').classList.remove('open');
+function snPickTheme(t){
+    ['light','dark'].forEach(function(id){
+        var el=document.getElementById('sn-th-'+id);
+        if(el) el.classList.toggle('sel', id===t);
+    });
+    document.documentElement.setAttribute('data-theme', t);
+    try{ var s=JSON.parse(localStorage.getItem('siteSettings')||'{}'); s.theme=t; localStorage.setItem('siteSettings',JSON.stringify(s)); }catch(e){}
+}
+function snPickGraphics(g){
+    ['full','reduced','minimal'].forEach(function(id){
+        var el=document.getElementById('sn-gr-'+id);
+        if(el) el.classList.toggle('sel', id===g);
+    });
+    try{ var s=JSON.parse(localStorage.getItem('siteSettings')||'{}'); s.graphics=g; localStorage.setItem('siteSettings',JSON.stringify(s)); }catch(e){}
+}
+var _snFontSizes=['13px','15px','17px','20px'];
+function snSetFont(idx){
+    document.documentElement.style.fontSize = _snFontSizes[idx] || '15px';
+    var slider=document.getElementById('snFontSlider');
+    if(slider) slider.value=idx;
+    document.querySelectorAll('.sn-font-labels span').forEach(function(s){ s.classList.toggle('active', parseInt(s.getAttribute('data-idx'))===idx); });
+    try{ var s=JSON.parse(localStorage.getItem('siteSettings')||'{}'); s.fontSize=idx; localStorage.setItem('siteSettings',JSON.stringify(s)); }catch(e){}
+}
+function snFontInput(val){ snSetFont(parseInt(val)); }
+function snSave(){
+    var toast=document.getElementById('snToast');
+    var msg=document.getElementById('snToastMsg');
+    if(msg) msg.textContent='تم حفظ الإعدادات ✓';
+    if(toast){ toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2500); }
+}
+function snLogout(){
+    if(confirm('هل أنت متأكد من تسجيل الخروج؟')){ window.location.href='login.html'; }
+}
+/* legacy alias */
+function toggleMenu(){ snToggle(); }
+
+/* ── NOTIFICATIONS ── */
+function showNotifications(){
+    alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');
 }
 
-/* ══ TABS ══ */
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  const panel = document.getElementById('tab-' + id);
-  if (panel) panel.classList.add('active');
-  if (btn) btn.classList.add('active');
+/* ── LOGOUT ── */
+function logout(){
+    if(confirm('هل أنت متأكد من تسجيل الخروج؟')){
+        window.location.href='login.html';
+    }
 }
 
-/* ══ REVEAL ON SCROLL ══ */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ══ ESC KEY ══ */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeMobile();
+/* ── KEYBOARD ── */
+document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+        var drawer=document.getElementById('snDrawer');
+        if(drawer && drawer.classList.contains('show')) snClose();
+        var sp=document.getElementById('settingsPanel');
+        if(sp) sp.classList.remove('open');
+    }
 });
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+        var target=document.querySelector(this.getAttribute('href'));
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+});
+
+/* ── TOUCH SWIPE CLOSE (uses new #snDrawer) ── */
+var touchStartX=0;
+var sideNavEl=document.getElementById('snDrawer');
+if(sideNavEl){
+    sideNavEl.addEventListener('touchstart',function(e){touchStartX=e.changedTouches[0].screenX;},{passive:true});
+    sideNavEl.addEventListener('touchend',function(e){
+        if(e.changedTouches[0].screenX>touchStartX+60&&sideNavEl.classList.contains('show')) snClose();
+    },{passive:true});
+}
+
+/* ── LANGUAGE ── */
+var translations={
+    ar:{
+        logoTagline:'منصة التعليم الذكية',sideNavTitle:'القائمة الرئيسية',profileName:'your profile',profileSub:'ملفك التعريفي',
+        navHome:'الصفحة الرئيسية',navVideos:'الفيديوهات التعليمية',navArticles:'المقالات الحصرية',navGames:'ساحة الألعاب',
+        navExams:'مركز الاختبارات',navSign:'مركز لغة الإشارة',navQuran:'اسلاميات',navVoice:'الغرف الصوتية',
+        navQuestions:'قسم الاستفسارات',navFamily:'توعية في الرقابة الابوية',navSupport:'تعريف عن الراعي',navSettings:'الإعدادات',navLogout:'تسجيل خروج',
+        heroBadge:'✨ مرحباً بك في المستقبل',heroTitle:'رحلتك التعليمية تبدأ هنا',
+        heroSubtitle:'اكتشف عالماً من المعرفة والإبداع مع أفضل منصة تعليمية ذكية في المنطقة',
+        ctaStart:'ابدأ الآن',ctaDiscover:'اكتشف المزيد',
+        stat1Title:'مجتمعٌ عالمي نُعيد صياغته',stat1Desc:'نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.',
+        stat2Title:'المحتوى الذي لم يجرؤ أحد على تقديمه',stat2Desc:'أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق.',
+        stat3Title:'اعترافاتٌ تليق بكبار الطموح',stat3Desc:'أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.',
+        stat4Title:'صرامة الإتقان',stat4Desc:'نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.',
+        exploreTitle:'استكشف عالمك التعليمي',exploreSubtitle:'اختر المجال الذي يناسب اهتماماتك وابدأ رحلتك نحو التميز',
+        badge1:'جديد',badge2:'مميز',badge3:'ممتع',badge4:'تقييم',badge5:'شامل',badge6:'تواصل',
+        card1Title:'الفيديوهات التعليمية',card1Desc:'مكتبة شاملة من الدروس المرئية عالية الجودة مع شروحات تفاعلية ومبسطة',
+        card2Title:'المقالات الحصرية',card2Desc:'محتوى تعليمي متخصص ومقالات علمية متميزة من خبراء في مختلف المجالات',
+        card3Title:'ساحة الألعاب',card3Desc:'تعلم بطريقة ممتعة من خلال الألعاب التفاعلية والتحديات الذهنية المثيرة',
+        card4Title:'مركز الاختبارات',card4Desc:'اختبارات تقييمية شاملة لقياس مستواك وتتبع تقدمك في مسيرتك التعليمية',
+        card5Title:'مركز لغة الإشارة',card5Desc:'تعلم لغة الإشارة بطريقة تفاعلية ومبسطة مع دروس عملية ومتخصصة',
+        card6Title:'قسم الاستفسارات',card6Desc:'تواصل معنا وشارك أفكارك واستفساراتك مع مجتمع SITEJ',
+        footerAboutTitle:'عن SITEJ',footerAboutDesc:'منصة تعليمية ذكية رائدة توفر تجربة تعليمية فريدة ومتطورة للطلاب في جميع أنحاء المنطقة.',
+        footerLinksTitle:'روابط سريعة',footerSupportTitle:'الدعم',
+        footerHelp:'مركز المساعدة',footerFaq:'الأسئلة الشائعة',
+        footerContactTitle:'تواصل معنا',footerLocation:'قرية سالم, مدرسة سالم الثانوية للبنين',footerCopy:'© 2026 SITEJ. جميع الحقوق محفوظة',
+    },
+    en:{
+        logoTagline:'Smart Education Platform',sideNavTitle:'Main Menu',profileName:'Your Profile',profileSub:'View your profile',
+        navHome:'Home',navVideos:'Educational Videos',navArticles:'Exclusive Articles',navGames:'Games Arena',
+        navExams:'Exams Center',navSign:'Sign Language Hub',navQuran:'Islamic Studies',navVoice:'Voice Rooms',
+        navQuestions:'Q&A Section',navFamily:'Parental Awareness',navSupport:'About the Sponsor',navSettings:'Settings',navLogout:'Log Out',
+        heroBadge:'✨ Welcome to the Future',heroTitle:'Your Learning Journey Starts Here',
+        heroSubtitle:"Discover a world of knowledge and creativity with the region's leading smart education platform",
+        ctaStart:'Get Started',ctaDiscover:'Explore More',
+        stat1Title:"A Global Community We're Reshaping",stat1Desc:"We're preparing to welcome ten thousand ambitious minds as the founding core of the greatest digital renaissance.",
+        stat2Title:'Content No One Dared to Create',stat2Desc:"More than 500 knowledge units built through months of deep planning and relentless effort.",
+        stat3Title:'Recognition Worthy of the Truly Ambitious',stat3Desc:"Over 50 certified privileges, medals, and credentials prepared for you.",
+        stat4Title:"The Rigor of Mastery",stat4Desc:"We put you through a smart, challenging learning environment designed to make you the definition of success.",
+        exploreTitle:'Explore Your Educational World',exploreSubtitle:'Choose the field that suits your interests and begin your journey toward excellence',
+        badge1:'New',badge2:'Featured',badge3:'Fun',badge4:'Assessment',badge5:'Inclusive',badge6:'Connect',
+        card1Title:'Educational Videos',card1Desc:'A comprehensive library of high-quality visual lessons with interactive and simplified explanations',
+        card2Title:'Exclusive Articles',card2Desc:'Specialized educational content and distinguished scientific articles from experts in various fields',
+        card3Title:'Games Arena',card3Desc:'Learn in a fun way through interactive games and exciting mental challenges',
+        card4Title:'Exams Center',card4Desc:'Comprehensive assessment tests to measure your level and track your educational journey',
+        card5Title:'Sign Language Hub',card5Desc:'Learn sign language in an interactive and simplified way with practical specialized lessons',
+        card6Title:'Q&A Section',card6Desc:'Connect with us and share your thoughts with the SITEJ community',
+        footerAboutTitle:'About SITEJ',footerAboutDesc:'A leading smart education platform providing a unique and advanced learning experience for students across the region.',
+        footerLinksTitle:'Quick Links',footerSupportTitle:'Support',
+        footerHelp:'Help Center',footerFaq:'FAQ',
+        footerContactTitle:'Contact Us',footerLocation:'Salem Village, Salem Secondary School for Boys',footerCopy:'© 2026 SITEJ. All rights reserved',
+    }
+};
+
+var currentLang='ar';
+var langWrap=document.getElementById('langSelectorWrap');
+document.getElementById('langTriggerBtn').addEventListener('click',function(e){
+    e.stopPropagation();
+    langWrap.classList.toggle('open');
+});
+document.addEventListener('click',function(e){
+    if(!langWrap.contains(e.target))langWrap.classList.remove('open');
+});
+
+function setLang(lang){
+    if(lang===currentLang){langWrap.classList.remove('open');return;}
+    currentLang=lang;
+    document.documentElement.setAttribute('lang',lang);
+    document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+        var key=el.getAttribute('data-i18n');
+        if(translations[lang][key]!==undefined)el.textContent=translations[lang][key];
+    });
+    var arrow1=document.getElementById('ctaArrow1');
+    if(arrow1)arrow1.className=lang==='ar'?'fas fa-arrow-left':'fas fa-arrow-right';
+    document.getElementById('langFlag').textContent=lang==='ar'?'🇸🇦':'🇬🇧';
+    document.getElementById('langLabelText').textContent=lang==='ar'?'العربية':'English';
+    document.querySelectorAll('.lang-option-item').forEach(function(el){
+        el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);
+    });
+    langWrap.classList.remove('open');
+}
+
+/* ── ICON HOVER ANIMATIONS ── */
+(function(){
+    function animIcon(el, hoverCls, outCls) {
+        el.addEventListener('mouseenter', function() {
+            el.classList.remove(outCls);
+            el.classList.add(hoverCls);
+        });
+        el.addEventListener('mouseleave', function() {
+            el.classList.remove(hoverCls);
+            el.classList.add(outCls);
+        });
+    }
+
+    /* Card icons */
+    document.querySelectorAll('.card-icon').forEach(function(el){
+        animIcon(el, 'icon-hover', 'icon-out');
+    });
+
+    /* Stat card icons */
+    document.querySelectorAll('.stat-icon i').forEach(function(el){
+        var wrap = el.closest('.stat-card') || el.parentElement;
+        wrap.addEventListener('mouseenter', function(){ el.classList.remove('stat-icon-out'); el.classList.add('stat-icon-hover'); });
+        wrap.addEventListener('mouseleave', function(){ el.classList.remove('stat-icon-hover'); el.classList.add('stat-icon-out'); });
+    });
+
+    /* Sidenav link icons */
+    document.querySelectorAll('.sn-links a, .side-nav a').forEach(function(link){
+        var icon = link.querySelector('i');
+        if(!icon) return;
+        link.addEventListener('mouseenter', function(){ icon.classList.remove('sn-link-icon-out'); icon.classList.add('sn-link-icon-hover'); });
+        link.addEventListener('mouseleave', function(){ icon.classList.remove('sn-link-icon-hover'); icon.classList.add('sn-link-icon-out'); });
+    });
+
+    /* Logo icon */
+    var logoIcon = document.querySelector('.logo-icon');
+    if(logoIcon) animIcon(logoIcon, 'icon-hover', 'icon-out');
+
+    /* Footer links */
+    document.querySelectorAll('.footer-section a').forEach(function(a){
+        a.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1), color 0.3s';
+        a.addEventListener('mouseenter', function(){ a.style.transform = 'translateX(-8px) scale(1.04)'; });
+        a.addEventListener('mouseleave', function(){ a.style.transform = ''; });
+    });
+})();
+
 </script>
 </body>
 </html>
