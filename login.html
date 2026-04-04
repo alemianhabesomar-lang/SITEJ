@@ -2,192 +2,162 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول | SITEJ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>تسجيل الدخول | SITEJ - منصة الكادر التعليمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --navy-dark:#1a2942;--navy-lighter:#3d5a7f;
-            --accent-blue:#4a90e2;--accent-light-blue:#6fa8ec;--accent-sky:#87ceeb;
-            --accent-teal:#20c997;
-            --gradient-navy-soft:linear-gradient(135deg,#1a2942 0%,#3d5a7f 50%,#b8c9dc 100%);
-            --gradient-blue-glow:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
-            --border-blue:rgba(74,144,226,0.3);
-            --shadow-blue:rgba(74,144,226,0.2);
-            --shadow-glow:rgba(74,144,226,0.5);
-            --text-navy:#0a1628;--text-gray:#6b7c93;
+            --navy-dark: #1a2942;
+            --navy-lighter: #3d5a7f;
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --accent-teal: #20c997;
+            --accent-purple: #8b5cf6;
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            --gradient-student: linear-gradient(135deg, #20c997 0%, #4a90e2 100%);
+            --gradient-register: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4a90e2 100%);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --shadow-blue: rgba(74, 144, 226, 0.2);
+            --text-navy: #0a1628;
+            --text-gray: #6b7c93;
+            --red: #ee5a6f;
         }
-        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
-        body{font-family:'Cairo','Tajawal',sans-serif;background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);background-attachment:fixed;color:var(--text-navy);min-height:100vh;overflow-x:hidden;display:flex;align-items:center;justify-content:center;}
-
-        .bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;}
-        .bg-shape{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.12;animation:float 30s infinite ease-in-out;}
-        .shape-1{width:600px;height:600px;background:radial-gradient(circle,rgba(74,144,226,0.4) 0%,transparent 70%);top:-200px;right:-200px;}
-        .shape-2{width:500px;height:500px;background:radial-gradient(circle,rgba(26,41,66,0.3) 0%,transparent 70%);bottom:-150px;left:-150px;animation-delay:-10s;}
-        .shape-3{width:450px;height:450px;background:radial-gradient(circle,rgba(155,180,208,0.25) 0%,transparent 70%);top:35%;left:45%;animation-delay:-20s;}
-        @keyframes float{0%,100%{transform:translate(0,0) scale(1);}25%{transform:translate(100px,-100px) scale(1.1);}50%{transform:translate(-50px,50px) scale(0.9);}75%{transform:translate(-120px,-80px) scale(1.05);}}
-
-        nav.top-bar{display:flex;justify-content:space-between;align-items:center;padding:22px 70px;position:fixed;width:100%;top:0;z-index:1000;background:rgba(255,255,255,0.75);backdrop-filter:blur(30px) saturate(180%);border-bottom:1px solid var(--border-blue);box-shadow:0 4px 30px rgba(26,41,66,0.08);transition:all 0.5s;}
-        nav.top-bar.scrolled{padding:14px 70px;background:rgba(248,249,250,0.95);box-shadow:0 8px 40px rgba(26,41,66,0.12);border-bottom:2px solid var(--accent-blue);}
-        .logo-container{display:flex;align-items:center;gap:18px;cursor:pointer;transition:transform 0.4s;text-decoration:none;}
-        .logo-container:hover{transform:scale(1.08) translateY(-2px);}
-        .logo-icon{width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px var(--shadow-blue);}
-        .logo-icon i{font-size:1.6rem;color:#fff;}
-        .logo-text{display:flex;flex-direction:column;gap:4px;}
-        .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .logo-tagline{font-size:0.75rem;color:var(--text-gray);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
-        .nav-actions{display:flex;align-items:center;gap:14px;}
-        .back-home{display:flex;align-items:center;gap:8px;padding:10px 22px;background:rgba(255,255,255,0.85);border:1.5px solid var(--border-blue);border-radius:50px;color:var(--text-navy);text-decoration:none;font-weight:700;font-size:0.9rem;transition:all 0.4s;box-shadow:0 3px 12px var(--shadow-blue);}
-        .back-home:hover{background:var(--gradient-blue-glow);color:white;transform:translateY(-3px);}
-
-        .page-body{position:relative;z-index:10;width:100%;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:120px 20px 60px;}
-
-        /* ══ CARD ══ */
-        .login-card{width:100%;max-width:500px;background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:28px;padding:44px 44px 38px;box-shadow:0 24px 70px rgba(26,41,66,0.18);animation:cardIn 0.7s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
-        .login-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:var(--gradient-blue-glow);}
-        @keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(0.95);}to{opacity:1;transform:translateY(0) scale(1);}}
-
-        /* ══ STEP INDICATOR ══ */
-        .steps-row{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
-        .step-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;transition:all 0.4s;border:2px solid var(--border-blue);background:white;color:var(--text-gray);}
-        .step-dot.active{background:var(--gradient-blue-glow);border-color:var(--accent-blue);color:white;box-shadow:0 4px 16px var(--shadow-blue);}
-        .step-dot.done{background:var(--accent-teal);border-color:var(--accent-teal);color:white;}
-        .step-line{width:60px;height:2px;background:var(--border-blue);transition:background 0.4s;}
-        .step-line.done{background:var(--accent-teal);}
-
-        /* ══ CARD HEAD ══ */
-        .card-head{text-align:center;margin-bottom:28px;}
-        .card-icon{width:74px;height:74px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 12px 35px var(--shadow-blue);}
-        .card-icon i{font-size:1.9rem;color:white;}
-        .card-title{font-size:2rem;font-weight:900;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
-        .card-sub{color:var(--text-gray);font-size:0.95rem;line-height:1.6;}
-
-        .beta-bar{background:linear-gradient(135deg,rgba(74,144,226,0.08),rgba(135,206,235,0.04));border:1px solid var(--border-blue);border-radius:14px;padding:14px 18px;margin-bottom:24px;font-size:0.85rem;color:#1a2942;line-height:1.7;}
-        .beta-bar strong{color:var(--accent-blue);}
-        .divider{height:1px;background:var(--border-blue);margin:22px 0;}
-
-        /* ══ INFO BOX ══ */
-        .info-box{background:linear-gradient(135deg,rgba(32,201,151,0.06),rgba(74,144,226,0.04));border:1.5px solid rgba(32,201,151,0.3);border-radius:14px;padding:14px 18px;margin-bottom:20px;font-size:0.85rem;color:#0a1628;line-height:1.8;display:flex;gap:12px;align-items:flex-start;}
-        .info-box i{color:var(--accent-teal);font-size:1.1rem;margin-top:2px;flex-shrink:0;}
-
-        /* ══ FIELDS ══ */
-        .field{margin-bottom:18px;}
-        .field label{display:block;color:var(--text-navy);font-weight:700;font-size:0.88rem;margin-bottom:8px;}
-        .field-wrap{position:relative;}
-        .field-wrap .field-icon{position:absolute;top:50%;transform:translateY(-50%);right:16px;color:var(--text-gray);font-size:1rem;pointer-events:none;transition:color 0.3s;}
-        .field input,.field select{width:100%;padding:14px 44px 14px 18px;background:rgba(255,255,255,0.7);border:2px solid var(--border-blue);border-radius:14px;color:var(--text-navy);font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;outline:none;transition:all 0.3s;appearance:none;}
-        .field input:focus,.field select:focus{border-color:var(--accent-blue);background:white;box-shadow:0 0 0 4px rgba(74,144,226,0.1);}
-        .field input:focus+.field-icon,.field select:focus+.field-icon{color:var(--accent-blue);}
-        .field input::placeholder{color:var(--text-gray);}
-        .field select option{background:white;color:var(--text-navy);}
-
-        /* ══ REG FIELDS SLIDE ══ */
-        #regFields{overflow:hidden;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1),opacity 0.4s;}
-        #regFields.hidden{max-height:0;opacity:0;pointer-events:none;}
-        #regFields:not(.hidden){max-height:700px;opacity:1;}
-
-        /* ══ BUTTONS ══ */
-        .btn-main{width:100%;padding:16px;background:var(--gradient-blue-glow);border:none;border-radius:14px;color:white;font-family:'Cairo','Tajawal',sans-serif;font-size:1.1rem;font-weight:800;cursor:pointer;margin-top:10px;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 28px var(--shadow-blue);position:relative;overflow:hidden;}
-        .btn-main::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.35);transform:translate(-50%,-50%);transition:width 0.7s,height 0.7s;}
-        .btn-main:hover::before{width:450px;height:450px;}
-        .btn-main:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 18px 45px var(--shadow-glow);}
-        .btn-main:active{transform:translateY(0) scale(0.98);}
-        .btn-main:disabled{opacity:0.65;cursor:not-allowed;transform:none;}
-
-        .toggle-row{text-align:center;margin-top:22px;color:var(--text-gray);font-size:0.93rem;}
-        .toggle-link{color:var(--accent-blue);cursor:pointer;font-weight:700;border-bottom:1px dashed transparent;transition:border-color 0.3s;}
-        .toggle-link:hover{border-bottom-color:var(--accent-blue);}
-
-        /* ══ FORGOT PASSWORD MODAL ══ */
-        .modal-overlay{position:fixed;inset:0;background:rgba(26,41,66,0.55);backdrop-filter:blur(10px);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.35s;}
-        .modal-overlay.show{opacity:1;pointer-events:all;}
-        .modal-box{width:90%;max-width:420px;background:rgba(255,255,255,0.98);border:2px solid var(--border-blue);border-radius:24px;padding:36px 32px;box-shadow:0 28px 70px rgba(26,41,66,0.22);transform:translateY(24px) scale(0.96);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);position:relative;}
-        .modal-overlay.show .modal-box{transform:translateY(0) scale(1);}
-        .modal-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(135deg,#ee5a6f,#f093a3);border-radius:24px 24px 0 0;}
-        .modal-close{position:absolute;top:14px;left:14px;width:34px;height:34px;border-radius:50%;background:rgba(238,90,111,0.08);border:none;cursor:pointer;color:#ee5a6f;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s;}
-        .modal-close:hover{background:rgba(238,90,111,0.18);transform:rotate(90deg);}
-        .modal-icon{width:62px;height:62px;background:linear-gradient(135deg,#ee5a6f,#f093a3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 10px 28px rgba(238,90,111,0.3);}
-        .modal-icon i{font-size:1.6rem;color:white;}
-        .modal-title{font-size:1.5rem;font-weight:900;text-align:center;margin-bottom:8px;color:var(--text-navy);}
-        .modal-sub{text-align:center;color:var(--text-gray);font-size:0.9rem;line-height:1.7;margin-bottom:22px;}
-        .btn-reset{width:100%;padding:14px;background:linear-gradient(135deg,#ee5a6f,#f093a3);border:none;border-radius:14px;color:white;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all 0.4s;box-shadow:0 6px 22px rgba(238,90,111,0.3);}
-        .btn-reset:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(238,90,111,0.45);}
-        .btn-reset:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
-
-        /* ══ OTP SECTION ══ */
-        #otpSection{display:none;}
-        #otpSection.visible{display:block;animation:cardIn 0.5s cubic-bezier(0.34,1.56,0.64,1);}
-
-        .otp-icon{width:80px;height:80px;background:linear-gradient(135deg,#4a90e2,#6fa8ec);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 12px 35px rgba(74,144,226,0.35);animation:pulse 2s infinite;}
-        @keyframes pulse{0%,100%{box-shadow:0 12px 35px rgba(74,144,226,0.35);}50%{box-shadow:0 12px 50px rgba(74,144,226,0.6);}}
-        .otp-icon i{font-size:2rem;color:white;}
-        .otp-title{font-size:1.6rem;font-weight:900;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;text-align:center;}
-        .otp-sub{color:var(--text-gray);font-size:0.92rem;line-height:1.8;text-align:center;}
-        .otp-email{color:var(--accent-blue);font-weight:700;display:block;margin:6px 0;}
-
-        .otp-boxes{display:flex;gap:10px;justify-content:center;margin:24px 0;direction:ltr;}
-        .otp-box{width:52px;height:60px;text-align:center;font-size:1.6rem;font-weight:800;border:2px solid var(--border-blue);border-radius:14px;outline:none;background:rgba(255,255,255,0.8);color:var(--text-navy);font-family:'Cairo','Tajawal',sans-serif;transition:all 0.3s;}
-        .otp-box:focus{border-color:var(--accent-blue);background:white;box-shadow:0 0 0 4px rgba(74,144,226,0.12);}
-        .otp-box.filled{border-color:var(--accent-blue);background:white;}
-        .otp-box.error{border-color:#ee5a6f;background:rgba(238,90,111,0.04);animation:shake 0.4s;}
-        @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-5px);}40%,80%{transform:translateX(5px);}}
-
-        .otp-timer{text-align:center;color:var(--text-gray);font-size:0.85rem;margin-bottom:16px;}
-        .otp-timer span{color:var(--accent-blue);font-weight:700;}
-        .otp-timer span.expired{color:#ee5a6f;}
-
-        .btn-resend{width:100%;padding:12px;background:transparent;border:2px solid rgba(74,144,226,0.4);border-radius:14px;color:var(--accent-blue);font-family:'Cairo','Tajawal',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.3s;margin-top:10px;}
-        .btn-resend:hover:not(:disabled){background:rgba(74,144,226,0.07);}
-        .btn-resend:disabled{opacity:0.45;cursor:not-allowed;}
-        .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text-gray);font-size:0.85rem;cursor:pointer;background:none;border:none;font-family:'Cairo','Tajawal',sans-serif;transition:color 0.3s;width:100%;justify-content:center;padding:10px;margin-top:4px;}
-        .back-link:hover{color:var(--accent-blue);}
-
-        /* ══ SIDENAV ══ */
-        .overlay{position:fixed;inset:0;background:rgba(26,41,66,0.65);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity 0.45s;}
-        .overlay.show{opacity:1;pointer-events:all;}
-        .sidenav{position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-inline-start:3px solid #4a90e2;padding:28px 24px;overflow-y:auto;transition:right .55s cubic-bezier(.68,-.55,.265,1.55);box-shadow:-12px 0 50px rgba(26,41,66,0.15);}
-        .sidenav.show{right:0;}
-        .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3);}
-        .sn-head h2{background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
-        .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#4a90e2;font-size:1.4rem;transition:all .4s;}
-        .sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
-        .sn-links{list-style:none;padding:0;margin:0;}
-        .sn-links li{margin-bottom:4px;}
-        .sn-links a{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;color:#0a1628;border-radius:14px;transition:all .4s;}
-        .sn-links a:hover{transform:translateX(-8px);color:#4a90e2;}
-        .sn-links a i{color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;}
-        .sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
-        .sn-logout a{color:#ee5a6f!important;}
-        .burger{cursor:pointer;width:36px;height:28px;display:flex;flex-direction:column;justify-content:space-between;padding:2px 0;transition:transform .35s;}
-        .burger:hover{transform:scale(1.15);}
-        .bline{width:100%;height:3px;background:linear-gradient(135deg,#4a90e2,#6fa8ec);border-radius:4px;transition:all .45s cubic-bezier(.68,-.55,.265,1.55);transform-origin:center;}
-        .burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
-        .burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
-        .burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
-
-        /* ══ TOAST ══ */
-        .sn-toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;opacity:0;pointer-events:none;z-index:99999;box-shadow:0 8px 28px rgba(26,41,66,0.3);display:flex;align-items:center;gap:9px;transition:all .38s cubic-bezier(.34,1.56,.64,1);}
-        .sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-        @media(max-width:600px){
-            nav.top-bar{padding:16px 24px;}
-            .logo{font-size:1.5rem;}
-            .logo-icon{width:46px;height:46px;}
-            .login-card{padding:30px 24px 28px;}
-            .card-title{font-size:1.7rem;}
-            .otp-box{width:42px;height:52px;font-size:1.3rem;}
-            .step-line{width:40px;}
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 8%, #e8eef5 20%, #d4dfe9 35%, #b8c9dc 50%, #9bb4d0 65%, #7a9ac2 80%, #5a7fa8 90%, #3d5a7f 95%, #1a2942 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        @media(max-width:768px){
-            nav.top-bar{padding:14px 20px!important;}
-            .sidenav{width:100%;right:-100%;}
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        .bg-shape { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; animation: float 30s infinite ease-in-out; }
+        .shape-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(74,144,226,0.4) 0%, transparent 70%); top: -200px; right: -200px; }
+        .shape-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(26,41,66,0.3) 0%, transparent 70%); bottom: -150px; left: -150px; animation-delay: -10s; }
+        .shape-3 { width: 450px; height: 450px; background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%); top: 35%; left: 45%; animation-delay: -20s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, 50px) scale(0.9); }
+            75% { transform: translate(-120px, -80px) scale(1.05); }
+        }
+        nav.top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 22px 70px; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(255,255,255,0.75); backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border-blue); transition: all 0.5s;
+        }
+        nav.top-bar.scrolled { padding: 14px 70px; background: rgba(248,249,250,0.95); border-bottom: 2px solid var(--accent-blue); }
+        .logo-container { display: flex; align-items: center; gap: 18px; cursor: pointer; text-decoration: none; }
+        .logo-icon { width: 55px; height: 55px; background: var(--gradient-blue-glow); border-radius: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px var(--shadow-blue); }
+        .logo-icon i { font-size: 1.6rem; color: #fff; }
+        .logo-text .logo { font-size: 1.9rem; font-weight: 900; background: var(--gradient-navy-soft); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-tagline { font-size: 0.75rem; color: var(--text-gray); }
+        .nav-actions { display: flex; align-items: center; gap: 14px; }
+        .back-home { display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,0.85); border: 1.5px solid var(--border-blue); border-radius: 50px; color: var(--text-navy); text-decoration: none; font-weight: 700; transition: all 0.4s; }
+        .back-home:hover { background: var(--gradient-blue-glow); color: white; }
+        .page-body { position: relative; z-index: 10; width: 100%; padding: 120px 20px 60px; display: flex; justify-content: center; }
+        .login-card { width: 100%; max-width: 520px; background: rgba(255,255,255,0.95); border: 2px solid var(--border-blue); border-radius: 28px; padding: 0 0 38px; box-shadow: 0 24px 70px rgba(26,41,66,0.18); position: relative; overflow: hidden; }
+        .login-tabs { display: flex; border-bottom: 2px solid var(--border-blue); position: relative; }
+        .tab-btn { flex: 1; padding: 18px 6px 15px; background: transparent; border: none; cursor: pointer; font-weight: 700; color: var(--text-gray); display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.3s; font-family: inherit; font-size: 0.95rem; }
+        .tab-btn.active { color: var(--accent-blue); }
+        .tab-indicator { position: absolute; bottom: -2px; height: 3px; background: var(--gradient-blue-glow); border-radius: 3px 3px 0 0; transition: all 0.4s; width: 50%; right: 0%; }
+        .tab-content { padding: 30px 44px 0; display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card-head { text-align: center; margin-bottom: 22px; }
+        .card-icon { width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; box-shadow: 0 12px 35px var(--shadow-blue); }
+        .card-icon.staff-icon { background: var(--gradient-blue-glow); }
+        .card-icon.student-icon { background: var(--gradient-student); }
+        .card-icon i { font-size: 1.8rem; color: white; }
+        .card-title { font-size: 1.7rem; font-weight: 900; background: var(--gradient-navy-soft); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .card-sub { color: var(--text-gray); font-size: 0.88rem; }
+        .beta-bar, .student-badge { background: rgba(74,144,226,0.08); border: 1px solid var(--border-blue); border-radius: 14px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.83rem; display: flex; align-items: center; gap: 10px; }
+        .student-badge i { color: #20c997; }
+        .field { margin-bottom: 14px; }
+        .field label { display: block; font-weight: 700; font-size: 0.86rem; margin-bottom: 7px; }
+        .field-wrap { position: relative; }
+        .field-wrap .field-icon { position: absolute; top: 50%; transform: translateY(-50%); right: 16px; color: var(--text-gray); }
+        .field-wrap .toggle-pass { position: absolute; top: 50%; transform: translateY(-50%); left: 16px; background: none; border: none; cursor: pointer; color: var(--text-gray); }
+        .field input { width: 100%; padding: 13px 44px; background: rgba(255,255,255,0.7); border: 2px solid var(--border-blue); border-radius: 14px; font-family: inherit; font-size: 0.97rem; outline: none; transition: all 0.3s; }
+        .field input:focus { border-color: var(--accent-blue); background: white; box-shadow: 0 0 0 4px rgba(74,144,226,0.1); }
+        .btn-main { width: 100%; padding: 15px; border: none; border-radius: 14px; color: white; font-weight: 800; cursor: pointer; transition: all 0.4s; margin-top: 6px; font-family: inherit; font-size: 1rem; }
+        .btn-main.btn-staff { background: var(--gradient-blue-glow); }
+        .btn-main.btn-student { background: var(--gradient-student); }
+        .btn-main:disabled { opacity: 0.6; cursor: not-allowed; }
+        .forgot-row { text-align: left; margin-top: -2px; margin-bottom: 10px; }
+        .forgot-row span { font-size: 0.81rem; color: var(--text-gray); cursor: pointer; }
+        .switch-link { text-align: center; margin-top: 14px; font-size: 0.84rem; }
+        .switch-link a { color: var(--accent-blue); font-weight: 700; cursor: pointer; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(26,41,66,0.7); backdrop-filter: blur(8px); z-index: 5000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s; padding: 20px; }
+        .modal-overlay.show { opacity: 1; pointer-events: all; }
+        .modal-box { width: 100%; max-width: 550px; max-height: 90vh; background: rgba(255,255,255,0.98); border: 2px solid var(--border-blue); border-radius: 28px; overflow: hidden; transform: translateY(30px) scale(0.96); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.3); display: flex; flex-direction: column; }
+        .modal-overlay.show .modal-box { transform: translateY(0) scale(1); }
+        .modal-header { background: var(--gradient-register); padding: 24px 20px; text-align: center; position: relative; flex-shrink: 0; }
+        .modal-header h2 { color: white; font-size: 1.6rem; margin: 0; font-weight: 800; }
+        .modal-header .modal-close { position: absolute; top: 18px; left: 20px; background: rgba(255,255,255,0.2); border: none; width: 38px; height: 38px; border-radius: 50%; color: white; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .modal-header .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+        .modal-body { flex: 1; overflow-y: auto; padding: 28px 32px 32px; }
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 10px; }
+        .register-badge { background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(74,144,226,0.05)); border: 1.5px solid rgba(139,92,246,0.2); border-radius: 14px; padding: 12px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-navy); }
+        .register-badge i { color: #8b5cf6; font-size: 1.1rem; }
+        .fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .register-field { margin-bottom: 16px; }
+        .register-field label { display: block; font-weight: 700; font-size: 0.86rem; margin-bottom: 8px; color: var(--text-navy); }
+        .register-field input, .register-field select { width: 100%; padding: 12px 42px 12px 16px; background: rgba(255,255,255,0.9); border: 2px solid var(--border-blue); border-radius: 14px; font-family: inherit; font-size: 0.95rem; outline: none; transition: all 0.3s; }
+        .register-field input:focus, .register-field select:focus { border-color: #8b5cf6; box-shadow: 0 0 0 4px rgba(139,92,246,0.1); background: white; }
+        .register-field .field-wrap { position: relative; }
+        .register-field .field-icon { position: absolute; top: 50%; transform: translateY(-50%); right: 14px; color: var(--text-gray); }
+        .register-field .toggle-pass { position: absolute; top: 50%; transform: translateY(-50%); left: 14px; background: none; border: none; cursor: pointer; color: var(--text-gray); }
+        .btn-register-modal { width: 100%; padding: 14px; background: var(--gradient-register); border: none; border-radius: 14px; color: white; font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: 10px; transition: all 0.3s; font-family: inherit; }
+        .btn-register-modal:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(139,92,246,0.3); }
+        .btn-register-modal:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .success-state { text-align: center; padding: 30px 0; }
+        .success-icon { width: 80px; height: 80px; background: var(--gradient-student); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+        .success-icon i { font-size: 2.2rem; color: white; }
+        .success-state h3 { font-size: 1.4rem; margin: 15px 0 10px; color: var(--text-navy); }
+        .success-state p { color: var(--text-gray); margin-bottom: 10px; }
+        .sn-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: linear-gradient(135deg, var(--navy-dark), var(--navy-lighter)); color: white; padding: 12px 26px; border-radius: 50px; font-size: 0.88rem; font-weight: 600; opacity: 0; pointer-events: none; z-index: 10000; transition: all 0.3s; text-align: center; max-width: 90vw; }
+        .sn-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .sidenav { position: fixed; top: 0; right: -400px; width: 350px; height: 100%; background: white; z-index: 3000; padding: 30px 24px; transition: right 0.4s; box-shadow: -5px 0 30px rgba(0,0,0,0.1); }
+        .sidenav.show { right: 0; }
+        .burger { cursor: pointer; width: 36px; height: 28px; display: flex; flex-direction: column; justify-content: space-between; }
+        .bline { height: 3px; background: var(--accent-blue); border-radius: 4px; transition: 0.3s; }
+        .burger.open .bline:nth-child(1) { transform: rotate(45deg) translate(9px, 9px); }
+        .burger.open .bline:nth-child(2) { opacity: 0; }
+        .burger.open .bline:nth-child(3) { transform: rotate(-45deg) translate(9px, -9px); }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 2500; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .overlay.show { opacity: 1; pointer-events: all; }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-left: 6px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .pass-strength { margin-top: 8px; }
+        .strength-bar { height: 5px; border-radius: 4px; background: #e8eef5; overflow: hidden; margin-bottom: 5px; }
+        .strength-fill { height: 100%; border-radius: 4px; width: 0%; transition: all 0.4s; }
+        .strength-fill.weak { width: 33%; background: linear-gradient(90deg, #ee5a6f, #f093a3); }
+        .strength-fill.medium { width: 66%; background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .strength-fill.strong { width: 100%; background: linear-gradient(90deg, #20c997, #4a90e2); }
+        .strength-text { font-size: 0.76rem; font-weight: 600; color: var(--text-gray); }
+        .strength-text.weak { color: #ee5a6f; }
+        .strength-text.medium { color: #f59e0b; }
+        .strength-text.strong { color: #20c997; }
+        @media (max-width: 600px) {
+            nav.top-bar { padding: 14px 20px; }
+            .tab-content { padding: 22px 20px 0; }
+            .modal-body { padding: 20px; }
+            .fields-row { grid-template-columns: 1fr; }
+            .modal-box { max-width: 95%; }
         }
     </style>
 </head>
 <body>
-
 <div class="bg-animation">
     <div class="bg-shape shape-1"></div>
     <div class="bg-shape shape-2"></div>
@@ -199,832 +169,490 @@
         <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
         <div class="logo-text">
             <div class="logo">SITEJ</div>
-            <div class="logo-tagline">منصة التعليم الذكية</div>
+            <div class="logo-tagline">منصة الكادر التعليمي</div>
         </div>
     </a>
     <div class="nav-actions">
         <a href="index.html" class="back-home"><i class="fas fa-arrow-right"></i> الرئيسية</a>
-        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة">
+        <div class="burger" id="snBurger" onclick="snToggle()">
             <div class="bline"></div><div class="bline"></div><div class="bline"></div>
         </div>
     </div>
 </nav>
 
-<!-- ══ SIDENAV ══ -->
 <div class="overlay" id="snOverlay" onclick="snClose()"></div>
 <div class="sidenav" id="snDrawer">
-    <div class="sn-head">
+    <div style="display:flex;justify-content:space-between;margin-bottom:30px;">
         <h2>القائمة</h2>
-        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+        <div onclick="snClose()" style="cursor:pointer;font-size:1.5rem;">✕</div>
     </div>
-    <ul class="sn-links">
-        <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
-        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
-        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
-        <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
-        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
-        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
-        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
-        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الحرف الصوتية</span></a></li>
-        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
-        <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
-        <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
-        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
-    </ul>
-    <ul class="sn-links sn-logout" style="margin-top:16px;">
-        <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+    <ul style="list-style:none;">
+        <li style="margin-bottom:15px;"><a href="index.html" style="text-decoration:none;color:#1a2942;font-weight:600;"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="#" onclick="handleLogout()" style="text-decoration:none;color:#ee5a6f;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
     </ul>
 </div>
 
-<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
+<div class="sn-toast" id="snToast"><i class="fas fa-info-circle"></i> <span id="snToastMsg"></span></div>
 
-<!-- ══ FORGOT PASSWORD MODAL ══ -->
+<!-- مودال نسيت كلمة المرور -->
 <div class="modal-overlay" id="forgotModal">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeForgotModal()"><i class="fas fa-times"></i></button>
-        <div class="modal-icon"><i class="fas fa-key"></i></div>
-        <div class="modal-title">نسيت كلمة المرور؟</div>
-        <div class="modal-sub">أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور</div>
-        <div class="field">
-            <label>البريد الإلكتروني</label>
-            <div class="field-wrap">
-                <input type="email" id="resetEmail" placeholder="example@email.com">
-                <i class="fas fa-envelope field-icon"></i>
-            </div>
+    <div class="modal-box" style="max-width:420px;">
+        <div class="modal-header" style="background:linear-gradient(135deg,#ee5a6f,#f093a3);">
+            <button class="modal-close" onclick="closeForgotModal()"><i class="fas fa-times"></i></button>
+            <i class="fas fa-key" style="font-size:2rem;color:white;margin-bottom:8px;display:block;"></i>
+            <h2>نسيت كلمة المرور؟</h2>
         </div>
-        <button class="btn-reset" id="resetBtn" onclick="sendResetEmail()">
-            <i class="fas fa-paper-plane"></i> إرسال رابط الاسترداد
-        </button>
-    </div>
-</div>
-
-<!-- ══ MAIN CARD ══ -->
-<div class="page-body">
-    <div class="login-card">
-
-        <!-- ══ STEP 1: الإيميل ══ -->
-        <div id="authSection">
-
-            <!-- مؤشر الخطوات -->
-            <div class="steps-row">
-                <div class="step-dot active" id="stepDot1">1</div>
-                <div class="step-line" id="stepLine1"></div>
-                <div class="step-dot" id="stepDot2">2</div>
-                <div class="step-line" id="stepLine2"></div>
-                <div class="step-dot" id="stepDot3">✓</div>
-            </div>
-
-            <div class="card-head">
-                <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
-                <div class="card-title" id="formTitle">دخول المنصة</div>
-                <div class="card-sub" id="formSub">أدخل بريدك الإلكتروني لاستقبال رمز التحقق</div>
-            </div>
-
-            <div class="beta-bar"><strong>⚑ نسخة تجريبية:</strong> المنصة ما تزال في طور التطوير. شاركنا أي ملاحظة عبر قسم الاستفسارات.</div>
-
-            <div class="info-box">
-                <i class="fas fa-shield-halved"></i>
-                <span>تسجيل الدخول يتم عبر <strong>رمز تحقق مؤقت</strong> يُرسل إلى بريدك الإلكتروني. لا حاجة لكلمة مرور!</span>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- حقول التسجيل الإضافية -->
-            <div id="regFields" class="hidden">
-                <div class="field">
-                    <label>الاسم الكامل <span style="color:#ee5a6f">*</span></label>
-                    <div class="field-wrap">
-                        <input type="text" id="fullName" placeholder="أدخل اسمك الكامل">
-                        <i class="fas fa-user field-icon"></i>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>الاسم المستعار (اللقب)</label>
-                    <div class="field-wrap">
-                        <input type="text" id="nick" placeholder="اسمك داخل المنصة">
-                        <i class="fas fa-id-badge field-icon"></i>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>الصف الدراسي <span style="color:#ee5a6f">*</span></label>
-                    <div class="field-wrap">
-                        <select id="grade">
-                            <option value="" disabled selected>اختر الصف</option>
-                            <option value="1">الصف الأول</option>
-                            <option value="2">الصف الثاني</option>
-                            <option value="3">الصف الثالث</option>
-                            <option value="4">الصف الرابع</option>
-                            <option value="5">الصف الخامس</option>
-                            <option value="6">الصف السادس</option>
-                            <option value="7">الصف السابع</option>
-                            <option value="8">الصف الثامن</option>
-                            <option value="9">الصف التاسع</option>
-                            <option value="10">الصف العاشر</option>
-                            <option value="11">الصف الحادي عشر</option>
-                            <option value="12">الصف الثاني عشر (توجيهي)</option>
-                        </select>
-                        <i class="fas fa-school field-icon"></i>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>الدور</label>
-                    <div class="field-wrap">
-                        <select id="role">
-                            <option value="student" selected>طالب</option>
-                            <option value="teacher">معلم</option>
-                        </select>
-                        <i class="fas fa-chalkboard-teacher field-icon"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- حقل الإيميل -->
+        <div class="modal-body">
             <div class="field">
-                <label>البريد الإلكتروني <span style="color:#ee5a6f">*</span></label>
+                <label>البريد الإلكتروني</label>
                 <div class="field-wrap">
-                    <input type="email" id="email" placeholder="example@email.com">
+                    <input type="email" id="resetEmail" placeholder="example@school.com">
                     <i class="fas fa-envelope field-icon"></i>
                 </div>
             </div>
-
-            <!-- نسيت كلمة المرور — مخفي في وضع التسجيل -->
-            <div id="forgotRow" style="text-align:left;margin-top:-6px;margin-bottom:14px;">
-                <span class="toggle-link" style="font-size:0.82rem;" onclick="openForgotModal()">
-                    <i class="fas fa-key" style="font-size:0.75rem;margin-left:4px;"></i> نسيت كلمة المرور؟
-                </span>
-            </div>
-
-            <button class="btn-main" id="submitBtn">
-                <i class="fas fa-paper-plane" style="margin-left:8px;"></i>إرسال رمز التحقق
-            </button>
-
-            <div class="toggle-row">
-                <span id="toggleAuth" class="toggle-link">ليس لديك حساب؟ انضم إلينا</span>
-            </div>
-        </div>
-
-        <!-- ══ STEP 2: رمز OTP ══ -->
-        <div id="otpSection">
-            <!-- مؤشر الخطوات -->
-            <div class="steps-row">
-                <div class="step-dot done" id="otpStepDot1">✓</div>
-                <div class="step-line done" id="otpStepLine1"></div>
-                <div class="step-dot active" id="otpStepDot2">2</div>
-                <div class="step-line" id="otpStepLine2"></div>
-                <div class="step-dot" id="otpStepDot3">3</div>
-            </div>
-
-            <div style="text-align:center;margin-bottom:20px;">
-                <div class="otp-icon"><i class="fas fa-shield-halved"></i></div>
-                <div class="otp-title">أدخل رمز التحقق</div>
-                <div class="otp-sub">
-                    أرسلنا رمزاً مكوّناً من 6 أرقام إلى<br>
-                    <span class="otp-email" id="otpEmailDisplay"></span>
-                    الرمز صالح لمدة 10 دقائق فقط
-                </div>
-            </div>
-
-            <div class="otp-boxes" id="otpBoxesContainer">
-                <input class="otp-box" id="otp0" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code">
-                <input class="otp-box" id="otp1" type="text" inputmode="numeric" maxlength="1">
-                <input class="otp-box" id="otp2" type="text" inputmode="numeric" maxlength="1">
-                <input class="otp-box" id="otp3" type="text" inputmode="numeric" maxlength="1">
-                <input class="otp-box" id="otp4" type="text" inputmode="numeric" maxlength="1">
-                <input class="otp-box" id="otp5" type="text" inputmode="numeric" maxlength="1">
-            </div>
-
-            <div class="otp-timer">الرمز ينتهي خلال <span id="otpCountdown">10:00</span></div>
-
-            <button class="btn-main" id="otpVerifyBtn">
-                <i class="fas fa-check-circle" style="margin-left:8px;"></i>تحقق من الرمز
-            </button>
-            <button class="btn-resend" id="otpResendBtn" disabled>
-                <span id="otpResendText">لم يصلك الرمز؟ أعد الإرسال (60ث)</span>
-            </button>
-            <button class="back-link" id="otpBackBtn">
-                <i class="fas fa-arrow-right"></i> تغيير البريد الإلكتروني
+            <button onclick="sendResetEmail()" style="background:#ee5a6f;color:white;padding:12px;border:none;border-radius:12px;width:100%;cursor:pointer;font-weight:700;font-family:inherit;font-size:1rem;">
+                <i class="fas fa-paper-plane"></i> إرسال رابط الاسترداد
             </button>
         </div>
-
     </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════ -->
+<!-- مودال إنشاء حساب الكادر -->
+<div class="modal-overlay" id="registerStaffModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <button class="modal-close" onclick="closeRegisterModal()"><i class="fas fa-times"></i></button>
+            <i class="fas fa-user-plus" style="font-size:2rem;color:white;margin-bottom:8px;display:block;"></i>
+            <h2>تسجيل كادر جديد</h2>
+        </div>
+        <div class="modal-body" id="registerModalBody">
+            <div class="register-badge">
+                <i class="fas fa-key"></i>
+                <span>⚠️ يجب إدخال كود تفعيل صالح من مساعد المدير أو المدير</span>
+            </div>
+            <div class="fields-row">
+                <div class="register-field">
+                    <label>الاسم الأول *</label>
+                    <div class="field-wrap">
+                        <input type="text" id="regFirstName" placeholder="محمد">
+                        <i class="fas fa-user field-icon"></i>
+                    </div>
+                </div>
+                <div class="register-field">
+                    <label>اسم العائلة *</label>
+                    <div class="field-wrap">
+                        <input type="text" id="regLastName" placeholder="الأحمد">
+                        <i class="fas fa-user field-icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="register-field">
+                <label>البريد الإلكتروني *</label>
+                <div class="field-wrap">
+                    <input type="email" id="regEmail" placeholder="example@school.com">
+                    <i class="fas fa-envelope field-icon"></i>
+                </div>
+            </div>
+            <div class="register-field">
+                <label>الدور الوظيفي *</label>
+                <div class="field-wrap">
+                    <select id="regRole">
+                        <option value="" disabled selected>— اختر دورك —</option>
+                        <option value="teacher">📚 أستاذ / معلم</option>
+                        <option value="vice_principal">⭐ مساعد مدير</option>
+                        <option value="principal">👑 مدير المدرسة</option>
+                    </select>
+                    <i class="fas fa-briefcase field-icon"></i>
+                </div>
+            </div>
+            <div class="register-field">
+                <label>كود التفعيل *</label>
+                <div class="field-wrap">
+                    <input type="text" id="regActivationCode" placeholder="أدخل الكود المقدم">
+                    <i class="fas fa-qrcode field-icon"></i>
+                </div>
+            </div>
+            <div class="register-field">
+                <label>كلمة المرور *</label>
+                <div class="field-wrap">
+                    <input type="password" id="regPassword" placeholder="8 أحرف على الأقل" oninput="checkPassStrength(this.value)">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button class="toggle-pass" type="button" onclick="togglePassModal('regPassword','regEyeIcon')">
+                        <i class="fas fa-eye" id="regEyeIcon"></i>
+                    </button>
+                </div>
+                <div class="pass-strength">
+                    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                    <span class="strength-text" id="strengthText">أدخل كلمة المرور</span>
+                </div>
+            </div>
+            <div class="register-field">
+                <label>تأكيد كلمة المرور *</label>
+                <div class="field-wrap">
+                    <input type="password" id="regPasswordConfirm" placeholder="أعد إدخال كلمة المرور">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button class="toggle-pass" type="button" onclick="togglePassModal('regPasswordConfirm','regEyeIcon2')">
+                        <i class="fas fa-eye" id="regEyeIcon2"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="btn-register-modal" id="registerModalBtn" onclick="registerStaffWithCode()">
+                <i class="fas fa-check-circle"></i> إنشاء الحساب
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="login-card">
+        <div class="login-tabs">
+            <button class="tab-btn active" id="staffTabBtn" onclick="switchTab('staff')"><i class="fas fa-chalkboard-teacher"></i> الكادر</button>
+            <button class="tab-btn" id="studentTabBtn" onclick="switchTab('student')"><i class="fas fa-user-graduate"></i> الطالب</button>
+            <div class="tab-indicator" id="tabIndicator"></div>
+        </div>
+
+        <div class="tab-content active" id="staffTab">
+            <div class="card-head">
+                <div class="card-icon staff-icon"><i class="fas fa-user-shield"></i></div>
+                <div class="card-title">دخول الكادر</div>
+                <div class="card-sub">للمدراء والأساتذة والإدارة</div>
+            </div>
+            <div class="beta-bar"><strong>⚙️ نظام متكامل:</strong> يتم تفعيل الحسابات عبر أكواد التفعيل من مساعد المدير أو المدير.</div>
+            <div class="field">
+                <label>البريد الإلكتروني</label>
+                <div class="field-wrap">
+                    <input type="email" id="staffEmail" placeholder="example@school.com">
+                    <i class="fas fa-envelope field-icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <label>كلمة المرور</label>
+                <div class="field-wrap">
+                    <input type="password" id="staffPassword" placeholder="كلمة المرور">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button class="toggle-pass" type="button" onclick="togglePassStaff()"><i class="fas fa-eye" id="staffEyeIcon"></i></button>
+                </div>
+            </div>
+            <div class="forgot-row"><span onclick="openForgotModal()"><i class="fas fa-key"></i> نسيت كلمة المرور؟</span></div>
+            <button class="btn-main btn-staff" id="staffLoginBtn" onclick="staffLogin()"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+            <div class="switch-link">ليس لديك حساب؟ <a onclick="openRegisterModal()">أنشئ حساباً جديداً (كادر)</a></div>
+        </div>
+
+        <div class="tab-content" id="studentTab">
+            <div class="card-head">
+                <div class="card-icon student-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="card-title">دخول الطالب</div>
+                <div class="card-sub">أدخل كود التفعيل وكلمة المرور</div>
+            </div>
+            <div class="student-badge"><i class="fas fa-info-circle"></i><span>كود التفعيل يصدر من المدرسة، لا يمكن إنشاء حساب طالب بنفسك.</span></div>
+            <div class="field">
+                <label>كود التفعيل</label>
+                <div class="field-wrap">
+                    <input type="text" id="studentNumber" placeholder="مثال: 2026-003">
+                    <i class="fas fa-id-card field-icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <label>كلمة المرور</label>
+                <div class="field-wrap">
+                    <input type="password" id="studentPassword" placeholder="كلمة المرور">
+                    <i class="fas fa-lock field-icon"></i>
+                    <button class="toggle-pass" type="button" onclick="togglePassStudent()"><i class="fas fa-eye" id="studentEyeIcon"></i></button>
+                </div>
+            </div>
+            <button class="btn-main btn-student" id="studentLoginBtn" onclick="studentLogin()"><i class="fas fa-sign-in-alt"></i> دخول</button>
+        </div>
+    </div>
+</div>
+
 <script type="module">
-// ══════════════════════════════════════
-// 1. IMPORTS — استيراد Firebase و EmailJS
-// ══════════════════════════════════════
-import { initializeApp }
-    from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import {
-    getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    sendEmailVerification,
-    sendPasswordResetEmail,
-    signOut
+    getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    sendPasswordResetEmail, sendEmailVerification, signOut, updateProfile
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-
 import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    deleteDoc,
-    serverTimestamp
+    getFirestore, doc, getDoc, setDoc, collection, query,
+    where, getDocs, serverTimestamp, updateDoc
 } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-import emailjs
-    from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/+esm';
-
-// ══════════════════════════════════════
-// 2. EMAILJS CONFIG — ضع مفاتيحك هنا
-// ══════════════════════════════════════
-// 🔑 استبدل هذه القيم بمفاتيحك من emailjs.com
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';    // ← من Account → Public Key
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';    // ← من Email Services
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';   // ← من Email Templates
-
-emailjs.init(EMAILJS_PUBLIC_KEY);
-
-// ══════════════════════════════════════
-// 3. FIREBASE CONFIG — ضع إعدادات مشروعك هنا
-// ══════════════════════════════════════
-// 🔑 استبدل هذه القيم بإعدادات مشروعك من Firebase Console
-const app = initializeApp({
-    apiKey:            "YOUR_API_KEY",
-    authDomain:        "YOUR_PROJECT.firebaseapp.com",
-    projectId:         "YOUR_PROJECT_ID",
-    storageBucket:     "YOUR_PROJECT.firebasestorage.app",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId:             "YOUR_APP_ID"
-});
-
+const firebaseConfig = {
+    apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+    authDomain: "eliteacademy-37bfc.firebaseapp.com",
+    projectId: "eliteacademy-37bfc",
+    storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+    messagingSenderId: "203080953628",
+    appId: "1:203080953628:web:69efebccc336b79f0554d9"
+};
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// ══════════════════════════════════════
-// 4. DOM REFERENCES — مراجع العناصر
-// ══════════════════════════════════════
-const emailInput    = document.getElementById('email');
-const submitBtn     = document.getElementById('submitBtn');
-const formTitle     = document.getElementById('formTitle');
-const formSub       = document.getElementById('formSub');
-const toggleAuth    = document.getElementById('toggleAuth');
-const regFields     = document.getElementById('regFields');
-const authSection   = document.getElementById('authSection');
-const otpSection    = document.getElementById('otpSection');
-const otpVerifyBtn  = document.getElementById('otpVerifyBtn');
-const otpResendBtn  = document.getElementById('otpResendBtn');
-const otpResendText = document.getElementById('otpResendText');
-const otpBackBtn    = document.getElementById('otpBackBtn');
-const forgotRow     = document.getElementById('forgotRow');
+/* ─── Toast ─── */
+function snShowToast(msg) {
+    const t = document.getElementById('snToast'), m = document.getElementById('snToastMsg');
+    if (t && m) { m.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
+}
+window.snShowToast = snShowToast;
 
-// ══════════════════════════════════════
-// 5. STATE — متغيرات الحالة
-// ══════════════════════════════════════
-let isRegister       = false;   // هل وضع التسجيل؟
-let pendingEmail     = null;    // الإيميل المنتظر التحقق
-let pendingUserData  = null;    // بيانات التسجيل (اسم، صف، إلخ)
-let currentOtpMode   = null;    // 'register' أو 'login'
-let resendInterval   = null;    // مؤقت إعادة الإرسال
-let countdownInterval = null;   // مؤقت العدّ التنازلي
+/* ─── Drawer ─── */
+window.snClose  = () => { document.getElementById('snDrawer')?.classList.remove('show'); document.getElementById('snOverlay')?.classList.remove('show'); document.getElementById('snBurger')?.classList.remove('open'); };
+window.snOpen   = () => { document.getElementById('snDrawer')?.classList.add('show'); document.getElementById('snOverlay')?.classList.add('show'); document.getElementById('snBurger')?.classList.add('open'); };
+window.snToggle = () => { document.getElementById('snDrawer')?.classList.contains('show') ? snClose() : snOpen(); };
+window.handleLogout = async () => { try { await signOut(auth); } catch (e) {} localStorage.clear(); window.location.href = 'login.html'; };
 
-// ══════════════════════════════════════
-// 6. HELPER: رسائل أخطاء Firebase
-// ══════════════════════════════════════
-function firebaseErrMsg(code) {
-    const msgs = {
-        'auth/user-not-found':        'البريد الإلكتروني غير مسجّل',
-        'auth/wrong-password':        'كلمة المرور غير صحيحة',
-        'auth/invalid-credential':    'البريد أو كلمة المرور غير صحيحة',
-        'auth/invalid-email':         'صيغة البريد الإلكتروني غير صحيحة',
-        'auth/email-already-in-use':  'هذا البريد مسجّل مسبقاً',
-        'auth/weak-password':         'كلمة المرور ضعيفة',
-        'auth/too-many-requests':     'تم حظر الدخول مؤقتاً، حاول لاحقاً',
-        'auth/network-request-failed':'تعذّر الاتصال، تحقق من الإنترنت',
-        'auth/user-disabled':         'هذا الحساب معطّل',
-    };
-    return msgs[code] || 'حدث خطأ غير متوقع';
+/* ─── مؤشر قوة كلمة المرور ─── */
+window.checkPassStrength = function(val) {
+    const fill = document.getElementById('strengthFill');
+    const text = document.getElementById('strengthText');
+    if (!fill || !text) return;
+    if (!val) { fill.className='strength-fill'; text.className='strength-text'; text.textContent='أدخل كلمة المرور'; return; }
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    if (score <= 1)      { fill.className='strength-fill weak';   text.className='strength-text weak';   text.textContent='ضعيفة'; }
+    else if (score <= 2) { fill.className='strength-fill medium'; text.className='strength-text medium'; text.textContent='متوسطة'; }
+    else                 { fill.className='strength-fill strong'; text.className='strength-text strong'; text.textContent='قوية ✓'; }
+};
+
+/* ─── التحقق من كود التفعيل ─── */
+async function validateActivationCode(code, targetRole) {
+    try {
+        const codesRef = collection(db, 'activationCodes');
+        const q = query(codesRef, where('code', '==', code));
+        const snap = await getDocs(q);
+
+        if (snap.empty) return { valid: false, reason: 'الكود غير موجود في النظام' };
+
+        const codeDoc = snap.docs[0];
+        const codeData = codeDoc.data();
+
+        if (codeData.used === true) return { valid: false, reason: 'الكود مستخدم مسبقاً', doc: codeDoc };
+
+        if (codeData.expiresAt) {
+            const exp = codeData.expiresAt.toDate ? codeData.expiresAt.toDate() : new Date(codeData.expiresAt);
+            if (exp < new Date()) return { valid: false, reason: 'انتهت صلاحية الكود', doc: codeDoc };
+        }
+
+        const allowedRole = codeData.allowedRole;
+        if (allowedRole === 'principal' && targetRole === 'principal') return { valid: true, doc: codeDoc };
+        if (allowedRole === 'vice_principal' && (targetRole === 'vice_principal' || targetRole === 'teacher')) return { valid: true, doc: codeDoc };
+        if (allowedRole === 'teacher' && targetRole === 'teacher') return { valid: true, doc: codeDoc };
+        if (allowedRole === targetRole) return { valid: true, doc: codeDoc };
+
+        const names = { teacher: 'معلم', vice_principal: 'مساعد مدير', principal: 'مدير' };
+        return { valid: false, reason: `الكود مخصص لـ ${names[allowedRole]||allowedRole} وليس لـ ${names[targetRole]||targetRole}`, doc: codeDoc };
+    } catch (err) {
+        return { valid: false, reason: 'حدث خطأ في التحقق من الكود' };
+    }
 }
 
-// ══════════════════════════════════════
-// 7. NAVBAR SCROLL
-// ══════════════════════════════════════
-window.addEventListener('scroll', () => {
-    document.getElementById('topBar')
-        .classList.toggle('scrolled', window.scrollY > 30);
-});
+/* ─── تسجيل كادر جديد ─── */
+window.registerStaffWithCode = async function () {
+    const firstName      = document.getElementById('regFirstName').value.trim();
+    const lastName       = document.getElementById('regLastName').value.trim();
+    const email          = document.getElementById('regEmail').value.trim();
+    const role           = document.getElementById('regRole').value;
+    const activationCode = document.getElementById('regActivationCode').value.trim();
+    const password       = document.getElementById('regPassword').value;
+    const confirm        = document.getElementById('regPasswordConfirm').value;
+    const btn            = document.getElementById('registerModalBtn');
 
-// ══════════════════════════════════════
-// 8. TOGGLE: دخول ↔ تسجيل
-// ══════════════════════════════════════
-toggleAuth.addEventListener('click', () => {
-    isRegister = !isRegister;
+    if (!firstName || !lastName)                        { snShowToast('⚠️ يرجى إدخال الاسم الكامل'); return; }
+    if (!email)                                         { snShowToast('⚠️ يرجى إدخال البريد الإلكتروني'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))    { snShowToast('⚠️ بريد إلكتروني غير صالح'); return; }
+    if (!role)                                          { snShowToast('⚠️ يرجى اختيار الدور الوظيفي'); return; }
+    if (!activationCode)                                { snShowToast('⚠️ يرجى إدخال كود التفعيل'); return; }
+    if (password.length < 8)                            { snShowToast('⚠️ كلمة المرور 8 أحرف على الأقل'); return; }
+    if (password !== confirm)                           { snShowToast('⚠️ كلمتا المرور غير متطابقتين'); return; }
 
-    // إظهار/إخفاء حقول التسجيل
-    regFields.classList.toggle('hidden', !isRegister);
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> جاري التحقق من الكود...';
 
-    // إظهار/إخفاء زر نسيت كلمة المرور
-    forgotRow.style.display = isRegister ? 'none' : 'block';
-
-    // تحديث النصوص
-    formTitle.innerText  = isRegister ? 'إنشاء حساب جديد'                : 'دخول المنصة';
-    formSub.innerText    = isRegister ? 'أنشئ حسابك وانضم إلى SITEJ'    : 'أدخل بريدك الإلكتروني لاستقبال رمز التحقق';
-    submitBtn.innerHTML  = isRegister
-        ? '<i class="fas fa-user-plus" style="margin-left:8px;"></i>إنشاء الحساب وإرسال رمز التحقق'
-        : '<i class="fas fa-paper-plane" style="margin-left:8px;"></i>إرسال رمز التحقق';
-    toggleAuth.innerText = isRegister ? 'لديك حساب؟ سجّل الدخول' : 'ليس لديك حساب؟ انضم إلينا';
-
-    // مسح الإيميل
-    emailInput.value = '';
-    emailInput.focus();
-});
-
-// ══════════════════════════════════════
-// 9. OTP BOXES LOGIC — منطق صناديق الرمز
-// ══════════════════════════════════════
-document.querySelectorAll('.otp-box').forEach((box, i) => {
-
-    // عند الكتابة
-    box.addEventListener('input', () => {
-        // نقبل أرقام فقط
-        box.value = box.value.replace(/\D/g, '').slice(-1);
-        box.classList.toggle('filled', !!box.value);
-        // انتقل للصندوق التالي تلقائياً
-        if (box.value && i < 5) {
-            document.getElementById('otp' + (i + 1)).focus();
+    try {
+        const result = await validateActivationCode(activationCode, role);
+        if (!result.valid) {
+            snShowToast(`❌ ${result.reason}`);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> إنشاء الحساب';
+            return;
         }
-        // إذا اكتمل الرمز تلقائياً → ابدأ التحقق
-        if (i === 5 && box.value) verifyOtp();
-    });
 
-    // مسح الصندوق السابق بـ Backspace
-    box.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !box.value && i > 0) {
-            document.getElementById('otp' + (i - 1)).focus();
-        }
-    });
+        btn.innerHTML = '<span class="spinner"></span> جاري إنشاء الحساب...';
 
-    // دعم اللصق للرمز كاملاً
-    box.addEventListener('paste', (e) => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData)
-            .getData('text').replace(/\D/g, '').slice(0, 6);
-        text.split('').forEach((c, j) => {
-            const el = document.getElementById('otp' + j);
-            if (el) { el.value = c; el.classList.add('filled'); }
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid  = cred.user.uid;
+
+        await updateProfile(cred.user, { displayName: firstName + ' ' + lastName });
+        try { await sendEmailVerification(cred.user); } catch (e) {}
+
+        await setDoc(doc(db, 'users', uid), {
+            firstName, lastName,
+            fullName: firstName + ' ' + lastName,
+            email, role,
+            status: 'active',
+            emailVerified: false,
+            createdAt: serverTimestamp(),
+            uid,
+            activatedByCode: activationCode
         });
-        if (text.length === 6) verifyOtp();
-    });
-});
 
-// الحصول على قيمة الرمز المُدخل
-function getOtpValue() {
-    return [0,1,2,3,4,5].map(i => document.getElementById('otp' + i).value).join('');
-}
+        await updateDoc(result.doc.ref, { used: true, usedBy: uid, usedAt: serverTimestamp() });
+        await signOut(auth);
 
-// مسح صناديق الرمز
-function clearOtpBoxes(withError = false) {
-    [0,1,2,3,4,5].forEach(i => {
-        const el = document.getElementById('otp' + i);
-        el.value = '';
-        el.classList.remove('filled', 'error');
-        if (withError) {
-            el.classList.add('error');
-            // أزل الكلاس بعد الأنيميشن
-            setTimeout(() => el.classList.remove('error'), 600);
-        }
-    });
-    document.getElementById('otp0').focus();
-}
+        const roleLabel = { teacher: 'معلم', vice_principal: 'مساعد مدير', principal: 'مدير' }[role] || role;
+        document.getElementById('registerModalBody').innerHTML = `
+            <div class="success-state">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3>🎉 تم إنشاء الحساب بنجاح!</h3>
+                <p>تم تفعيل حسابك كـ <strong>${roleLabel}</strong>.</p>
+                <p style="color:var(--accent-blue);">يمكنك الآن تسجيل الدخول بالبريد وكلمة المرور.</p>
+                <button class="btn-register-modal" onclick="closeRegisterModal(); switchTab('staff');" style="margin-top:20px;">
+                    <i class="fas fa-sign-in-alt"></i> الذهاب لتسجيل الدخول
+                </button>
+            </div>`;
+        snShowToast('🎉 تم إنشاء الحساب بنجاح');
 
-// ══════════════════════════════════════
-// 10. SHOW OTP SCREEN — إظهار شاشة OTP
-// ══════════════════════════════════════
-function showOtpSection(email, mode) {
-    currentOtpMode = mode;
-
-    // أخفِ فورم الدخول/التسجيل
-    authSection.style.display = 'none';
-
-    // أظهر شاشة OTP
-    otpSection.classList.add('visible');
-    otpSection.style.display = 'block';
-
-    // اعرض الإيميل
-    document.getElementById('otpEmailDisplay').textContent = email;
-
-    // نظّف الصناديق وركّز الأول
-    clearOtpBoxes();
-
-    // ابدأ مؤقت إعادة الإرسال (60 ثانية)
-    startResendCooldown();
-
-    // ابدأ العدّ التنازلي (10 دقائق)
-    startCountdown(10 * 60);
-}
-
-// ══════════════════════════════════════
-// 11. COUNTDOWN TIMER — العدّ التنازلي
-// ══════════════════════════════════════
-function startCountdown(seconds) {
-    clearInterval(countdownInterval);
-    const el = document.getElementById('otpCountdown');
-    let remaining = seconds;
-
-    function update() {
-        const m = Math.floor(remaining / 60).toString().padStart(2, '0');
-        const s = (remaining % 60).toString().padStart(2, '0');
-        el.textContent = m + ':' + s;
-
-        // لون أحمر عند أقل من دقيقة
-        if (remaining <= 60) el.classList.add('expired');
-        else el.classList.remove('expired');
-
-        if (remaining <= 0) {
-            clearInterval(countdownInterval);
-            el.textContent = '00:00';
-            snShowToast('⏰ انتهى وقت الرمز! اطلب رمزاً جديداً');
-        }
-        remaining--;
+    } catch (err) {
+        const msgs = {
+            'auth/email-already-in-use': 'البريد الإلكتروني مسجل مسبقاً',
+            'auth/weak-password':        'كلمة المرور ضعيفة جداً',
+            'auth/invalid-email':        'بريد إلكتروني غير صالح',
+            'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت'
+        };
+        snShowToast('⚠️ ' + (msgs[err.code] || 'حدث خطأ، حاول مرة أخرى'));
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> إنشاء الحساب';
     }
+};
 
-    update();
-    countdownInterval = setInterval(update, 1000);
-}
+/* ─── تسجيل دخول الكادر ─── */
+window.staffLogin = async function () {
+    const email    = document.getElementById('staffEmail').value.trim();
+    const password = document.getElementById('staffPassword').value;
+    if (!email || !password) { snShowToast('⚠️ أدخل البريد وكلمة المرور'); return; }
 
-// ══════════════════════════════════════
-// 12. RESEND COOLDOWN — مؤقت إعادة الإرسال
-// ══════════════════════════════════════
-function startResendCooldown() {
-    clearInterval(resendInterval);
-    otpResendBtn.disabled = true;
-    let sec = 60;
-    otpResendText.textContent = `لم يصلك الرمز؟ أعد الإرسال (${sec}ث)`;
-
-    resendInterval = setInterval(() => {
-        sec--;
-        if (sec <= 0) {
-            clearInterval(resendInterval);
-            otpResendBtn.disabled = false;
-            otpResendText.textContent = 'لم يصلك الرمز؟ أعد الإرسال';
-        } else {
-            otpResendText.textContent = `لم يصلك الرمز؟ أعد الإرسال (${sec}ث)`;
-        }
-    }, 1000);
-}
-
-// زر إعادة الإرسال
-otpResendBtn.addEventListener('click', async () => {
-    otpResendBtn.disabled = true;
-    otpResendText.textContent = '⏳ جارٍ الإرسال...';
-    try {
-        await sendOtp(pendingEmail, currentOtpMode, true); // true = إعادة إرسال
-        snShowToast('📨 تم إرسال رمز جديد!');
-        clearOtpBoxes();
-        startResendCooldown();
-        startCountdown(10 * 60);
-    } catch(e) {
-        snShowToast('❌ تعذّر الإرسال، حاول لاحقاً');
-        startResendCooldown();
-    }
-});
-
-// زر الرجوع
-otpBackBtn.addEventListener('click', () => {
-    clearInterval(resendInterval);
-    clearInterval(countdownInterval);
-    otpSection.style.display = 'none';
-    otpSection.classList.remove('visible');
-    authSection.style.display = 'block';
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = isRegister
-        ? '<i class="fas fa-user-plus" style="margin-left:8px;"></i>إنشاء الحساب وإرسال رمز التحقق'
-        : '<i class="fas fa-paper-plane" style="margin-left:8px;"></i>إرسال رمز التحقق';
-});
-
-// ══════════════════════════════════════
-// 13. SEND OTP — إرسال رمز التحقق
-//
-// الخطوات:
-// أ) توليد رمز عشوائي 6 أرقام
-// ب) حفظه في Firestore مع وقت انتهاء الصلاحية
-// ج) إرساله عبر EmailJS
-// ══════════════════════════════════════
-async function sendOtp(email, mode, isResend = false) {
-    // أ) توليد رمز عشوائي بين 100000 و 999999
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // ب) وقت انتهاء الصلاحية = الآن + 10 دقائق (بالمللي ثانية)
-    const expiresAt = Date.now() + 10 * 60 * 1000;
-
-    // ج) حفظ الرمز في Firestore
-    // المسار: otps → {email} → { code, expiresAt, mode }
-    await setDoc(doc(db, 'otps', email), {
-        code,        // الرمز السري
-        expiresAt,   // وقت انتهاء الصلاحية
-        mode         // 'register' أو 'login'
-    });
-
-    // د) إرسال الإيميل عبر EmailJS
-    // المتغيرات يجب أن تطابق أسماء المتغيرات في Template
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email: email,  // إلى هذا الإيميل
-        otp:      code,   // الرمز
-        code:     code    // نسخة ثانية (للـ Template)
-    });
-
-    // هـ) إظهار شاشة OTP (فقط عند الإرسال الأول)
-    if (!isResend) showOtpSection(email, mode);
-}
-
-// ══════════════════════════════════════
-// 14. VERIFY OTP — التحقق من الرمز
-//
-// الخطوات:
-// أ) جلب الرمز من Firestore
-// ب) التحقق من عدم انتهاء الصلاحية
-// ج) مقارنة الرمز المُدخل بالمحفوظ
-// د) حذف الرمز من Firestore
-// هـ) إكمال التسجيل أو الدخول
-// ══════════════════════════════════════
-async function verifyOtp() {
-    const code = getOtpValue();
-    if (code.length < 6) {
-        snShowToast('⚠️ أدخل الرمز كاملاً (6 أرقام)');
-        return;
-    }
-
-    otpVerifyBtn.disabled = true;
-    otpVerifyBtn.innerHTML = '⏳ جارٍ التحقق...';
+    const btn = document.getElementById('staffLoginBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> جاري التحقق...';
 
     try {
-        // أ) جلب الرمز من Firestore
-        const snap = await getDoc(doc(db, 'otps', pendingEmail));
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const snap = await getDoc(doc(db, 'users', cred.user.uid));
 
         if (!snap.exists()) {
-            throw { msg: 'الرمز غير موجود، اطلب رمزاً جديداً' };
+            await signOut(auth);
+            snShowToast('⚠️ لم يتم العثور على بيانات المستخدم');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+            return;
         }
 
         const data = snap.data();
 
-        // ب) التحقق من الصلاحية
-        if (Date.now() > data.expiresAt) {
-            throw { msg: 'انتهت صلاحية الرمز، اطلب رمزاً جديداً' };
+        if (data.status && data.status !== 'active') {
+            await signOut(auth);
+            snShowToast('⏳ الحساب غير مفعل، تواصل مع الإدارة');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+            return;
         }
 
-        // ج) مقارنة الرمز
-        if (data.code !== code) {
-            throw { msg: 'الرمز غير صحيح، تحقق من بريدك' };
-        }
+        /* ─── حفظ بيانات المستخدم ─── */
+        localStorage.setItem('userRole', data.role);
+        localStorage.setItem('userName', data.fullName || data.firstName || '');
+        localStorage.setItem('userUid', cred.user.uid);
 
-        // د) حذف الرمز من Firestore (استخدام مرة واحدة فقط)
-        await deleteDoc(doc(db, 'otps', pendingEmail));
+        snShowToast(`✅ مرحباً ${data.firstName || ''}`);
 
-        // هـ) إكمال العملية حسب الوضع
-        if (currentOtpMode === 'register') {
-            await completeRegistration();
-        } else {
-            await completeLogin();
-        }
+        /* ─── التوجيه حسب الدور — كلهم يروحون index.html ─── */
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
 
-    } catch(err) {
-        snShowToast('⚠️ ' + (err.msg || firebaseErrMsg(err.code)));
-        clearOtpBoxes(true); // true = إظهار أنيميشن الخطأ
-        otpVerifyBtn.disabled = false;
-        otpVerifyBtn.innerHTML = '<i class="fas fa-check-circle" style="margin-left:8px;"></i>تحقق من الرمز';
+    } catch (err) {
+        snShowToast('⚠️ البريد الإلكتروني أو كلمة المرور غير صحيحة');
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
     }
-}
-
-otpVerifyBtn.addEventListener('click', verifyOtp);
-
-// ══════════════════════════════════════
-// 15. COMPLETE REGISTRATION — إكمال التسجيل
-//
-// الخطوات:
-// أ) إنشاء حساب Firebase Auth
-// ب) حفظ بيانات المستخدم في Firestore
-// ج) إرسال إيميل تحقق (اختياري)
-// ══════════════════════════════════════
-async function completeRegistration() {
-    // أ) إنشاء الحساب في Firebase Auth
-    // Firebase تتطلب باسوورد — سنولّد واحداً عشوائياً قوياً
-    // المستخدم لن يحتاجه لأننا نستخدم OTP للدخول
-    const randomPass = Math.random().toString(36).slice(-12) + '!A1';
-    const res = await createUserWithEmailAndPassword(auth, pendingEmail, randomPass);
-
-    // ✅ السطر المهم: حفظ الباسوورد العشوائي عشان نستخدمه عند الدخول لاحقاً
-    await setDoc(doc(db, 'userPasswords', pendingEmail), { pass: randomPass });
-
-    // ب) حفظ البيانات في Firestore
-    // المسار: users → {uid} → { بيانات المستخدم }
-    await setDoc(doc(db, 'users', res.user.uid), {
-        fullName:  pendingUserData.name,
-        nick:      pendingUserData.nick || pendingUserData.name,
-        grade:     pendingUserData.grade,
-        role:      pendingUserData.role,
-        email:     pendingEmail,
-        joinDate:  serverTimestamp()  // وقت التسجيل من سيرفر Firebase
-    });
-
-    // ج) إرسال إيميل تحقق (اختياري - لا يتوقف عليه الدخول)
-    await sendEmailVerification(res.user).catch(() => {});
-
-    // نظّف المؤقتات
-    clearInterval(countdownInterval);
-
-    // إشعار النجاح والتحويل
-    snShowToast('🎉 تم إنشاء الحساب بنجاح! مرحباً بك في SITEJ');
-    setTimeout(() => { window.location.href = 'index.html'; }, 1500);
-}
-
-// ══════════════════════════════════════
-// 16. COMPLETE LOGIN — إكمال الدخول
-//
-// المشكلة: Firebase تتطلب باسوورد للدخول
-// الحل: نخزّن الباسوورد العشوائي في Firestore
-//       ونجلبه عند الدخول
-// ══════════════════════════════════════
-async function completeLogin() {
-    // جلب بيانات المستخدم من Firestore لإيجاد الباسوورد
-    // هنا نستخدم signInWithCustomToken أو نتحقق بطريقة أخرى
-    // الطريقة المبسّطة: نثق بـ OTP ونستخدم signInWithEmailAndPassword
-    // مع الباسوورد المخزّن عند التسجيل
-
-    // ملاحظة: لأن Firebase لا تدعم الدخول بدون باسوورد مباشرة في SDK العميل،
-    // أفضل طريقة هي استخدام Firebase Custom Auth Tokens من خلال سيرفر backend.
-    // الحل المبسّط هنا: نحفظ الباسوورد العشوائي في Firestore عند التسجيل
-    // ونجلبه عند الدخول.
-
-    // جلب باسوورد المستخدم من Firestore
-    // المسار: userPasswords → {email} (collection مخصص للباسوورد المشفّر)
-    const passSnap = await getDoc(doc(db, 'userPasswords', pendingEmail));
-
-    if (!passSnap.exists()) {
-        throw { msg: 'الحساب غير موجود، يرجى التسجيل أولاً' };
-    }
-
-    const storedPass = passSnap.data().pass;
-    await signInWithEmailAndPassword(auth, pendingEmail, storedPass);
-
-    clearInterval(countdownInterval);
-    snShowToast('✅ مرحباً بك! تم تسجيل الدخول بنجاح');
-    setTimeout(() => { window.location.href = 'index.html'; }, 1000);
-}
-
-// ══════════════════════════════════════
-// 17. SUBMIT BUTTON — زر الإرسال الرئيسي
-// ══════════════════════════════════════
-submitBtn.addEventListener('click', async () => {
-    const email = emailInput.value.trim();
-
-    // تحقق من الإيميل
-    if (!email) {
-        snShowToast('⚠️ يرجى إدخال البريد الإلكتروني');
-        emailInput.focus();
-        return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        snShowToast('⚠️ صيغة البريد الإلكتروني غير صحيحة');
-        emailInput.focus();
-        return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '⏳ جارٍ المعالجة...';
-
-    try {
-        if (isRegister) {
-            // ══ وضع التسجيل ══
-            const name  = document.getElementById('fullName').value.trim();
-            const nick  = document.getElementById('nick').value.trim();
-            const grade = document.getElementById('grade').value;
-            const role  = document.getElementById('role').value;
-
-            if (!name || !grade) {
-                snShowToast('⚠️ يرجى ملء الاسم والصف الدراسي');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-user-plus" style="margin-left:8px;"></i>إنشاء الحساب وإرسال رمز التحقق';
-                return;
-            }
-
-            // حفظ البيانات مؤقتاً
-            pendingUserData = { name, nick, grade, role };
-            pendingEmail = email;
-
-            await sendOtp(email, 'register');
-
-        } else {
-            // ══ وضع الدخول ══
-            pendingEmail = email;
-            await sendOtp(email, 'login');
-        }
-
-    } catch(err) {
-        snShowToast('⚠️ ' + (err.message || firebaseErrMsg(err.code)));
-    }
-
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = isRegister
-        ? '<i class="fas fa-user-plus" style="margin-left:8px;"></i>إنشاء الحساب وإرسال رمز التحقق'
-        : '<i class="fas fa-paper-plane" style="margin-left:8px;"></i>إرسال رمز التحقق';
-});
-
-// الضغط على Enter
-emailInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') submitBtn.click();
-});
-
-// ══════════════════════════════════════
-// 18. FORGOT PASSWORD MODAL
-// ══════════════════════════════════════
-window.openForgotModal = function() {
-    const modal = document.getElementById('forgotModal');
-    modal.classList.add('show');
-    // انسخ الإيميل إن وُجد
-    const resetEmailInput = document.getElementById('resetEmail');
-    if (emailInput.value) resetEmailInput.value = emailInput.value;
-    setTimeout(() => resetEmailInput.focus(), 400);
 };
 
-window.closeForgotModal = function() {
-    document.getElementById('forgotModal').classList.remove('show');
-};
+/* ─── تسجيل دخول الطالب ─── */
+window.studentLogin = async function () {
+    const activationCode = document.getElementById('studentNumber').value.trim();
+    const password       = document.getElementById('studentPassword').value;
+    if (!activationCode || !password) { snShowToast('⚠️ كود التفعيل وكلمة المرور مطلوبة'); return; }
 
-// إغلاق المودال عند الضغط على الخلفية
-document.getElementById('forgotModal').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) closeForgotModal();
-});
-
-window.sendResetEmail = async function() {
-    const resetEmail = document.getElementById('resetEmail').value.trim();
-    const resetBtn   = document.getElementById('resetBtn');
-
-    if (!resetEmail) {
-        snShowToast('⚠️ أدخل بريدك الإلكتروني');
-        return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(resetEmail)) {
-        snShowToast('⚠️ صيغة البريد غير صحيحة');
-        return;
-    }
-
-    resetBtn.disabled = true;
-    resetBtn.innerHTML = '⏳ جارٍ الإرسال...';
+    const btn = document.getElementById('studentLoginBtn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> جاري التحقق...';
 
     try {
-        // Firebase ترسل إيميل إعادة تعيين كلمة المرور
-        await sendPasswordResetEmail(auth, resetEmail);
-        snShowToast('📨 تم إرسال رابط إعادة التعيين! تحقق من بريدك');
+        const q    = query(collection(db, 'students'), where('activationCode', '==', activationCode));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+            snShowToast('⚠️ كود التفعيل غير موجود');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+            return;
+        }
+
+        const docData = snap.docs[0].data();
+
+        if (docData.status === 'banned') {
+            snShowToast('🚫 هذا الحساب محظور، تواصل مع الإدارة');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+            return;
+        }
+
+        if (docData.password !== password) {
+            snShowToast('⚠️ كلمة مرور خاطئة');
+            btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+            return;
+        }
+
+        localStorage.setItem('studentName', docData.name);
+        localStorage.setItem('studentId', snap.docs[0].id);
+        localStorage.setItem('userRole', 'student');
+        snShowToast(`✅ مرحباً ${docData.name}`);
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+
+    } catch (e) {
+        snShowToast('⚠️ خطأ في الاتصال، حاول مرة أخرى');
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول';
+    }
+};
+
+/* ─── مودالات ─── */
+window.openRegisterModal  = () => document.getElementById('registerStaffModal').classList.add('show');
+window.closeRegisterModal = () => document.getElementById('registerStaffModal').classList.remove('show');
+window.openForgotModal    = () => document.getElementById('forgotModal').classList.add('show');
+window.closeForgotModal   = () => document.getElementById('forgotModal').classList.remove('show');
+
+window.sendResetEmail = async function () {
+    const email = document.getElementById('resetEmail').value.trim();
+    if (!email) { snShowToast('⚠️ أدخل بريدك الإلكتروني'); return; }
+    try {
+        await sendPasswordResetEmail(auth, email);
+        snShowToast('✅ تم إرسال رابط الاستعادة إلى بريدك الإلكتروني');
         closeForgotModal();
-    } catch(err) {
-        snShowToast('⚠️ ' + firebaseErrMsg(err.code));
+    } catch (e) {
+        snShowToast('⚠️ ' + (e.code === 'auth/user-not-found' ? 'البريد الإلكتروني غير مسجل' : 'حدث خطأ، حاول مرة أخرى'));
     }
-
-    resetBtn.disabled = false;
-    resetBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال رابط الاسترداد';
 };
 
-// ══════════════════════════════════════
-// 19. TOAST — إشعارات
-// ══════════════════════════════════════
-function snShowToast(msg) {
-    const t = document.getElementById('snToast');
-    const m = document.getElementById('snToastMsg');
-    if (!t || !m) return;
-    m.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(t._to);
-    t._to = setTimeout(() => t.classList.remove('show'), 3500);
-}
-window.snShowToast = snShowToast;
+/* ─── التبويب والباسورد ─── */
+window.switchTab = function (tab) {
+    ['staff','student'].forEach(t => { document.getElementById(t+'Tab').classList.remove('active'); document.getElementById(t+'TabBtn').classList.remove('active'); });
+    document.getElementById(tab+'Tab').classList.add('active');
+    document.getElementById(tab+'TabBtn').classList.add('active');
+    document.getElementById('tabIndicator').style.right = (tab === 'staff') ? '0%' : '50%';
+};
+window.togglePassStaff   = () => { const i = document.getElementById('staffPassword'),   ic = document.getElementById('staffEyeIcon');   const p = i.type==='password'; i.type = p?'text':'password'; ic.className = p?'fas fa-eye-slash':'fas fa-eye'; };
+window.togglePassStudent = () => { const i = document.getElementById('studentPassword'), ic = document.getElementById('studentEyeIcon'); const p = i.type==='password'; i.type = p?'text':'password'; ic.className = p?'fas fa-eye-slash':'fas fa-eye'; };
+window.togglePassModal   = (id, iconId) => { const i = document.getElementById(id), ic = document.getElementById(iconId); const p = i.type==='password'; i.type = p?'text':'password'; ic.className = p?'fas fa-eye-slash':'fas fa-eye'; };
 
-// ══════════════════════════════════════
-// 20. SIDEBAR
-// ══════════════════════════════════════
-window.snClose  = () => {
-    document.getElementById('snDrawer')?.classList.remove('show');
-    document.getElementById('snOverlay')?.classList.remove('show');
-    document.getElementById('snBurger')?.classList.remove('open');
-};
-window.snOpen   = () => {
-    document.getElementById('snDrawer')?.classList.add('show');
-    document.getElementById('snOverlay')?.classList.add('show');
-    document.getElementById('snBurger')?.classList.add('open');
-};
-window.snToggle = () => {
-    document.getElementById('snDrawer')?.classList.contains('show')
-        ? snClose() : snOpen();
-};
-
-window.handleLogout = () => {
-    signOut(auth).finally(() => { window.location.href = 'login.html'; });
-};
-
+/* ─── أحداث عامة ─── */
+window.addEventListener('scroll', () => { document.getElementById('topBar').classList.toggle('scrolled', window.scrollY > 30); });
+document.getElementById('staffPassword')?.addEventListener('keydown',   e => { if (e.key === 'Enter') staffLogin(); });
+document.getElementById('studentPassword')?.addEventListener('keydown', e => { if (e.key === 'Enter') studentLogin(); });
+document.querySelectorAll('.modal-overlay').forEach(o => { o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show'); }); });
 </script>
 </body>
 </html>
