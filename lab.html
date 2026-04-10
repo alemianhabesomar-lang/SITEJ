@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SITEJ | منصة المشاريع الذكية - المتكاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #3a7bc8;
+            --primary-light: #6fa8ec;
+            --secondary: #20c997;
+            --danger: #ee5a6f;
+            --warning: #f59e0b;
+            --dark: #1a2942;
+            --dark-light: #2d4263;
+            --gray: #6b7c93;
+            --gray-light: #e8eef5;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.12);
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            min-height: 100vh;
+            background: linear-gradient(180deg, #152035 0%, #1e3d6e 100%);
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -4px 0 30px rgba(26,41,66,0.3);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+        }
+        .sidebar-logo { padding: 24px 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
+        .slogo-ico { width: 44px; height: 44px; background: linear-gradient(135deg, #4a90e2, #87ceeb); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .slogo-ico i { font-size: 1.3rem; color: #fff; }
+        .slogo-name { font-size: 1.3rem; font-weight: 900; color: #fff; letter-spacing: 2px; }
+        .slogo-role { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+        .sidebar-nav { flex: 1; padding: 14px 10px; }
+        .nav-sec-title { font-size: 0.67rem; color: rgba(255,255,255,0.35); letter-spacing: 2px; padding: 8px 12px; font-weight: 700; }
+        .nav-item { display: flex; align-items: center; gap: 11px; padding: 12px 14px; border-radius: 12px; cursor: pointer; transition: all 0.3s; color: rgba(255,255,255,0.72); font-weight: 600; font-size: 0.9rem; width: 100%; text-align: right; background: none; border: none; font-family: inherit; margin-bottom: 2px; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); color: #fff; transform: translateX(-3px); }
+        .nav-item.active { background: linear-gradient(135deg, rgba(74,144,226,0.38), rgba(135,206,235,0.12)); color: #fff; }
+        .nav-item i { width: 20px; font-size: 0.95rem; color: #6fa8ec; }
+        .sidebar-footer { padding: 16px 14px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .user-info { display: flex; align-items: center; gap: 11px; padding: 11px; background: rgba(255,255,255,0.07); border-radius: 12px; margin-bottom: 10px; }
+        .user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #4a90e2, #87ceeb); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; }
+        .uname { color: #fff; font-weight: 700; font-size: 0.88rem; }
+        .urole { color: rgba(255,255,255,0.45); font-size: 0.73rem; }
+
+        .main { margin-right: var(--sidebar-width); min-height: 100vh; width: calc(100% - var(--sidebar-width)); }
+        .topbar { background: var(--white); border-bottom: 2px solid rgba(74,144,226,0.2); padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+        .topbar-title { font-size: 1.3rem; font-weight: 900; color: var(--dark); display: flex; align-items: center; gap: 9px; }
+        .topbar-title i { color: var(--primary); }
+        .topbar-date { font-size: 0.82rem; color: var(--gray); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.3rem; color: var(--dark); cursor: pointer; }
+        .content { padding: 24px 28px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeUp 0.35s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        .welcome-card { background: linear-gradient(135deg, #152035 0%, #1e3d6e 100%); border-radius: 18px; padding: 24px 28px; color: #fff; margin-bottom: 20px; position: relative; overflow: hidden; }
+        .welcome-title { font-size: 1.35rem; font-weight: 900; margin-bottom: 5px; }
+        .welcome-sub { color: rgba(255,255,255,0.6); font-size: 0.88rem; }
+
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .stat-card { background: var(--white); border: 1.5px solid rgba(74,144,226,0.2); border-radius: 16px; padding: 18px 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 3px 16px rgba(26,41,66,0.08); transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-ico { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 13px; display: flex; align-items: center; justify-content: center; }
+        .stat-ico i { font-size: 1.3rem; color: #fff; }
+        .stat-num { font-size: 1.7rem; font-weight: 900; color: var(--dark); line-height: 1; }
+        .stat-lbl { font-size: 0.78rem; color: var(--gray); font-weight: 600; margin-top: 3px; }
+
+        .progress-section { background: var(--white); border-radius: 18px; padding: 20px; margin-bottom: 20px; border: 1.5px solid rgba(74,144,226,0.2); }
+        .progress-bar-container { background: var(--gray-light); border-radius: 30px; height: 10px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; height: 100%; border-radius: 30px; transition: width 0.5s; }
+
+        .filters-section { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; }
+        .grade-tabs, .type-filters { display: flex; gap: 10px; flex-wrap: wrap; }
+        .grade-tab, .type-btn { padding: 8px 20px; background: var(--white); border: 1.5px solid rgba(74,144,226,0.2); border-radius: 40px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .grade-tab:hover, .grade-tab.active, .type-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-2px); }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .project-card { background: var(--white); border: 1.5px solid rgba(74,144,226,0.2); border-radius: 18px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 8px 28px rgba(74,144,226,0.12); }
+        .project-cover { height: 120px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .project-cover i { font-size: 2.5rem; color: rgba(255,255,255,0.9); }
+        .difficulty-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; color: white; }
+        .project-content { padding: 18px; }
+        .project-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+        .project-desc { font-size: 0.8rem; color: var(--gray); margin-bottom: 10px; }
+        .project-meta { display: flex; gap: 12px; font-size: 0.7rem; color: var(--gray); margin-bottom: 12px; }
+        .project-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(74,144,226,0.15); }
+        .btn-start { background: var(--primary); color: #fff; border: none; padding: 6px 16px; border-radius: 30px; font-weight: 600; font-size: 0.75rem; cursor: pointer; transition: all 0.3s; }
+        .btn-start:hover { transform: scale(1.05); background: var(--primary-dark); }
+
+        .graph-area { background: #f8f9fa; border-radius: 14px; padding: 15px; margin-top: 10px; direction: ltr; }
+        .graph-equation { font-family: monospace; font-size: 1.1rem; text-align: center; margin-bottom: 10px; }
+        canvas { max-width: 100%; height: auto; }
+
+        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .achievement-card { padding: 12px; border-radius: 14px; text-align: center; transition: all 0.3s; opacity: 0.5; background: var(--gray-light); }
+        .achievement-card.unlocked { opacity: 1; background: linear-gradient(135deg, #ffd166, #f4a261); color: #fff; }
+        .achievement-card i { font-size: 1.5rem; margin-bottom: 5px; display: block; }
+
+        .leaderboard-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid rgba(74,144,226,0.15); }
+        .rank { font-weight: 800; width: 35px; }
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(26,41,66,0.85); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-container { background: var(--white); border-radius: 24px; width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; transform: scale(0.95); transition: transform 0.3s; }
+        .modal-overlay.show .modal-container { transform: scale(1); }
+        .modal-header { padding: 20px 25px; border-bottom: 1px solid rgba(74,144,226,0.2); display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { width: 35px; height: 35px; background: rgba(238,90,111,0.1); border: none; border-radius: 50%; cursor: pointer; transition: all 0.3s; }
+        .modal-close:hover { background: var(--danger); color: #fff; transform: rotate(90deg); }
+        .modal-body { padding: 25px; }
+        .code-editor { background: #1a1a2e; border-radius: 14px; padding: 15px; color: #ffd166; font-family: monospace; min-height: 180px; white-space: pre-wrap; }
+        .recording-indicator { display: flex; align-items: center; gap: 10px; background: rgba(238,90,111,0.1); padding: 8px 16px; border-radius: 50px; width: fit-content; margin-bottom: 15px; }
+        .recording-dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; transform: scale(1.2); } }
+
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: #fff; padding: 12px 28px; border-radius: 50px; z-index: 1100; transition: 0.3s; opacity: 0; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(110%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-right: 0 !important; width: 100% !important; }
+            .menu-toggle { display: flex; }
+            .content { padding: 18px 14px; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <div class="slogo-ico"><i class="fas fa-graduation-cap"></i></div>
+        <div><div class="slogo-name">SITEJ</div><div class="slogo-role">منصة المشاريع</div></div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-sec-title">القائمة الرئيسية</div>
+        <button class="nav-item active" id="nav-projects" onclick="goPage('projects',this)"><i class="fas fa-project-diagram"></i> المشاريع</button>
+        <button class="nav-item" id="nav-math" onclick="goPage('math',this)"><i class="fas fa-chart-line"></i> رياضيات</button>
+        <button class="nav-item" id="nav-achievements" onclick="goPage('achievements',this)"><i class="fas fa-medal"></i> إنجازاتي</button>
+        <button class="nav-item" id="nav-leaderboard" onclick="goPage('leaderboard',this)"><i class="fas fa-trophy"></i> المتصدرين</button>
+        <button class="nav-item" id="nav-stats" onclick="goPage('stats',this)"><i class="fas fa-chart-simple"></i> إحصائياتي</button>
+        <div class="nav-sec-title" style="margin-top:10px;">الموقع</div>
+        <button class="nav-item" onclick="window.open('index.html','_blank')"><i class="fas fa-home"></i> الرئيسية</button>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <div class="user-avatar" id="avatarLetter">أ</div>
+            <div><div class="uname" id="userName">أحمد</div><div class="urole" id="userLevel">طالب</div></div>
+        </div>
+    </div>
+</aside>
+
+<div class="main" id="mainApp">
+    <div class="topbar">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <div class="topbar-title" id="topTitle"><i class="fas fa-project-diagram"></i> المشاريع</div>
+        </div>
+        <div class="topbar-date" id="topDate"></div>
+    </div>
+
+    <div class="content">
+        <div class="page active" id="page-projects">
+            <div class="welcome-card">
+                <div class="welcome-title" id="welcomeMsg">مرحباً بك أحمد 👋</div>
+                <div class="welcome-sub">أكثر من 35 مشروعاً في البرمجة والعلوم والرياضيات والإبداع | تتغير أسبوعياً</div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-project-diagram"></i></div><div><div class="stat-num" id="totalProjects">0</div><div class="stat-lbl">هذا الأسبوع</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-check-circle"></i></div><div><div class="stat-num" id="completedProjects">0</div><div class="stat-lbl">مشاريع مكتملة</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-star"></i></div><div><div class="stat-num" id="totalPoints">0</div><div class="stat-lbl">إجمالي النقاط</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-chart-line"></i></div><div><div class="stat-num" id="levelBadge">مبتدئ</div><div class="stat-lbl">المستوى</div></div></div>
+            </div>
+            <div class="progress-section">
+                <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-chart-line"></i> التقدم نحو المستوى التالي</span><span id="nextLevelProgress">0/100 نقطة</span></div>
+                <div class="progress-bar-container"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+            </div>
+            <div class="filters-section">
+                <div class="grade-tabs" id="gradeTabs">
+                    <button class="grade-tab" data-grade="7">📖 السابع</button>
+                    <button class="grade-tab" data-grade="8">📚 الثامن</button>
+                    <button class="grade-tab" data-grade="9">📘 التاسع</button>
+                    <button class="grade-tab" data-grade="10">📙 العاشر</button>
+                    <button class="grade-tab" data-grade="11">🎓 الحادي عشر</button>
+                    <button class="grade-tab active" data-grade="12">🏆 الثاني عشر</button>
+                </div>
+                <div class="type-filters" id="typeFilter">
+                    <button class="type-btn active" data-type="all">الكل</button>
+                    <button class="type-btn" data-type="programming">💻 برمجي</button>
+                    <button class="type-btn" data-type="science">🧪 علمي</button>
+                    <button class="type-btn" data-type="creative">💡 إبداعي</button>
+                </div>
+            </div>
+            <div class="projects-grid" id="projectsGrid"></div>
+        </div>
+
+        <div class="page" id="page-math">
+            <div class="welcome-card">
+                <div class="welcome-title">📐 الرياضيات والرسوم البيانية</div>
+                <div class="welcome-sub">ارسم الدوال، حل المعادلات، واستكشف الرياضيات</div>
+            </div>
+            <div class="progress-section">
+                <h3 style="margin-bottom:15px;"><i class="fas fa-chart-line"></i> رسم بياني تفاعلي</h3>
+                <div class="graph-area">
+                    <div class="graph-equation" id="graphEquation">f(x) = x²</div>
+                    <canvas id="functionChart" width="500" height="300" style="width:100%; height:auto; max-width:500px; margin:0 auto; display:block;"></canvas>
+                    <div style="display:flex; gap:8px; margin-top:15px; flex-wrap:wrap; justify-content:center;">
+                        <button class="btn-start" onclick="drawFunction('x^2')">x²</button>
+                        <button class="btn-start" onclick="drawFunction('x^3')">x³</button>
+                        <button class="btn-start" onclick="drawFunction('sin(x)')">sin(x)</button>
+                        <button class="btn-start" onclick="drawFunction('cos(x)')">cos(x)</button>
+                        <button class="btn-start" onclick="drawFunction('sqrt(x)')">√x</button>
+                        <button class="btn-start" onclick="drawFunction('log(x+1)')">log(x+1)</button>
+                        <button class="btn-start" onclick="drawFunction('1/x')">1/x</button>
+                        <button class="btn-start" onclick="drawFunction('tan(x)')">tan(x)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-section">
+                <h3 style="margin-bottom:15px;"><i class="fas fa-calculator"></i> مشاريع الرياضيات</h3>
+                <div class="projects-grid" id="mathProjectsGrid"></div>
+            </div>
+        </div>
+
+        <div class="page" id="page-achievements">
+            <div class="welcome-card">
+                <div class="welcome-title">🏅 إنجازاتي</div>
+                <div class="welcome-sub">الشارات التي حصلت عليها خلال رحلتك</div>
+            </div>
+            <div class="progress-section">
+                <div class="achievements-grid" id="achievementsGrid"></div>
+            </div>
+        </div>
+
+        <div class="page" id="page-leaderboard">
+            <div class="welcome-card">
+                <div class="welcome-title">🏆 لوحة المتصدرين</div>
+                <div class="welcome-sub">أفضل المتعلمين في المنصة</div>
+            </div>
+            <div class="progress-section">
+                <div class="leaderboard-list" id="leaderboardList"></div>
+            </div>
+        </div>
+
+        <div class="page" id="page-stats">
+            <div class="welcome-card">
+                <div class="welcome-title">📊 إحصائياتي التفصيلية</div>
+                <div class="welcome-sub">تعرف على تقدمك وإنجازاتك</div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-calendar"></i></div><div><div class="stat-num" id="statProjectsPerWeek">0</div><div class="stat-lbl">مشروع/أسبوع</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-fire"></i></div><div><div class="stat-num" id="statStreak">0</div><div class="stat-lbl">أيام متتالية</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-percent"></i></div><div><div class="stat-num" id="statCompletionRate">0%</div><div class="stat-lbl">نسبة الإنجاز</div></div></div>
+                <div class="stat-card"><div class="stat-ico"><i class="fas fa-chart-simple"></i></div><div><div class="stat-num" id="statRank">#1</div><div class="stat-lbl">ترتيبك</div></div></div>
+            </div>
+            <div class="progress-section">
+                <h3 style="margin-bottom:15px;"><i class="fas fa-chart-pie"></i> توزيع المشاريع حسب النوع</h3>
+                <div id="chartStats" style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+                    <div><span style="background:#4a90e2; display:inline-block; width:20px; height:20px; border-radius:50%;"></span> برمجي: <span id="progCount">0</span></div>
+                    <div><span style="background:#20c997; display:inline-block; width:20px; height:20px; border-radius:50%;"></span> علمي: <span id="sciCount">0</span></div>
+                    <div><span style="background:#f59e0b; display:inline-block; width:20px; height:20px; border-radius:50%;"></span> إبداعي: <span id="creCount">0</span></div>
+                    <div><span style="background:#8b5cf6; display:inline-block; width:20px; height:20px; border-radius:50%;"></span> رياضيات: <span id="mathCount">0</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="projectModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">📝 مشروع جديد</div>
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast">✅ تم الإجراء</div>
+
+<script>
+// ========== بيانات المستخدم ==========
+let userData = {
+    uid: null,
+    name: 'أحمد',
+    email: '',
+    grade: 12,
+    totalPoints: 0,
+    completedProjects: [],
+    wave: 1,
+    streak: 0,
+    lastProjectDate: null
+};
+
+// ========== 36 مشروعاً (أكثر من 30) ==========
+function getProjectsByGrade(grade, wave = 1) {
+    const allProjects = {
+        7: [
+            { id: `w${wave}_p1`, title: 'الآلة الحاسبة', desc: 'برمج آلة حاسبة تجمع وتطرح وتضرب', icon: 'fa-calculator', points: 15, duration: '30د', type: 'programming', difficulty: 'سهل' },
+            { id: `w${wave}_p2`, title: 'كثافة السوائل', desc: 'تجربة لقياس كثافة الماء والزيت', icon: 'fa-flask', points: 15, duration: '25د', type: 'science', difficulty: 'سهل' },
+            { id: `w${wave}_p3`, title: 'بطاقة تعريف', desc: 'صمم بطاقة تعريفية شخصية', icon: 'fa-id-card', points: 18, duration: '35د', type: 'creative', difficulty: 'سهل' },
+            { id: `w${wave}_p4`, title: 'الفرز السريع', desc: 'برنامج لفرز الأرقام تصاعدياً', icon: 'fa-sort', points: 18, duration: '35د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p5`, title: 'التمثيل الضوئي', desc: 'شرح عملية البناء الضوئي', icon: 'fa-leaf', points: 15, duration: '25د', type: 'science', difficulty: 'سهل' },
+            { id: `w${wave}_p6`, title: 'قصة مصورة', desc: 'أنشئ قصة قصيرة مصورة', icon: 'fa-book', points: 20, duration: '45د', type: 'creative', difficulty: 'متوسط' }
+        ],
+        8: [
+            { id: `w${wave}_p7`, title: 'لعبة التخمين', desc: 'لعبة تخمين الرقم العشوائي', icon: 'fa-gamepad', points: 18, duration: '40د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p8`, title: 'تفاعل الخل', desc: 'تجربة تفاعل الخل مع البيكنج صودا', icon: 'fa-flask', points: 16, duration: '30د', type: 'science', difficulty: 'سهل' },
+            { id: `w${wave}_p9`, title: 'قصة تفاعلية', desc: 'قصة بخيارات متعددة', icon: 'fa-book-open', points: 22, duration: '50د', type: 'creative', difficulty: 'متوسط' },
+            { id: `w${wave}_p10`, title: 'المؤقت الذكي', desc: 'برنامج مؤقت زمني', icon: 'fa-hourglass', points: 20, duration: '40د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p11`, title: 'المغناطيسية', desc: 'تجربة خطوط المجال المغناطيسي', icon: 'fa-magnet', points: 18, duration: '35د', type: 'science', difficulty: 'متوسط' },
+            { id: `w${wave}_p12`, title: 'لوحة إعلانات', desc: 'تصميم لوحة إعلانات رقمية', icon: 'fa-chalkboard', points: 20, duration: '45د', type: 'creative', difficulty: 'متوسط' }
+        ],
+        9: [
+            { id: `w${wave}_p13`, title: 'مدير المهام', desc: 'تطبيق لإدارة المهام', icon: 'fa-tasks', points: 22, duration: '55د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p14`, title: 'قانون أوم', desc: 'تجربة قانون أوم', icon: 'fa-bolt', points: 20, duration: '40د', type: 'science', difficulty: 'متوسط' },
+            { id: `w${wave}_p15`, title: 'لوحة تحكم', desc: 'لوحة تحكم بسيطة', icon: 'fa-chart-line', points: 25, duration: '55د', type: 'creative', difficulty: 'متوسط' },
+            { id: `w${wave}_p16`, title: 'الرسم بالبايثون', desc: 'رسم أشكال باستخدام turtle', icon: 'fa-chart-simple', points: 24, duration: '50د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p17`, title: 'التفاعلات الكيميائية', desc: 'تصنيف التفاعلات الكيميائية', icon: 'fa-flask', points: 22, duration: '45د', type: 'science', difficulty: 'متوسط' },
+            { id: `w${wave}_p18`, title: 'موقع شخصي', desc: 'صفحة ويب تعريفية بسيطة', icon: 'fa-code', points: 26, duration: '60د', type: 'creative', difficulty: 'متقدم' }
+        ],
+        10: [
+            { id: `w${wave}_p19`, title: 'موقع شخصي متقدم', desc: 'صفحة ويب متكاملة', icon: 'fa-code', points: 28, duration: '70د', type: 'programming', difficulty: 'متوسط' },
+            { id: `w${wave}_p20`, title: 'التوصيل الكهربائي', desc: 'مقارنة التوصيل على التوالي والتوازي', icon: 'fa-flask', points: 25, duration: '50د', type: 'science', difficulty: 'متوسط' },
+            { id: `w${wave}_p21`, title: 'ملصق إعلاني', desc: 'تصميم ملصق مدرسي', icon: 'fa-paintbrush', points: 24, duration: '45د', type: 'creative', difficulty: 'سهل' },
+            { id: `w${wave}_p22`, title: 'API بسيط', desc: 'استدعاء API وعرض بيانات', icon: 'fa-cloud', points: 32, duration: '75د', type: 'programming', difficulty: 'متقدم' },
+            { id: `w${wave}_p23`, title: 'الحموضة والقلوية', desc: 'قياس pH المواد المختلفة', icon: 'fa-flask', points: 26, duration: '50د', type: 'science', difficulty: 'متوسط' },
+            { id: `w${wave}_p24`, title: 'معرض صور', desc: 'معرض صور تفاعلي', icon: 'fa-image', points: 28, duration: '60د', type: 'creative', difficulty: 'متوسط' }
+        ],
+        11: [
+            { id: `w${wave}_p25`, title: 'تطبيق متقدم', desc: 'To-Do مع تخزين محلي', icon: 'fa-list-check', points: 32, duration: '90د', type: 'programming', difficulty: 'متقدم' },
+            { id: `w${wave}_p26`, title: 'التحليل الكهربائي', desc: 'تحليل الماء إلى هيدروجين وأكسجين', icon: 'fa-flask', points: 30, duration: '70د', type: 'science', difficulty: 'متقدم' },
+            { id: `w${wave}_p27`, title: 'مدونة شخصية', desc: 'مدونة بمقالتين', icon: 'fa-blog', points: 34, duration: '80د', type: 'creative', difficulty: 'متقدم' },
+            { id: `w${wave}_p28`, title: 'مشروع React', desc: 'تطبيق React بسيط', icon: 'fa-react', points: 38, duration: '100د', type: 'programming', difficulty: 'خبير' },
+            { id: `w${wave}_p29`, title: 'الطيف الكهرومغناطيسي', desc: 'دراسة الأطياف الضوئية', icon: 'fa-flask', points: 32, duration: '75د', type: 'science', difficulty: 'متقدم' },
+            { id: `w${wave}_p30`, title: 'تطبيق ويب', desc: 'تطبيق ويب كامل', icon: 'fa-globe', points: 36, duration: '90د', type: 'creative', difficulty: 'متقدم' }
+        ],
+        12: [
+            { id: `w${wave}_p31`, title: 'مشروع التخرج', desc: 'تطبيق ويب متكامل', icon: 'fa-rocket', points: 45, duration: 'أسبوع', type: 'programming', difficulty: 'خبير' },
+            { id: `w${wave}_p32`, title: 'بحث علمي', desc: 'بحث علمي متكامل', icon: 'fa-microscope', points: 42, duration: 'أسبوع', type: 'science', difficulty: 'خبير' },
+            { id: `w${wave}_p33`, title: 'خطة عمل', desc: 'خطة عمل لمشروع صغير', icon: 'fa-chart-line', points: 38, duration: '3 أيام', type: 'creative', difficulty: 'متقدم' },
+            { id: `w${wave}_p34`, title: 'تطبيق الهاتف', desc: 'تطبيق موبايل بسيط', icon: 'fa-mobile', points: 48, duration: 'أسبوع', type: 'programming', difficulty: 'خبير' },
+            { id: `w${wave}_p35`, title: 'الذكاء الاصطناعي', desc: 'نموذج تصنيف بسيط', icon: 'fa-brain', points: 50, duration: 'أسبوعين', type: 'programming', difficulty: 'خبير' },
+            { id: `w${wave}_p36`, title: 'النانوتكنولوجي', desc: 'بحث في تطبيقات النانو', icon: 'fa-microscope', points: 45, duration: 'أسبوع', type: 'science', difficulty: 'خبير' }
+        ]
+    };
+    return allProjects[grade] || allProjects[12];
+}
+
+// المشاريع الرياضية
+function getMathProjects(grade, wave = 1) {
+    return [
+        { id: `math_w${wave}_1`, title: 'الرسوم البيانية', desc: 'ارسم دوالاً رياضية مختلفة', icon: 'fa-chart-line', points: 20, duration: '35د', type: 'math', difficulty: 'متوسط' },
+        { id: `math_w${wave}_2`, title: 'حل المعادلات', desc: 'برنامج لحل المعادلات من الدرجة الثانية', icon: 'fa-square-root-alt', points: 22, duration: '40د', type: 'math', difficulty: 'متوسط' },
+        { id: `math_w${wave}_3`, title: 'المتتاليات', desc: 'حساب المتتاليات الحسابية والهندسية', icon: 'fa-chart-line', points: 24, duration: '45د', type: 'math', difficulty: 'متوسط' },
+        { id: `math_w${wave}_4`, title: 'الإحصاء', desc: 'حساب المتوسط والوسيط والمنوال', icon: 'fa-chart-simple', points: 22, duration: '40د', type: 'math', difficulty: 'متوسط' }
+    ];
+}
+
+// ========== تحميل وحفظ البيانات ==========
+function loadUserData() {
+    const saved = localStorage.getItem('userProjectsData');
+    if (saved) {
+        const data = JSON.parse(saved);
+        userData.totalPoints = data.totalPoints || 0;
+        userData.completedProjects = data.completedProjects || [];
+        userData.wave = data.wave || 1;
+        userData.streak = data.streak || 0;
+        userData.name = data.name || 'أحمد';
+    }
+    updateUI();
+}
+
+function saveUserData() {
+    localStorage.setItem('userProjectsData', JSON.stringify({
+        totalPoints: userData.totalPoints,
+        completedProjects: userData.completedProjects,
+        wave: userData.wave,
+        streak: userData.streak,
+        name: userData.name
+    }));
+}
+
+function updateUI() {
+    const projects = getProjectsByGrade(userData.grade);
+    document.getElementById('totalProjects').textContent = projects.length;
+    document.getElementById('completedProjects').textContent = userData.completedProjects.length;
+    document.getElementById('totalPoints').textContent = userData.totalPoints;
+    document.getElementById('userName').textContent = userData.name;
+    document.getElementById('avatarLetter').textContent = userData.name.charAt(0);
+    document.getElementById('welcomeMsg').innerHTML = `مرحباً بك ${userData.name} 👋`;
+    
+    let level = 'مبتدئ';
+    if (userData.totalPoints >= 800) level = 'أسطورة';
+    else if (userData.totalPoints >= 500) level = 'خبير';
+    else if (userData.totalPoints >= 300) level = 'محترف';
+    else if (userData.totalPoints >= 150) level = 'متقدم';
+    else if (userData.totalPoints >= 50) level = 'متعلم';
+    document.getElementById('levelBadge').textContent = level;
+    document.getElementById('userLevel').textContent = level;
+    
+    const nextLevelPoints = 100;
+    const pointsInLevel = userData.totalPoints % nextLevelPoints;
+    document.getElementById('nextLevelProgress').textContent = `${pointsInLevel}/${nextLevelPoints} نقطة`;
+    document.getElementById('progressFill').style.width = `${(pointsInLevel / nextLevelPoints) * 100}%`;
+}
+
+// ========== عرض المشاريع ==========
+let currentType = 'all';
+let currentGrade = 12;
+
+function renderProjects() {
+    const projects = getProjectsByGrade(currentGrade);
+    let filtered = projects.filter(p => currentType === 'all' || p.type === currentType);
+    const completed = userData.completedProjects;
+    
+    const grid = document.getElementById('projectsGrid');
+    if (!filtered.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px;">لا توجد مشاريع</div>';
+        return;
+    }
+    
+    grid.innerHTML = filtered.map(p => `
+        <div class="project-card" onclick="startProject('${p.id}', '${p.title}', '${p.type}', ${p.points})">
+            <div class="project-cover" style="background: linear-gradient(135deg, ${p.type === 'programming' ? '#4a90e2' : (p.type === 'science' ? '#20c997' : '#f59e0b')}, ${p.type === 'programming' ? '#6fa8ec' : (p.type === 'science' ? '#0d9e76' : '#fbbf24')});">
+                <i class="fas ${p.icon}"></i>
+                <span class="difficulty-badge">${p.difficulty}</span>
+            </div>
+            <div class="project-content">
+                <h3 class="project-title">${p.title}</h3>
+                <p class="project-desc">${p.desc}</p>
+                <div class="project-meta"><span><i class="fas fa-clock"></i> ${p.duration}</span><span><i class="fas fa-star"></i> ${p.points} نقطة</span></div>
+                <div class="project-footer">
+                    <span>${p.type === 'programming' ? '💻 برمجي' : (p.type === 'science' ? '🧪 علمي' : '💡 إبداعي')}</span>
+                    ${completed.includes(p.id) ? '<span style="color:var(--secondary);"><i class="fas fa-check-circle"></i> مكتمل</span>' : '<button class="btn-start" onclick="event.stopPropagation();startProject(\''+p.id+'\', \''+p.title+'\', \''+p.type+'\', '+p.points+')">ابدأ <i class="fas fa-arrow-left"></i></button>'}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderMathProjects() {
+    const projects = getMathProjects(currentGrade);
+    const completed = userData.completedProjects;
+    const grid = document.getElementById('mathProjectsGrid');
+    
+    grid.innerHTML = projects.map(p => `
+        <div class="project-card" onclick="startProject('${p.id}', '${p.title}', '${p.type}', ${p.points})">
+            <div class="project-cover" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                <i class="fas ${p.icon}"></i>
+                <span class="difficulty-badge">${p.difficulty}</span>
+            </div>
+            <div class="project-content">
+                <h3 class="project-title">${p.title}</h3>
+                <p class="project-desc">${p.desc}</p>
+                <div class="project-meta"><span><i class="fas fa-clock"></i> ${p.duration}</span><span><i class="fas fa-star"></i> ${p.points} نقطة</span></div>
+                <div class="project-footer">
+                    <span>📐 رياضيات</span>
+                    ${completed.includes(p.id) ? '<span style="color:var(--secondary);"><i class="fas fa-check-circle"></i> مكتمل</span>' : '<button class="btn-start" onclick="event.stopPropagation();startProject(\''+p.id+'\', \''+p.title+'\', \''+p.type+'\', '+p.points+')">ابدأ <i class="fas fa-arrow-left"></i></button>'}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ========== إنجازات ==========
+function renderAchievements() {
+    const completedCount = userData.completedProjects.length;
+    let progCount = 0, sciCount = 0, creCount = 0, mathCount = 0;
+    userData.completedProjects.forEach(id => {
+        for (let g of [7,8,9,10,11,12]) {
+            const proj = getProjectsByGrade(g).find(p => p.id === id);
+            if (proj) { if (proj.type === 'programming') progCount++; else if (proj.type === 'science') sciCount++; else if (proj.type === 'creative') creCount++; break; }
+        }
+        const mathProj = getMathProjects(12).find(p => p.id === id);
+        if (mathProj) mathCount++;
+    });
+    
+    const achievements = [
+        { name: 'المبتدئ', icon: '🌱', desc: 'أول مشروع', unlocked: completedCount >= 1 },
+        { name: 'المبرمج', icon: '💻', desc: '3 مشاريع برمجية', unlocked: progCount >= 3 },
+        { name: 'العالم', icon: '🔬', desc: '3 مشاريع علمية', unlocked: sciCount >= 3 },
+        { name: 'المبدع', icon: '🎨', desc: '3 مشاريع إبداعية', unlocked: creCount >= 3 },
+        { name: 'الرياضي', icon: '📐', desc: '3 مشاريع رياضيات', unlocked: mathCount >= 3 },
+        { name: 'المحترف', icon: '⭐', desc: '10 مشاريع', unlocked: completedCount >= 10 },
+        { name: 'الخبير', icon: '🏆', desc: '150 نقطة', unlocked: userData.totalPoints >= 150 },
+        { name: 'البطل', icon: '👑', desc: '300 نقطة', unlocked: userData.totalPoints >= 300 },
+        { name: 'الأسطورة', icon: '🔥', desc: '500 نقطة', unlocked: userData.totalPoints >= 500 }
+    ];
+    
+    document.getElementById('achievementsGrid').innerHTML = achievements.map(ach => `
+        <div class="achievement-card ${ach.unlocked ? 'unlocked' : ''}" style="${ach.unlocked ? 'background:linear-gradient(135deg,#ffd166,#f4a261);color:#fff;opacity:1' : 'opacity:0.5'}">
+            <div style="font-size:1.8rem;">${ach.icon}</div>
+            <h4>${ach.name}</h4>
+            <small>${ach.desc}</small>
+        </div>
+    `).join('');
+}
+
+function renderLeaderboard() {
+    const leaderboard = [
+        { name: userData.name, points: userData.totalPoints, rank: 1 },
+        { name: 'محمد أحمد', points: 245, rank: 2 },
+        { name: 'سارة خالد', points: 198, rank: 3 },
+        { name: 'عمر علي', points: 156, rank: 4 },
+        { name: 'نور هاني', points: 134, rank: 5 }
+    ].sort((a,b) => b.points - a.points);
+    
+    document.getElementById('leaderboardList').innerHTML = leaderboard.map((u, i) => `
+        <div class="leaderboard-item">
+            <span class="rank ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">#${i+1}</span>
+            <span><i class="fas fa-user-graduate"></i> ${u.name}</span>
+            <span><i class="fas fa-star"></i> ${u.points} نقطة</span>
+        </div>
+    `).join('');
+}
+
+function renderStats() {
+    let progCount = 0, sciCount = 0, creCount = 0, mathCount = 0;
+    userData.completedProjects.forEach(id => {
+        for (let g of [7,8,9,10,11,12]) {
+            const proj = getProjectsByGrade(g).find(p => p.id === id);
+            if (proj) { if (proj.type === 'programming') progCount++; else if (proj.type === 'science') sciCount++; else if (proj.type === 'creative') creCount++; break; }
+        }
+        const mathProj = getMathProjects(12).find(p => p.id === id);
+        if (mathProj) mathCount++;
+    });
+    document.getElementById('progCount').textContent = progCount;
+    document.getElementById('sciCount').textContent = sciCount;
+    document.getElementById('creCount').textContent = creCount;
+    document.getElementById('mathCount').textContent = mathCount;
+    
+    const total = userData.completedProjects.length;
+    const projectsTotal = getProjectsByGrade(userData.grade).length + getMathProjects(userData.grade).length;
+    document.getElementById('statCompletionRate').textContent = projectsTotal ? Math.round((total / projectsTotal) * 100) + '%' : '0%';
+    document.getElementById('statProjectsPerWeek').textContent = Math.floor(total / 4) || 0;
+    document.getElementById('statStreak').textContent = userData.streak || 0;
+    document.getElementById('statRank').textContent = '#1';
+}
+
+// ========== تسجيل الشاشة والمشروع ==========
+let currentProjectData = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordingStream = null;
+let recordingTimer = null;
+let recordingSeconds = 0;
+
+async function startRecording() {
+    try {
+        recordedChunks = [];
+        recordingStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        mediaRecorder = new MediaRecorder(recordingStream);
+        mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+        mediaRecorder.start(1000);
+        recordingSeconds = 0;
+        if (recordingTimer) clearInterval(recordingTimer);
+        recordingTimer = setInterval(() => {
+            recordingSeconds++;
+            const timeEl = document.getElementById('recordingTime');
+            if (timeEl) {
+                let mins = Math.floor(recordingSeconds / 60);
+                let secs = recordingSeconds % 60;
+                timeEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+        return true;
+    } catch (e) { showToast('⚠️ لا يمكن بدء التسجيل: ' + e.message); return false; }
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        clearInterval(recordingTimer);
+        if (recordingStream) recordingStream.getTracks().forEach(t => t.stop());
+    }
+}
+
+function runCode() {
+    const code = document.getElementById('codeEditor')?.innerText || '';
+    const outputDiv = document.getElementById('codeOutput');
+    outputDiv.style.display = 'block';
+    outputDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التنفيذ...';
+    setTimeout(() => {
+        try {
+            let output = '';
+            const originalLog = console.log;
+            console.log = (...args) => { output += args.join(' ') + '\n'; };
+            new Function(code)();
+            console.log = originalLog;
+            outputDiv.innerHTML = `<strong>📤 المخرجات:</strong>\n${output || '✅ تم التنفيذ بنجاح'}`;
+        } catch (e) {
+            outputDiv.innerHTML = `<strong style="color:#ff6b6b;">⚠️ خطأ:</strong>\n${e.message}`;
+        }
+    }, 100);
+}
+
+function startProject(projectId, projectTitle, projectType, points) {
+    if (userData.completedProjects.includes(projectId)) {
+        showToast(`⚠️ لقد قمت بتسليم هذا المشروع مسبقاً`);
+        return;
+    }
+    
+    currentProjectData = { id: projectId, title: projectTitle, type: projectType, points: points };
+    
+    startRecording().then(canRecord => {
+        if (!canRecord) return;
+        
+        document.getElementById('modalTitle').innerHTML = `<i class="fas fa-project-diagram"></i> ${projectTitle}`;
+        document.getElementById('modalBody').innerHTML = `
+            <div class="recording-indicator">
+                <div class="recording-dot"></div>
+                <span>🔴 تسجيل الشاشة نشط</span>
+                <span id="recordingTime" style="font-family:monospace;">00:00</span>
+            </div>
+            <p style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> يتم تسجيل شاشتك تلقائياً. نفذ مشروعك ثم اضغط تسليم.</p>
+            ${projectType === 'programming' ? `
+                <div class="code-editor" id="codeEditor" contenteditable="true">// اكتب كود ${projectTitle} هنا
+console.log("مرحباً في مشروع ${projectTitle}!");
+function myFunction() {
+    return "تم التنفيذ بنجاح!";
+}
+console.log(myFunction());</div>
+                <button class="btn-start" style="margin-top:10px; background:var(--secondary);" onclick="runCode()"><i class="fas fa-play"></i> تشغيل الكود</button>
+                <div id="codeOutput" class="code-editor" style="margin-top:10px; background:#1a1a2e; display:none;"></div>
+            ` : projectType === 'science' ? `
+                <textarea id="scienceResults" rows="5" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px;" placeholder="سجل نتائج تجربتك، ملاحظاتك، والاستنتاجات..."></textarea>
+                <input type="text" id="scienceLinks" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px; margin-top:10px;" placeholder="روابط إضافية (صور، فيديوهات مرجعية)">
+            ` : projectType === 'math' ? `
+                <div class="graph-area">
+                    <div class="graph-equation" id="mathEquation">f(x) = x²</div>
+                    <canvas id="mathChart" width="400" height="200" style="max-width:100%; height:auto;"></canvas>
+                    <button class="btn-start" style="margin-top:10px;" onclick="drawMathFunction('x^2')">ارسم x²</button>
+                </div>
+                <textarea id="mathResults" rows="5" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px; margin-top:10px;" placeholder="اشرح الحل أو الاستنتاج..."></textarea>
+            ` : `
+                <textarea id="explanation" rows="6" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px;" placeholder="اشرح فكرة مشروعك، كيف عملت، وما الذي تعلمته..."></textarea>
+                <input type="text" id="creativeLinks" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:12px; margin-top:10px;" placeholder="روابط إضافية (صور، نماذج)">
+            `}
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button class="btn-start" style="flex:1; background:var(--secondary);" onclick="submitProject()"><i class="fas fa-paper-plane"></i> تسليم المشروع</button>
+                <button class="btn-start" style="flex:0.5; background:var(--danger);" onclick="closeModal()">إلغاء</button>
+            </div>
+        `;
+        
+        if (projectType === 'math') {
+            setTimeout(() => drawMathFunction('x^2'), 100);
+        }
+        
+        document.getElementById('projectModal').classList.add('show');
+    });
+}
+
+function submitProject() {
+    if (!currentProjectData) return;
+    
+    let content = {};
+    if (currentProjectData.type === 'programming') {
+        content.code = document.getElementById('codeEditor')?.innerText || '';
+    } else if (currentProjectData.type === 'science') {
+        content.results = document.getElementById('scienceResults')?.value || '';
+        content.links = document.getElementById('scienceLinks')?.value || '';
+    } else if (currentProjectData.type === 'math') {
+        content.results = document.getElementById('mathResults')?.value || '';
+    } else {
+        content.explanation = document.getElementById('explanation')?.value || '';
+        content.links = document.getElementById('creativeLinks')?.value || '';
+    }
+    
+    stopRecording();
+    closeModal();
+    
+    if (!userData.completedProjects.includes(currentProjectData.id)) {
+        userData.completedProjects.push(currentProjectData.id);
+        userData.totalPoints += currentProjectData.points;
+        
+        const today = new Date().toDateString();
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        userData.streak = (userData.lastProjectDate === yesterday) ? userData.streak + 1 : 1;
+        userData.lastProjectDate = today;
+        
+        saveUserData();
+        updateUI();
+        renderProjects();
+        renderMathProjects();
+        renderAchievements();
+        renderStats();
+        showToast(`✅ تم تسليم "${currentProjectData.title}" بنجاح! +${currentProjectData.points} نقطة`);
+    }
+}
+
+function closeModal() {
+    document.getElementById('projectModal').classList.remove('show');
+    stopRecording();
+}
+
+// ========== الرسوم البيانية ==========
+let functionChart = null;
+
+function drawFunction(equation) {
+    const canvas = document.getElementById('functionChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const width = canvas.clientWidth || 500;
+    const height = canvas.clientHeight || 300;
+    canvas.width = width;
+    canvas.height = height;
+    
+    ctx.clearRect(0, 0, width, height);
+    ctx.beginPath();
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.moveTo(width/2, 0);
+    ctx.lineTo(width/2, height);
+    ctx.moveTo(0, height/2);
+    ctx.lineTo(width, height/2);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.strokeStyle = '#4a90e2';
+    ctx.lineWidth = 2;
+    let first = true;
+    for (let x = -5; x <= 5; x += 0.05) {
+        let y;
+        try {
+            if (equation === 'x^2') y = x * x;
+            else if (equation === 'x^3') y = x * x * x;
+            else if (equation === 'sin(x)') y = Math.sin(x);
+            else if (equation === 'cos(x)') y = Math.cos(x);
+            else if (equation === 'sqrt(x)') y = x >= 0 ? Math.sqrt(x) : NaN;
+            else if (equation === 'log(x+1)') y = x > -1 ? Math.log(x + 1) : NaN;
+            else if (equation === '1/x') y = x !== 0 ? 1/x : NaN;
+            else if (equation === 'tan(x)') y = Math.tan(x);
+            else y = x * x;
+        } catch(e) { continue; }
+        
+        if (isNaN(y) || !isFinite(y)) { first = true; continue; }
+        
+        const px = width/2 + x * (width/10);
+        const py = height/2 - y * (height/5);
+        
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+            if (first) { ctx.moveTo(px, py); first = false; }
+            else ctx.lineTo(px, py);
+        } else { first = true; }
+    }
+    ctx.stroke();
+    document.getElementById('graphEquation').textContent = `f(x) = ${equation}`;
+}
+
+function drawMathFunction(equation) {
+    const canvas = document.getElementById('mathChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const width = canvas.clientWidth || 400;
+    const height = 200;
+    canvas.width = width;
+    canvas.height = height;
+    
+    ctx.clearRect(0, 0, width, height);
+    ctx.beginPath();
+    ctx.strokeStyle = '#ccc';
+    ctx.moveTo(width/2, 0);
+    ctx.lineTo(width/2, height);
+    ctx.moveTo(0, height/2);
+    ctx.lineTo(width, height/2);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.strokeStyle = '#8b5cf6';
+    ctx.lineWidth = 2;
+    let first = true;
+    for (let x = -5; x <= 5; x += 0.05) {
+        let y;
+        if (equation === 'x^2') y = x * x;
+        else if (equation === 'x^3') y = x * x * x;
+        else if (equation === 'sin(x)') y = Math.sin(x);
+        else if (equation === 'cos(x)') y = Math.cos(x);
+        else y = x * x;
+        
+        const px = width/2 + x * (width/10);
+        const py = height/2 - y * (height/5);
+        
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+            if (first) { ctx.moveTo(px, py); first = false; }
+            else ctx.lineTo(px, py);
+        } else { first = true; }
+    }
+    ctx.stroke();
+    document.getElementById('mathEquation').textContent = `f(x) = ${equation}`;
+}
+
+// ========== ربط الأحداث ==========
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+
+function goPage(pageId, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    if(navEl) navEl.classList.add('active');
+    const titles = { projects:'المشاريع', math:'الرياضيات', achievements:'إنجازاتي', leaderboard:'المتصدرين', stats:'إحصائياتي' };
+    document.getElementById('topTitle').innerHTML = `<i class="fas ${pageId === 'projects' ? 'fa-project-diagram' : pageId === 'math' ? 'fa-chart-line' : pageId === 'achievements' ? 'fa-medal' : pageId === 'leaderboard' ? 'fa-trophy' : 'fa-chart-simple'}"></i> ${titles[pageId]}`;
+    if(pageId === 'math') setTimeout(() => drawFunction('x^2'), 100);
+    if(pageId === 'achievements') renderAchievements();
+    if(pageId === 'leaderboard') renderLeaderboard();
+    if(pageId === 'stats') renderStats();
+    toggleSidebar();
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+document.querySelectorAll('.grade-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.grade-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentGrade = parseInt(btn.dataset.grade);
+        renderProjects();
+        renderMathProjects();
+    });
+});
+document.querySelectorAll('.type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentType = btn.dataset.type;
+        renderProjects();
+    });
+});
+
+document.getElementById('topDate').textContent = new Date().toLocaleDateString('ar-SA', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// ========== تهيئة الصفحة (بدون شاشة تحميل) ==========
+loadUserData();
+renderProjects();
+renderMathProjects();
+renderAchievements();
+renderLeaderboard();
+renderStats();
+drawFunction('x^2');
+
+window.startProject = startProject;
+window.runCode = runCode;
+window.submitProject = submitProject;
+window.closeModal = closeModal;
+window.toggleSidebar = toggleSidebar;
+window.goPage = goPage;
+window.drawFunction = drawFunction;
+window.drawMathFunction = drawMathFunction;
+</script>
+</body>
+</html>
