@@ -4,20 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Blaster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --navy-dark: #1a2942;
+            --navy-lighter: #3d5a7f;
+            --accent-blue: #4a90e2;
+            --accent-light-blue: #6fa8ec;
+            --accent-sky: #87ceeb;
+            --gradient-blue-glow: linear-gradient(135deg, #4a90e2 0%, #6fa8ec 50%, #87ceeb 100%);
+            --gradient-navy-soft: linear-gradient(135deg, #1a2942 0%, #3d5a7f 50%, #b8c9dc 100%);
+            --border-blue: rgba(74, 144, 226, 0.3);
+            --shadow-blue: rgba(74, 144, 226, 0.25);
+            --text-navy: #0a1628;
+            --text-gray: #6b7c93;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: linear-gradient(to bottom, #0a0a12, #1a1a2e);
+            background: linear-gradient(180deg, #ffffff 0%, #e8eef5 25%, #b8c9dc 60%, #3d5a7f 85%, #1a2942 100%);
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Courier New', monospace;
+            font-family: 'Cairo', 'Courier New', monospace;
             overflow: hidden;
             user-select: none;
         }
@@ -26,96 +38,84 @@
             position: relative;
             width: 800px;
             height: 600px;
-            background: linear-gradient(to bottom, #000000, #0a0a1a);
-            border: 3px solid #d4af37;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 
-                        inset 0 0 50px rgba(65, 105, 225, 0.1);
-            border-radius: 5px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(232,238,245,0.97) 100%);
+            border: 2px solid var(--accent-blue);
+            box-shadow: 0 0 40px rgba(74,144,226,0.35), inset 0 0 40px rgba(74,144,226,0.05);
+            border-radius: 20px;
+            overflow: hidden;
         }
 
         #gameCanvas {
             display: block;
             width: 100%;
             height: 100%;
+            border-radius: 20px;
         }
 
         #ui {
             position: absolute;
             top: 15px;
             left: 15px;
-            color: #d4af37;
-            font-size: 18px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+            color: var(--navy-dark);
+            font-size: 15px;
+            font-weight: 700;
             z-index: 10;
-            background: rgba(0, 0, 10, 0.6);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            line-height: 1.6;
+            background: rgba(255,255,255,0.92);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border-blue);
+            line-height: 1.7;
             display: none;
+            box-shadow: 0 4px 16px var(--shadow-blue);
         }
 
-        #ui div {
-            margin: 3px 0;
-        }
+        #ui span { color: var(--accent-blue); font-weight: 800; }
 
         #menuButton {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: linear-gradient(to bottom, #d4af37, #b8941f);
-            color: #000;
-            border: 2px solid #f0c950;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-family: 'Courier New', monospace;
+            background: var(--gradient-blue-glow);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-family: 'Cairo', monospace;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 50px;
             transition: all 0.3s;
-            font-weight: bold;
+            font-weight: 700;
             z-index: 10;
             display: none;
-            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 14px var(--shadow-blue);
         }
 
         #menuButton:hover {
-            background: linear-gradient(to bottom, #f0c950, #d4af37);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.5);
-        }
-
-        #menuButton:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 8px 22px rgba(74,144,226,0.45);
         }
 
         #questionDisplay {
             position: absolute;
-            top: 80px;
+            top: 72px;
             left: 50%;
             transform: translateX(-50%);
-            color: #d4af37;
-            font-size: 42px;
-            font-weight: bold;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 1),
-                         0 0 40px rgba(212, 175, 55, 0.5);
+            color: var(--navy-dark);
+            font-size: 38px;
+            font-weight: 900;
             z-index: 10;
-            padding: 15px 30px;
-            background: rgba(0, 0, 10, 0.7);
-            border-radius: 10px;
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            padding: 12px 28px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            border: 2px solid var(--border-blue);
+            box-shadow: 0 6px 20px var(--shadow-blue);
             animation: fadeIn 0.3s ease-in;
+            white-space: nowrap;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
+            from { opacity: 0; transform: translateX(-50%) translateY(-16px); }
+            to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
         #startScreen, #gameOver {
@@ -123,115 +123,92 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(0, 0, 10, 0.98), rgba(10, 10, 26, 0.95));
-            padding: 50px;
-            border: 3px solid #d4af37;
-            border-radius: 15px;
+            background: rgba(255,255,255,0.98);
+            padding: 42px 48px;
+            border: 2px solid var(--accent-blue);
+            border-radius: 24px;
             text-align: center;
-            color: #d4af37;
+            color: var(--navy-dark);
             z-index: 20;
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6),
-                        inset 0 0 30px rgba(65, 105, 225, 0.1);
-            min-width: 400px;
+            box-shadow: 0 20px 60px rgba(74,144,226,0.25);
+            min-width: 380px;
         }
 
-        #gameOver {
-            display: none;
-        }
+        #gameOver { display: none; }
 
         h1 {
-            font-size: 52px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 1),
-                         0 0 40px rgba(212, 175, 55, 0.5);
+            font-size: 44px;
+            margin-bottom: 8px;
+            font-weight: 900;
+            background: var(--gradient-navy-soft);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
         }
 
         h2 {
-            font-size: 24px;
-            margin-bottom: 35px;
-            color: #4169e1;
-            text-shadow: 0 0 10px rgba(65, 105, 225, 0.8);
+            font-size: 20px;
+            margin-bottom: 28px;
+            color: var(--accent-blue);
+            font-weight: 700;
         }
 
         .difficultyButtons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         button {
-            background: linear-gradient(to bottom, #d4af37, #b8941f);
-            color: #000;
-            border: 2px solid #f0c950;
-            padding: 18px 35px;
-            font-size: 18px;
-            font-family: 'Courier New', monospace;
+            background: var(--gradient-blue-glow);
+            color: #fff;
+            border: none;
+            padding: 15px 32px;
+            font-size: 16px;
+            font-family: 'Cairo', monospace;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 50px;
             transition: all 0.3s;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            position: relative;
-            overflow: hidden;
+            font-weight: 700;
+            box-shadow: 0 4px 14px var(--shadow-blue);
         }
 
         button:hover {
-            background: linear-gradient(to bottom, #f0c950, #d4af37);
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 8px 24px rgba(74,144,226,0.45);
         }
 
-        button:active {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        button:hover::before {
-            left: 100%;
-        }
+        button:active { transform: translateY(-1px); }
 
         #stats {
-            margin-top: 25px;
-            font-size: 20px;
-            line-height: 2;
-            background: rgba(0, 0, 10, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        #stats div {
-            margin: 8px 0;
+            margin-top: 22px;
+            font-size: 16px;
+            line-height: 1.9;
+            background: rgba(74,144,226,0.06);
+            padding: 18px 20px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border-blue);
+            color: var(--navy-dark);
         }
 
         #stats span {
-            color: #f0c950;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(240, 201, 80, 0.8);
+            color: var(--accent-blue);
+            font-weight: 800;
         }
 
         #instructions {
             position: absolute;
-            bottom: 10px;
+            bottom: 12px;
             left: 50%;
             transform: translateX(-50%);
-            color: #d4af37;
-            font-size: 14px;
+            color: var(--text-gray);
+            font-size: 13px;
+            font-weight: 600;
             text-align: center;
-            opacity: 0.7;
+            opacity: 0.8;
+            white-space: nowrap;
         }
 
         .combo {
@@ -239,11 +216,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 60px;
-            color: #d4af37;
-            font-weight: bold;
-            text-shadow: 0 0 30px rgba(212, 175, 55, 1),
-                         0 0 60px rgba(212, 175, 55, 0.8);
+            font-size: 52px;
+            color: var(--accent-blue);
+            font-weight: 900;
             pointer-events: none;
             z-index: 15;
             display: none;
@@ -251,553 +226,384 @@
         }
 
         @keyframes comboAnimation {
-            0% {
-                transform: translate(-50%, -50%) scale(0.5);
-                opacity: 0;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0;
-            }
+            0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        
-        <div id="ui">
-            <div>Score: <span id="score">0</span></div>
-            <div>Time: <span id="time">60</span>s</div>
-            <div>Streak: <span id="streak">0</span></div>
-            <div>Accuracy: <span id="accuracy">100</span>%</div>
-        </div>
+<div id="gameContainer">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
 
-        <button id="menuButton" onclick="returnToMenu()">Main Menu</button>
+    <div id="ui">
+        <div>Score: <span id="score">0</span></div>
+        <div>Time: <span id="time">60</span>s</div>
+        <div>Streak: <span id="streak">0</span></div>
+        <div>Accuracy: <span id="accuracy">100</span>%</div>
+    </div>
 
-        <div id="questionDisplay"></div>
-        <div id="combo" class="combo"></div>
+    <button id="menuButton" onclick="returnToMenu()">Main Menu</button>
+    <div id="questionDisplay"></div>
+    <div id="combo" class="combo"></div>
 
-        <div id="startScreen">
-            <h1>MATH BLASTER</h1>
-            <h2>Choose Your Challenge</h2>
-            <div class="difficultyButtons">
-                <button onclick="startGame('addition')">➕ Addition</button>
-                <button onclick="startGame('subtraction')">➖ Subtraction</button>
-                <button onclick="startGame('multiplication')">✖️ Multiplication</button>
-                <button onclick="startGame('division')">➗ Division</button>
-                <button onclick="startGame('mixed')">🎯 Mixed Practice</button>
-            </div>
-        </div>
-
-        <div id="gameOver">
-            <h1>GAME OVER</h1>
-            <div id="stats">
-                <div>Final Score: <span id="finalScore">0</span></div>
-                <div>Questions Answered: <span id="totalAnswered">0</span></div>
-                <div>Correct: <span id="correctAnswers">0</span></div>
-                <div>Final Accuracy: <span id="finalAccuracy">0</span>%</div>
-                <div>Best Streak: <span id="bestStreak">0</span></div>
-            </div>
-            <button onclick="returnToMenu()">Main Menu</button>
-        </div>
-
-        <div id="instructions">
-            Click on the correct answer! Answer quickly for bonus points! 🎯
+    <div id="startScreen">
+        <h1>MATH BLASTER</h1>
+        <h2>Choose Your Challenge</h2>
+        <div class="difficultyButtons">
+            <button onclick="startGame('addition')">➕ Addition</button>
+            <button onclick="startGame('subtraction')">➖ Subtraction</button>
+            <button onclick="startGame('multiplication')">✖️ Multiplication</button>
+            <button onclick="startGame('division')">➗ Division</button>
+            <button onclick="startGame('mixed')">🎯 Mixed Practice</button>
         </div>
     </div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+    <div id="gameOver">
+        <h1>GAME OVER</h1>
+        <div id="stats">
+            <div>Final Score: <span id="finalScore">0</span></div>
+            <div>Questions Answered: <span id="totalAnswered">0</span></div>
+            <div>Correct: <span id="correctAnswers">0</span></div>
+            <div>Final Accuracy: <span id="finalAccuracy">0</span>%</div>
+            <div>Best Streak: <span id="bestStreak">0</span></div>
+        </div>
+        <button onclick="returnToMenu()" style="margin-top:18px;">Main Menu</button>
+    </div>
 
-        let gameRunning = false;
-        let score = 0;
-        let timeLeft = 60;
-        let streak = 0;
-        let bestStreak = 0;
-        let totalQuestions = 0;
-        let correctCount = 0;
-        let difficulty = 'addition';
+    <div id="instructions">Click on the correct answer! Answer quickly for bonus points!</div>
+</div>
 
-        let currentQuestion = null;
-        let answers = [];
-        let particles = [];
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-        // Stars background
-        let stars = [];
-        for (let i = 0; i < 150; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 2,
-                speed: Math.random() * 0.5 + 0.2,
-                opacity: Math.random() * 0.5 + 0.5,
-                twinkleSpeed: Math.random() * 0.02 + 0.01,
-                twinklePhase: Math.random() * Math.PI * 2
-            });
-        }
+    let gameRunning = false;
+    let score = 0;
+    let timeLeft = 60;
+    let streak = 0;
+    let bestStreak = 0;
+    let totalQuestions = 0;
+    let correctCount = 0;
+    let difficulty = 'addition';
+    let currentQuestion = null;
+    let answers = [];
+    let particles = [];
 
-        function startGame(mode) {
-            difficulty = mode;
-            gameRunning = true;
-            score = 0;
-            timeLeft = 60;
-            streak = 0;
-            bestStreak = 0;
-            totalQuestions = 0;
-            correctCount = 0;
-            
-            document.getElementById('startScreen').style.display = 'none';
-            document.getElementById('menuButton').style.display = 'block';
-            document.getElementById('ui').style.display = 'block';
-            generateQuestion();
-            startTimer();
-            updateUI();
-            gameLoop();
-        }
-
-        function returnToMenu() {
-            gameRunning = false;
-            document.getElementById('startScreen').style.display = 'block';
-            document.getElementById('menuButton').style.display = 'none';
-            document.getElementById('ui').style.display = 'none';
-            document.getElementById('gameOver').style.display = 'none';
-            document.getElementById('questionDisplay').textContent = '';
-            answers = [];
-            particles = [];
-        }
-
-        function generateQuestion() {
-            let num1, num2, answer, operation;
-            
-            if (difficulty === 'mixed') {
-                const modes = ['addition', 'subtraction', 'multiplication', 'division'];
-                difficulty = modes[Math.floor(Math.random() * modes.length)];
-            }
-
-            switch(difficulty) {
-                case 'addition':
-                    num1 = Math.floor(Math.random() * 50) + 1;
-                    num2 = Math.floor(Math.random() * 50) + 1;
-                    answer = num1 + num2;
-                    operation = '+';
-                    break;
-                case 'subtraction':
-                    num1 = Math.floor(Math.random() * 50) + 20;
-                    num2 = Math.floor(Math.random() * num1);
-                    answer = num1 - num2;
-                    operation = '-';
-                    break;
-                case 'multiplication':
-                    num1 = Math.floor(Math.random() * 12) + 1;
-                    num2 = Math.floor(Math.random() * 12) + 1;
-                    answer = num1 * num2;
-                    operation = '×';
-                    break;
-                case 'division':
-                    num2 = Math.floor(Math.random() * 12) + 1;
-                    answer = Math.floor(Math.random() * 12) + 1;
-                    num1 = num2 * answer;
-                    operation = '÷';
-                    break;
-            }
-
-            currentQuestion = {
-                num1: num1,
-                num2: num2,
-                answer: answer,
-                operation: operation,
-                questionTime: Date.now()
-            };
-
-            document.getElementById('questionDisplay').textContent = 
-                `${num1} ${operation} ${num2} = ?`;
-
-            generateAnswers(answer);
-            
-            // Reset difficulty for mixed mode
-            if (difficulty === 'mixed') {
-                difficulty = 'mixed';
-            }
-        }
-
-        function generateAnswers(correctAnswer) {
-            answers = [];
-            const numAnswers = 4;
-            const positions = [];
-            
-            // Generate random positions
-            for (let i = 0; i < numAnswers; i++) {
-                positions.push({
-                    x: 150 + (i % 2) * 400,
-                    y: 300 + Math.floor(i / 2) * 120,
-                    width: 150,
-                    height: 80
-                });
-            }
-
-            // Shuffle positions
-            for (let i = positions.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [positions[i], positions[j]] = [positions[j], positions[i]];
-            }
-
-            // Place correct answer at random position
-            const correctIndex = Math.floor(Math.random() * numAnswers);
-            
-            for (let i = 0; i < numAnswers; i++) {
-                let value;
-                if (i === correctIndex) {
-                    value = correctAnswer;
-                } else {
-                    // Generate wrong answers
-                    do {
-                        const offset = Math.floor(Math.random() * 10) - 5;
-                        value = correctAnswer + offset;
-                    } while (value === correctAnswer || value < 0 || 
-                             answers.some(a => a.value === value));
-                }
-                
-                answers.push({
-                    value: value,
-                    x: positions[i].x,
-                    y: positions[i].y,
-                    width: positions[i].width,
-                    height: positions[i].height,
-                    isCorrect: value === correctAnswer,
-                    scale: 1
-                });
-            }
-        }
-
-        function drawStars() {
-            stars.forEach(star => {
-                const twinkle = Math.sin(star.twinklePhase) * 0.3 + 0.7;
-                ctx.fillStyle = `rgba(168, 197, 232, ${star.opacity * twinkle})`;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        function updateStars() {
-            stars.forEach(star => {
-                star.y += star.speed;
-                star.twinklePhase += star.twinkleSpeed;
-                if (star.y > canvas.height) {
-                    star.y = 0;
-                    star.x = Math.random() * canvas.width;
-                }
-            });
-        }
-
-        function drawAnswers() {
-            answers.forEach(answer => {
-                const centerX = answer.x + answer.width / 2;
-                const centerY = answer.y + answer.height / 2;
-                
-                ctx.save();
-                ctx.translate(centerX, centerY);
-                ctx.scale(answer.scale, answer.scale);
-                ctx.translate(-centerX, -centerY);
-
-                // Shadow
-                ctx.shadowColor = 'rgba(212, 175, 55, 0.5)';
-                ctx.shadowBlur = 15;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 4;
-
-                // Button background with gradient
-                const gradient = ctx.createLinearGradient(
-                    answer.x, answer.y, 
-                    answer.x, answer.y + answer.height
-                );
-                gradient.addColorStop(0, '#e6c045');
-                gradient.addColorStop(0.5, '#d4af37');
-                gradient.addColorStop(1, '#b8941f');
-                
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.roundRect(answer.x, answer.y, answer.width, answer.height, 10);
-                ctx.fill();
-
-                // Border
-                ctx.shadowColor = 'transparent';
-                ctx.strokeStyle = answer.scale > 1 ? '#f0c950' : '#d4af37';
-                ctx.lineWidth = answer.scale > 1 ? 4 : 3;
-                ctx.stroke();
-
-                // Inner glow
-                if (answer.scale > 1) {
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.roundRect(answer.x + 2, answer.y + 2, answer.width - 4, answer.height - 4, 8);
-                    ctx.stroke();
-                }
-
-                // Answer text
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-                ctx.shadowBlur = 3;
-                ctx.shadowOffsetX = 1;
-                ctx.shadowOffsetY = 2;
-                ctx.fillStyle = '#000';
-                ctx.font = 'bold 38px "Courier New"';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(answer.value, centerX, centerY);
-
-                ctx.restore();
-            });
-        }
-
-        function createParticles(x, y, color, count = 20) {
-            for (let i = 0; i < count; i++) {
-                const angle = (Math.PI * 2 * i) / count;
-                const speed = Math.random() * 4 + 2;
-                particles.push({
-                    x: x,
-                    y: y,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    life: 1,
-                    color: color,
-                    size: Math.random() * 3 + 2
-                });
-            }
-        }
-
-        function updateParticles() {
-            particles = particles.filter(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += 0.2;
-                p.life -= 0.02;
-                return p.life > 0;
-            });
-        }
-
-        function drawParticles() {
-            particles.forEach(p => {
-                ctx.fillStyle = `rgba(${p.color}, ${p.life})`;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-                ctx.fill();
-            });
-        }
-
-        function showCombo() {
-            if (streak >= 3) {
-                const comboEl = document.getElementById('combo');
-                const comboText = streak === 3 ? '3x COMBO! 🔥' :
-                                 streak === 5 ? '5x STREAK! ⚡' :
-                                 streak >= 10 ? `${streak}x UNSTOPPABLE! 💫` :
-                                 `${streak}x STREAK! 🔥`;
-                comboEl.textContent = comboText;
-                comboEl.style.display = 'block';
-                setTimeout(() => {
-                    comboEl.style.display = 'none';
-                }, 1000);
-            }
-        }
-
-        function flashScreen(color) {
-            const flash = document.createElement('div');
-            flash.style.position = 'absolute';
-            flash.style.top = '0';
-            flash.style.left = '0';
-            flash.style.width = '100%';
-            flash.style.height = '100%';
-            flash.style.backgroundColor = color;
-            flash.style.pointerEvents = 'none';
-            flash.style.zIndex = '5';
-            flash.style.transition = 'opacity 0.3s';
-            document.getElementById('gameContainer').appendChild(flash);
-            
-            setTimeout(() => {
-                flash.style.opacity = '0';
-                setTimeout(() => flash.remove(), 300);
-            }, 50);
-        }
-
-        canvas.addEventListener('click', (e) => {
-            if (!gameRunning) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-            answers.forEach(answer => {
-                if (x >= answer.x && x <= answer.x + answer.width &&
-                    y >= answer.y && y <= answer.y + answer.height) {
-                    
-                    totalQuestions++;
-                    
-                    if (answer.isCorrect) {
-                        // Calculate time bonus
-                        const timeTaken = (Date.now() - currentQuestion.questionTime) / 1000;
-                        const timeBonus = Math.max(0, Math.floor((5 - timeTaken) * 10));
-                        
-                        score += 10 + timeBonus + (streak * 5);
-                        correctCount++;
-                        streak++;
-                        
-                        if (streak > bestStreak) bestStreak = streak;
-                        
-                        createParticles(
-                            answer.x + answer.width / 2, 
-                            answer.y + answer.height / 2,
-                            '212, 175, 55',
-                            30
-                        );
-                        
-                        // Add extra particles for combos
-                        if (streak >= 3) {
-                            createParticles(
-                                answer.x + answer.width / 2, 
-                                answer.y + answer.height / 2,
-                                '65, 105, 225',
-                                20
-                            );
-                        }
-                        
-                        showCombo();
-                        generateQuestion();
-                    } else {
-                        streak = 0;
-                        createParticles(
-                            answer.x + answer.width / 2, 
-                            answer.y + answer.height / 2,
-                            '255, 65, 65',
-                            25
-                        );
-                        score = Math.max(0, score - 5);
-                        
-                        // Flash the screen red briefly
-                        flashScreen('rgba(255, 0, 0, 0.2)');
-                    }
-                    
-                    updateUI();
-                }
-            });
+    // Floating dots background (matching site aesthetic)
+    let dots = [];
+    for (let i = 0; i < 60; i++) {
+        dots.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 0.4 + 0.1,
+            opacity: Math.random() * 0.18 + 0.05,
+            color: Math.random() > 0.5 ? '74,144,226' : '26,41,66'
         });
+    }
 
-        canvas.addEventListener('mousemove', (e) => {
-            if (!gameRunning) return;
+    function startGame(mode) {
+        difficulty = mode;
+        gameRunning = true;
+        score = 0; timeLeft = 60; streak = 0;
+        bestStreak = 0; totalQuestions = 0; correctCount = 0;
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('menuButton').style.display = 'block';
+        document.getElementById('ui').style.display = 'block';
+        generateQuestion();
+        startTimer();
+        updateUI();
+        gameLoop();
+    }
 
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-            answers.forEach(answer => {
-                if (x >= answer.x && x <= answer.x + answer.width &&
-                    y >= answer.y && y <= answer.y + answer.height) {
-                    answer.scale = 1.05;
-                    canvas.style.cursor = 'pointer';
-                } else {
-                    answer.scale = 1;
-                }
-            });
-        });
-
-        function startTimer() {
-            const timer = setInterval(() => {
-                if (!gameRunning) {
-                    clearInterval(timer);
-                    return;
-                }
-                
-                timeLeft--;
-                updateUI();
-                
-                // Add urgency when time is running out
-                if (timeLeft === 10) {
-                    flashScreen('rgba(255, 165, 0, 0.3)');
-                }
-                
-                if (timeLeft <= 0) {
-                    endGame();
-                    clearInterval(timer);
-                }
-            }, 1000);
-        }
-
-        function updateUI() {
-            document.getElementById('score').textContent = score;
-            
-            const timeElement = document.getElementById('time');
-            timeElement.textContent = timeLeft;
-            
-            // Change color when time is low
-            if (timeLeft <= 10) {
-                timeElement.style.color = '#ff6b6b';
-                timeElement.style.textShadow = '0 0 10px rgba(255, 107, 107, 0.8)';
-            } else {
-                timeElement.style.color = '#d4af37';
-                timeElement.style.textShadow = '0 0 10px rgba(212, 175, 55, 0.8)';
-            }
-            
-            document.getElementById('streak').textContent = streak;
-            
-            const accuracy = totalQuestions > 0 
-                ? Math.round((correctCount / totalQuestions) * 100) 
-                : 100;
-            document.getElementById('accuracy').textContent = accuracy;
-        }
-
-        function endGame() {
-            gameRunning = false;
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('totalAnswered').textContent = totalQuestions;
-            document.getElementById('correctAnswers').textContent = correctCount;
-            document.getElementById('bestStreak').textContent = bestStreak;
-            
-            const finalAccuracy = totalQuestions > 0 
-                ? Math.round((correctCount / totalQuestions) * 100) 
-                : 0;
-            document.getElementById('finalAccuracy').textContent = finalAccuracy;
-            
-            document.getElementById('gameOver').style.display = 'block';
-        }
-
-        function gameLoop() {
-            if (!gameRunning) return;
-
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            updateStars();
-            drawStars();
-            
-            if (answers.length > 0) {
-                drawAnswers();
-            }
-            
-            updateParticles();
-            drawParticles();
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Animate background on start screen
-        function backgroundLoop() {
-            if (gameRunning) return;
-            
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            updateStars();
-            drawStars();
-            
-            requestAnimationFrame(backgroundLoop);
-        }
-        
+    function returnToMenu() {
+        gameRunning = false;
+        document.getElementById('startScreen').style.display = 'block';
+        document.getElementById('menuButton').style.display = 'none';
+        document.getElementById('ui').style.display = 'none';
+        document.getElementById('gameOver').style.display = 'none';
+        document.getElementById('questionDisplay').textContent = '';
+        answers = []; particles = [];
         backgroundLoop();
-    </script>
+    }
+
+    function generateQuestion() {
+        let num1, num2, answer, operation;
+        let mode = difficulty;
+        if (mode === 'mixed') {
+            const modes = ['addition','subtraction','multiplication','division'];
+            mode = modes[Math.floor(Math.random() * modes.length)];
+        }
+        switch(mode) {
+            case 'addition':
+                num1 = Math.floor(Math.random()*50)+1;
+                num2 = Math.floor(Math.random()*50)+1;
+                answer = num1+num2; operation = '+'; break;
+            case 'subtraction':
+                num1 = Math.floor(Math.random()*50)+20;
+                num2 = Math.floor(Math.random()*num1);
+                answer = num1-num2; operation = '-'; break;
+            case 'multiplication':
+                num1 = Math.floor(Math.random()*12)+1;
+                num2 = Math.floor(Math.random()*12)+1;
+                answer = num1*num2; operation = '×'; break;
+            case 'division':
+                num2 = Math.floor(Math.random()*12)+1;
+                answer = Math.floor(Math.random()*12)+1;
+                num1 = num2*answer; operation = '÷'; break;
+        }
+        currentQuestion = { num1, num2, answer, operation, questionTime: Date.now() };
+        document.getElementById('questionDisplay').textContent = `${num1} ${operation} ${num2} = ?`;
+        generateAnswers(answer);
+    }
+
+    function generateAnswers(correctAnswer) {
+        answers = [];
+        const positions = [
+            { x:150, y:300, width:150, height:75 },
+            { x:500, y:300, width:150, height:75 },
+            { x:150, y:410, width:150, height:75 },
+            { x:500, y:410, width:150, height:75 }
+        ];
+        for (let i = positions.length-1; i>0; i--) {
+            const j = Math.floor(Math.random()*(i+1));
+            [positions[i],positions[j]] = [positions[j],positions[i]];
+        }
+        const correctIndex = Math.floor(Math.random()*4);
+        for (let i=0; i<4; i++) {
+            let value;
+            if (i === correctIndex) {
+                value = correctAnswer;
+            } else {
+                do {
+                    value = correctAnswer + Math.floor(Math.random()*10)-5;
+                } while (value===correctAnswer || value<0 || answers.some(a=>a.value===value));
+            }
+            answers.push({
+                value, ...positions[i],
+                isCorrect: value===correctAnswer,
+                scale: 1, hover: false
+            });
+        }
+    }
+
+    function drawDots() {
+        dots.forEach(d => {
+            ctx.fillStyle = `rgba(${d.color},${d.opacity})`;
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, d.radius, 0, Math.PI*2);
+            ctx.fill();
+        });
+    }
+
+    function updateDots() {
+        dots.forEach(d => {
+            d.y += d.speed;
+            if (d.y > canvas.height) { d.y = 0; d.x = Math.random()*canvas.width; }
+        });
+    }
+
+    function drawAnswers() {
+        answers.forEach(a => {
+            const cx = a.x + a.width/2, cy = a.y + a.height/2;
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(a.scale, a.scale);
+            ctx.translate(-cx, -cy);
+
+            // Shadow
+            ctx.shadowColor = 'rgba(74,144,226,0.25)';
+            ctx.shadowBlur = a.scale > 1 ? 18 : 8;
+            ctx.shadowOffsetY = 3;
+
+            // Button fill
+            const grad = ctx.createLinearGradient(a.x, a.y, a.x, a.y+a.height);
+            if (a.scale > 1) {
+                grad.addColorStop(0, '#6fa8ec');
+                grad.addColorStop(1, '#4a90e2');
+            } else {
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(1, '#e8eef5');
+            }
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.roundRect(a.x, a.y, a.width, a.height, 14);
+            ctx.fill();
+
+            // Border
+            ctx.shadowColor = 'transparent';
+            ctx.strokeStyle = a.scale > 1 ? '#4a90e2' : 'rgba(74,144,226,0.4)';
+            ctx.lineWidth = a.scale > 1 ? 2.5 : 1.5;
+            ctx.stroke();
+
+            // Text
+            ctx.shadowColor = 'rgba(26,41,66,0.1)';
+            ctx.shadowBlur = 2;
+            ctx.fillStyle = a.scale > 1 ? '#ffffff' : '#1a2942';
+            ctx.font = 'bold 34px Cairo, Courier New';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(a.value, cx, cy);
+
+            ctx.restore();
+        });
+    }
+
+    function createParticles(x, y, color, count=20) {
+        for (let i=0; i<count; i++) {
+            const angle = (Math.PI*2*i)/count;
+            const speed = Math.random()*4+2;
+            particles.push({
+                x, y,
+                vx: Math.cos(angle)*speed,
+                vy: Math.sin(angle)*speed,
+                life: 1,
+                color,
+                size: Math.random()*3+2
+            });
+        }
+    }
+
+    function updateParticles() {
+        particles = particles.filter(p => {
+            p.x += p.vx; p.y += p.vy;
+            p.vy += 0.2; p.life -= 0.022;
+            return p.life > 0;
+        });
+    }
+
+    function drawParticles() {
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(${p.color},${p.life})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2);
+            ctx.fill();
+        });
+    }
+
+    function showCombo() {
+        if (streak >= 3) {
+            const el = document.getElementById('combo');
+            el.textContent = streak >= 10 ? `${streak}x UNSTOPPABLE!` :
+                             streak >= 5  ? `${streak}x STREAK!` : `${streak}x COMBO!`;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 1000);
+        }
+    }
+
+    function flashScreen(color) {
+        const flash = document.createElement('div');
+        Object.assign(flash.style, {
+            position:'absolute', top:'0', left:'0', width:'100%', height:'100%',
+            backgroundColor: color, pointerEvents:'none', zIndex:'5',
+            transition:'opacity 0.3s', borderRadius:'20px'
+        });
+        document.getElementById('gameContainer').appendChild(flash);
+        setTimeout(() => { flash.style.opacity='0'; setTimeout(()=>flash.remove(),300); }, 50);
+    }
+
+    canvas.addEventListener('click', e => {
+        if (!gameRunning) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX-rect.left)*(canvas.width/rect.width);
+        const y = (e.clientY-rect.top)*(canvas.height/rect.height);
+        answers.forEach(a => {
+            if (x>=a.x && x<=a.x+a.width && y>=a.y && y<=a.y+a.height) {
+                totalQuestions++;
+                if (a.isCorrect) {
+                    const timeTaken = (Date.now()-currentQuestion.questionTime)/1000;
+                    const timeBonus = Math.max(0, Math.floor((5-timeTaken)*10));
+                    score += 10+timeBonus+(streak*5);
+                    correctCount++; streak++;
+                    if (streak>bestStreak) bestStreak=streak;
+                    createParticles(a.x+a.width/2, a.y+a.height/2, '74,144,226', 30);
+                    if (streak>=3) createParticles(a.x+a.width/2, a.y+a.height/2, '135,206,235', 18);
+                    showCombo();
+                    flashScreen('rgba(74,144,226,0.1)');
+                    generateQuestion();
+                } else {
+                    streak = 0;
+                    createParticles(a.x+a.width/2, a.y+a.height/2, '238,90,111', 22);
+                    score = Math.max(0, score-5);
+                    flashScreen('rgba(238,90,111,0.15)');
+                }
+                updateUI();
+            }
+        });
+    });
+
+    canvas.addEventListener('mousemove', e => {
+        if (!gameRunning) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX-rect.left)*(canvas.width/rect.width);
+        const y = (e.clientY-rect.top)*(canvas.height/rect.height);
+        let hovering = false;
+        answers.forEach(a => {
+            if (x>=a.x && x<=a.x+a.width && y>=a.y && y<=a.y+a.height) {
+                a.scale = 1.06; hovering = true;
+            } else { a.scale = 1; }
+        });
+        canvas.style.cursor = hovering ? 'pointer' : 'default';
+    });
+
+    function startTimer() {
+        const timer = setInterval(() => {
+            if (!gameRunning) { clearInterval(timer); return; }
+            timeLeft--;
+            updateUI();
+            if (timeLeft===10) flashScreen('rgba(74,144,226,0.18)');
+            if (timeLeft<=0) { endGame(); clearInterval(timer); }
+        }, 1000);
+    }
+
+    function updateUI() {
+        document.getElementById('score').textContent = score;
+        const te = document.getElementById('time');
+        te.textContent = timeLeft;
+        te.style.color = timeLeft<=10 ? '#ee5a6f' : '#4a90e2';
+        document.getElementById('streak').textContent = streak;
+        const acc = totalQuestions>0 ? Math.round((correctCount/totalQuestions)*100) : 100;
+        document.getElementById('accuracy').textContent = acc;
+    }
+
+    function endGame() {
+        gameRunning = false;
+        document.getElementById('finalScore').textContent = score;
+        document.getElementById('totalAnswered').textContent = totalQuestions;
+        document.getElementById('correctAnswers').textContent = correctCount;
+        document.getElementById('bestStreak').textContent = bestStreak;
+        const fa = totalQuestions>0 ? Math.round((correctCount/totalQuestions)*100) : 0;
+        document.getElementById('finalAccuracy').textContent = fa;
+        document.getElementById('gameOver').style.display = 'block';
+    }
+
+    function gameLoop() {
+        if (!gameRunning) return;
+        // White/light background matching site
+        const bg = ctx.createLinearGradient(0,0,0,canvas.height);
+        bg.addColorStop(0, '#f8f9fa');
+        bg.addColorStop(1, '#e8eef5');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        updateDots(); drawDots();
+        if (answers.length>0) drawAnswers();
+        updateParticles(); drawParticles();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function backgroundLoop() {
+        if (gameRunning) return;
+        const bg = ctx.createLinearGradient(0,0,0,canvas.height);
+        bg.addColorStop(0, '#f8f9fa');
+        bg.addColorStop(1, '#e8eef5');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        updateDots(); drawDots();
+        requestAnimationFrame(backgroundLoop);
+    }
+
+    backgroundLoop();
+</script>
 </body>
 </html>
