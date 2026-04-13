@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITEJ | بروفايل الطالب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a1628; --navy2: #112240; --navy3: #1a2942;
+            --blue: #4a90e2; --blues: #6fa8ec; --sky: #87ceeb;
+            --gold: #d4af37; --green: #20c997; --red: #ff4d4d;
+            --card: rgba(17,34,64,0.92);
+            --border: rgba(74,144,226,0.25);
+            --neon: 0 0 30px rgba(74,144,226,0.4);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+
+        body {
+            background: linear-gradient(160deg, #0a1628 0%, #0d1f3c 40%, #112240 70%, #0a1628 100%);
+            background-attachment: fixed;
+            color: #e8eef5;
+            min-height: 100vh;
+        }
+
+        /* ── LOADING ── */
+        #loadingScreen {
+            position: fixed; inset: 0; background: #0a1628;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.6s;
+        }
+        #loadingScreen.fade { opacity: 0; pointer-events: none; }
+        .load-logo { font-size: 3rem; font-weight: 900; letter-spacing: 6px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; margin-bottom: 30px; }
+        .load-bar-track { width: 200px; height: 4px; background: rgba(74,144,226,0.15); border-radius: 10px; overflow: hidden; }
+        .load-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #4a90e2, #87ceeb);
+            border-radius: 10px; transition: width 0.4s ease; }
+
+        /* ── TOAST ── */
+        .toast-area { position: fixed; bottom: 24px; left: 24px; z-index: 8000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--card); border-right: 4px solid var(--blue);
+            padding: 14px 22px; border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideInToast 0.4s forwards; min-width: 260px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .toast.error { border-right-color: var(--red); }
+        .toast.gold  { border-right-color: var(--gold); }
+        @keyframes slideInToast { from { transform: translateX(-110%); } to { transform: translateX(0); } }
+
+        /* ── TOP NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10,22,40,0.85); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-back { display: flex; align-items: center; gap: 8px; padding: 10px 20px;
+            background: rgba(74,144,226,0.1); border: 1px solid var(--border); border-radius: 12px;
+            color: var(--blue); text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: 0.3s; }
+        .nav-back:hover { background: rgba(74,144,226,0.2); transform: translateX(4px); }
+
+        /* ── MAIN LAYOUT ── */
+        .page { padding: 100px 30px 60px; max-width: 1100px; margin: 0 auto; }
+
+        /* ── HERO CARD ── */
+        .hero-card {
+            background: var(--card); backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 28px;
+            padding: 40px; margin-bottom: 24px;
+            display: grid; grid-template-columns: auto 1fr auto; gap: 40px; align-items: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            position: relative; overflow: hidden;
+        }
+        .hero-card::before {
+            content: ''; position: absolute; top: -60px; left: -60px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(74,144,226,0.12), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* avatar */
+        .avatar-wrap { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+        .avatar-wrap img { width: 100%; height: 100%; border-radius: 50%;
+            border: 4px solid var(--blue); box-shadow: var(--neon); object-fit: cover; }
+        .avatar-placeholder { width: 100%; height: 100%; border-radius: 50%;
+            border: 4px solid var(--blue); box-shadow: var(--neon);
+            background: linear-gradient(135deg, #1a2942, #2d4263);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; font-weight: 900; color: var(--blue); }
+        .online-dot { position: absolute; bottom: 8px; right: 8px;
+            width: 18px; height: 18px; background: var(--green);
+            border: 3px solid #0a1628; border-radius: 50; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+        .avatar-edit-btn {
+            position: absolute; bottom: 8px; left: 8px;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--blue); border: 2px solid #0a1628;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.75rem; color: #fff; transition: 0.3s;
+        }
+        .avatar-edit-btn:hover { transform: scale(1.15); }
+
+        /* info */
+        .hero-info h1 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+        .student-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            background: rgba(32,201,151,0.15); color: var(--green);
+            border: 1px solid rgba(32,201,151,0.4); margin-bottom: 14px;
+        }
+        .hero-meta { display: flex; gap: 20px; flex-wrap: wrap; }
+        .meta-chip { display: flex; align-items: center; gap: 7px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            border-radius: 10px; padding: 7px 14px; font-size: 0.85rem; color: #b0c4de; }
+        .meta-chip i { color: var(--blue); font-size: 0.9rem; }
+
+        /* stats right */
+        .hero-stats { display: flex; flex-direction: column; gap: 14px; }
+        .stat-pill { text-align: center; background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border); border-radius: 16px; padding: 16px 24px; min-width: 100px; }
+        .stat-pill h2 { font-size: 1.8rem; font-weight: 900; }
+        .stat-pill p { font-size: 0.68rem; color: #8b949e; margin-top: 3px; }
+
+        /* ── XP BAR ── */
+        .xp-section { background: var(--card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 24px 30px; margin-bottom: 24px; }
+        .xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .xp-header span:first-child { font-weight: 900; font-size: 1rem; }
+        .xp-header span:last-child { font-size: 0.82rem; color: var(--blue); }
+        .xp-track { height: 12px; background: rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--sky));
+            border-radius: 20px; width: 0%; transition: width 1.4s cubic-bezier(0.17,0.67,0.83,0.67); }
+
+        /* ── GRID SECTIONS ── */
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .section-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 26px; }
+        .section-card h3 { font-size: 0.95rem; font-weight: 900; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .section-card h3 i { color: var(--blue); }
+
+        /* bio */
+        .bio-text { font-size: 0.9rem; color: #8b949e; line-height: 1.8; }
+        .bio-edit-area { display: none; }
+        .bio-edit-area textarea {
+            width: 100%; background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border); border-radius: 12px;
+            color: #e8eef5; font-family: 'Cairo',sans-serif; font-size: 0.88rem;
+            padding: 12px; resize: none; outline: none; margin-bottom: 10px;
+        }
+        .bio-edit-area textarea:focus { border-color: var(--blue); }
+
+        /* achievements */
+        .ach-list { display: flex; flex-direction: column; gap: 10px; }
+        .ach-item { display: flex; align-items: center; gap: 14px;
+            background: rgba(0,0,0,0.2); border-radius: 14px; padding: 12px 16px;
+            border: 1px solid var(--border); transition: 0.3s; }
+        .ach-item:hover { border-color: var(--gold); }
+        .ach-item.locked { opacity: 0.4; filter: grayscale(1); }
+        .ach-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .ach-icon.unlocked { background: rgba(212,175,55,0.15); }
+        .ach-icon.locked-bg { background: rgba(255,255,255,0.05); }
+        .ach-detail h4 { font-size: 0.85rem; font-weight: 700; }
+        .ach-detail p { font-size: 0.72rem; color: #8b949e; margin-top: 2px; }
+
+        /* avatar modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px); z-index: 5000; display: flex; align-items: center;
+            justify-content: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
+        .modal-overlay.show { opacity: 1; pointer-events: all; }
+        .modal-box { background: #0d1f3c; border: 1px solid var(--border); border-radius: 24px;
+            padding: 30px; width: 100%; max-width: 440px; transform: translateY(20px); transition: 0.4s; }
+        .modal-overlay.show .modal-box { transform: translateY(0); }
+        .modal-box h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 20px; }
+        .modal-input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 12px; color: #e8eef5;
+            font-family: 'Cairo',sans-serif; font-size: 0.9rem; outline: none; margin-bottom: 12px; }
+        .modal-input:focus { border-color: var(--blue); }
+        .avatar-presets { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .preset-btn { padding: 8px 14px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 10px; color: #e8eef5;
+            cursor: pointer; font-family: 'Cairo',sans-serif; font-size: 0.82rem; transition: 0.3s; }
+        .preset-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .modal-actions { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 12px;
+            font-weight: 700; cursor: pointer; font-family: 'Cairo',sans-serif; font-size: 0.9rem; transition: 0.3s; }
+        .btn-primary { background: linear-gradient(45deg, var(--blue), var(--blues)); color: #000; }
+        .btn-primary:hover { filter: brightness(1.15); }
+        .btn-cancel { background: rgba(255,255,255,0.06); color: #8b949e; border: 1px solid var(--border); }
+        .btn-cancel:hover { color: #e8eef5; }
+        .btn-save-bio { padding: 9px 20px; background: linear-gradient(45deg, var(--blue), var(--blues));
+            color: #000; border: none; border-radius: 10px; font-weight: 700;
+            cursor: pointer; font-family: 'Cairo',sans-serif; font-size: 0.85rem; transition: 0.3s; }
+        .btn-save-bio:hover { filter: brightness(1.15); }
+        .btn-edit-bio { padding: 7px 16px; background: rgba(74,144,226,0.1); color: var(--blue);
+            border: 1px solid var(--border); border-radius: 10px; font-weight: 700;
+            cursor: pointer; font-family: 'Cairo',sans-serif; font-size: 0.82rem; transition: 0.3s;
+            margin-right: auto; }
+        .btn-edit-bio:hover { background: rgba(74,144,226,0.2); }
+
+        /* specialty edit */
+        .spec-row { display: flex; align-items: center; gap: 8px; }
+        .spec-input { flex: 1; background: transparent; border: none;
+            border-bottom: 1px dashed var(--border); color: #b0c4de;
+            font-family: 'Cairo',sans-serif; font-size: 0.85rem; padding: 4px 0; outline: none; transition: 0.3s; }
+        .spec-input:focus { border-bottom-color: var(--blue); }
+        .spec-save-btn { background: none; border: none; color: var(--blue); cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
+        .spec-save-btn:hover { transform: scale(1.2); }
+
+        /* empty state */
+        .empty-state { text-align: center; padding: 30px; color: #8b949e; font-size: 0.85rem; }
+        .empty-state i { font-size: 2.5rem; opacity: 0.2; display: block; margin-bottom: 10px; }
+
+        @media (max-width: 800px) {
+            .hero-card { grid-template-columns: 1fr; text-align: center; }
+            .hero-meta { justify-content: center; }
+            .hero-stats { flex-direction: row; justify-content: center; }
+            .grid2 { grid-template-columns: 1fr; }
+            nav { padding: 14px 20px; }
+            .page { padding: 88px 16px 50px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+    <div class="load-logo">SITEJ</div>
+    <div class="load-bar-track"><div class="load-bar" id="loadBar"></div></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-area" id="toastArea"></div>
+
+<!-- AVATAR MODAL -->
+<div class="modal-overlay" id="avatarModal">
+    <div class="modal-box">
+        <h3><i class="fas fa-camera" style="color:var(--blue);margin-left:8px;"></i> تغيير الصورة الشخصية</h3>
+        <label style="font-size:0.78rem;color:var(--blue);font-weight:700;display:block;margin-bottom:8px;">رابط صورة (URL)</label>
+        <input type="text" id="avatarUrlInput" class="modal-input" placeholder="https://...">
+        <label style="font-size:0.78rem;color:var(--blue);font-weight:700;display:block;margin-bottom:8px;">أو اختر آفاتار جاهز</label>
+        <div class="avatar-presets">
+            <button class="preset-btn" onclick="pickPreset('bottts')">🤖 روبوت</button>
+            <button class="preset-btn" onclick="pickPreset('avataaars')">👨‍💻 شخصية</button>
+            <button class="preset-btn" onclick="pickPreset('pixel-art')">👾 بكسل</button>
+            <button class="preset-btn" onclick="pickPreset('fun-emoji')">😎 إيموجي</button>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-cancel" onclick="closeAvatarModal()">إلغاء</button>
+            <button class="btn btn-primary" onclick="saveAvatar()"><i class="fas fa-check"></i> حفظ</button>
+        </div>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">SITEJ</div>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-right"></i> الرئيسية</a>
+</nav>
+
+<!-- PAGE -->
+<div class="page" id="pageContent" style="display:none;">
+
+    <!-- HERO CARD -->
+    <div class="hero-card">
+        <div class="avatar-wrap">
+            <img id="profileAvatar" src="" alt="avatar" style="display:none;">
+            <div class="avatar-placeholder" id="profileAvatarPlaceholder">?</div>
+            <div class="online-dot"></div>
+            <div class="avatar-edit-btn" onclick="openAvatarModal()" title="تغيير الصورة">
+                <i class="fas fa-pen"></i>
+            </div>
+        </div>
+
+        <div class="hero-info">
+            <h1 id="profileName">—</h1>
+            <div class="student-badge"><i class="fas fa-user-graduate"></i> طالب</div>
+            <div class="hero-meta">
+                <div class="meta-chip"><i class="fas fa-school"></i> <span id="profileGrade">—</span></div>
+                <div class="meta-chip"><i class="fas fa-layer-group"></i> شعبة <span id="profileSection">—</span></div>
+                <div class="meta-chip" id="specChipWrap" style="display:none;">
+                    <i class="fas fa-code"></i> <span id="profileSpecChip">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-pill">
+                <h2 id="statXP" style="color:var(--blue);">0</h2>
+                <p>XP</p>
+            </div>
+            <div class="stat-pill">
+                <h2 id="statCoins" style="color:var(--gold);">0</h2>
+                <p>Coins</p>
+            </div>
+            <div class="stat-pill">
+                <h2 id="statStreak" style="color:var(--red);">0</h2>
+                <p>أيام متتالية</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- XP BAR -->
+    <div class="xp-section">
+        <div class="xp-header">
+            <span id="levelLabel">المستوى 1</span>
+            <span id="xpLabel">0 / 1000 XP</span>
+        </div>
+        <div class="xp-track">
+            <div class="xp-fill" id="xpFill"></div>
+        </div>
+    </div>
+
+    <!-- GRID: BIO + ACHIEVEMENTS -->
+    <div class="grid2">
+
+        <!-- BIO & SPECIALTY -->
+        <div class="section-card">
+            <h3><i class="fas fa-scroll"></i> السيرة الذاتية والتخصص</h3>
+
+            <label style="font-size:0.75rem;color:var(--blue);font-weight:700;display:block;margin-bottom:6px;">التخصص</label>
+            <div class="spec-row" style="margin-bottom:18px;">
+                <input type="text" id="specInput" class="spec-input" placeholder="أدخل تخصصك..." onblur="saveSpec()" onkeypress="if(event.key==='Enter') this.blur()">
+                <button class="spec-save-btn" onclick="document.getElementById('specInput').focus()" title="تعديل"><i class="fas fa-pen"></i></button>
+            </div>
+
+            <label style="font-size:0.75rem;color:var(--blue);font-weight:700;display:block;margin-bottom:8px;">السيرة الذاتية</label>
+            <div id="bioDisplay">
+                <p class="bio-text" id="bioText">لا توجد سيرة ذاتية بعد.</p>
+                <br>
+                <button class="btn-edit-bio" onclick="openBioEdit()"><i class="fas fa-pen"></i> تعديل</button>
+            </div>
+            <div class="bio-edit-area" id="bioEditArea">
+                <textarea id="bioInput" rows="4" placeholder="اكتب شيئاً عن نفسك..."></textarea>
+                <div style="display:flex;gap:8px;">
+                    <button class="btn-save-bio" onclick="saveBio()"><i class="fas fa-check"></i> حفظ</button>
+                    <button class="btn-cancel btn" style="flex:unset;padding:9px 16px;font-size:0.82rem;" onclick="closeBioEdit()">إلغاء</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS -->
+        <div class="section-card">
+            <h3><i class="fas fa-trophy"></i> الإنجازات</h3>
+            <div class="ach-list" id="achList">
+                <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> جاري التحميل...</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
+    authDomain: "eliteacademy-37bfc.firebaseapp.com",
+    projectId: "eliteacademy-37bfc",
+    storageBucket: "eliteacademy-37bfc.firebasestorage.app",
+    messagingSenderId: "203080953628",
+    appId: "1:203080953628:web:69efebccc336b79f0554d9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ═══════════════════════════════════════════
+// ACHIEVEMENTS تعريف
+// ═══════════════════════════════════════════
+const ACHIEVEMENTS = [
+    { id: 'first_login',  icon: '🚀', name: 'الانطلاقة الأولى',   desc: 'تسجيل الدخول لأول مرة',          xp: 50,  cond: (u) => true },
+    { id: 'coins100',     icon: '💰', name: 'مجمع الثروات',        desc: 'اجمع 100 عملة',                  xp: 150, cond: (u) => (u.coins||0) >= 100 },
+    { id: 'streak7',      icon: '🔥', name: 'أسبوع متواصل',         desc: 'حافظ على 7 أيام متتالية',        xp: 300, cond: (u) => (u.streak||0) >= 7 },
+    { id: 'level5',       icon: '⭐', name: 'صاعد النجوم',          desc: 'ابلغ المستوى 5',                 xp: 500, cond: (u) => (u.xp||0) >= 5000 },
+    { id: 'bio_written',  icon: '📝', name: 'قصتي',                 desc: 'اكتب سيرتك الذاتية',             xp: 75,  cond: (u) => !!(u.bio && u.bio.trim()) },
+    { id: 'avatar_set',   icon: '🎨', name: 'هويتي البصرية',        desc: 'عيّن صورة شخصية',               xp: 50,  cond: (u) => !!(u.photoURL) },
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let studentDocId = null;
+let studentData  = {};
+
+// ═══════════════════════════════════════════
+// LOADING BAR
+// ═══════════════════════════════════════════
+const loadBar = document.getElementById('loadBar');
+function setLoad(pct) { loadBar.style.width = pct + '%'; }
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg, type = 'info') {
+    const area = document.getElementById('toastArea');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    const icons = { info:'info-circle', success:'check-circle', error:'exclamation-circle', gold:'trophy' };
+    const colors = { info: 'var(--blue)', success: 'var(--green)', error: 'var(--red)', gold: 'var(--gold)' };
+    t.innerHTML = `<i class="fas fa-${icons[type]||'info-circle'}" style="color:${colors[type]||'var(--blue)'}"></i> ${msg}`;
+    area.appendChild(t);
+    setTimeout(() => t.remove(), 4000);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+async function init() {
+    setLoad(20);
+
+    const storedId   = localStorage.getItem('studentId');
+    const storedRole = localStorage.getItem('userRole');
+
+    // التحقق: لازم يكون طالب مسجل دخول
+    if (!storedId || storedRole !== 'student') {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    setLoad(50);
+
+    try {
+        // جلب بيانات الطالب من Firestore
+        const snap = await getDoc(doc(db, 'students', storedId));
+
+        if (!snap.exists()) {
+            toast('⚠️ لم يتم العثور على بيانات الطالب', 'error');
+            setTimeout(() => window.location.href = 'login.html', 2000);
+            return;
+        }
+
+        setLoad(80);
+        studentDocId = storedId;
+        studentData  = snap.data();
+
+        renderProfile();
+        setLoad(100);
+
+        // إخفاء شاشة التحميل
+        setTimeout(() => {
+            const ls = document.getElementById('loadingScreen');
+            ls.classList.add('fade');
+            setTimeout(() => ls.remove(), 600);
+        }, 400);
+
+        document.getElementById('pageContent').style.display = 'block';
+
+        // فحص الإنجازات
+        setTimeout(() => checkAchievements(), 800);
+
+    } catch (err) {
+        console.error(err);
+        toast('خطأ في جلب البيانات', 'error');
+        setLoad(100);
+        setTimeout(() => {
+            const ls = document.getElementById('loadingScreen');
+            ls.classList.add('fade');
+            setTimeout(() => ls.remove(), 600);
+        }, 600);
+    }
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderProfile() {
+    const d = studentData;
+
+    // الاسم
+    const name = d.name || localStorage.getItem('studentName') || 'طالب';
+    document.getElementById('profileName').textContent = name;
+    document.title = `SITEJ | ${name}`;
+
+    // الصورة
+    if (d.photoURL) {
+        const img = document.getElementById('profileAvatar');
+        img.src = d.photoURL;
+        img.style.display = 'block';
+        document.getElementById('profileAvatarPlaceholder').style.display = 'none';
+    } else {
+        const first = name.trim().charAt(0).toUpperCase();
+        document.getElementById('profileAvatarPlaceholder').textContent = first;
+    }
+
+    // الصف والشعبة
+    document.getElementById('profileGrade').textContent   = gradeLabel(d.grade) || '—';
+    document.getElementById('profileSection').textContent = d.section || '—';
+
+    // التخصص
+    if (d.specialty) {
+        document.getElementById('specInput').value = d.specialty;
+        document.getElementById('specChipWrap').style.display = 'flex';
+        document.getElementById('profileSpecChip').textContent = d.specialty;
+    }
+
+    // الإحصائيات
+    document.getElementById('statXP').textContent     = d.xp     || 0;
+    document.getElementById('statCoins').textContent  = d.coins  || 0;
+    document.getElementById('statStreak').textContent = d.streak || 0;
+
+    // XP BAR
+    const xp  = d.xp || 0;
+    const lvl = Math.floor(xp / 1000) + 1;
+    const pct = (xp % 1000) / 10;
+    document.getElementById('levelLabel').textContent = `المستوى ${lvl}`;
+    document.getElementById('xpLabel').textContent    = `${xp % 1000} / 1000 XP`;
+    setTimeout(() => { document.getElementById('xpFill').style.width = pct + '%'; }, 300);
+
+    // Bio
+    if (d.bio) {
+        document.getElementById('bioText').textContent = d.bio;
+        document.getElementById('bioInput').value = d.bio;
+    }
+}
+
+function gradeLabel(g) {
+    const map = { '1':'الأول','2':'الثاني','3':'الثالث','4':'الرابع','5':'الخامس',
+                  '6':'السادس','7':'السابع','8':'الثامن','9':'التاسع','10':'العاشر',
+                  '11':'الأول ثانوي','12':'التوجيهي' };
+    return g ? (map[String(g)] || `الصف ${g}`) : '—';
+}
+
+// ═══════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════
+async function checkAchievements() {
+    const unlocked = studentData.unlockedAchievements || [];
+    let newUnlocks = [];
+
+    for (const ach of ACHIEVEMENTS) {
+        if (!unlocked.includes(ach.id) && ach.cond(studentData)) {
+            newUnlocks.push(ach.id);
+        }
+    }
+
+    if (newUnlocks.length > 0) {
+        const allUnlocked = [...unlocked, ...newUnlocks];
+        const bonusXP = newUnlocks.reduce((s, id) => {
+            const a = ACHIEVEMENTS.find(a => a.id === id);
+            return s + (a ? a.xp : 0);
+        }, 0);
+        try {
+            await updateDoc(doc(db, 'students', studentDocId), {
+                unlockedAchievements: allUnlocked,
+                xp: (studentData.xp || 0) + bonusXP
+            });
+            studentData.unlockedAchievements = allUnlocked;
+            studentData.xp = (studentData.xp || 0) + bonusXP;
+            newUnlocks.forEach(id => {
+                const a = ACHIEVEMENTS.find(a => a.id === id);
+                if (a) setTimeout(() => toast(`🏆 إنجاز جديد: ${a.name} (+${a.xp} XP)`, 'gold'), 500);
+            });
+        } catch(e) {}
+    }
+
+    renderAchievements();
+}
+
+function renderAchievements() {
+    const unlocked = studentData.unlockedAchievements || [];
+    const container = document.getElementById('achList');
+    container.innerHTML = ACHIEVEMENTS.map(ach => {
+        const isUnlocked = unlocked.includes(ach.id);
+        return `
+            <div class="ach-item ${isUnlocked ? '' : 'locked'}">
+                <div class="ach-icon ${isUnlocked ? 'unlocked' : 'locked-bg'}">${ach.icon}</div>
+                <div class="ach-detail">
+                    <h4>${ach.name} ${isUnlocked ? '✅' : '🔒'}</h4>
+                    <p>${ach.desc} · +${ach.xp} XP</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// ═══════════════════════════════════════════
+// AVATAR
+// ═══════════════════════════════════════════
+window.openAvatarModal  = () => document.getElementById('avatarModal').classList.add('show');
+window.closeAvatarModal = () => document.getElementById('avatarModal').classList.remove('show');
+
+window.pickPreset = (style) => {
+    const seed = studentDocId || 'student';
+    const url  = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
+    document.getElementById('avatarUrlInput').value = url;
+};
+
+window.saveAvatar = async () => {
+    const url = document.getElementById('avatarUrlInput').value.trim();
+    if (!url) { toast('أدخل رابط الصورة', 'error'); return; }
+    try {
+        await updateDoc(doc(db, 'students', studentDocId), { photoURL: url });
+        studentData.photoURL = url;
+        const img = document.getElementById('profileAvatar');
+        img.src = url; img.style.display = 'block';
+        document.getElementById('profileAvatarPlaceholder').style.display = 'none';
+        closeAvatarModal();
+        toast('✅ تم تحديث الصورة!', 'success');
+        // تحقق من إنجاز الصورة
+        await checkAchievements();
+    } catch(e) { toast('خطأ في الحفظ', 'error'); }
+};
+
+// ═══════════════════════════════════════════
+// BIO
+// ═══════════════════════════════════════════
+window.openBioEdit = () => {
+    document.getElementById('bioDisplay').style.display  = 'none';
+    document.getElementById('bioEditArea').style.display = 'block';
+    document.getElementById('bioInput').value = studentData.bio || '';
+    document.getElementById('bioInput').focus();
+};
+window.closeBioEdit = () => {
+    document.getElementById('bioDisplay').style.display  = 'block';
+    document.getElementById('bioEditArea').style.display = 'none';
+};
+window.saveBio = async () => {
+    const val = document.getElementById('bioInput').value.trim();
+    if (!val) { toast('اكتب شيئاً في السيرة الذاتية', 'error'); return; }
+    try {
+        await updateDoc(doc(db, 'students', studentDocId), { bio: val });
+        studentData.bio = val;
+        document.getElementById('bioText').textContent = val;
+        closeBioEdit();
+        toast('✅ تم حفظ السيرة الذاتية', 'success');
+        await checkAchievements();
+    } catch(e) { toast('خطأ في الحفظ', 'error'); }
+};
+
+// ═══════════════════════════════════════════
+// SPECIALTY
+// ═══════════════════════════════════════════
+window.saveSpec = async () => {
+    const val = document.getElementById('specInput').value.trim();
+    if (!val) return;
+    try {
+        await updateDoc(doc(db, 'students', studentDocId), { specialty: val });
+        studentData.specialty = val;
+        document.getElementById('profileSpecChip').textContent = val;
+        document.getElementById('specChipWrap').style.display = 'flex';
+        toast('✅ تم حفظ التخصص', 'success');
+    } catch(e) { toast('خطأ في الحفظ', 'error'); }
+};
+
+// إغلاق المودال بالنقر خارجه
+document.getElementById('avatarModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('avatarModal')) closeAvatarModal();
+});
+
+init();
+</script>
+</body>
+</html>
