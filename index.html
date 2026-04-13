@@ -8,44 +8,8 @@
     <meta name="theme-color" content="#1a2942">
     <title>SITEJ - منصة التعليم الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* ══ CROSS-BROWSER ICON FIX ══ */
-        .fa,.fas,.far,.fal,.fad,.fab,.fa-solid,.fa-regular,.fa-brands,
-        [class^="fa-"],[class*=" fa-"]{
-            font-family:"Font Awesome 6 Free","Font Awesome 6 Brands","FontAwesome",sans-serif!important;
-            font-style:normal!important;font-variant:normal!important;
-            text-rendering:auto!important;line-height:1!important;
-            -webkit-font-smoothing:antialiased!important;
-            -moz-osx-font-smoothing:grayscale!important;
-            speak:never;font-display:block;
-        }
-        .fas,.fa-solid{font-weight:900!important;}
-        .far,.fa-regular{font-weight:400!important;}
-        .fab,.fa-brands{font-family:"Font Awesome 6 Brands"!important;font-weight:400!important;}
-        .card-icon i,.stat-icon i{
-            -webkit-background-clip:unset!important;background-clip:unset!important;
-            -webkit-text-fill-color:unset!important;color:inherit!important;
-        }
-        @supports(-webkit-background-clip:text){
-            .card-icon i{
-                background:linear-gradient(135deg,#ffffff 0%,#e8eef5 25%,#b8c9dc 50%,#5a7fa8 75%,#1a2942 100%);
-                -webkit-background-clip:text!important;background-clip:text!important;
-                -webkit-text-fill-color:transparent!important;
-            }
-            .stat-icon i{
-                background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
-                -webkit-background-clip:text!important;background-clip:text!important;
-                -webkit-text-fill-color:transparent!important;
-            }
-        }
-
-        /* ══ CSS VARIABLES ══ */
         :root{
             --navy-darkest:#0a1628;--navy-darker:#112240;--navy-dark:#1a2942;
             --navy-medium:#233554;--navy-light:#2d4263;--navy-lighter:#3d5a7f;
@@ -62,7 +26,6 @@
             --shadow-blue:rgba(74,144,226,0.2);--shadow-glow:rgba(74,144,226,0.5);
             --text-navy:#0a1628;--text-gray:#6b7c93;
         }
-
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
         html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
         body{
@@ -70,363 +33,155 @@
             background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);
             background-attachment:fixed;color:#0a1628;min-height:100vh;overflow-x:hidden;
         }
-
-        /* ══ BACKGROUND ══ */
         .bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;}
         .bg-shape{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.10;}
         .shape-1{width:600px;height:600px;background:radial-gradient(circle,rgba(74,144,226,0.35) 0%,transparent 70%);top:-200px;right:-200px;}
         .shape-2{width:500px;height:500px;background:radial-gradient(circle,rgba(26,41,66,0.25) 0%,transparent 70%);bottom:-150px;left:-150px;}
         .shape-3{width:450px;height:450px;background:radial-gradient(circle,rgba(155,180,208,0.2) 0%,transparent 70%);top:35%;left:45%;}
-
-        /* ══ NAV ══ */
-        nav.top-bar{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:22px 70px;position:fixed;width:100%;top:0;z-index:1000;
-            background:#ffffff;border-bottom:2px solid rgba(74,144,226,0.25);
-            box-shadow:0 2px 20px rgba(26,41,66,0.10);
-            transition:padding .4s,box-shadow .4s,background .4s;
-        }
-        nav.top-bar.scrolled{
-            padding:13px 70px;background:#ffffff;
-            border-bottom:2px solid var(--accent-blue);
-            box-shadow:0 4px 30px rgba(26,41,66,0.14);
-        }
-        .logo-container{display:flex;align-items:center;gap:18px;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1);text-decoration:none;}
+        nav.top-bar{display:flex;justify-content:space-between;align-items:center;padding:22px 70px;position:fixed;width:100%;top:0;z-index:1000;background:#ffffff;border-bottom:2px solid rgba(74,144,226,0.25);box-shadow:0 2px 20px rgba(26,41,66,0.10);transition:padding .4s,box-shadow .4s,background .4s;}
+        nav.top-bar.scrolled{padding:13px 70px;background:#ffffff;border-bottom:2px solid var(--accent-blue);box-shadow:0 4px 30px rgba(26,41,66,0.14);}
+        .logo-container{display:flex;align-items:center;gap:18px;cursor:pointer;transition:transform .35s;text-decoration:none;}
         .logo-container:hover{transform:scale(1.06);}
-        .logo-icon{
-            width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;
-            display:flex;align-items:center;justify-content:center;
-            box-shadow:0 10px 30px var(--shadow-blue);position:relative;
-            transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
-        }
-        .logo-icon::before{content:'';position:absolute;inset:-4px;background:var(--gradient-blue-glow);border-radius:18px;z-index:-1;opacity:0.5;filter:blur(15px);}
-        .logo-icon:hover{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 35px rgba(74,144,226,0.45);}
+        .logo-icon{width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px var(--shadow-blue);transition:transform .4s;}
         .logo-icon i{font-size:1.6rem;color:#fff;}
         .logo-text{display:flex;flex-direction:column;gap:4px;}
-        .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative;}
+        .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
         .logo-tagline{font-size:0.75rem;color:var(--text-gray);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
         .nav-actions{display:flex;align-items:center;gap:16px;}
-
-        /* ══ LANG SELECTOR ══ */
         .lang-selector-wrap{position:relative;user-select:none;}
-        .lang-trigger-btn{
-            display:flex;align-items:center;gap:8px;padding:10px 16px;
-            background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;
-            cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;
-            color:var(--accent-blue);white-space:nowrap;min-width:110px;justify-content:space-between;
-            transition:background .3s,transform .3s,box-shadow .3s,border-color .3s;
-        }
-        .lang-trigger-btn:hover{background:rgba(74,144,226,0.14);border-color:var(--accent-blue);transform:translateY(-2px);box-shadow:0 8px 20px var(--shadow-blue);}
-        .lang-selector-wrap.open .lang-trigger-btn{background:rgba(74,144,226,0.12);border-color:var(--accent-blue);box-shadow:0 4px 16px var(--shadow-blue);}
-        .lang-flag{font-size:1.1rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-        .lang-selector-wrap.open .lang-flag{transform:scale(1.2);}
-        .lang-label{flex:1;text-align:center;transition:color .25s;}
-        .lang-chevron{width:14px;height:14px;color:var(--accent-blue);transition:transform .35s cubic-bezier(.34,1.56,.64,1);flex-shrink:0;}
+        .lang-trigger-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;color:var(--accent-blue);white-space:nowrap;min-width:110px;justify-content:space-between;transition:background .3s,transform .3s,box-shadow .3s;}
+        .lang-trigger-btn:hover{background:rgba(74,144,226,0.14);border-color:var(--accent-blue);transform:translateY(-2px);}
+        .lang-flag{font-size:1.1rem;}
+        .lang-label{flex:1;text-align:center;}
+        .lang-chevron{width:14px;height:14px;color:var(--accent-blue);transition:transform .35s;}
         .lang-selector-wrap.open .lang-chevron{transform:rotate(180deg);}
-        .lang-dropdown-menu{
-            position:absolute;top:calc(100% + 10px);right:0;min-width:155px;
-            background:rgba(255,255,255,0.99);border:1.5px solid var(--border-blue);
-            border-radius:14px;overflow:hidden;box-shadow:0 16px 45px rgba(26,41,66,0.18);
-            transform-origin:top right;transform:scale(0.85) translateY(-10px);opacity:0;
-            transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;
-            z-index:9999;pointer-events:none;
-        }
+        .lang-dropdown-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:155px;background:rgba(255,255,255,0.99);border:1.5px solid var(--border-blue);border-radius:14px;overflow:hidden;box-shadow:0 16px 45px rgba(26,41,66,0.18);transform-origin:top right;transform:scale(0.85) translateY(-10px);opacity:0;transition:transform .35s,opacity .25s;z-index:9999;pointer-events:none;}
         .lang-selector-wrap.open .lang-dropdown-menu{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
-        .lang-option-item{
-            display:flex;align-items:center;gap:12px;padding:13px 17px;cursor:pointer;
-            font-size:0.92rem;font-weight:600;color:var(--text-navy);
-            transition:background .2s,color .2s;
-            opacity:0;transform:translateX(8px);animation:none;
-        }
-        .lang-selector-wrap.open .lang-option-item:nth-child(1){animation:itemSlideIn .3s .05s cubic-bezier(.34,1.56,.64,1) forwards;}
-        .lang-selector-wrap.open .lang-option-item:nth-child(2){animation:itemSlideIn .3s .02s ease forwards;}
-        .lang-selector-wrap.open .lang-option-item:nth-child(3){animation:itemSlideIn .3s .12s cubic-bezier(.34,1.56,.64,1) forwards;}
-        @keyframes itemSlideIn{from{opacity:0;transform:translateX(10px);}to{opacity:1;transform:translateX(0);}}
-        .lang-option-item:hover{background:rgba(74,144,226,0.09);color:var(--accent-blue);padding-right:20px;}
+        .lang-option-item{display:flex;align-items:center;gap:12px;padding:13px 17px;cursor:pointer;font-size:0.92rem;font-weight:600;color:var(--text-navy);transition:background .2s,color .2s;}
+        .lang-option-item:hover{background:rgba(74,144,226,0.09);color:var(--accent-blue);}
         .lang-option-item.lang-active{color:var(--accent-blue);background:rgba(74,144,226,0.07);}
-        .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity .2s,transform .3s cubic-bezier(.34,1.56,.64,1);transform:scale(0.5);}
-        .lang-option-item.lang-active .lang-check{opacity:1;transform:scale(1);}
+        .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity .2s;}
+        .lang-option-item.lang-active .lang-check{opacity:1;}
         .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
-
-        /* ══ NAV BUTTONS ══ */
-        .profile-nav-btn{
-            width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;
-            display:flex;align-items:center;justify-content:center;text-decoration:none;
-            box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;flex-shrink:0;
-        }
+        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s,box-shadow .35s;flex-shrink:0;}
         .profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px var(--shadow-glow);}
         .profile-nav-btn i{color:#fff;font-size:1.1rem;}
-        .notification-btn{
-            position:relative;width:46px;height:46px;
-            background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);
-            border-radius:14px;display:flex;align-items:center;justify-content:center;
-            cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);
-        }
+        .notification-btn{position:relative;width:46px;height:46px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .35s;}
         .notification-btn:hover{background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);box-shadow:0 8px 22px var(--shadow-blue);}
         .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
-        .notification-badge{
-            position:absolute;top:-5px;right:-5px;width:20px;height:20px;
-            background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;
-            display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;
-        }
-
-        /* ══ BURGER ══ */
-        .burger{
-            cursor:pointer;width:38px;height:28px;
-            display:flex;flex-direction:column;justify-content:space-between;
-            z-index:10000;position:relative;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:auto;
-        }
-        .burger:hover{transform:scale(1.1);}
-        .bline{
-            width:100%;height:3px;
-            background:linear-gradient(135deg,#4a90e2,#6fa8ec);
-            border-radius:4px;transition:all .45s cubic-bezier(.68,-.55,.265,1.55);transform-origin:center;
-        }
+        .notification-badge{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;}
+        .burger{cursor:pointer;width:38px;height:28px;display:flex;flex-direction:column;justify-content:space-between;z-index:10000;position:relative;}
+        .bline{width:100%;height:3px;background:linear-gradient(135deg,#4a90e2,#6fa8ec);border-radius:4px;transition:all .45s cubic-bezier(.68,-.55,.265,1.55);}
         .burger.active .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
         .burger.active .bline:nth-child(2){opacity:0;transform:translateX(20px);}
         .burger.active .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
-
-        /* ══ OVERLAY ══ */
-        .overlay,#snOverlay{
-            position:fixed;inset:0;background:rgba(26,41,66,0.65);
-            backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .45s;
-        }
+        .overlay,#snOverlay{position:fixed;inset:0;background:rgba(26,41,66,0.65);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .45s;}
         .overlay.show,#snOverlay.show{opacity:1;pointer-events:all;}
-
-        /* ══ SIDENAV ══ */
-        .sidenav,#snDrawer{
-            position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
-            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
-            backdrop-filter:blur(35px);
-            border-left:3px solid var(--accent-blue);
-            padding:28px 24px;overflow-y:auto;
-            transition:right .55s cubic-bezier(.68,-.55,.265,1.55);
-            box-shadow:-12px 0 50px rgba(26,41,66,0.15);
-        }
+        .sidenav,#snDrawer{position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-left:3px solid var(--accent-blue);padding:28px 24px;overflow-y:auto;transition:right .55s cubic-bezier(.68,-.55,.265,1.55);box-shadow:-12px 0 50px rgba(26,41,66,0.15);}
         .sidenav.show,#snDrawer.show{right:0!important;}
-        .sidenav::-webkit-scrollbar,#snDrawer::-webkit-scrollbar{width:8px;}
-        .sidenav::-webkit-scrollbar-thumb,#snDrawer::-webkit-scrollbar-thumb{background:var(--gradient-blue-glow);border-radius:8px;}
-
-        /* sidenav head */
         .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid var(--border-blue);}
         .sn-head h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
-        .sn-close{
-            width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;color:var(--accent-blue);font-size:1.4rem;
-            transition:all .4s cubic-bezier(.34,1.56,.64,1);
-        }
-        .sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
-
-        /* sidenav user card */
-        .sn-user{
-            display:flex;align-items:center;gap:15px;padding:18px;
-            background:rgba(74,144,226,0.07);border:1.5px solid var(--border-blue);
-            border-radius:18px;margin-bottom:20px;
-            transition:all .35s cubic-bezier(.34,1.56,.64,1);
-        }
-        .sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow-blue);border-color:var(--accent-blue);}
-        .sn-avatar{
-            width:56px;height:56px;border-radius:50%;background:var(--gradient-blue-glow);
-            display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;
-            border:3px solid #fff;box-shadow:0 6px 18px var(--shadow-blue);flex-shrink:0;
-        }
+        .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
+        .sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg);}
+        .sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid var(--border-blue);border-radius:18px;margin-bottom:20px;transition:all .35s;}
+        .sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow-blue);}
+        .sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px var(--shadow-blue);flex-shrink:0;}
         .sn-uname{color:var(--text-navy);font-size:1.05rem;font-weight:700;}
         .sn-urole{color:var(--text-gray);font-size:0.82rem;}
-
-        /* sidenav links */
         .sn-links{list-style:none;padding:0;margin:0;}
         .sn-links li{margin-bottom:4px;}
-        .sn-links a{
-            display:flex;align-items:center;justify-content:flex-end;gap:14px;
-            padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
-            color:var(--text-navy);border-radius:14px;
-            transition:all .4s cubic-bezier(.34,1.56,.64,1);
-            position:relative;overflow:hidden;
-        }
-        .sn-links a::before{
-            content:'';position:absolute;inset:0;
-            background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
-            transform:translateX(110%);border-radius:14px;
-            transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-        }
-        .sn-links a:hover::before{transform:translateX(0);}
+        .sn-links a{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;color:var(--text-navy);border-radius:14px;transition:all .4s;position:relative;overflow:hidden;}
         .sn-links a:hover{transform:translateX(-8px);color:var(--accent-blue);}
-        .sn-links a i{
-            color:var(--accent-blue);font-size:1.2rem;width:28px;text-align:center;
-            display:inline-block;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-        }
-        .sn-links a:hover i{transform:scale(1.3) rotate(-5deg);}
-
-        /* ══ DASHBOARD LINKS — تصميم خاص ══ */
-        .dash-link-teacher a{
-            background:linear-gradient(135deg,rgba(74,144,226,0.08),rgba(111,168,236,0.05));
-            border:1.5px solid rgba(74,144,226,0.25);border-radius:14px;
-            color:var(--accent-blue)!important;
-        }
-        .dash-link-teacher a i{color:var(--accent-blue)!important;}
-        .dash-link-teacher a:hover{
-            background:linear-gradient(135deg,rgba(74,144,226,0.18),rgba(111,168,236,0.12))!important;
-            border-color:var(--accent-blue)!important;
-        }
-        .dash-link-admin a{
-            background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(99,102,241,0.05));
-            border:1.5px solid rgba(139,92,246,0.25);border-radius:14px;
-            color:#8b5cf6!important;
-        }
-        .dash-link-admin a i{color:#8b5cf6!important;}
-        .dash-link-admin a:hover{
-            background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(99,102,241,0.12))!important;
-            border-color:#8b5cf6!important;
-        }
-
-        /* سطر فاصل قبل روابط الداشبورد */
-        .dash-divider{
-            height:1px;background:linear-gradient(to left,transparent,var(--border-blue),transparent);
-            margin:10px 8px;
-        }
-        .dash-section-label{
-            font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-            color:var(--accent-blue);padding:6px 16px 4px;opacity:0.7;
-        }
-
-        /* logout */
+        .sn-links a i{color:var(--accent-blue);font-size:1.2rem;width:28px;text-align:center;display:inline-block;}
+        .dash-link-teacher a{background:linear-gradient(135deg,rgba(74,144,226,0.08),rgba(111,168,236,0.05));border:1.5px solid rgba(74,144,226,0.25);border-radius:14px;color:var(--accent-blue)!important;}
+        .dash-link-admin a{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(99,102,241,0.05));border:1.5px solid rgba(139,92,246,0.25);border-radius:14px;color:#8b5cf6!important;}
+        .dash-divider{height:1px;background:linear-gradient(to left,transparent,var(--border-blue),transparent);margin:10px 8px;}
+        .dash-section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent-blue);padding:6px 16px 4px;opacity:0.7;}
         .sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
         .sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
-        .sn-logout a:hover{background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important;}
-
-        /* ══ SETTINGS TOGGLE IN SIDENAV ══ */
-        .sn-settings-toggle{
-            display:flex;align-items:center;justify-content:space-between;
-            padding:14px 16px;border-radius:14px;cursor:pointer;
-            background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
-            margin-bottom:4px;color:var(--text-navy);font-weight:700;font-size:0.95rem;
-            transition:all .4s cubic-bezier(.34,1.56,.64,1);
-        }
-        .sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:var(--accent-blue);}
+        .sn-settings-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;cursor:pointer;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);margin-bottom:4px;color:var(--text-navy);font-weight:700;font-size:0.95rem;transition:all .4s;}
+        .sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);}
         .sn-settings-toggle i{color:var(--accent-blue);}
-        .sn-settings-chevron{color:var(--accent-blue);font-size:0.8rem;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+        .sn-settings-chevron{color:var(--accent-blue);font-size:0.8rem;transition:transform .4s;}
         .sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
-        .sn-settings-panel{max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;opacity:0;}
+        .sn-settings-panel{max-height:0;overflow:hidden;transition:max-height .6s,opacity .4s;opacity:0;}
         .sn-settings-panel.open{max-height:800px;opacity:1;}
         .sn-settings-inner{padding:18px 14px;background:rgba(248,249,250,0.9);border:1.5px solid rgba(74,144,226,0.2);border-radius:16px;margin-top:8px;margin-bottom:8px;}
         .sn-s-label{font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-blue);margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;}
         .sn-s-label:first-child{margin-top:0;}
-        .sn-s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3));}
         .sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-        .sn-t-opt{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;height:70px;position:relative;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
-        .sn-t-opt:hover{transform:translateY(-3px);box-shadow:0 8px 20px var(--shadow-blue);}
-        .sn-t-opt.sel{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
+        .sn-t-opt{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;height:70px;position:relative;transition:all .35s;}
+        .sn-t-opt.sel{border-color:var(--accent-blue);}
         .sn-t-preview{width:100%;height:100%;}
         .sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
         .sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
         .sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
         .sn-t-light .sn-t-label{color:#1a2942;}
         .sn-t-dark .sn-t-label{color:#e8eef5;}
-        .sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+        .sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s;}
         .sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
         .sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-        .sn-g-opt{padding:10px 6px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(74,144,226,0.25);text-align:center;transition:all .35s cubic-bezier(.34,1.56,.64,1);position:relative;}
-        .sn-g-opt:hover{transform:translateY(-3px);border-color:var(--accent-blue);box-shadow:0 6px 16px var(--shadow-blue);}
+        .sn-g-opt{padding:10px 6px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(74,144,226,0.25);text-align:center;transition:all .35s;position:relative;}
         .sn-g-opt.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.08);}
         .sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
         .sn-g-name{font-size:0.65rem;font-weight:700;color:var(--text-navy);}
-        .sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+        .sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s;}
         .sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
-        .sn-font-row{padding:6px 2px;}
-        .sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background .15s;direction:ltr;}
-        .sn-font-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gradient-blue-glow);box-shadow:0 2px 10px var(--shadow-blue);cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
-        .sn-font-slider::-webkit-slider-thumb:hover{transform:scale(1.3);}
+        .sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));direction:ltr;}
         .sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
-        .sn-font-labels span{font-size:0.62rem;color:var(--text-gray);font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .2s;}
-        .sn-font-labels span:hover,.sn-font-labels span.act{background:rgba(74,144,226,0.1);color:var(--accent-blue);font-weight:800;}
-        .sn-save-btn{width:100%;margin-top:14px;padding:12px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:#fff;font-weight:700;font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;cursor:pointer;box-shadow:0 5px 16px var(--shadow-blue);transition:all .35s cubic-bezier(.34,1.56,.64,1);}
-        .sn-save-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px var(--shadow-glow);}
-
-        /* ══ TOAST ══ */
-        .sn-toast{
-            position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);
-            background:linear-gradient(135deg,var(--navy-dark),var(--navy-lighter));color:#fff;
-            padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;
-            opacity:0;pointer-events:none;z-index:99999;
-            box-shadow:0 8px 28px rgba(26,41,66,0.3);
-            display:flex;align-items:center;gap:9px;
-            transition:all .38s cubic-bezier(.34,1.56,.64,1);
-        }
+        .sn-font-labels span{font-size:0.62rem;color:var(--text-gray);font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;}
+        .sn-save-btn{width:100%;margin-top:14px;padding:12px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:#fff;font-weight:700;font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;cursor:pointer;}
+        .sn-toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,var(--navy-dark),var(--navy-lighter));color:#fff;padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;opacity:0;pointer-events:none;z-index:99999;box-shadow:0 8px 28px rgba(26,41,66,0.3);display:flex;align-items:center;gap:9px;transition:all .38s;}
         .sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-        /* ══ HERO ══ */
         .hero{padding-top:200px;padding-bottom:100px;text-align:center;position:relative;z-index:1;}
         .hero-content{max-width:950px;margin:0 auto;padding:0 30px;}
         .hero-badge{display:inline-block;padding:12px 30px;background:rgba(255,255,255,0.95);border:2px solid var(--accent-blue);border-radius:50px;color:var(--accent-blue);font-size:0.95rem;font-weight:700;letter-spacing:1.5px;margin-bottom:30px;animation:fadeInDown .8s ease-out;box-shadow:0 6px 20px var(--shadow-blue);}
         .hero h1{font-size:4.5rem;margin-bottom:25px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;letter-spacing:3px;line-height:1.2;animation:fadeInUp .8s ease-out .2s backwards;}
         .hero p{font-size:1.5rem;color:var(--text-gray);font-weight:500;line-height:1.9;animation:fadeInUp .8s ease-out .4s backwards;margin-bottom:40px;max-width:800px;margin-left:auto;margin-right:auto;}
         .hero-cta{display:flex;gap:25px;justify-content:center;flex-wrap:wrap;animation:fadeInUp .8s ease-out .6s backwards;}
-        .cta-btn{padding:18px 45px;border-radius:50px;font-size:1.15rem;font-weight:700;cursor:pointer;transition:all .4s;text-decoration:none;display:inline-flex;align-items:center;gap:12px;border:none;position:relative;overflow:hidden;}
-        .cta-btn>*{position:relative;z-index:1;}
+        .cta-btn{padding:18px 45px;border-radius:50px;font-size:1.15rem;font-weight:700;cursor:pointer;transition:all .4s;text-decoration:none;display:inline-flex;align-items:center;gap:12px;border:none;}
         .cta-primary{background:var(--gradient-blue-glow);color:#fff;box-shadow:0 12px 35px var(--shadow-blue);}
         .cta-primary:hover{transform:translateY(-5px);box-shadow:0 18px 45px var(--shadow-glow);}
         .cta-secondary{background:transparent;color:var(--accent-blue);border:3px solid var(--accent-blue);}
         .cta-secondary:hover{background:var(--glass-strong);transform:translateY(-5px);}
-
-        /* ══ STATS ══ */
         .stats-section{max-width:1300px;margin:-50px auto 80px;padding:0 50px;position:relative;z-index:2;}
         .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;direction:ltr;}
         .stat-card{background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:25px;padding:35px 25px;text-align:center;transition:all .4s;direction:rtl;box-shadow:0 8px 25px rgba(26,41,66,0.08);position:relative;overflow:hidden;}
-        .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:var(--gradient-blue-glow);transform:scaleX(0);transition:transform .4s;}
-        .stat-card:hover::before{transform:scaleX(1);}
         .stat-card:hover{transform:translateY(-12px);box-shadow:0 18px 45px rgba(74,144,226,0.25);border-color:var(--accent-blue);}
         .stat-icon{font-size:3rem;background:var(--gradient-blue-glow);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;}
         .stat-number{font-size:1.8rem;font-weight:100;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
         .stat-label{color:var(--text-gray);font-size:1.05rem;font-weight:600;}
-
-        /* ══ EXPLORE ══ */
         .section-header{text-align:center;margin-bottom:60px;}
         .section-title{font-size:3rem;font-weight:900;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;letter-spacing:2px;}
         .section-subtitle{color:var(--text-gray);font-size:1.2rem;font-weight:500;max-width:700px;margin:0 auto;line-height:1.8;}
         .grid-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:40px;max-width:1500px;margin:0 auto;padding:0 50px 120px;direction:ltr;position:relative;z-index:1;}
-        .card{background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:30px;overflow:hidden;transition:all .5s cubic-bezier(.175,.885,.32,1.275);position:relative;height:420px;cursor:pointer;text-decoration:none;direction:rtl;display:flex;align-items:flex-end;box-shadow:0 12px 45px rgba(26,41,66,0.15);}
-        .card::after{content:'';position:absolute;inset:-3px;background:var(--gradient-blue-glow);border-radius:30px;z-index:-1;opacity:0;transition:opacity .5s;}
-        .card:hover::after{opacity:1;}
-        .card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,transparent 0%,rgba(26,41,66,0.8) 100%);opacity:0;transition:opacity .5s;z-index:1;}
+        .card{background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:30px;overflow:hidden;transition:all .5s;position:relative;height:420px;cursor:pointer;text-decoration:none;direction:rtl;display:flex;align-items:flex-end;box-shadow:0 12px 45px rgba(26,41,66,0.15);}
         .card:hover{transform:translateY(-20px) scale(1.02);box-shadow:0 30px 70px rgba(74,144,226,0.4);}
-        .card:hover::before{opacity:1;}
-        .card-img{position:absolute;width:100%;height:100%;object-fit:cover;opacity:0.35;transition:all .6s;filter:grayscale(20%) brightness(0.9);}
-        .card:hover .card-img{opacity:0.12;transform:scale(1.1);filter:grayscale(0%) brightness(0.5);}
+        .card-img{position:absolute;width:100%;height:100%;object-fit:cover;opacity:0.35;transition:all .6s;}
+        .card:hover .card-img{opacity:0.12;transform:scale(1.1);}
         .card-content{position:relative;z-index:2;width:100%;padding:45px 35px;background:linear-gradient(to top,rgba(26,41,66,0.98) 0%,rgba(26,41,66,0.85) 40%,transparent 100%);text-align:right;display:flex;flex-direction:column;gap:16px;transition:all .5s;}
-        .card:hover .card-content{padding-bottom:55px;}
         .card-header{display:flex;align-items:center;justify-content:flex-end;gap:20px;}
-        .card-icon{font-size:3.5rem;background:var(--gradient-white-navy);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:all .5s;cursor:default;display:inline-block;}
+        .card-icon{font-size:3.5rem;transition:all .5s;cursor:default;display:inline-block;}
         .card:hover .card-icon{transform:scale(1.25) rotate(10deg);}
-        .card-title{color:#fff;font-size:2.2rem;font-weight:900;text-shadow:0 4px 20px rgba(0,0,0,0.8);letter-spacing:1px;transition:transform .5s;}
-        .card:hover .card-title{transform:translateX(-8px);}
+        .card-title{color:#fff;font-size:2.2rem;font-weight:900;text-shadow:0 4px 20px rgba(0,0,0,0.8);letter-spacing:1px;}
         .card-description{color:var(--blue-lightest);font-size:1.05rem;line-height:1.8;opacity:0;transform:translateY(20px);transition:all .5s .1s;max-height:0;overflow:hidden;}
         .card:hover .card-description{opacity:1;transform:translateY(0);max-height:200px;}
         .card-badge{position:absolute;top:25px;left:25px;padding:8px 20px;background:var(--gradient-blue-glow);color:#fff;border-radius:50px;font-size:0.85rem;font-weight:700;z-index:3;opacity:0;transform:translateY(-20px);transition:all .4s .2s;}
         .card:hover .card-badge{opacity:1;transform:translateY(0);}
-
-        /* ══ FOOTER ══ */
         .footer{background:linear-gradient(180deg,rgba(26,41,66,0.98) 0%,rgba(10,22,40,1) 100%);border-top:2px solid var(--accent-blue);padding:60px 50px 35px;position:relative;z-index:1;}
         .footer-content{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:50px;margin-bottom:40px;}
         .footer-section h3{color:var(--accent-light-blue);font-size:1.3rem;margin-bottom:22px;font-weight:800;}
-        .footer-section p,.footer-section a{color:var(--blue-lightest);line-height:2.2;text-decoration:none;display:block;font-size:1rem;transition:transform .3s cubic-bezier(.34,1.56,.64,1),color .3s;}
-        .footer-section a:hover{color:#fff;transform:translateX(-8px) scale(1.04);}
+        .footer-section p,.footer-section a{color:var(--blue-lightest);line-height:2.2;text-decoration:none;display:block;font-size:1rem;transition:transform .3s,color .3s;}
+        .footer-section a:hover{color:#fff;transform:translateX(-8px);}
         .footer-bottom{text-align:center;padding-top:30px;border-top:1px solid var(--border-white);color:var(--blue-lightest);font-size:1rem;}
-
-        /* ══ SCROLL TOP ══ */
         .scroll-top{position:fixed;bottom:100px;left:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .4s;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);}
         .scroll-top.visible{opacity:1;pointer-events:all;}
-        .scroll-top:hover{transform:translateY(-5px) scale(1.1);}
         .scroll-top i{color:#fff;font-size:1.4rem;}
-
-        /* ══ SETTINGS FAB + PANEL ══ */
         .settings-fab{position:fixed;bottom:35px;right:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);transition:all .3s;border:none;}
-        .settings-fab:hover{transform:scale(1.1) rotate(30deg);box-shadow:0 10px 28px var(--shadow-glow);}
+        .settings-fab:hover{transform:scale(1.1) rotate(30deg);}
         .settings-fab i{color:#fff;font-size:1.3rem;}
         .settings-panel{position:fixed;top:0;left:0;width:400px;height:100%;z-index:4000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-right:3px solid var(--accent-blue);overflow-y:auto;padding:32px 28px;box-shadow:15px 0 50px rgba(26,41,66,0.2);transform:translateX(-100%);transition:transform .55s cubic-bezier(.68,-.55,.265,1.55);}
         .settings-panel.open{transform:translateX(0);}
-        .settings-panel::-webkit-scrollbar{width:8px;}
-        .settings-panel::-webkit-scrollbar-thumb{background:var(--gradient-blue-glow);border-radius:8px;}
         .sp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid var(--border-blue);}
         .sp-header h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
         .sp-close{width:40px;height:40px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .3s;}
@@ -436,7 +191,6 @@
         .sp-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-blue),transparent);}
         .sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
         .sp-opt{position:relative;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid var(--border-blue);height:85px;transition:all .3s;}
-        .sp-opt:hover{transform:translateY(-3px);box-shadow:0 8px 22px var(--shadow-blue);}
         .sp-opt.sel{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(74,144,226,0.15);}
         .sp-preview{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
         .sp-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
@@ -446,94 +200,31 @@
         .sp-opt-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:0.75rem;font-weight:700;}
         .sp-light .sp-opt-label{color:#1a2942;}
         .sp-dark .sp-opt-label,.sp-ar .sp-opt-label,.sp-en .sp-opt-label{color:#fff;}
-        .sp-check{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.6rem;opacity:0;transform:scale(0.3);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+        .sp-check{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.6rem;opacity:0;transform:scale(0.3);transition:all .25s;}
         .sp-opt.sel .sp-check{opacity:1;transform:scale(1);}
         .sp-font-row{display:flex;gap:8px;}
         .sp-font-btn{flex:1;padding:11px 6px;border:2px solid var(--border-blue);border-radius:11px;background:rgba(255,255,255,0.6);cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-weight:600;color:var(--text-navy);transition:all .3s;text-align:center;font-size:0.82rem;}
-        .sp-font-btn:hover{border-color:var(--accent-blue);}
         .sp-font-btn.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.1);color:var(--accent-blue);}
-        .sp-save-btn{width:100%;padding:13px;background:var(--gradient-blue-glow);border:none;border-radius:13px;color:#fff;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;transition:all .3s;box-shadow:0 5px 16px var(--shadow-blue);}
-        .sp-save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--shadow-glow);}
+        .sp-save-btn{width:100%;padding:13px;background:var(--gradient-blue-glow);border:none;border-radius:13px;color:#fff;font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px;}
         .sp-saved{color:var(--accent-blue);font-size:0.85rem;text-align:center;margin-top:10px;height:20px;opacity:0;transition:opacity .3s;}
         .sp-saved.show{opacity:1;}
-
-        /* ══ ANIMATIONS ══ */
         @keyframes fadeInDown{from{opacity:0;transform:translateY(-40px);}to{opacity:1;transform:translateY(0);}}
         @keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-
-        /* ══ ICON HOVER ANIMATIONS ══ */
-        @keyframes iconBounce{0%{transform:scale(1) rotate(0deg);}30%{transform:scale(1.35) rotate(-12deg);}60%{transform:scale(1.2) rotate(8deg);}80%{transform:scale(1.28) rotate(-5deg);}100%{transform:scale(1.25) rotate(0deg);}}
-        @keyframes iconBounceOut{0%{transform:scale(1.25) rotate(0deg);}40%{transform:scale(0.9) rotate(5deg);}100%{transform:scale(1) rotate(0deg);}}
-        @keyframes statIconSpin{0%{transform:scale(1) rotate(0deg);}25%{transform:scale(1.3) rotate(-15deg);}50%{transform:scale(1.4) rotate(10deg);}75%{transform:scale(1.3) rotate(-5deg);}100%{transform:scale(1.3) rotate(0deg);}}
-        .card-icon.icon-hover{animation:iconBounce .5s cubic-bezier(.34,1.56,.64,1) forwards;}
-        .card-icon.icon-out{animation:iconBounceOut .4s ease forwards;}
-        .stat-icon-hover{animation:statIconSpin .55s cubic-bezier(.34,1.56,.64,1) forwards!important;}
-        .stat-icon-out{animation:iconBounceOut .4s ease forwards!important;}
-        .sn-link-icon-hover{animation:iconBounce .45s cubic-bezier(.34,1.56,.64,1) forwards!important;}
-        .sn-link-icon-out{animation:iconBounceOut .35s ease forwards!important;}
-
-        /* ══ FALLBACKS ══ */
-        @supports not (-webkit-background-clip:text){
-            .hero h1,.section-title,.stat-number,.logo{color:#1a2942!important;background:none!important;}
-        }
-        @supports not (backdrop-filter:blur(1px)){
-            nav.top-bar,#snDrawer,.settings-panel{background:rgba(255,255,255,0.97)!important;}
-            #snOverlay,.overlay{background:rgba(26,41,66,0.88)!important;}
-        }
-        @media(prefers-reduced-motion:reduce){
-            *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
-        }
-
-        /* ══ RESPONSIVE ══ */
         @media(max-width:768px){
             nav.top-bar{padding:16px 20px!important;}
-            nav.top-bar.scrolled{padding:12px 20px!important;}
             .hero{padding-top:160px;padding-bottom:60px;}
             .hero h1{font-size:2.5rem;}
             .hero p{font-size:1.15rem;}
             .hero-cta{flex-direction:column;align-items:center;}
-            .cta-btn{width:100%;max-width:320px;justify-content:center;}
             .stats-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
             .stats-section{padding:0 20px;}
             .section-title{font-size:2.2rem;}
             .grid-container{grid-template-columns:1fr;gap:22px;padding:0 22px 60px;}
             .card{height:340px;}
             #snDrawer{width:100%;right:-100%!important;}
-            #snDrawer.show{right:0!important;}
-            .settings-panel{width:100%;}
-            .lang-trigger-btn{min-width:90px;padding:8px 12px;font-size:0.8rem;}
-        }
-        @media(max-width:480px){
-            .hero h1{font-size:2rem;}
-            .stats-grid{grid-template-columns:1fr;}
-            .lang-label{display:none;}
-            .lang-trigger-btn{min-width:auto;}
         }
     </style>
     <script src="settings-apply.js"></script>
-    <script>
-    /* Font Awesome fallback */
-    (function(){
-        function checkFA(){
-            var probe=document.createElement('span');
-            probe.setAttribute('style','font-family:"Font Awesome 6 Free";font-weight:900;font-size:16px;position:absolute;left:-9999px;top:-9999px;visibility:hidden;');
-            probe.innerHTML='&#xf00c;';
-            document.body.appendChild(probe);
-            var computed=window.getComputedStyle(probe).fontFamily;
-            var width=probe.offsetWidth;
-            document.body.removeChild(probe);
-            var faLoaded=computed&&computed.toLowerCase().indexOf('font awesome')!==-1&&width>0&&width<25;
-            if(!faLoaded){
-                var link=document.createElement('link');
-                link.rel='stylesheet';link.crossOrigin='anonymous';
-                link.href='https://use.fontawesome.com/releases/v6.5.2/css/all.css';
-                document.head.appendChild(link);
-            }
-        }
-        if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',checkFA);
-        else checkFA();
-    })();
-    </script>
 </head>
 <body>
 
@@ -543,7 +234,6 @@
     <div class="bg-shape shape-3"></div>
 </div>
 
-<!-- ══ NAV ══ -->
 <nav class="top-bar" id="navbar">
     <a href="index.html" class="logo-container">
         <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
@@ -571,7 +261,10 @@
                 </div>
             </div>
         </div>
-        <a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a>
+
+        <!-- ══ رابط البروفايل — يتغير حسب نوع المستخدم تلقائياً ══ -->
+        <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
+
         <div class="notification-btn" onclick="showNotifications()">
             <i class="fas fa-bell"></i>
             <span class="notification-badge" id="notifBadge">3</span>
@@ -582,7 +275,6 @@
     </div>
 </nav>
 
-<!-- ══ OVERLAY + SIDENAV ══ -->
 <div class="overlay" id="snOverlay" onclick="snClose()"></div>
 <div class="sidenav" id="snDrawer">
     <div class="sn-head">
@@ -590,7 +282,6 @@
         <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
 
-    <!-- بيانات المستخدم -->
     <div class="sn-user">
         <div class="sn-avatar" id="snAvatar">👤</div>
         <div>
@@ -599,7 +290,6 @@
         </div>
     </div>
 
-    <!-- روابط رئيسية -->
     <ul class="sn-links">
         <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
         <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
@@ -616,35 +306,21 @@
         <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
         <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
 
-        <!-- ══ روابط الداشبورد حسب الدور (مخفية افتراضياً) ══ -->
         <li id="dashDivider" style="display:none;">
             <div class="dash-divider"></div>
             <div class="dash-section-label">لوحات التحكم</div>
         </li>
-
-        <!-- لوحة المعلم — للمعلمين فقط -->
         <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
-            <a href="Teacher-dashboard.html">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>لوحة المعلم</span>
-            </a>
+            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
         </li>
-
-        <!-- لوحة الإدارة — للمدير ومساعد المدير -->
         <li id="adminDashLink" style="display:none;" class="dash-link-admin">
-            <a href="Principal-dashboard.html">
-                <i class="fas fa-user-shield"></i>
-                <span>لوحة الإدارة</span>
-            </a>
+            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
         </li>
     </ul>
 
-    <!-- الإعدادات -->
     <div style="margin-top:12px;">
         <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
-            <span style="display:flex;align-items:center;gap:10px;">
-                <i class="fas fa-sliders-h"></i> الإعدادات
-            </span>
+            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
             <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
         </div>
         <div class="sn-settings-panel" id="snSettingsPanel">
@@ -664,21 +340,12 @@
                 </div>
                 <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
                 <div class="sn-g-row">
-                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
-                        <span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div>
-                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-                    </div>
-                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
-                        <span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div>
-                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-                    </div>
-                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
-                        <span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div>
-                        <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-                    </div>
+                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')"><span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')"><span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')"><span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
                 </div>
                 <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
-                <div class="sn-font-row">
+                <div>
                     <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)">
                     <div class="sn-font-labels">
                         <span onclick="snSetFont(0)" data-idx="0">S</span>
@@ -692,16 +359,13 @@
         </div>
     </div>
 
-    <!-- تسجيل الخروج -->
     <ul class="sn-links sn-logout" style="margin-top:16px;">
         <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
     </ul>
 </div>
 
-<!-- TOAST -->
 <div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
 
-<!-- ══ HERO ══ -->
 <header class="hero">
     <div class="hero-content">
         <div class="hero-badge" data-i18n="heroBadge">✨ مرحباً بك في المستقبل</div>
@@ -720,226 +384,126 @@
     </div>
 </header>
 
-<!-- ══ STATS ══ -->
 <section class="stats-section">
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-users"></i></div>
-            <div class="stat-number" data-i18n="stat1Title">مجتمعٌ عالمي نُعيد صياغته</div>
-            <div class="stat-label" data-i18n="stat1Desc">نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-video"></i></div>
-            <div class="stat-number" data-i18n="stat2Title">المحتوى الذي لم يجرؤ أحد على تقديمه</div>
-            <div class="stat-label" data-i18n="stat2Desc">أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق والعمل الدؤوب.</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-certificate"></i></div>
-            <div class="stat-number" data-i18n="stat3Title">اعترافاتٌ تليق بكبار الطموح</div>
-            <div class="stat-label" data-i18n="stat3Desc">أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-award"></i></div>
-            <div class="stat-number" data-i18n="stat4Title">صرامة الإتقان</div>
-            <div class="stat-label" data-i18n="stat4Desc">نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.</div>
-        </div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-number" data-i18n="stat1Title">مجتمعٌ عالمي نُعيد صياغته</div><div class="stat-label" data-i18n="stat1Desc">نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-video"></i></div><div class="stat-number" data-i18n="stat2Title">المحتوى الذي لم يجرؤ أحد على تقديمه</div><div class="stat-label" data-i18n="stat2Desc">أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق والعمل الدؤوب.</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-certificate"></i></div><div class="stat-number" data-i18n="stat3Title">اعترافاتٌ تليق بكبار الطموح</div><div class="stat-label" data-i18n="stat3Desc">أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-award"></i></div><div class="stat-number" data-i18n="stat4Title">صرامة الإتقان</div><div class="stat-label" data-i18n="stat4Desc">نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.</div></div>
     </div>
 </section>
 
-<!-- ══ EXPLORE ══ -->
 <section id="explore">
     <div class="section-header">
         <h2 class="section-title" data-i18n="exploreTitle">استكشف عالمك التعليمي</h2>
         <p class="section-subtitle" data-i18n="exploreSubtitle">اختر المجال الذي يناسب اهتماماتك وابدأ رحلتك نحو التميز</p>
     </div>
     <div class="grid-container">
-        <a href="videos.html" class="card">
-            <span class="card-badge" data-i18n="badge1">جديد</span>
-            <img src="https://images.pexels.com/photos/3769714/pexels-photo-3769714.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Videos" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-play-circle"></i></span><div class="card-title" data-i18n="card1Title">الفيديوهات التعليمية</div></div>
-                <p class="card-description" data-i18n="card1Desc">مكتبة شاملة من الدروس المرئية عالية الجودة مع شروحات تفاعلية ومبسطة</p>
-            </div>
-        </a>
-        <a href="articals.html" class="card">
-            <span class="card-badge" data-i18n="badge2">مميز</span>
-            <img src="https://images.pexels.com/photos/267669/pexels-photo-267669.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Articles" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-feather-alt"></i></span><div class="card-title" data-i18n="card2Title">المقالات الحصرية</div></div>
-                <p class="card-description" data-i18n="card2Desc">محتوى تعليمي متخصص ومقالات علمية متميزة من خبراء في مختلف المجالات</p>
-            </div>
-        </a>
-        <a href="games.html" class="card">
-            <span class="card-badge" data-i18n="badge3">ممتع</span>
-            <img src="https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Games" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-chess"></i></span><div class="card-title" data-i18n="card3Title">ساحة الألعاب</div></div>
-                <p class="card-description" data-i18n="card3Desc">تعلم بطريقة ممتعة من خلال الألعاب التفاعلية والتحديات الذهنية المثيرة</p>
-            </div>
-        </a>
-        <a href="exams.html" class="card">
-            <span class="card-badge" data-i18n="badge4">تقييم</span>
-            <img src="https://images.pexels.com/photos/3747435/pexels-photo-3747435.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Exams" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-pen-fancy"></i></span><div class="card-title" data-i18n="card4Title">مركز الاختبارات</div></div>
-                <p class="card-description" data-i18n="card4Desc">اختبارات تقييمية شاملة لقياس مستواك وتتبع تقدمك في مسيرتك التعليمية</p>
-            </div>
-        </a>
-        <a href="sign_language_hub.html" class="card">
-            <span class="card-badge" data-i18n="badge5">شامل</span>
-            <img src="https://images.pexels.com/photos/8422149/pexels-photo-8422149.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Sign Language" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-hands"></i></span><div class="card-title" data-i18n="card5Title">مركز لغة الإشارة</div></div>
-                <p class="card-description" data-i18n="card5Desc">تعلم لغة الإشارة بطريقة تفاعلية ومبسطة مع دروس عملية ومتخصصة</p>
-            </div>
-        </a>
-        <a href="questions.html" class="card">
-            <span class="card-badge" data-i18n="badge6">تواصل</span>
-            <img src="https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Questions" onerror="this.style.display='none'">
-            <div class="card-content">
-                <div class="card-header"><span class="card-icon"><i class="fas fa-comment-dots"></i></span><div class="card-title" data-i18n="card6Title">قسم الاستفسارات</div></div>
-                <p class="card-description" data-i18n="card6Desc">تواصل معنا وشارك أفكارك واستفساراتك مع مجتمع SITEJ</p>
-            </div>
-        </a>
+        <a href="videos.html" class="card"><span class="card-badge" data-i18n="badge1">جديد</span><img src="https://images.pexels.com/photos/3769714/pexels-photo-3769714.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Videos" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-play-circle"></i></span><div class="card-title" data-i18n="card1Title">الفيديوهات التعليمية</div></div><p class="card-description" data-i18n="card1Desc">مكتبة شاملة من الدروس المرئية عالية الجودة مع شروحات تفاعلية ومبسطة</p></div></a>
+        <a href="articals.html" class="card"><span class="card-badge" data-i18n="badge2">مميز</span><img src="https://images.pexels.com/photos/267669/pexels-photo-267669.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Articles" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-feather-alt"></i></span><div class="card-title" data-i18n="card2Title">المقالات الحصرية</div></div><p class="card-description" data-i18n="card2Desc">محتوى تعليمي متخصص ومقالات علمية متميزة من خبراء في مختلف المجالات</p></div></a>
+        <a href="games.html" class="card"><span class="card-badge" data-i18n="badge3">ممتع</span><img src="https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Games" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-chess"></i></span><div class="card-title" data-i18n="card3Title">ساحة الألعاب</div></div><p class="card-description" data-i18n="card3Desc">تعلم بطريقة ممتعة من خلال الألعاب التفاعلية والتحديات الذهنية المثيرة</p></div></a>
+        <a href="exams.html" class="card"><span class="card-badge" data-i18n="badge4">تقييم</span><img src="https://images.pexels.com/photos/3747435/pexels-photo-3747435.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Exams" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-pen-fancy"></i></span><div class="card-title" data-i18n="card4Title">مركز الاختبارات</div></div><p class="card-description" data-i18n="card4Desc">اختبارات تقييمية شاملة لقياس مستواك وتتبع تقدمك في مسيرتك التعليمية</p></div></a>
+        <a href="sign_language_hub.html" class="card"><span class="card-badge" data-i18n="badge5">شامل</span><img src="https://images.pexels.com/photos/8422149/pexels-photo-8422149.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Sign Language" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-hands"></i></span><div class="card-title" data-i18n="card5Title">مركز لغة الإشارة</div></div><p class="card-description" data-i18n="card5Desc">تعلم لغة الإشارة بطريقة تفاعلية ومبسطة مع دروس عملية ومتخصصة</p></div></a>
+        <a href="questions.html" class="card"><span class="card-badge" data-i18n="badge6">تواصل</span><img src="https://images.pexels.com/photos/8386434/pexels-photo-8386434.jpeg?auto=compress&cs=tinysrgb&w=1200" class="card-img" alt="Questions" onerror="this.style.display='none'"><div class="card-content"><div class="card-header"><span class="card-icon"><i class="fas fa-comment-dots"></i></span><div class="card-title" data-i18n="card6Title">قسم الاستفسارات</div></div><p class="card-description" data-i18n="card6Desc">تواصل معنا وشارك أفكارك واستفساراتك مع مجتمع SITEJ</p></div></a>
     </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
 <footer class="footer">
     <div class="footer-content">
-        <div class="footer-section">
-            <h3 data-i18n="footerAboutTitle">عن SITEJ</h3>
-            <p data-i18n="footerAboutDesc">منصة تعليمية ذكية رائدة توفر تجربة تعليمية فريدة ومتطورة للطلاب في جميع أنحاء المنطقة.</p>
-        </div>
-        <div class="footer-section">
-            <h3 data-i18n="footerLinksTitle">روابط سريعة</h3>
-            <a href="videos.html" data-i18n="navVideos">الفيديوهات التعليمية</a>
-            <a href="articals.html" data-i18n="navArticles">المقالات الحصرية</a>
-            <a href="games.html" data-i18n="navGames">ساحة الألعاب</a>
-            <a href="exams.html" data-i18n="navExams">مركز الاختبارات</a>
-        </div>
-        <div class="footer-section">
-            <h3 data-i18n="footerSupportTitle">الدعم</h3>
-            <a href="questions.html" data-i18n="footerHelp">مركز المساعدة</a>
-            <a href="questions.html" data-i18n="footerFaq">الأسئلة الشائعة</a>
-            <a href="settings.html" data-i18n="navSettings">الإعدادات</a>
-        </div>
-        <div class="footer-section">
-            <h3 data-i18n="footerContactTitle">تواصل معنا</h3>
-            <p><i class="fas fa-envelope"></i> info@sitej.edu</p>
-            <p><i class="fas fa-map-marker-alt"></i> <span data-i18n="footerLocation">قرية سالم, مدرسة سالم الثانوية للبنين</span></p>
-        </div>
+        <div class="footer-section"><h3>عن SITEJ</h3><p>منصة تعليمية ذكية رائدة توفر تجربة تعليمية فريدة ومتطورة للطلاب في جميع أنحاء المنطقة.</p></div>
+        <div class="footer-section"><h3>روابط سريعة</h3><a href="videos.html">الفيديوهات التعليمية</a><a href="articals.html">المقالات الحصرية</a><a href="games.html">ساحة الألعاب</a><a href="exams.html">مركز الاختبارات</a></div>
+        <div class="footer-section"><h3>الدعم</h3><a href="questions.html">مركز المساعدة</a><a href="questions.html">الأسئلة الشائعة</a><a href="settings.html">الإعدادات</a></div>
+        <div class="footer-section"><h3>تواصل معنا</h3><p><i class="fas fa-envelope"></i> info@sitej.edu</p><p><i class="fas fa-map-marker-alt"></i> قرية سالم, مدرسة سالم الثانوية للبنين</p></div>
     </div>
-    <div class="footer-bottom"><p data-i18n="footerCopy">© 2026 SITEJ. جميع الحقوق محفوظة</p></div>
+    <div class="footer-bottom"><p>© 2026 SITEJ. جميع الحقوق محفوظة</p></div>
 </footer>
 
-<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <i class="fas fa-arrow-up"></i>
-</div>
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
-<!-- ══ SETTINGS FAB + PANEL ══ -->
 <button class="settings-fab" onclick="toggleSettingsPanel()"><i class="fas fa-cog"></i></button>
 <div class="settings-panel" id="settingsPanel">
-    <div class="sp-header">
-        <h2>⚙ الإعدادات</h2>
-        <div class="sp-close" onclick="toggleSettingsPanel()"><i class="fas fa-times"></i></div>
-    </div>
-    <div class="sp-section">
-        <div class="sp-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
-        <div class="sp-grid">
-            <div class="sp-opt" id="sp-th-light" onclick="spPickTheme('light')">
-                <div class="sp-preview sp-light"></div><div class="sp-opt-label">فاتح</div>
-                <div class="sp-check"><i class="fas fa-check"></i></div>
-            </div>
-            <div class="sp-opt" id="sp-th-dark" onclick="spPickTheme('dark')">
-                <div class="sp-preview sp-dark"></div><div class="sp-opt-label">داكن</div>
-                <div class="sp-check"><i class="fas fa-check"></i></div>
-            </div>
-        </div>
-    </div>
-    <div class="sp-section">
-        <div class="sp-label"><i class="fas fa-text-height"></i> حجم الخط</div>
-        <div class="sp-font-row">
-            <div class="sp-font-btn" id="sp-fs-small"  onclick="spPickFont('small')">صغير</div>
-            <div class="sp-font-btn" id="sp-fs-medium" onclick="spPickFont('medium')">متوسط</div>
-            <div class="sp-font-btn" id="sp-fs-large"  onclick="spPickFont('large')">كبير</div>
-            <div class="sp-font-btn" id="sp-fs-xlarge" onclick="spPickFont('xlarge')">أكبر</div>
-        </div>
-    </div>
-    <div class="sp-section">
-        <div class="sp-label"><i class="fas fa-language"></i> اللغة</div>
-        <div class="sp-grid">
-            <div class="sp-opt" id="sp-lg-ar" onclick="spPickLang('ar')">
-                <div class="sp-preview sp-ar">🇸🇦</div><div class="sp-opt-label">العربية</div>
-                <div class="sp-check"><i class="fas fa-check"></i></div>
-            </div>
-            <div class="sp-opt" id="sp-lg-en" onclick="spPickLang('en')">
-                <div class="sp-preview sp-en">🇬🇧</div><div class="sp-opt-label">English</div>
-                <div class="sp-check"><i class="fas fa-check"></i></div>
-            </div>
-        </div>
-    </div>
+    <div class="sp-header"><h2>⚙ الإعدادات</h2><div class="sp-close" onclick="toggleSettingsPanel()"><i class="fas fa-times"></i></div></div>
+    <div class="sp-section"><div class="sp-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div><div class="sp-grid"><div class="sp-opt" id="sp-th-light" onclick="spPickTheme('light')"><div class="sp-preview sp-light"></div><div class="sp-opt-label">فاتح</div><div class="sp-check"><i class="fas fa-check"></i></div></div><div class="sp-opt" id="sp-th-dark" onclick="spPickTheme('dark')"><div class="sp-preview sp-dark"></div><div class="sp-opt-label">داكن</div><div class="sp-check"><i class="fas fa-check"></i></div></div></div></div>
+    <div class="sp-section"><div class="sp-label"><i class="fas fa-text-height"></i> حجم الخط</div><div class="sp-font-row"><div class="sp-font-btn" id="sp-fs-small" onclick="spPickFont('small')">صغير</div><div class="sp-font-btn" id="sp-fs-medium" onclick="spPickFont('medium')">متوسط</div><div class="sp-font-btn" id="sp-fs-large" onclick="spPickFont('large')">كبير</div><div class="sp-font-btn" id="sp-fs-xlarge" onclick="spPickFont('xlarge')">أكبر</div></div></div>
+    <div class="sp-section"><div class="sp-label"><i class="fas fa-language"></i> اللغة</div><div class="sp-grid"><div class="sp-opt" id="sp-lg-ar" onclick="spPickLang('ar')"><div class="sp-preview sp-ar">🇸🇦</div><div class="sp-opt-label">العربية</div><div class="sp-check"><i class="fas fa-check"></i></div></div><div class="sp-opt" id="sp-lg-en" onclick="spPickLang('en')"><div class="sp-preview sp-en">🇬🇧</div><div class="sp-opt-label">English</div><div class="sp-check"><i class="fas fa-check"></i></div></div></div></div>
     <button class="sp-save-btn" onclick="spSave()">💾 حفظ الإعدادات</button>
     <div class="sp-saved" id="spSaved">✅ تم الحفظ!</div>
-    <p style="text-align:center;margin-top:18px;">
-        <a href="settings.html" style="color:var(--accent-blue);font-size:0.9rem;font-weight:600;">إعدادات متقدمة ←</a>
-    </p>
 </div>
 
 <script>
-/* ══════════════════════════════════════════
-   نظام الصلاحيات — إظهار روابط الداشبورد
-   ══════════════════════════════════════════ */
-(function(){
-    var role     = localStorage.getItem('userRole')    || '';
-    var uid      = localStorage.getItem('userUid')     || '';
-    var userName = localStorage.getItem('userName')    || localStorage.getItem('studentName') || '';
+/* ══════════════════════════════════════════════════
+   نظام الصلاحيات — مُصلح بالكامل
+   ══════════════════════════════════════════════════ */
+(function () {
+    var role = localStorage.getItem('userRole') || '';
+    var uid  = localStorage.getItem('userUid')  || '';
+
+    // ════ الاسم: حسب نوع المستخدم بدقة ════
+    var userName = '';
+    if (role === 'student') {
+        // الطالب: من studentName فقط
+        userName = localStorage.getItem('studentName') || '';
+    } else {
+        // الكادر: من userName فقط
+        userName = localStorage.getItem('userName') || '';
+    }
 
     var roleLabels = {
-        teacher:       'معلم',
-        vice_principal:'مساعد مدير',
-        principal:     'مدير المدرسة',
-        student:       'طالب'
+        teacher:        'معلم',
+        vice_principal: 'مساعد مدير',
+        principal:      'مدير المدرسة',
+        student:        'طالب'
     };
 
-    /* تحديث بطاقة المستخدم في الـ sidenav */
-    var unameEl = document.getElementById('snUserName');
-    var uroleEl = document.getElementById('snUserRole');
-    var avatarEl= document.getElementById('snAvatar');
+    // تحديث بطاقة المستخدم في الـ sidenav
+    var unameEl  = document.getElementById('snUserName');
+    var uroleEl  = document.getElementById('snUserRole');
+    var avatarEl = document.getElementById('snAvatar');
 
-    if(unameEl) unameEl.textContent = userName || 'مرحباً بك';
-    if(uroleEl) uroleEl.textContent = roleLabels[role] || 'زائر';
-    if(avatarEl && userName){
-        /* حرف أول من الاسم كـ avatar */
+    if (unameEl) unameEl.textContent = userName || 'مرحباً بك';
+    if (uroleEl) uroleEl.textContent = roleLabels[role] || 'زائر';
+    if (avatarEl && userName) {
         var firstChar = userName.trim().charAt(0);
-        if(firstChar && firstChar !== '👤'){
-            avatarEl.textContent = '';
-            avatarEl.style.fontSize = '1.4rem';
+        if (firstChar && firstChar !== '👤') {
+            avatarEl.textContent      = firstChar;
+            avatarEl.style.fontSize   = '1.4rem';
             avatarEl.style.fontWeight = '800';
-            avatarEl.textContent = firstChar;
         }
     }
 
-    /* ── إظهار رابط لوحة المعلم ── */
-    if(role === 'teacher'){
+    // ════ رابط البروفايل: حسب نوع المستخدم ════
+    var profileBtn = document.getElementById('profileNavBtn');
+    if (profileBtn) {
+        if (role === 'student') {
+            // الطالب → صفحة بروفايل الطالب
+            profileBtn.href = 'student-profile.html';
+        } else if (role && uid) {
+            // الكادر → profile.html (Firebase Auth)
+            profileBtn.href = 'profile.html';
+        } else {
+            // زائر → صفحة تسجيل الدخول
+            profileBtn.href = 'login.html';
+        }
+    }
+
+    // ════ روابط الداشبورد ════
+    if (role === 'teacher') {
         var tl = document.getElementById('teacherDashLink');
         var dd = document.getElementById('dashDivider');
-        if(tl) tl.style.display = 'block';
-        if(dd) dd.style.display = 'block';
+        if (tl) tl.style.display = 'block';
+        if (dd) dd.style.display = 'block';
+    }
+    if (role === 'principal' || role === 'vice_principal') {
+        var al  = document.getElementById('adminDashLink');
+        var dd2 = document.getElementById('dashDivider');
+        if (al)  al.style.display  = 'block';
+        if (dd2) dd2.style.display = 'block';
     }
 
-    /* ── إظهار رابط لوحة الإدارة ── */
-    if(role === 'principal' || role === 'vice_principal'){
-        var al = document.getElementById('adminDashLink');
-        var dd2= document.getElementById('dashDivider');
-        if(al)  al.style.display  = 'block';
-        if(dd2) dd2.style.display = 'block';
-    }
-
-    /* ── إخفاء زر تسجيل الخروج إذا لم يكن مسجلاً ── */
-    if(!role && !uid){
+    // ════ إخفاء زر الخروج إن لم يكن مسجلاً ════
+    if (!role && !uid) {
         var logoutList = document.querySelector('.sn-logout');
-        if(logoutList) logoutList.style.display = 'none';
+        if (logoutList) logoutList.style.display = 'none';
     }
 })();
 
@@ -947,27 +511,13 @@
 (function(){
     var SIZES={small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
     var draft={};
-    function load(){
-        try{draft=Object.assign({theme:'light',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}
-        catch(e){draft={theme:'light',fontSize:'medium',lang:'ar'};}
-        render();
-    }
-    function render(){
-        ['light','dark'].forEach(function(t){var el=document.getElementById('sp-th-'+t);if(el)el.classList.toggle('sel',draft.theme===t);});
-        ['small','medium','large','xlarge'].forEach(function(s){var el=document.getElementById('sp-fs-'+s);if(el)el.classList.toggle('sel',draft.fontSize===s);});
-        ['ar','en'].forEach(function(l){var el=document.getElementById('sp-lg-'+l);if(el)el.classList.toggle('sel',draft.lang===l);});
-    }
+    function load(){try{draft=Object.assign({theme:'light',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}catch(e){draft={theme:'light',fontSize:'medium',lang:'ar'};}render();}
+    function render(){['light','dark'].forEach(function(t){var el=document.getElementById('sp-th-'+t);if(el)el.classList.toggle('sel',draft.theme===t);});['small','medium','large','xlarge'].forEach(function(s){var el=document.getElementById('sp-fs-'+s);if(el)el.classList.toggle('sel',draft.fontSize===s);});['ar','en'].forEach(function(l){var el=document.getElementById('sp-lg-'+l);if(el)el.classList.toggle('sel',draft.lang===l);});}
     window.toggleSettingsPanel=function(){document.getElementById('settingsPanel').classList.toggle('open');};
-    window.spPickTheme=function(t){draft.theme=t;render();if(window.SiteSettings)window.SiteSettings.applyAll(draft);};
+    window.spPickTheme=function(t){draft.theme=t;render();};
     window.spPickFont=function(s){draft.fontSize=s;render();document.documentElement.style.fontSize=SIZES[s];};
     window.spPickLang=function(l){draft.lang=l;render();};
-    window.spSave=function(){
-        if(window.SiteSettings)window.SiteSettings.save(draft);
-        else localStorage.setItem('siteSettings',JSON.stringify(draft));
-        var el=document.getElementById('spSaved');
-        el.classList.add('show');
-        setTimeout(function(){el.classList.remove('show');},2500);
-    };
+    window.spSave=function(){localStorage.setItem('siteSettings',JSON.stringify(draft));var el=document.getElementById('spSaved');el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2500);};
     document.addEventListener('DOMContentLoaded',load);
 })();
 
@@ -978,61 +528,15 @@ window.addEventListener('scroll',function(){
 },{passive:true});
 
 /* ══ SIDENAV ══ */
-function snToggle(){
-    var drawer=document.getElementById('snDrawer');
-    var overlay=document.getElementById('snOverlay');
-    var burger=document.getElementById('snBurger');
-    if(!drawer) return;
-    var opening=!drawer.classList.contains('show');
-    drawer.classList.toggle('show',opening);
-    if(overlay) overlay.classList.toggle('show',opening);
-    if(burger){burger.classList.toggle('active',opening);burger.setAttribute('aria-expanded',opening);}
-    document.body.style.overflow=opening?'hidden':'';
-}
-function snClose(){
-    var drawer=document.getElementById('snDrawer');
-    var overlay=document.getElementById('snOverlay');
-    var burger=document.getElementById('snBurger');
-    if(drawer) drawer.classList.remove('show');
-    if(overlay) overlay.classList.remove('show');
-    if(burger){burger.classList.remove('active');burger.setAttribute('aria-expanded','false');}
-    document.body.style.overflow='';
-}
-function snToggleSettings(){
-    var panel=document.getElementById('snSettingsPanel');
-    var toggle=document.getElementById('snSettingsToggle');
-    var chevron=document.getElementById('snChevron');
-    if(!panel) return;
-    var open=panel.classList.toggle('open');
-    if(toggle) toggle.classList.toggle('open',open);
-    if(chevron) chevron.style.transform=open?'rotate(180deg)':'';
-}
-function snPickTheme(t){
-    ['light','dark'].forEach(function(id){var el=document.getElementById('sn-th-'+id);if(el)el.classList.toggle('sel',id===t);});
-    document.documentElement.setAttribute('data-theme',t);
-    try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.theme=t;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}
-}
-function snPickGraphics(g){
-    ['full','reduced','minimal'].forEach(function(id){var el=document.getElementById('sn-gr-'+id);if(el)el.classList.toggle('sel',id===g);});
-    try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.graphics=g;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}
-}
+function snToggle(){var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');if(!d)return;var op=!d.classList.contains('show');d.classList.toggle('show',op);if(o)o.classList.toggle('show',op);if(b){b.classList.toggle('active',op);b.setAttribute('aria-expanded',op);}document.body.style.overflow=op?'hidden':'';}
+function snClose(){var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');if(d)d.classList.remove('show');if(o)o.classList.remove('show');if(b){b.classList.remove('active');b.setAttribute('aria-expanded','false');}document.body.style.overflow='';}
+function snToggleSettings(){var p=document.getElementById('snSettingsPanel'),t=document.getElementById('snSettingsToggle'),c=document.getElementById('snChevron');if(!p)return;var op=p.classList.toggle('open');if(t)t.classList.toggle('open',op);if(c)c.style.transform=op?'rotate(180deg)':'';}
+function snPickTheme(t){['light','dark'].forEach(function(id){var el=document.getElementById('sn-th-'+id);if(el)el.classList.toggle('sel',id===t);});document.documentElement.setAttribute('data-theme',t);try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.theme=t;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}}
+function snPickGraphics(g){['full','reduced','minimal'].forEach(function(id){var el=document.getElementById('sn-gr-'+id);if(el)el.classList.toggle('sel',id===g);});}
 var _snFontSizes=['13px','15px','17px','20px'];
-function snSetFont(idx){
-    document.documentElement.style.fontSize=_snFontSizes[idx]||'15px';
-    var slider=document.getElementById('snFontSlider');
-    if(slider) slider.value=idx;
-    document.querySelectorAll('.sn-font-labels span').forEach(function(s){
-        s.classList.toggle('act',parseInt(s.getAttribute('data-idx'))===idx);
-    });
-    try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.fontSize=idx;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}
-}
+function snSetFont(idx){document.documentElement.style.fontSize=_snFontSizes[idx]||'15px';var sl=document.getElementById('snFontSlider');if(sl)sl.value=idx;document.querySelectorAll('.sn-font-labels span').forEach(function(s){s.classList.toggle('act',parseInt(s.getAttribute('data-idx'))===idx);});}
 function snFontInput(val){snSetFont(parseInt(val));}
-function snSave(){
-    var toast=document.getElementById('snToast');
-    var msg=document.getElementById('snToastMsg');
-    if(msg) msg.textContent='تم حفظ الإعدادات ✓';
-    if(toast){toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},2500);}
-}
+function snSave(){var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');if(m)m.textContent='تم حفظ الإعدادات ✓';if(t){t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}}
 function snLogout(){
     localStorage.removeItem('userRole');
     localStorage.removeItem('userName');
@@ -1045,139 +549,36 @@ function snLogout(){
 }
 
 /* ══ NOTIFICATIONS ══ */
-function showNotifications(){
-    alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');
-}
+function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');}
 
 /* ══ KEYBOARD ══ */
-document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){
-        snClose();
-        document.getElementById('settingsPanel').classList.remove('open');
-    }
-});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){snClose();document.getElementById('settingsPanel').classList.remove('open');}});
 
 /* ══ SMOOTH SCROLL ══ */
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click',function(e){
-        var target=document.querySelector(this.getAttribute('href'));
-        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});}
-    });
-});
-
-/* ══ TOUCH SWIPE CLOSE ══ */
-var _touchX=0;
-var _drawer=document.getElementById('snDrawer');
-if(_drawer){
-    _drawer.addEventListener('touchstart',function(e){_touchX=e.changedTouches[0].screenX;},{passive:true});
-    _drawer.addEventListener('touchend',function(e){
-        if(e.changedTouches[0].screenX>_touchX+60&&_drawer.classList.contains('show')) snClose();
-    },{passive:true});
-}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
 
 /* ══ LANGUAGE ══ */
 var translations={
-    ar:{
-        logoTagline:'منصة التعليم الذكية',
-        heroBadge:'✨ مرحباً بك في المستقبل',heroTitle:'رحلتك التعليمية تبدأ هنا',
-        heroSubtitle:'اكتشف عالماً من المعرفة والإبداع مع أفضل منصة تعليمية ذكية في المنطقة',
-        ctaStart:'ابدأ الآن',ctaDiscover:'اكتشف المزيد',
-        stat1Title:'مجتمعٌ عالمي نُعيد صياغته',stat1Desc:'نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.',
-        stat2Title:'المحتوى الذي لم يجرؤ أحد على تقديمه',stat2Desc:'أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق.',
-        stat3Title:'اعترافاتٌ تليق بكبار الطموح',stat3Desc:'أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.',
-        stat4Title:'صرامة الإتقان',stat4Desc:'نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.',
-        exploreTitle:'استكشف عالمك التعليمي',exploreSubtitle:'اختر المجال الذي يناسب اهتماماتك وابدأ رحلتك نحو التميز',
-        badge1:'جديد',badge2:'مميز',badge3:'ممتع',badge4:'تقييم',badge5:'شامل',badge6:'تواصل',
-        card1Title:'الفيديوهات التعليمية',card1Desc:'مكتبة شاملة من الدروس المرئية عالية الجودة مع شروحات تفاعلية ومبسطة',
-        card2Title:'المقالات الحصرية',card2Desc:'محتوى تعليمي متخصص ومقالات علمية متميزة من خبراء في مختلف المجالات',
-        card3Title:'ساحة الألعاب',card3Desc:'تعلم بطريقة ممتعة من خلال الألعاب التفاعلية والتحديات الذهنية المثيرة',
-        card4Title:'مركز الاختبارات',card4Desc:'اختبارات تقييمية شاملة لقياس مستواك وتتبع تقدمك في مسيرتك التعليمية',
-        card5Title:'مركز لغة الإشارة',card5Desc:'تعلم لغة الإشارة بطريقة تفاعلية ومبسطة مع دروس عملية ومتخصصة',
-        card6Title:'قسم الاستفسارات',card6Desc:'تواصل معنا وشارك أفكارك واستفساراتك مع مجتمع SITEJ',
-        footerAboutTitle:'عن SITEJ',footerAboutDesc:'منصة تعليمية ذكية رائدة توفر تجربة تعليمية فريدة ومتطورة للطلاب في جميع أنحاء المنطقة.',
-        footerLinksTitle:'روابط سريعة',footerSupportTitle:'الدعم',
-        footerHelp:'مركز المساعدة',footerFaq:'الأسئلة الشائعة',navSettings:'الإعدادات',
-        footerContactTitle:'تواصل معنا',footerLocation:'قرية سالم, مدرسة سالم الثانوية للبنين',
-        footerCopy:'© 2026 SITEJ. جميع الحقوق محفوظة',
-        navVideos:'الفيديوهات التعليمية',navArticles:'المقالات الحصرية',
-        navGames:'ساحة الألعاب',navExams:'مركز الاختبارات',
-    },
-    en:{
-        logoTagline:'Smart Education Platform',
-        heroBadge:'✨ Welcome to the Future',heroTitle:'Your Learning Journey Starts Here',
-        heroSubtitle:"Discover a world of knowledge and creativity with the region's leading smart education platform",
-        ctaStart:'Get Started',ctaDiscover:'Explore More',
-        stat1Title:"A Global Community We're Reshaping",stat1Desc:"We're preparing to welcome ten thousand ambitious minds as the founding core of the greatest digital renaissance.",
-        stat2Title:'Content No One Dared to Create',stat2Desc:"More than 500 knowledge units built through months of deep planning and relentless effort.",
-        stat3Title:'Recognition Worthy of the Truly Ambitious',stat3Desc:"Over 50 certified privileges, medals, and credentials prepared for you.",
-        stat4Title:"The Rigor of Mastery",stat4Desc:"We put you through a smart, challenging learning environment designed to make you the definition of success.",
-        exploreTitle:'Explore Your Educational World',exploreSubtitle:'Choose the field that suits your interests and begin your journey toward excellence',
-        badge1:'New',badge2:'Featured',badge3:'Fun',badge4:'Assessment',badge5:'Inclusive',badge6:'Connect',
-        card1Title:'Educational Videos',card1Desc:'A comprehensive library of high-quality visual lessons with interactive and simplified explanations',
-        card2Title:'Exclusive Articles',card2Desc:'Specialized educational content and distinguished scientific articles from experts in various fields',
-        card3Title:'Games Arena',card3Desc:'Learn in a fun way through interactive games and exciting mental challenges',
-        card4Title:'Exams Center',card4Desc:'Comprehensive assessment tests to measure your level and track your educational journey',
-        card5Title:'Sign Language Hub',card5Desc:'Learn sign language in an interactive and simplified way with practical specialized lessons',
-        card6Title:'Q&A Section',card6Desc:'Connect with us and share your thoughts with the SITEJ community',
-        footerAboutTitle:'About SITEJ',footerAboutDesc:'A leading smart education platform providing a unique and advanced learning experience for students across the region.',
-        footerLinksTitle:'Quick Links',footerSupportTitle:'Support',
-        footerHelp:'Help Center',footerFaq:'FAQ',navSettings:'Settings',
-        footerContactTitle:'Contact Us',footerLocation:'Salem Village, Salem Secondary School for Boys',
-        footerCopy:'© 2026 SITEJ. All rights reserved',
-        navVideos:'Educational Videos',navArticles:'Exclusive Articles',
-        navGames:'Games Arena',navExams:'Exams Center',
-    }
+    ar:{logoTagline:'منصة التعليم الذكية',heroBadge:'✨ مرحباً بك في المستقبل',heroTitle:'رحلتك التعليمية تبدأ هنا',heroSubtitle:'اكتشف عالماً من المعرفة والإبداع مع أفضل منصة تعليمية ذكية في المنطقة',ctaStart:'ابدأ الآن',ctaDiscover:'اكتشف المزيد',stat1Title:'مجتمعٌ عالمي نُعيد صياغته',stat1Desc:'نستعد لاستقبال عشرة آلاف عقل طموح.',stat2Title:'المحتوى الذي لم يجرؤ أحد على تقديمه',stat2Desc:'أكثر من 500 وحدة معرفية.',stat3Title:'اعترافاتٌ تليق بكبار الطموح',stat3Desc:'أكثر من 50 امتيازاً.',stat4Title:'صرامة الإتقان',stat4Desc:'نخضعك لبيئة تعليمية ذكية.',exploreTitle:'استكشف عالمك التعليمي',exploreSubtitle:'اختر المجال الذي يناسب اهتماماتك',badge1:'جديد',badge2:'مميز',badge3:'ممتع',badge4:'تقييم',badge5:'شامل',badge6:'تواصل',card1Title:'الفيديوهات التعليمية',card1Desc:'مكتبة شاملة من الدروس المرئية',card2Title:'المقالات الحصرية',card2Desc:'محتوى تعليمي متخصص',card3Title:'ساحة الألعاب',card3Desc:'تعلم بطريقة ممتعة',card4Title:'مركز الاختبارات',card4Desc:'اختبارات تقييمية شاملة',card5Title:'مركز لغة الإشارة',card5Desc:'تعلم لغة الإشارة تفاعلياً',card6Title:'قسم الاستفسارات',card6Desc:'تواصل معنا وشارك أفكارك'},
+    en:{logoTagline:'Smart Education Platform',heroBadge:'✨ Welcome to the Future',heroTitle:'Your Learning Journey Starts Here',heroSubtitle:"Discover a world of knowledge with the region's leading smart education platform",ctaStart:'Get Started',ctaDiscover:'Explore More',stat1Title:'A Global Community',stat1Desc:'Preparing for ten thousand ambitious minds.',stat2Title:'Content No One Dared to Create',stat2Desc:'Over 500 knowledge units.',stat3Title:'Recognition for the Ambitious',stat3Desc:'Over 50 certified credentials.',stat4Title:'The Rigor of Mastery',stat4Desc:'A smart, challenging learning environment.',exploreTitle:'Explore Your Educational World',exploreSubtitle:'Choose the field that suits you',badge1:'New',badge2:'Featured',badge3:'Fun',badge4:'Assessment',badge5:'Inclusive',badge6:'Connect',card1Title:'Educational Videos',card1Desc:'High-quality visual lessons',card2Title:'Exclusive Articles',card2Desc:'Specialized educational content',card3Title:'Games Arena',card3Desc:'Learn through interactive games',card4Title:'Exams Center',card4Desc:'Comprehensive assessment tests',card5Title:'Sign Language Hub',card5Desc:'Learn sign language interactively',card6Title:'Q&A Section',card6Desc:'Connect with the SITEJ community'}
 };
-
 var currentLang='ar';
 var langWrap=document.getElementById('langSelectorWrap');
-document.getElementById('langTriggerBtn').addEventListener('click',function(e){
-    e.stopPropagation();
-    langWrap.classList.toggle('open');
-});
-document.addEventListener('click',function(e){
-    if(!langWrap.contains(e.target)) langWrap.classList.remove('open');
-});
+document.getElementById('langTriggerBtn').addEventListener('click',function(e){e.stopPropagation();langWrap.classList.toggle('open');});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))langWrap.classList.remove('open');});
 function setLang(lang){
     if(lang===currentLang){langWrap.classList.remove('open');return;}
     currentLang=lang;
     document.documentElement.setAttribute('lang',lang);
     document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');
-    document.querySelectorAll('[data-i18n]').forEach(function(el){
-        var key=el.getAttribute('data-i18n');
-        if(translations[lang]&&translations[lang][key]!==undefined) el.textContent=translations[lang][key];
-    });
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var key=el.getAttribute('data-i18n');if(translations[lang]&&translations[lang][key]!==undefined)el.textContent=translations[lang][key];});
     var arrow=document.getElementById('ctaArrow1');
-    if(arrow) arrow.className=lang==='ar'?'fas fa-arrow-left':'fas fa-arrow-right';
+    if(arrow)arrow.className=lang==='ar'?'fas fa-arrow-left':'fas fa-arrow-right';
     document.getElementById('langFlag').textContent=lang==='ar'?'🇸🇦':'🇬🇧';
     document.getElementById('langLabelText').textContent=lang==='ar'?'العربية':'English';
-    document.querySelectorAll('.lang-option-item').forEach(function(el){
-        el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);
-    });
+    document.querySelectorAll('.lang-option-item').forEach(function(el){el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);});
     langWrap.classList.remove('open');
 }
-
-/* ══ ICON HOVER ANIMATIONS ══ */
-(function(){
-    function animIcon(el,hCls,oCls){
-        el.addEventListener('mouseenter',function(){el.classList.remove(oCls);el.classList.add(hCls);});
-        el.addEventListener('mouseleave',function(){el.classList.remove(hCls);el.classList.add(oCls);});
-    }
-    document.querySelectorAll('.card-icon').forEach(function(el){animIcon(el,'icon-hover','icon-out');});
-    document.querySelectorAll('.stat-icon i').forEach(function(el){
-        var wrap=el.closest('.stat-card')||el.parentElement;
-        wrap.addEventListener('mouseenter',function(){el.classList.remove('stat-icon-out');el.classList.add('stat-icon-hover');});
-        wrap.addEventListener('mouseleave',function(){el.classList.remove('stat-icon-hover');el.classList.add('stat-icon-out');});
-    });
-    document.querySelectorAll('.sn-links a').forEach(function(link){
-        var icon=link.querySelector('i');
-        if(!icon) return;
-        link.addEventListener('mouseenter',function(){icon.classList.remove('sn-link-icon-out');icon.classList.add('sn-link-icon-hover');});
-        link.addEventListener('mouseleave',function(){icon.classList.remove('sn-link-icon-hover');icon.classList.add('sn-link-icon-out');});
-    });
-    var logoIcon=document.querySelector('.logo-icon');
-    if(logoIcon) animIcon(logoIcon,'icon-hover','icon-out');
-})();
 </script>
 </body>
 </html>
