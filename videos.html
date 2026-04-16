@@ -49,653 +49,382 @@
         .particle { position:fixed;width:3px;height:3px;background:var(--accent-blue);border-radius:50%;opacity:0;animation:floatParticle 15s infinite;z-index:1; }
         @keyframes floatParticle { 0%,100%{opacity:0;transform:translateY(0) translateX(0);}10%{opacity:0.5;}90%{opacity:0.5;}100%{transform:translateY(-100vh) translateX(100px);} }
 
-        header { position:fixed;top:0;width:100%;z-index:1000;padding:22px 70px;background:rgba(255,255,255,0.75);backdrop-filter:blur(30px) saturate(180%);border-bottom:1px solid var(--border-blue);box-shadow:0 4px 30px rgba(26,41,66,0.08);transition:all 0.5s cubic-bezier(0.4,0,0.2,1); }
-        header.scrolled { padding:14px 70px;background:rgba(248,249,250,0.95);box-shadow:0 8px 40px rgba(26,41,66,0.12);border-bottom:2px solid var(--accent-blue); }
-        .header-content { display:flex;justify-content:space-between;align-items:center;max-width:1600px;margin:0 auto; }
-        .logo { display:flex;align-items:center;gap:18px;text-decoration:none;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-        .logo:hover { transform:scale(1.08) translateY(-2px); }
-        .logo-icon { width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px var(--shadow-blue)position:relative; }
-        .logo-icon::before { content:'';position:absolute;inset:-4px;background:var(--gradient-blue-glow);border-radius:18px;z-index:-1;opacity:0.6;filter:blur(15px) }
-        .logo-icon i { font-size:1.6rem;color:var(--white-pure);filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2)); }
-        .logo-text { font-family:'Cairo',sans-serif;font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(74,144,226,0.3)); }
+        /* ======== HEADER مطابق لنظام index ======== */
+        nav.top-bar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:22px 70px;
+            position:fixed;
+            width:100%;
+            top:0;
+            z-index:1000;
+            background:#ffffff;
+            border-bottom:2px solid rgba(74,144,226,0.25);
+            box-shadow:0 2px 20px rgba(26,41,66,0.10);
+            transition:padding .4s,box-shadow .4s,background .4s;
+        }
+        nav.top-bar.scrolled{
+            padding:13px 70px;
+            background:#ffffff;
+            border-bottom:2px solid var(--accent-blue);
+            box-shadow:0 4px 30px rgba(26,41,66,0.14);
+        }
+        .logo-container{
+            display:flex;
+            align-items:center;
+            gap:18px;
+            cursor:pointer;
+            transition:transform .35s;
+            text-decoration:none;
+        }
+        .logo-container:hover{transform:scale(1.06);}
+        .logo-icon{
+            width:55px;
+            height:55px;
+            background:var(--gradient-blue-glow);
+            border-radius:18px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 10px 30px var(--shadow-blue);
+            transition:transform .4s;
+        }
+        .logo-icon i{font-size:1.6rem;color:#fff;}
+        .logo-text{display:flex;flex-direction:column;gap:4px;}
+        .logo{
+            font-size:1.9rem;
+            font-weight:900;
+            letter-spacing:3px;
+            background:var(--gradient-navy-soft);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+        .logo-tagline{
+            font-size:0.75rem;
+            color:var(--text-gray);
+            letter-spacing:3px;
+            text-transform:uppercase;
+            font-weight:600;
+        }
+        .nav-actions{
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+        /* لون الجرس */
+        .notification-btn{
+            position:relative;
+            width:46px;
+            height:46px;
+            background:rgba(255,255,255,0.7);
+            border:1.5px solid var(--border-blue);
+            border-radius:14px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            transition:all .35s;
+        }
+        .notification-btn:hover{
+            background:rgba(255,255,255,0.95);
+            transform:translateY(-3px) rotate(-12deg);
+            box-shadow:0 8px 22px var(--shadow-blue);
+        }
+        .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
+        .notification-badge{
+            position:absolute;
+            top:-5px;
+            right:-5px;
+            width:20px;
+            height:20px;
+            background:linear-gradient(135deg,#ff6b6b,#ee5a6f);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:0.65rem;
+            font-weight:700;
+            color:#fff;
+        }
+        .profile-nav-btn{
+            width:42px;
+            height:42px;
+            background:var(--gradient-blue-glow);
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-decoration:none;
+            box-shadow:0 4px 15px var(--shadow-blue);
+            transition:transform .35s,box-shadow .35s;
+            flex-shrink:0;
+        }
+        .profile-nav-btn:hover{
+            transform:translateY(-3px) scale(1.12);
+            box-shadow:0 10px 28px var(--shadow-glow);
+        }
+        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+        .burger{
+            cursor:pointer;
+            width:38px;
+            height:28px;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            z-index:10000;
+            position:relative;
+        }
+        .bline{
+            width:100%;
+            height:3px;
+            background:linear-gradient(135deg,#4a90e2,#6fa8ec);
+            border-radius:4px;
+            transition:all .45s cubic-bezier(.68,-.55,.265,1.55);
+        }
+        .burger.active .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+        .burger.active .bline:nth-child(2){opacity:0;transform:translateX(20px);}
+        .burger.active .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
 
-        /* ======== LANGUAGE SELECTOR — rectangular with rounded corners ======== */
-        .lang-dropdown-wrap { position:relative; }
-        .lang-switcher {
-            display:flex;align-items:center;gap:10px;
-            background:rgba(255,255,255,0.92);
-            border:2px solid var(--border-blue);
-            border-radius:10px;          /* rounded rectangle */
-            padding:9px 16px;
-            cursor:pointer;transition:all 0.3s;
-            font-weight:700;font-size:0.92rem;color:var(--navy-dark);
-            box-shadow:0 3px 12px var(--shadow-blue);
-            user-select:none;white-space:nowrap;
+        /* ======== LANGUAGE SELECTOR (مطابق لـ index) ======== */
+        .lang-selector-wrap{
+            position:relative;
+            user-select:none;
+        }
+        .lang-trigger-btn{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 16px;
+            background:var(--glass-light);
+            border:1px solid var(--border-blue);
+            border-radius:14px;
+            cursor:pointer;
+            font-family:'Cairo','Tajawal',sans-serif;
+            font-size:0.88rem;
+            font-weight:600;
+            color:var(--accent-blue);
+            white-space:nowrap;
             min-width:110px;
+            justify-content:space-between;
+            transition:background .3s,transform .3s,box-shadow .3s;
         }
-        .lang-switcher:hover {
-            background:var(--gradient-blue-glow);color:white;
-            border-color:var(--accent-blue);box-shadow:0 8px 20px var(--shadow-glow);
+        .lang-trigger-btn:hover{
+            background:rgba(74,144,226,0.14);
+            border-color:var(--accent-blue);
+            transform:translateY(-2px);
         }
-        .lang-flag-display { font-size:1.1rem;line-height:1; }
-        .lang-switcher .fa-chevron-down { font-size:0.72rem;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);margin-right:auto; }
-        .lang-switcher.open .fa-chevron-down { transform:rotate(180deg); }
-
-        .lang-dropdown {
-            position:absolute;top:calc(100% + 8px);left:0;right:0;
-            transform:scaleY(0);transform-origin:top center;
-            background:rgba(255,255,255,0.98);
-            border:2px solid var(--border-blue);
-            border-radius:10px;
+        .lang-flag{font-size:1.1rem;}
+        .lang-label{flex:1;text-align:center;}
+        .lang-chevron{width:14px;height:14px;color:var(--accent-blue);transition:transform .35s;}
+        .lang-selector-wrap.open .lang-chevron{transform:rotate(180deg);}
+        .lang-dropdown-menu{
+            position:absolute;
+            top:calc(100% + 10px);
+            right:0;
+            min-width:155px;
+            background:rgba(255,255,255,0.99);
+            border:1.5px solid var(--border-blue);
+            border-radius:14px;
             overflow:hidden;
-            box-shadow:0 12px 35px rgba(26,41,66,0.18);
-            z-index:9999;opacity:0;
-            transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.22s ease;
+            box-shadow:0 16px 45px rgba(26,41,66,0.18);
+            transform-origin:top right;
+            transform:scale(0.85) translateY(-10px);
+            opacity:0;
+            transition:transform .35s,opacity .25s;
+            z-index:9999;
             pointer-events:none;
         }
-        .lang-dropdown.open { transform:scaleY(1);opacity:1;pointer-events:all; }
-        .lang-option {
-            display:flex;align-items:center;gap:10px;
-            padding:11px 16px;cursor:pointer;
-            font-weight:600;font-size:0.9rem;color:var(--navy-dark);
-            transition:all 0.2s;border-bottom:1px solid rgba(74,144,226,0.08);
+        .lang-selector-wrap.open .lang-dropdown-menu{
+            transform:scale(1) translateY(0);
+            opacity:1;
+            pointer-events:all;
         }
-        .lang-option:last-child { border-bottom:none; }
-        .lang-option:hover { background:rgba(74,144,226,0.1);color:var(--accent-blue); }
-        .lang-option.active { background:rgba(74,144,226,0.12);color:var(--accent-blue); }
-        .lang-option .lang-flag { font-size:1.1rem; }
-        /* ===================================================================== */
+        .lang-option-item{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:13px 17px;
+            cursor:pointer;
+            font-size:0.92rem;
+            font-weight:600;
+            color:var(--text-navy);
+            transition:background .2s,color .2s;
+        }
+        .lang-option-item:hover{
+            background:rgba(74,144,226,0.09);
+            color:var(--accent-blue);
+        }
+        .lang-option-item.lang-active{
+            color:var(--accent-blue);
+            background:rgba(74,144,226,0.07);
+        }
+        .lang-option-item .lang-check{
+            margin-left:auto;
+            width:15px;
+            height:15px;
+            color:var(--accent-blue);
+            opacity:0;
+            transition:opacity .2s;
+        }
+        .lang-option-item.lang-active .lang-check{opacity:1;}
+        .lang-divider-line{
+            height:1px;
+            background:var(--border-blue);
+            margin:0 12px;
+        }
 
-        .nav-actions { display:flex;align-items:center;gap:20px; }
-        .notification-btn { position:relative;width:48px;height:48px;background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-        .notification-btn:hover { background:var(--glass-strong);transform:translateY(-3px) rotate(5deg);box-shadow:0 10px 25px var(--shadow-blue);border-color:var(--accent-blue); }
-        .notification-btn i { color:var(--accent-blue);font-size:1.3rem; }
-        .notification-badge { position:absolute;top:-6px;right:-6px;width:22px;height:22px;background:linear-gradient(135deg,#ff6b6b 0%,#ee5a6f 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:white }
+        .overlay,#snOverlay{
+            position:fixed;
+            inset:0;
+            background:rgba(26,41,66,0.65);
+            backdrop-filter:blur(8px);
+            z-index:2500;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity .45s;
+        }
+        .overlay.show,#snOverlay.show{
+            opacity:1;
+            pointer-events:all;
+        }
 
-        .burger { cursor:pointer;width:38px;height:28px;display:flex;flex-direction:column;justify-content:space-between;z-index:10000;position:relative;transition:transform 0.3s ease; }
-        .burger:hover { transform:scale(1.1); }
-        .line { width:100%;height:3px;background:var(--accent-blue);border-radius:6px;transition:all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55); }
-        .burger.active .line:nth-child(1) { transform:rotate(45deg) translate(11px,11px);background:linear-gradient(135deg,#ee5a6f 0%,#ff6b6b 100%); }
-        .burger.active .line:nth-child(2) { opacity:0;transform:translateX(30px); }
-        .burger.active .line:nth-child(3) { transform:rotate(-45deg) translate(11px,-11px);background:linear-gradient(135deg,#ee5a6f 0%,#ff6b6b 100%); }
+        /* ══ SIDENAV — تفتح من الشمال (مطابق لـ index) ══ */
+        .sidenav,#snDrawer{
+            position:fixed;
+            top:0;
+            left:-430px;
+            right:auto;
+            width:400px;
+            height:100%;
+            z-index:3000;
+            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+            backdrop-filter:blur(35px);
+            border-right:3px solid var(--accent-blue);
+            border-left:none;
+            padding:28px 24px;
+            overflow-y:auto;
+            transition:left .55s cubic-bezier(.68,-.55,.265,1.55);
+            box-shadow:12px 0 50px rgba(26,41,66,0.15);
+        }
+        .sidenav.show,#snDrawer.show{left:0!important;}
+        .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid var(--border-blue);}
+        .sn-head h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+        .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
+        .sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg);}
+        .sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid var(--border-blue);border-radius:18px;margin-bottom:20px;transition:all .35s;}
+        .sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow-blue);}
+        .sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px var(--shadow-blue);flex-shrink:0;}
+        .sn-uname{color:var(--text-navy);font-size:1.05rem;font-weight:700;}
+        .sn-urole{color:var(--text-gray);font-size:0.82rem;}
+        .sn-links{list-style:none;padding:0;margin:0;}
+        .sn-links li{margin-bottom:4px;}
+        .sn-links a{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;color:var(--text-navy);border-radius:14px;transition:all .4s;position:relative;overflow:hidden;}
+        .sn-links a:hover{transform:translateX(-8px);color:var(--accent-blue);}
+        .sn-links a i{color:var(--accent-blue);font-size:1.2rem;width:28px;text-align:center;}
+        .dash-link-teacher a{background:linear-gradient(135deg,rgba(74,144,226,0.08),rgba(111,168,236,0.05));border:1.5px solid rgba(74,144,226,0.25);border-radius:14px;color:var(--accent-blue)!important;}
+        .dash-link-admin a{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(99,102,241,0.05));border:1.5px solid rgba(139,92,246,0.25);border-radius:14px;color:#8b5cf6!important;}
+        .dash-divider{height:1px;background:linear-gradient(to left,transparent,var(--border-blue),transparent);margin:10px 8px;}
+        .dash-section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent-blue);padding:6px 16px 4px;opacity:0.7;}
+        .sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
+        .sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
+        .sn-settings-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;cursor:pointer;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);margin-bottom:4px;color:var(--text-navy);font-weight:700;font-size:0.95rem;transition:all .4s;}
+        .sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);}
+        .sn-settings-toggle i{color:var(--accent-blue);}
+        .sn-settings-chevron{color:var(--accent-blue);font-size:0.8rem;transition:transform .4s;}
+        .sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
+        .sn-settings-panel{max-height:0;overflow:hidden;transition:max-height .6s,opacity .4s;opacity:0;}
+        .sn-settings-panel.open{max-height:800px;opacity:1;}
+        .sn-settings-inner{padding:18px 14px;background:rgba(248,249,250,0.9);border:1.5px solid rgba(74,144,226,0.2);border-radius:16px;margin-top:8px;margin-bottom:8px;}
+        .sn-s-label{font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-blue);margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;}
+        .sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .sn-t-opt{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;height:70px;position:relative;transition:all .35s;}
+        .sn-t-opt.sel{border-color:var(--accent-blue);}
+        .sn-t-preview{width:100%;height:100%;}
+        .sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+        .sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+        .sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
+        .sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s;}
+        .sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
+        .sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        .sn-g-opt{padding:10px 6px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(74,144,226,0.25);text-align:center;transition:all .35s;position:relative;}
+        .sn-g-opt.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.08);}
+        .sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
+        .sn-g-name{font-size:0.65rem;font-weight:700;color:var(--text-navy);}
+        .sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s;}
+        .sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
+        .sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));direction:ltr;}
+        .sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
+        .sn-font-labels span{font-size:0.62rem;color:var(--text-gray);font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;}
+        .sn-save-btn{width:100%;margin-top:14px;padding:12px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:#fff;font-weight:700;font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;cursor:pointer;}
+        .sn-toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,var(--navy-dark),var(--navy-lighter));color:#fff;padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;opacity:0;pointer-events:none;z-index:99999;box-shadow:0 8px 28px rgba(26,41,66,0.3);display:flex;align-items:center;gap:9px;transition:all .38s;}
+        .sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-        .side-nav { height:100%;width:400px;position:fixed;z-index:3000;top:0;right:-400px;background:linear-gradient(180deg,rgba(255,255,255,0.98) 0%,rgba(232,238,245,0.98) 100%);backdrop-filter:blur(35px);border-left:3px solid var(--accent-blue);overflow-x:hidden;overflow-y:auto;transition:right 0.7s cubic-bezier(0.68,-0.55,0.265,1.55);padding:35px 30px;box-shadow:-15px 0 60px rgba(26,41,66,0.25); }
-        .side-nav::-webkit-scrollbar { width:10px; }
-        .side-nav::-webkit-scrollbar-track { background:rgba(26,41,66,0.05);border-radius:10px; }
-        .side-nav::-webkit-scrollbar-thumb { background:var(--gradient-blue-glow);border-radius:10px; }
-        .side-nav.active { right:0; }
-        .side-nav-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:35px;padding-bottom:25px;border-bottom:2px solid var(--border-blue); }
-        .side-nav h2 { background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.7rem;letter-spacing:1.5px; }
-        .close-nav { font-size:1.5rem;color:var(--accent-blue);cursor:pointer;transition:all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);width:45px;height:45px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--glass-light); }
-        .close-nav:hover { color:#ee5a6f;transform:rotate(90deg) scale(1.2);background:rgba(238,90,111,0.1); }
-        .user-profile { display:flex;align-items:center;gap:18px;padding:25px;background:var(--glass-medium);border:2px solid var(--border-blue);border-radius:20px;margin-bottom:30px;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;text-decoration:none;color:inherit; }
-        .user-profile:hover { background:var(--glass-strong);transform:translateX(-8px);box-shadow:0 8px 30px var(--shadow-blue); }
-        .user-avatar { width:70px;height:70px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--white-pure);border:3px solid var(--white-pure);box-shadow:0 8px 25px var(--shadow-blue); }
-        .user-info h3 { color:var(--text-navy);font-size:1.2rem;margin-bottom:5px;font-weight:700; }
-        .user-info p { color:var(--text-gray);font-size:0.9rem;font-weight:500; }
-        .side-nav ul { list-style:none; }
-        .side-nav li { margin-bottom:8px;opacity:0;animation:slideInRight 0.5s forwards; }
-        .side-nav li:nth-child(1){animation-delay:0.1s;}.side-nav li:nth-child(2){animation-delay:0.15s;}.side-nav li:nth-child(3){animation-delay:0.2s;}.side-nav li:nth-child(4){animation-delay:0.25s;}.side-nav li:nth-child(5){animation-delay:0.3s;}.side-nav li:nth-child(6){animation-delay:0.35s;}.side-nav li:nth-child(7){animation-delay:0.4s;}.side-nav li:nth-child(8){animation-delay:0.45s;}.side-nav li:nth-child(9){animation-delay:0.5s;}.side-nav li:nth-child(10){animation-delay:0.55s;}.side-nav li:nth-child(11){animation-delay:0.6s;}.side-nav li:nth-child(12){animation-delay:0.65s;}
-        @keyframes slideInRight { from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);} }
-        .side-nav a { display:flex;align-items:center;gap:18px;padding:20px 22px;color:var(--text-navy);text-decoration:none;border-radius:15px;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;font-weight:600;font-size:1.15rem;justify-content:flex-end; }
-        .side-nav a::before { content:'';position:absolute;right:0;top:0;height:100%;width:0;background:linear-gradient(90deg,transparent,rgba(74,144,226,0.2));transition:width 0.6s ease;z-index:0; }
-        .side-nav a:hover::before { width:100%; }
-        .side-nav a > * { position:relative;z-index:1; }
-        .side-nav a:hover { color:var(--navy-dark);background:var(--glass-strong);transform:translateX(-12px);box-shadow:0 6px 25px rgba(74,144,226,0.2); }
-        .side-nav a i { font-size:1.4rem;color:var(--accent-blue);width:35px;text-align:center;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-        .side-nav a:hover i { transform:scale(1.3) rotate(10deg);filter:drop-shadow(0 0 15px var(--accent-blue)); }
-        #logoutBtn { margin-top:25px;padding-top:25px;border-top:2px solid rgba(238,90,111,0.2); }
-        #logoutBtn a { color:#ee5a6f; }
-        #logoutBtn a i { color:#ee5a6f; }
-        #logoutBtn a:hover { background:rgba(238,90,111,0.15);color:#d63447; }
-
-        .overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,41,66,0.75);backdrop-filter:blur(10px);z-index:2500;opacity:0;pointer-events:none;transition:opacity 0.6s; }
-        .overlay.active { opacity:1;pointer-events:all; }
-
-        .hero { position:relative;z-index:10;padding:180px 50px 80px;text-align:center;overflow:hidden; }
-        .hero h1 { font-size:4.5rem;font-weight:900;margin-bottom:20px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeInUp 1s;letter-spacing:3px;filter:drop-shadow(0 0 60px rgba(74,144,226,0.3)); }
-        .hero-subtitle { font-size:1.4rem;color:var(--text-gray);margin-bottom:40px;animation:fadeInUp 1s 0.2s both;font-weight:500;letter-spacing:0.8px; }
+        /* باقي ستايلات الصفحة (hero, filters, videos, admin, modal...) كما هي */
+        .hero { position:relative; z-index:10; padding:180px 50px 80px; text-align:center; }
+        .hero h1 { font-size:4.5rem; font-weight:900; margin-bottom:20px; background:var(--gradient-navy-soft); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:fadeInUp 1s; }
+        .hero-subtitle { font-size:1.4rem; color:var(--text-gray); margin-bottom:40px; animation:fadeInUp 1s 0.2s both; }
         @keyframes fadeInUp { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);} }
-
-        .filters-section { position:relative;z-index:10;max-width:1600px;margin:0 auto 60px;padding:0 50px;animation:fadeInUp 1s 0.4s both; }
+        .filters-section { position:relative;z-index:10;max-width:1600px;margin:0 auto 60px;padding:0 50px; }
         .filter-tabs { display:flex;gap:15px;justify-content:center;flex-wrap:wrap; }
-        .filter-tab { padding:12px 30px;background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:50px;color:var(--text-navy);cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);font-size:1rem;font-weight:600;position:relative;overflow:hidden;box-shadow:0 4px 15px rgba(26,41,66,0.08);display:flex;align-items:center;gap:8px; }
-        .filter-tab::before { content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);width:100%;height:100%;background:var(--gradient-blue-glow);border-radius:50px;transition:transform 0.5s;z-index:-1; }
-        .filter-tab:hover::before,.filter-tab.active::before { transform:translate(-50%,-50%) scale(1); }
-        .filter-tab:hover,.filter-tab.active { color:var(--white-pure);border-color:var(--accent-blue);transform:translateY(-3px);box-shadow:0 10px 30px rgba(74,144,226,0.3); }
-
-        .search-container { position:relative;z-index:10;max-width:700px;margin:0 auto 80px;padding:0 50px;animation:fadeInUp 1s 0.5s both; }
-        .search-bar { position:relative;display:flex;align-items:center;background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:50px;padding:18px 30px;transition:all 0.4s;box-shadow:0 4px 20px rgba(26,41,66,0.08); }
-        .search-bar:focus-within { border-color:var(--accent-blue);background:var(--white-pure);box-shadow:0 10px 40px rgba(74,144,226,0.2);transform:translateY(-2px); }
-        .search-bar i { color:var(--accent-blue);font-size:1.3rem;margin-left:15px; }
-        .search-bar input { flex:1;background:none;border:none;outline:none;color:var(--text-navy);font-size:1.1rem;font-family:'Cairo','Tajawal',sans-serif; }
-        .search-bar input::placeholder { color:var(--text-gray); }
-
+        .filter-tab { padding:12px 30px;background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:50px;color:var(--text-navy);cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);font-size:1rem;font-weight:600;display:flex;align-items:center;gap:8px; }
+        .filter-tab.active, .filter-tab:hover { color:var(--white-pure); border-color:var(--accent-blue); background:var(--gradient-blue-glow); transform:translateY(-3px); }
+        .search-container { position:relative;z-index:10;max-width:700px;margin:0 auto 80px;padding:0 50px; }
+        .search-bar { display:flex;align-items:center;background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:50px;padding:18px 30px; }
+        .search-bar i { color:var(--accent-blue);margin-left:15px; }
+        .search-bar input { flex:1;background:none;border:none;outline:none;font-size:1.1rem;font-family:'Cairo','Tajawal',sans-serif; }
         .videos-section { position:relative;z-index:10;max-width:1600px;margin:0 auto;padding:0 50px 100px; }
-        .section-title { font-size:2.5rem;margin-bottom:40px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;display:flex;align-items:center;gap:15px; }
-        .section-title::after { content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--accent-blue),transparent); }
+        .section-title { font-size:2.5rem;margin-bottom:40px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;display:flex;align-items:center;gap:15px; }
         .video-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:35px; }
-
-        .video-card { background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:20px;overflow:hidden;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);cursor:pointer;position:relative;animation:fadeInScale 0.8s both;box-shadow:0 8px 30px rgba(26,41,66,0.1); }
-        .video-card:nth-child(1){animation-delay:0.1s;}.video-card:nth-child(2){animation-delay:0.2s;}.video-card:nth-child(3){animation-delay:0.3s;}.video-card:nth-child(4){animation-delay:0.4s;}.video-card:nth-child(5){animation-delay:0.5s;}.video-card:nth-child(6){animation-delay:0.6s;}
-        @keyframes fadeInScale { from{opacity:0;transform:scale(0.8) translateY(30px);}to{opacity:1;transform:scale(1) translateY(0);} }
-        .video-card::before { content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;background:var(--gradient-blue-glow);border-radius:20px;opacity:0;transition:opacity 0.5s;z-index:-1; }
-        .video-card:hover::before { opacity:1; }
-        .video-card:hover { transform:translateY(-15px) scale(1.02);box-shadow:0 30px 60px rgba(74,144,226,0.3); }
-
-        .thumbnail-wrapper { position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:linear-gradient(135deg,var(--blue-lightest),var(--blue-lighter)); }
-        .thumbnail-wrapper img { position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transition:transform 0.7s; }
+        .video-card { background:rgba(255,255,255,0.95);border:2px solid var(--border-blue);border-radius:20px;overflow:hidden;transition:all 0.5s;cursor:pointer;box-shadow:0 8px 30px rgba(26,41,66,0.1); }
+        .video-card:hover { transform:translateY(-15px);box-shadow:0 30px 60px rgba(74,144,226,0.3); }
+        .thumbnail-wrapper { position:relative;padding-bottom:56.25%;overflow:hidden; }
+        .thumbnail-wrapper img { position:absolute;width:100%;height:100%;object-fit:cover;transition:transform 0.7s; }
         .video-card:hover .thumbnail-wrapper img { transform:scale(1.1); }
-        .play-overlay { position:absolute;inset:0;background:rgba(26,41,66,0.4);display:flex;align-items:center;justify-content:center;opacity:1;transition:all 0.5s; }
-        .video-card:hover .play-overlay { background:rgba(26,41,66,0.6); }
-        .play-button { width:80px;height:80px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--white-pure);transition:all 0.5s;box-shadow:0 10px 30px rgba(74,144,226,0.5); }
-        .video-card:hover .play-button { transform:scale(1.2);box-shadow:0 15px 40px rgba(74,144,226,0.7); }
-        .video-badge { position:absolute;top:15px;left:15px;background:var(--gradient-blue-glow);color:var(--white-pure);padding:6px 15px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;box-shadow:0 5px 15px rgba(74,144,226,0.4);animation:pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{transform:scale(1);}50%{transform:scale(1.05);} }
-
+        .play-overlay { position:absolute;inset:0;background:rgba(26,41,66,0.4);display:flex;align-items:center;justify-content:center; }
+        .play-button { width:80px;height:80px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff; }
+        .video-badge { position:absolute;top:15px;left:15px;background:var(--gradient-blue-glow);color:#fff;padding:6px 15px;border-radius:20px;font-size:0.75rem;font-weight:700; }
         .video-info { padding:25px; }
-        .video-title { font-size:1.3rem;font-weight:700;color:var(--navy-dark);margin-bottom:12px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
-        .video-meta { display:flex;align-items:center;gap:20px;color:var(--text-gray);font-size:0.9rem;margin-bottom:15px; }
-        .video-meta i { color:var(--accent-blue);margin-left:5px; }
-        .video-teacher { display:flex;align-items:center;gap:10px;color:var(--text-navy);font-weight:600; }
-        .teacher-avatar { width:32px;height:32px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:0.9rem;color:var(--white-pure); }
-        .delete-btn { margin-top:15px;padding:10px 20px;background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);border-radius:10px;color:#ff6b6b;cursor:pointer;transition:all 0.3s;font-size:0.9rem;font-weight:600; }
-        .delete-btn:hover { background:rgba(255,107,107,0.3);transform:translateY(-2px); }
-
-        .admin-panel { position:relative;z-index:10;max-width:1200px;margin:40px auto 80px;padding:40px;background:rgba(255,255,255,0.95);border:2px solid var(--accent-blue);border-radius:25px;box-shadow:0 15px 50px rgba(74,144,226,0.2);display:none;animation:fadeInUp 1s; }
-        .admin-panel-header { font-size:2rem;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;margin-bottom:30px;display:flex;align-items:center;gap:15px; }
+        .video-title { font-size:1.3rem;font-weight:700;margin-bottom:12px; }
+        .video-meta { display:flex;gap:20px;color:var(--text-gray);margin-bottom:15px; }
+        .video-teacher { display:flex;align-items:center;gap:10px;font-weight:600; }
+        .teacher-avatar { width:32px;height:32px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;color:#fff; }
+        .delete-btn { margin-top:15px;padding:10px;background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.3);border-radius:10px;color:#ff6b6b;cursor:pointer;text-align:center; }
+        .admin-panel { max-width:1200px;margin:40px auto;padding:40px;background:rgba(255,255,255,0.95);border:2px solid var(--accent-blue);border-radius:25px;display:none; }
         .admin-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:25px; }
-        .admin-input { padding:15px 20px;background:rgba(255,255,255,0.5);border:2px solid var(--border-blue);border-radius:12px;color:var(--text-navy);font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;transition:all 0.3s; }
-        .admin-input:focus { outline:none;border-color:var(--accent-blue);background:var(--white-pure);box-shadow:0 5px 20px rgba(74,144,226,0.2); }
-        .admin-input::placeholder { color:var(--text-gray); }
-        .btn-gold { padding:15px 30px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:var(--white-pure);font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 5px 20px rgba(74,144,226,0.3); }
-        .btn-gold:hover { transform:translateY(-3px) scale(1.05);box-shadow:0 10px 30px rgba(74,144,226,0.5); }
-        .upload-progress { height:10px;background:rgba(74,144,226,0.1);border-radius:10px;overflow:hidden;margin-top:20px;display:none; }
-        .progress-bar { height:100%;background:var(--gradient-blue-glow);width:0%;transition:width 0.3s;box-shadow:0 0 20px var(--accent-blue); }
-        .admin-select { padding:15px 20px;background:rgba(255,255,255,0.5);border:2px solid var(--border-blue);border-radius:12px;color:var(--text-navy);font-family:'Cairo','Tajawal',sans-serif;font-size:1rem;transition:all 0.3s;cursor:pointer;appearance:none; }
-        .admin-select:focus { outline:none;border-color:var(--accent-blue);background:var(--white-pure);box-shadow:0 5px 20px rgba(74,144,226,0.2); }
-
-        /* === VIDEO MODAL === */
-        .video-modal { display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,41,66,0.97);z-index:5000;align-items:center;justify-content:center;backdrop-filter:blur(10px);animation:fadeIn 0.3s; }
-        @keyframes fadeIn { from{opacity:0;}to{opacity:1;} }
-        .modal-content { position:relative;width:95%;max-width:1200px;aspect-ratio:16/9;animation:zoomIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-        @keyframes zoomIn { from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);} }
-        .close-modal { position:absolute;top:-50px;right:0;font-size:2.5rem;color:var(--accent-blue);cursor:pointer;transition:all 0.3s;z-index:5001; }
-        .close-modal:hover { transform:rotate(90deg) scale(1.2);color:var(--accent-light-blue); }
-        .video-player { width:100%;height:100%;border-radius:15px;overflow:hidden;box-shadow:0 20px 80px rgba(74,144,226,0.4); }
-
-        /* === CUSTOM VIDEO PLAYER === */
-        .custom-player { width:100%;height:100%;display:flex;flex-direction:column;border-radius:15px;overflow:hidden;background:#000;position:relative; }
-        .custom-player video { flex:1;min-height:0;width:100%; }
-        .custom-player video::cue { background:rgba(0,0,0,0.75);color:#ffffff;font-family:'Cairo','Tajawal',sans-serif;font-size:1.1em;font-weight:600;border-radius:4px;padding:4px 10px;text-shadow:0 1px 4px rgba(0,0,0,0.9); }
-        .custom-controls { background:linear-gradient(180deg,rgba(10,22,40,0.95) 0%,rgba(26,41,66,0.98) 100%);padding:10px 20px 14px;border-top:1px solid rgba(74,144,226,0.3);flex-shrink:0; }
+        .admin-input, .admin-select { padding:15px;border:2px solid var(--border-blue);border-radius:12px;font-family:inherit; }
+        .btn-gold { padding:15px 30px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:#fff;font-weight:700;cursor:pointer; }
+        .upload-progress { height:10px;background:rgba(74,144,226,0.1);border-radius:10px;overflow:hidden;display:none;margin-top:20px; }
+        .progress-bar { height:100%;background:var(--gradient-blue-glow);width:0%; }
+        .video-modal { display:none;position:fixed;inset:0;background:rgba(26,41,66,0.97);z-index:5000;align-items:center;justify-content:center;backdrop-filter:blur(10px); }
+        .modal-content { position:relative;width:95%;max-width:1200px;aspect-ratio:16/9; }
+        .close-modal { position:absolute;top:-50px;right:0;font-size:2.5rem;color:var(--accent-blue);cursor:pointer; }
+        .video-player { width:100%;height:100%;border-radius:15px;overflow:hidden; }
+        .custom-player { width:100%;height:100%;display:flex;flex-direction:column;background:#000; }
+        .custom-player video { flex:1;width:100%; }
+        .custom-controls { background:linear-gradient(180deg,rgba(10,22,40,0.95),rgba(26,41,66,0.98));padding:10px 20px;border-top:1px solid rgba(74,144,226,0.3); }
         .progress-area { margin-bottom:10px; }
-        .progress-bar-bg { position:relative;width:100%;height:5px;background:rgba(74,144,226,0.2);border-radius:10px;cursor:pointer;transition:height 0.2s; }
-        .progress-bar-bg:hover { height:8px; }
-        .progress-filled { position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,#4a90e2,#87ceeb);border-radius:10px;pointer-events:none;transition:width 0.1s linear; }
-        .progress-thumb { position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:14px;height:14px;background:#ffffff;border:2px solid #4a90e2;border-radius:50%;box-shadow:0 0 8px rgba(74,144,226,0.8);cursor:grab;transition:transform 0.15s,box-shadow 0.15s; }
-        .progress-thumb:hover,.progress-thumb:active { transform:translate(-50%,-50%) scale(1.3);box-shadow:0 0 14px rgba(74,144,226,1);cursor:grabbing; }
-        .time-display { display:flex;justify-content:space-between;color:rgba(155,180,208,0.8);font-size:0.78rem;margin-top:6px;font-family:'Cairo',sans-serif;letter-spacing:0.5px; }
-        .controls-row { display:flex;align-items:center;justify-content:space-between; }
-        .controls-left,.controls-right { display:flex;align-items:center;gap:6px; }
-        .ctrl-btn { width:38px;height:38px;background:rgba(74,144,226,0.15);border:1px solid rgba(74,144,226,0.3);border-radius:10px;color:#87ceeb;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative; }
-        .ctrl-btn:hover { background:linear-gradient(135deg,#4a90e2,#6fa8ec);color:#ffffff;border-color:#4a90e2;transform:translateY(-2px) scale(1.1);box-shadow:0 6px 18px rgba(74,144,226,0.5); }
-        .ctrl-btn.cc-active { background:linear-gradient(135deg,#4a90e2,#6fa8ec);color:#ffffff;border-color:#4a90e2;box-shadow:0 0 12px rgba(74,144,226,0.7); }
-        .cc-menu { position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) scaleY(0);transform-origin:bottom center;background:rgba(10,22,40,0.97);border:1.5px solid rgba(74,144,226,0.4);border-radius:14px;padding:12px;min-width:200px;opacity:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;pointer-events:none;z-index:100;backdrop-filter:blur(10px); }
+        .progress-bar-bg { position:relative;height:5px;background:rgba(74,144,226,0.2);border-radius:10px;cursor:pointer; }
+        .progress-filled { position:absolute;height:100%;width:0%;background:linear-gradient(90deg,#4a90e2,#87ceeb);border-radius:10px; }
+        .progress-thumb { position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:#fff;border:2px solid #4a90e2;border-radius:50%;cursor:grab; }
+        .time-display { display:flex;justify-content:space-between;color:rgba(155,180,208,0.8);font-size:0.78rem;margin-top:6px; }
+        .controls-row { display:flex;justify-content:space-between;align-items:center; }
+        .ctrl-btn { width:38px;height:38px;background:rgba(74,144,226,0.15);border:1px solid rgba(74,144,226,0.3);border-radius:10px;color:#87ceeb;cursor:pointer; }
+        .ctrl-btn.cc-active { background:linear-gradient(135deg,#4a90e2,#6fa8ec);color:#fff; }
+        .cc-menu { position:absolute;bottom:100%;left:50%;transform:translateX(-50%) scaleY(0);background:rgba(10,22,40,0.97);border-radius:14px;padding:12px;min-width:200px;opacity:0;transition:transform 0.3s;pointer-events:none; }
         .cc-menu.open { transform:translateX(-50%) scaleY(1);opacity:1;pointer-events:all; }
-        .cc-menu-title { font-size:0.72rem;font-weight:700;letter-spacing:2px;color:rgba(74,144,226,0.7);text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(74,144,226,0.2);text-align:center;font-family:'Cairo',sans-serif; }
-        .cc-option { display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:0.88rem;font-weight:600;color:rgba(155,180,208,0.9);font-family:'Cairo',sans-serif;transition:all 0.2s ease;white-space:nowrap; }
-        .cc-option:hover { background:rgba(74,144,226,0.2);color:#ffffff; }
-        .cc-option.cc-opt-active { background:rgba(74,144,226,0.25);color:#87ceeb; }
-        .cc-option i { width:16px;font-size:0.85rem;color:var(--accent-blue);flex-shrink:0; }
-        .cc-upload-label { display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:0.88rem;font-weight:600;color:rgba(155,180,208,0.9);font-family:'Cairo',sans-serif;transition:all 0.2s ease;border-top:1px solid rgba(74,144,226,0.15);margin-top:6px;padding-top:12px; }
-        .cc-upload-label:hover { background:rgba(74,144,226,0.2);color:#ffffff; }
-        .cc-upload-label i { width:16px;font-size:0.85rem;color:var(--accent-teal);flex-shrink:0; }
-        .volume-slider-wrap { display:flex;align-items:center;width:80px; }
-        .volume-slider { -webkit-appearance:none;width:100%;height:4px;border-radius:10px;background:rgba(74,144,226,0.25);outline:none;cursor:pointer; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#87ceeb);box-shadow:0 0 6px rgba(74,144,226,0.7);cursor:pointer;transition:transform 0.2s; }
-        .volume-slider::-webkit-slider-thumb:hover { transform:scale(1.3); }
-        .volume-slider::-moz-range-thumb { width:13px;height:13px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#87ceeb);border:none;cursor:pointer; }
-
-        .hidden { display:none !important; }
-
-        @media (max-width:1200px) { .video-grid { grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px; } }
+        .volume-slider { width:80px; }
+        .hidden { display:none; }
         @media (max-width:768px) {
-            header { padding:18px 30px; }
-            header.scrolled { padding:14px 30px; }
+            nav.top-bar { padding:16px 20px!important; }
             .hero { padding:140px 25px 60px; }
             .hero h1 { font-size:2.5rem; }
-            .hero-subtitle { font-size:1.1rem; }
-            .filters-section,.search-container,.videos-section { padding-left:25px;padding-right:25px; }
-            .video-grid { grid-template-columns:1fr;gap:20px; }
-            .filter-tabs { gap:10px; }
-            .filter-tab { padding:10px 20px;font-size:0.9rem; }
-            .admin-panel { padding:25px;margin:25px; }
-            .admin-grid { grid-template-columns:1fr; }
-            .side-nav { width:100%;right:-100%; }
-            .logo-text { font-size:1.5rem; }
-            .logo-icon { width:48px;height:48px; }
+            .sidenav { width:100%; left:-100%!important; }
         }
-        @media (max-width:480px) { .hero h1 { font-size:2rem; } .section-title { font-size:2rem; } }
-    
-        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:all 0.3s;}
-        .profile-nav-btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 8px 22px var(--shadow-glow);}
-        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
-    
-        /* Burger line animations */
-        .line{
-            opacity:0;
-            animation:lineReveal 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
-        }
-        .line:nth-child(1){animation-delay:0.1s;}
-        .line:nth-child(2){animation-delay:0.2s;}
-        .line:nth-child(3){animation-delay:0.3s;}
-        @keyframes lineReveal{
-            from{opacity:0;transform:translateX(12px);}
-            to{opacity:1;transform:translateX(0);}
-        }
-        .burger:hover .line{background:var(--accent-light-blue);}
-
-    
-/* ══════════════════════════════════════════════
-   UNIFIED NAV + SIDENAV + SETTINGS PANEL STYLES
-   ══════════════════════════════════════════════ */
-
-/* ── NAV BASE ── */
-nav.top-bar,nav#topNav,header.top-bar{
-  display:flex!important;justify-content:space-between;align-items:center;
-  padding:20px 60px;position:fixed;width:100%;top:0;z-index:1000;
-  background:rgba(255,255,255,0.82);backdrop-filter:blur(30px) saturate(180%);
-  border-bottom:1px solid rgba(74,144,226,0.3);
-  box-shadow:0 4px 30px rgba(26,41,66,0.08);
-  transition:padding .4s,box-shadow .4s,background .4s;
-}
-nav.top-bar.scrolled,nav#topNav.scrolled,header.top-bar.scrolled{
-  padding:13px 60px!important;
-  box-shadow:0 8px 40px rgba(26,41,66,0.15);
-  background:rgba(248,249,250,0.97)!important;
-  border-bottom:2px solid #4a90e2!important;
-}
-
-/* ── LOGO ── */
-.logo-container,.logo-link{display:flex;align-items:center;gap:15px;text-decoration:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-.logo-container:hover,.logo-link:hover{transform:scale(1.06);}
-.logo-icon{
-  width:52px;height:52px;
-  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
-  border-radius:16px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 25px rgba(74,144,226,0.3);
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s;
-}
-.logo-icon:hover{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 35px rgba(74,144,226,0.45);}
-.logo-icon i{font-size:1.5rem;color:#fff;}
-.logo-text,.logo-name{
-  font-size:1.8rem;font-weight:900;letter-spacing:3px;
-  background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-
-/* ── NAV RIGHT CLUSTER ── */
-.nav-right{display:flex;align-items:center;gap:16px;}
-
-/* profile btn */
-.profile-nav-btn{
-  width:42px;height:42px;
-  background:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  text-decoration:none;box-shadow:0 4px 15px rgba(74,144,226,0.3);
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
-}
-.profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px rgba(74,144,226,0.5);}
-.profile-nav-btn i{color:#fff;font-size:1.1rem;}
-
-/* bell */
-.bell-btn,.notification-btn{
-  position:relative;width:42px;height:42px;
-  background:rgba(255,255,255,0.7);border:1.5px solid rgba(74,144,226,0.3);
-  border-radius:12px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);
-}
-.bell-btn:hover,.notification-btn:hover{
-  background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);
-  box-shadow:0 8px 22px rgba(74,144,226,0.25);
-}
-.bell-btn i,.notification-btn i{color:#4a90e2;font-size:1.2rem;}
-.bell-badge,.notification-badge{
-  position:absolute;top:-5px;right:-5px;width:19px;height:19px;
-  background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.65rem;font-weight:700;color:#fff;
-}
-
-/* ── BURGER ── */
-.burger,.burger-menu{
-  cursor:pointer;width:36px;height:28px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  padding:2px 0;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-}
-.burger:hover,.burger-menu:hover{transform:scale(1.15);}
-.bline{
-  width:100%;height:3px;
-  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
-  border-radius:4px;
-  transition:all .45s cubic-bezier(.68,-.55,.265,1.55);
-  transform-origin:center;
-}
-/* when burger is a Font Awesome icon fallback */
-.burger-menu i,.burger i{color:#4a90e2;font-size:1.6rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-.burger-menu:hover i,.burger:hover i{transform:rotate(90deg);}
-
-/* open state */
-.burger.open .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
-.burger.open .bline:nth-child(2){opacity:0;transform:translateX(18px);}
-.burger.open .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
-
-/* ── OVERLAY ── */
-.overlay,#overlay-bg{
-  position:fixed;inset:0;background:rgba(26,41,66,0.65);
-  backdrop-filter:blur(8px);z-index:2500;
-  opacity:0;pointer-events:none;transition:opacity .45s;
-}
-.overlay.show,#overlay-bg.active,.overlay.active{opacity:1;pointer-events:all;}
-
-/* ── SIDENAV ── */
-.sidenav,.side-nav{
-  position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;
-  background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
-  backdrop-filter:blur(35px);
-  border-inline-start:3px solid #4a90e2;
-  padding:28px 24px;overflow-y:auto;
-  transition:right .55s cubic-bezier(.68,-.55,.265,1.55);
-  box-shadow:-12px 0 50px rgba(26,41,66,0.15);
-}
-.sidenav.show,.side-nav.active{right:0!important;}
-
-/* sidenav head */
-.sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid rgba(74,144,226,0.3);}
-.sn-head h2{background:linear-gradient(135deg,#1a2942,#3d5a7f,#b8c9dc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
-
-.sn-close{
-  width:42px;height:42px;border-radius:50%;
-  background:rgba(74,144,226,0.1);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:#4a90e2;font-size:1.4rem;
-  transition:all .4s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg) scale(1.15);}
-
-/* sidenav user card */
-.sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.3);border-radius:18px;margin-bottom:20px;transition:all .35s cubic-bezier(.34,1.56,.64,1);}
-.sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(74,144,226,0.18);border-color:#4a90e2;}
-.sn-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(74,144,226,0.3);flex-shrink:0;}
-.sn-uname{color:#0a1628;font-size:1.05rem;font-weight:700;}
-.sn-urole{color:#6b7c93;font-size:0.82rem;}
-
-/* sidenav nav links */
-.sn-links,.side-nav ul{list-style:none;padding:0;margin:0;}
-.sn-links li,.side-nav ul li{margin-bottom:4px;}
-.sn-links a,.side-nav a{
-  display:flex;align-items:center;justify-content:flex-end;gap:14px;
-  padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;
-  color:#0a1628;border-radius:14px;
-  transition:all .4s cubic-bezier(.34,1.56,.64,1);
-  position:relative;overflow:hidden;
-}
-.sn-links a::before,.side-nav a::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(74,144,226,0.12),rgba(111,168,236,0.08));
-  transform:translateX(110%);border-radius:14px;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-links a:hover::before,.side-nav a:hover::before{transform:translateX(0);}
-.sn-links a:hover,.side-nav a:hover{transform:translateX(-8px);color:#4a90e2;}
-.sn-links a i,.side-nav a i{
-  color:#4a90e2;font-size:1.2rem;width:28px;text-align:center;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-links a:hover i,.side-nav a:hover i{transform:scale(1.3) rotate(-5deg);}
-
-/* logout */
-.sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
-.sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
-.sn-logout a:hover{background:rgba(238,90,111,0.08)!important;transform:translateX(-8px)!important;}
-
-/* ── SETTINGS PANEL (inside sidenav) ── */
-.sn-settings-toggle{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;border-radius:14px;cursor:pointer;
-  background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);
-  margin-bottom:4px;color:#0a1628;font-weight:700;font-size:0.95rem;
-  transition:all .4s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);border-color:#4a90e2;}
-.sn-settings-toggle i{color:#4a90e2;}
-.sn-settings-chevron{
-  color:#4a90e2;font-size:0.8rem;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-settings-toggle.open .sn-settings-chevron{transform:rotate(180deg);}
-
-.sn-settings-panel{
-  max-height:0;overflow:hidden;
-  transition:max-height .6s cubic-bezier(.4,0,.2,1),opacity .4s;
-  opacity:0;
-}
-.sn-settings-panel.open{max-height:800px;opacity:1;}
-
-.sn-settings-inner{
-  padding:18px 14px;
-  background:rgba(248,249,250,0.9);
-  border:1.5px solid rgba(74,144,226,0.2);
-  border-radius:16px;margin-top:8px;margin-bottom:8px;
-}
-
-.sn-s-label{
-  font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  color:#4a90e2;margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;
-}
-.sn-s-label:first-child{margin-top:0;}
-.sn-s-label::after{content:'';flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(74,144,226,0.3));}
-
-/* theme mini cards */
-.sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.sn-t-opt{
-  border-radius:12px;overflow:hidden;cursor:pointer;
-  border:2px solid transparent;height:70px;position:relative;
-  transition:all .35s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-t-opt:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,144,226,0.2);}
-.sn-t-opt.sel{border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,0.18);}
-.sn-t-preview{width:100%;height:100%;}
-.sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
-.sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
-.sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
-.sn-t-light .sn-t-label{color:#1a2942;}
-.sn-t-dark  .sn-t-label{color:#e8eef5;}
-.sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
-.sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
-
-/* graphics mini options */
-.sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.sn-g-opt{
-  padding:10px 6px;border-radius:12px;cursor:pointer;
-  border:1.5px solid rgba(74,144,226,0.25);text-align:center;
-  transition:all .35s cubic-bezier(.34,1.56,.64,1);
-  position:relative;
-}
-.sn-g-opt:hover{transform:translateY(-3px);border-color:#4a90e2;box-shadow:0 6px 16px rgba(74,144,226,0.2);}
-.sn-g-opt.sel{border-color:#4a90e2;background:rgba(74,144,226,0.08);}
-.sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
-.sn-g-name{font-size:0.65rem;font-weight:700;color:#0a1628;}
-.sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:#4a90e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s cubic-bezier(.34,1.56,.64,1);}
-.sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
-
-/* font mini slider */
-.sn-font-row{padding:6px 2px;}
-.sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));transition:background .15s;direction:ltr;}
-.sn-font-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4a90e2,#6fa8ec);box-shadow:0 2px 10px rgba(74,144,226,0.5);cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
-.sn-font-slider::-webkit-slider-thumb:hover{transform:scale(1.3);}
-.sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
-.sn-font-labels span{font-size:0.62rem;color:#6b7c93;font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;transition:all .2s;}
-.sn-font-labels span:hover,.sn-font-labels span.act{background:rgba(74,144,226,0.1);color:#4a90e2;font-weight:800;}
-
-/* save btn */
-.sn-save-btn{
-  width:100%;margin-top:14px;padding:12px;
-  background:linear-gradient(135deg,#4a90e2,#6fa8ec);
-  border:none;border-radius:12px;color:#fff;font-weight:700;
-  font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;
-  cursor:pointer;box-shadow:0 5px 16px rgba(74,144,226,0.35);
-  transition:all .35s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-save-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 28px rgba(74,144,226,0.45);}
-
-/* ── GENERIC HOVER ANIMATIONS ── */
-/* any button with .btn or class containing btn */
-button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
-             box-shadow .35s,
-             background .3s,
-             color .3s,
-             border-color .3s;
-}
-/* nav links in side nav already handled above */
-/* general interactive cards */
-.dash-card,.info-box,.course-item,.feed-item,.item-card,
-.g-opt,.t-opt,.stat-mini,.panel,.s-card,.post-box{
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
-             box-shadow .35s,
-             border-color .35s!important;
-}
-
-/* ── TOAST (unified) ── */
-.sn-toast{
-  position:fixed;top:90px;left:50%;
-  transform:translateX(-50%) translateY(-16px);
-  background:linear-gradient(135deg,#1a2942,#3d5a7f);color:#fff;
-  padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;
-  opacity:0;pointer-events:none;z-index:99999;
-  box-shadow:0 8px 28px rgba(26,41,66,0.3);
-  display:flex;align-items:center;gap:9px;
-  transition:all .38s cubic-bezier(.34,1.56,.64,1);
-}
-.sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-@media(max-width:768px){
-  nav.top-bar,nav#topNav,header.top-bar{padding:14px 20px!important;}
-  nav.top-bar.scrolled,nav#topNav.scrolled{padding:10px 20px!important;}
-  .sidenav,.side-nav{width:100%;right:-100%!important;}
-  .sidenav.show,.side-nav.active{right:0!important;}
-}
-
-</style>
-    <script src="settings-apply.js"></script>
+    </style>
 </head>
 <body>
-
-<!-- ══ UNIFIED OVERLAY + SIDENAV ══ -->
-<div class="overlay" id="snOverlay" onclick="snClose()"></div>
-<div class="sidenav" id="snDrawer">
-  <div class="sn-head">
-    <h2>القائمة</h2>
-    <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
-  </div>
-  <div class="sn-user">
-    <div class="sn-avatar">👤</div>
-    <div>
-      <div class="sn-uname">مرحباً بك</div>
-      <div class="sn-urole">طالب متميز</div>
-    </div>
-  </div>
-  <ul class="sn-links">
-    <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
-    <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
-    <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
-    <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
-    <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
-    <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
-    <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
-    <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
-    <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
-    <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
-    <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
-    <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
-    <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
-  </ul>
-
-  <!-- ── SETTINGS TOGGLE ── -->
-  <div style="margin-top:12px;">
-    <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
-      <span style="display:flex;align-items:center;gap:10px;">
-        <i class="fas fa-sliders-h"></i> الإعدادات
-      </span>
-      <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
-    </div>
-    <div class="sn-settings-panel" id="snSettingsPanel">
-      <div class="sn-settings-inner">
-
-        <!-- THEME -->
-        <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
-        <div class="sn-theme-row">
-          <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
-            <div class="sn-t-preview sn-t-light"></div>
-            <div class="sn-t-label">فاتح</div>
-            <div class="sn-t-check"><i class="fas fa-check"></i></div>
-          </div>
-          <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
-            <div class="sn-t-preview sn-t-dark"></div>
-            <div class="sn-t-label">داكن</div>
-            <div class="sn-t-check"><i class="fas fa-check"></i></div>
-          </div>
-        </div>
-
-        <!-- GRAPHICS -->
-        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
-        <div class="sn-g-row">
-          <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')">
-            <span class="sn-g-icon">✨</span>
-            <div class="sn-g-name">كامل</div>
-            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-          </div>
-          <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')">
-            <span class="sn-g-icon">🌤</span>
-            <div class="sn-g-name">مخفف</div>
-            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-          </div>
-          <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')">
-            <span class="sn-g-icon">⚡</span>
-            <div class="sn-g-name">بسيط</div>
-            <div class="sn-g-chk"><i class="fas fa-check"></i></div>
-          </div>
-        </div>
-
-        <!-- FONT SIZE -->
-        <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
-        <div class="sn-font-row">
-          <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1"
-                 oninput="snFontInput(this.value)">
-          <div class="sn-font-labels">
-            <span onclick="snSetFont(0)" data-idx="0">S</span>
-            <span onclick="snSetFont(1)" data-idx="1">M</span>
-            <span onclick="snSetFont(2)" data-idx="2">L</span>
-            <span onclick="snSetFont(3)" data-idx="3">XL</span>
-          </div>
-        </div>
-
-        <!-- SAVE -->
-        <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
-      </div>
-    </div>
-  </div>
-
-  <ul class="sn-links sn-logout" style="margin-top:16px;">
-    <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
-  </ul>
-</div>
-
-<!-- TOAST -->
-<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
-
 
 <div class="bg-animation">
     <div class="bg-shape shape-1"></div>
@@ -703,111 +432,100 @@ button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
     <div class="bg-shape shape-3"></div>
 </div>
 
-<script>
-    for(let i=0;i<30;i++){
-        const p=document.createElement('div');p.className='particle';
-        p.style.left=Math.random()*100+'%';
-        p.style.animationDelay=Math.random()*15+'s';
-        p.style.animationDuration=(Math.random()*10+10)+'s';
-        document.body.appendChild(p);
-    }
-</script>
-
-<header id="header">
-    <div class="header-content">
-        <div class="nav-actions">
-        <a href="profile.html" class="profile-nav-btn"><i class="fas fa-user"></i></a>
-        <div class="notification-btn" onclick="showNotifications()">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </div>
-            <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false"><div class="bline"></div><div class="bline"></div><div class="bline"></div></div>
+<!-- ══ HEADER مطابق لنظام index ══ -->
+<nav class="top-bar" id="navbar">
+    <a href="index.html" class="logo-container">
+        <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="logo-text">
+            <div class="logo">SITEJ</div>
+            <div class="logo-tagline" data-i18n="logoTagline">منصة التعليم الذكية</div>
         </div>
-        <a href="index.html" class="logo">
-            <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
-            <div class="logo-text">SITEJ</div>
-        </a>
-        <div class="lang-dropdown-wrap" id="langDropdownWrap">
-            <div class="lang-switcher" id="langSwitcher">
-                <span class="lang-flag-display" id="langFlagDisplay">🇸🇦</span>
-                <span id="langLabel">عربي</span>
-                <i class="fas fa-chevron-down"></i>
+    </a>
+    <div class="nav-actions">
+        <div class="lang-selector-wrap" id="langSelectorWrap">
+            <div class="lang-trigger-btn" id="langTriggerBtn">
+                <span class="lang-flag" id="langFlag">🇸🇦</span>
+                <span class="lang-label" id="langLabelText">العربية</span>
+                <svg class="lang-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
-            <div class="lang-dropdown" id="langDropdown">
-                <div class="lang-option active" id="optAr" data-lang="ar">
-                    <span class="lang-flag">🇸🇦</span><span>عربي</span>
+            <div class="lang-dropdown-menu" id="langDropdownMenu">
+                <div class="lang-option-item lang-active" data-lang="ar" onclick="setLang('ar')">
+                    <span>🇸🇦</span><span>العربية</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <div class="lang-option" id="optEn" data-lang="en">
-                    <span class="lang-flag">🇬🇧</span><span>English</span>
+                <div class="lang-divider-line"></div>
+                <div class="lang-option-item" data-lang="en" onclick="setLang('en')">
+                    <span>🇬🇧</span><span>English</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
             </div>
+        </div>
+
+        <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
+
+        <div class="notification-btn" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notifBadge">3</span>
+        </div>
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false">
+            <div class="bline"></div><div class="bline"></div><div class="bline"></div>
         </div>
     </div>
-</header>
+</nav>
+
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+    <div class="sn-head">
+        <h2>القائمة</h2>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+    </div>
+    <div class="sn-user">
+        <div class="sn-avatar" id="snAvatar">👤</div>
+        <div>
+            <div class="sn-uname" id="snUserName">مرحباً بك</div>
+            <div class="sn-urole" id="snUserRole">زائر</div>
+        </div>
+    </div>
+    <ul class="sn-links">
+        <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+        <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
+        <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+        <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+        <li id="dashDivider" style="display:none;"><div class="dash-divider"></div><div class="dash-section-label">لوحات التحكم</div></li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher"><a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a></li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin"><a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a></li>
+    </ul>
+    <div style="margin-top:12px;">
+        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
+            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+        </div>
+        <div class="sn-settings-panel" id="snSettingsPanel"><div class="sn-settings-inner"><div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div><div class="sn-theme-row"><div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')"><div class="sn-t-preview sn-t-light"></div><div class="sn-t-label">فاتح</div><div class="sn-t-check"><i class="fas fa-check"></i></div></div><div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')"><div class="sn-t-preview sn-t-dark"></div><div class="sn-t-label">داكن</div><div class="sn-t-check"><i class="fas fa-check"></i></div></div></div><div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div><div class="sn-g-row"><div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')"><span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div><div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')"><span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div><div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')"><span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div></div><div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div><div><input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)"><div class="sn-font-labels"><span onclick="snSetFont(0)" data-idx="0">S</span><span onclick="snSetFont(1)" data-idx="1">M</span><span onclick="snSetFont(2)" data-idx="2">L</span><span onclick="snSetFont(3)" data-idx="3">XL</span></div></div><button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button></div></div>
+    </div>
+    <ul class="sn-links sn-logout" style="margin-top:16px;"><li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li></ul>
+</div>
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
 
 <section class="hero">
     <h1 data-i18n="heroTitle">مكتبة الفيديو التعليمية</h1>
     <p class="hero-subtitle" data-i18n="heroSub">استكشف عالماً من المعرفة والتميز</p>
 </section>
 
-<div class="filters-section">
-    <div class="filter-tabs">
-        <div class="filter-tab active" data-category="all"><i class="fas fa-crown"></i><span data-i18n="catAll">الكل</span></div>
-        <div class="filter-tab" data-category="english-edu"><i class="fas fa-language"></i><span data-i18n="catEnglishEdu">فيديوهات تعليمية إنجليزية</span></div>
-        <div class="filter-tab" data-category="arabic-edu"><i class="fas fa-book-open"></i><span data-i18n="catArabicEdu">فيديوهات تعليمية عربية</span></div>
-        <div class="filter-tab" data-category="history"><i class="fas fa-landmark"></i><span data-i18n="catHistory">فيديوهات التاريخ</span></div>
-        <div class="filter-tab" data-category="geography"><i class="fas fa-globe-americas"></i><span data-i18n="catGeography">فيديوهات الجغرافيا</span></div>
-        <div class="filter-tab" data-category="islamic"><i class="fas fa-mosque"></i><span data-i18n="catIslamic">التربية الإسلامية</span></div>
-    </div>
-</div>
-
-<div class="search-container">
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن محاضرة...">
-    </div>
-</div>
-
-<div class="admin-panel" id="adminPanel">
-    <div class="admin-panel-header"><i class="fas fa-tools"></i><span data-i18n="adminTitle">لوحة التحكم</span></div>
-    <div class="admin-grid">
-        <input type="text" id="videoTitle" class="admin-input" data-i18n-placeholder="adminTitlePlaceholder" placeholder="عنوان الفيديو">
-        <input type="text" id="videoTeacher" class="admin-input" data-i18n-placeholder="adminTeacherPlaceholder" placeholder="اسم المعلم">
-        <input type="text" id="videoUrl" class="admin-input" data-i18n-placeholder="adminUrlPlaceholder" placeholder="رابط يوتيوب (اختياري)">
-        <select id="videoCategory" class="admin-select">
-            <option value="all" data-i18n="catAll">الكل</option>
-            <option value="english-edu" data-i18n="catEnglishEdu">فيديوهات تعليمية إنجليزية</option>
-            <option value="arabic-edu" data-i18n="catArabicEdu">فيديوهات تعليمية عربية</option>
-            <option value="history" data-i18n="catHistory">فيديوهات التاريخ</option>
-            <option value="geography" data-i18n="catGeography">فيديوهات الجغرافيا</option>
-            <option value="islamic" data-i18n="catIslamic">التربية الإسلامية</option>
-        </select>
-        <input type="file" id="fileInput" class="hidden" accept="video/*">
-        <button class="btn-gold" onclick="document.getElementById('fileInput').click()">
-            <i class="fas fa-cloud-upload-alt"></i> <span data-i18n="uploadBtn">رفع فيديو</span>
-        </button>
-        <button class="btn-gold" onclick="addNewVideo()">
-            <i class="fas fa-plus-circle"></i> <span data-i18n="addLinkBtn">إضافة رابط</span>
-        </button>
-    </div>
-    <div class="upload-progress" id="uploadProgress"><div class="progress-bar" id="progressBar"></div></div>
-    <div id="statusText" style="color:var(--accent-blue);margin-top:15px;display:none;"></div>
-</div>
-
-<section class="videos-section">
-    <h2 class="section-title">
-        <i class="fas fa-play-circle"></i>
-        <span data-i18n="sectionTitle">المحاضرات المتاحة</span>
-    </h2>
-    <div class="video-grid" id="videoGrid"></div>
-</section>
-
-<div class="video-modal" id="videoModal">
-    <div class="modal-content">
-        <div class="close-modal" onclick="closeVideo()"><i class="fas fa-times-circle"></i></div>
-        <div class="video-player" id="videoPlayer"></div>
-    </div>
-</div>
+<div class="filters-section"><div class="filter-tabs"><div class="filter-tab active" data-category="all"><i class="fas fa-crown"></i><span data-i18n="catAll">الكل</span></div><div class="filter-tab" data-category="english-edu"><i class="fas fa-language"></i><span data-i18n="catEnglishEdu">فيديوهات تعليمية إنجليزية</span></div><div class="filter-tab" data-category="arabic-edu"><i class="fas fa-book-open"></i><span data-i18n="catArabicEdu">فيديوهات تعليمية عربية</span></div><div class="filter-tab" data-category="history"><i class="fas fa-landmark"></i><span data-i18n="catHistory">فيديوهات التاريخ</span></div><div class="filter-tab" data-category="geography"><i class="fas fa-globe-americas"></i><span data-i18n="catGeography">فيديوهات الجغرافيا</span></div><div class="filter-tab" data-category="islamic"><i class="fas fa-mosque"></i><span data-i18n="catIslamic">التربية الإسلامية</span></div></div></div>
+<div class="search-container"><div class="search-bar"><i class="fas fa-search"></i><input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="ابحث عن محاضرة..."></div></div>
+<div class="admin-panel" id="adminPanel"><div class="admin-panel-header"><i class="fas fa-tools"></i><span data-i18n="adminTitle">لوحة التحكم</span></div><div class="admin-grid"><input type="text" id="videoTitle" class="admin-input" placeholder="عنوان الفيديو"><input type="text" id="videoTeacher" class="admin-input" placeholder="اسم المعلم"><input type="text" id="videoUrl" class="admin-input" placeholder="رابط يوتيوب (اختياري)"><select id="videoCategory" class="admin-select"><option value="all">الكل</option><option value="english-edu">فيديوهات تعليمية إنجليزية</option><option value="arabic-edu">فيديوهات تعليمية عربية</option><option value="history">فيديوهات التاريخ</option><option value="geography">فيديوهات الجغرافيا</option><option value="islamic">التربية الإسلامية</option></select><input type="file" id="fileInput" class="hidden" accept="video/*"><button class="btn-gold" onclick="document.getElementById('fileInput').click()"><i class="fas fa-cloud-upload-alt"></i> رفع فيديو</button><button class="btn-gold" onclick="addNewVideo()"><i class="fas fa-plus-circle"></i> إضافة رابط</button></div><div class="upload-progress" id="uploadProgress"><div class="progress-bar" id="progressBar"></div></div></div>
+<section class="videos-section"><h2 class="section-title"><i class="fas fa-play-circle"></i><span data-i18n="sectionTitle">المحاضرات المتاحة</span></h2><div class="video-grid" id="videoGrid"></div></section>
+<div class="video-modal" id="videoModal"><div class="modal-content"><div class="close-modal" onclick="closeVideo()"><i class="fas fa-times-circle"></i></div><div class="video-player" id="videoPlayer"></div></div></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -815,15 +533,7 @@ button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
     import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
-        authDomain: "eliteacademy-37bfc.firebaseapp.com",
-        projectId: "eliteacademy-37bfc",
-        storageBucket: "eliteacademy-37bfc.firebasestorage.app",
-        messagingSenderId: "203080953628",
-        appId: "1:203080953628:web:69efebccc336b79f0554d9"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA", authDomain: "eliteacademy-37bfc.firebaseapp.com", projectId: "eliteacademy-37bfc", storageBucket: "eliteacademy-37bfc.firebasestorage.app", messagingSenderId: "203080953628", appId: "1:203080953628:web:69efebccc336b79f0554d9" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -832,690 +542,54 @@ button,.btn,a.btn,[class*="btn-"],[class*="-btn"]{
     let canManage = false;
     let allVideos = [];
     let currentCategory = 'all';
-
-    /* =====================================================================
-       VIDEO TITLE MAPS
-       Key = filename stem (e.g. "history1"), value = { ar, en }
-    ===================================================================== */
-    const videoTitles = {
-        // History
-        history1: { ar: 'الدولة العثمانية',           en: 'The Ottoman Empire' },
-        history2: { ar: 'حضارة مصر',                  en: 'Egyptian Civilization' },
-        history3: { ar: 'فتح القسطنطينية',             en: 'The Conquest of Constantinople' },
-        history4: { ar: 'الأندلس',                     en: 'Al-Andalus' },
-        // Geography
-        geography1: { ar: 'الدولة الغارقة',            en: 'The Sinking Country' },
-        geography2: { ar: 'أطول دولة في العالم (شيلي)',en: 'The Longest Country in the World (Chile)' },
-        geography3: { ar: 'انشقاق الأرض في أفريقيا',  en: 'Africa\'s Great Rift' },
-        geography4: { ar: 'المكان الأكثر عزلة',        en: 'The Most Isolated Place on Earth' },
-        geography5: { ar: 'دولة داخل دولة',            en: 'A Country Within a Country' },
-        geography6: { ar: 'أكثر المناطق برودة',        en: 'The Coldest Places on Earth' },
-        // English Educational
-        english1: { ar: 'أطول ناطحة سحاب مخيفة',     en: 'The Scariest Tallest Skyscraper' },
-        english2: { ar: 'لماذا نحلم؟',                en: 'Why Do We Dream?' },
-        english3: { ar: 'ما حجم الكون؟',              en: 'How Big Is the Universe?' },
-        english4: { ar: 'كيف يُصنع الشوكولاتة؟',      en: 'How Is Chocolate Made?' },
-        english5: { ar: 'التجربة',                     en: 'The Experiment' },
-        english6: { ar: 'الحرب العالمية الثانية',      en: 'World War II' },
-        // Arabic Educational
-        arabic1: { ar: 'كيف يتشكل المطر',             en: 'How Rain Forms' },
-        arabic2: { ar: 'دورة الماء في الطبيعة',        en: 'The Water Cycle in Nature' },
-        arabic3: { ar: 'النظام الشمسي',                en: 'The Solar System' },
-        arabic4: { ar: 'كيف يعمل القلب',              en: 'How the Heart Works' },
-        arabic5: { ar: 'لماذا يحدث زلزال',            en: 'Why Do Earthquakes Happen?' },
-        arabic6: { ar: 'طبقات الأرض',                 en: 'Layers of the Earth' },
-        arabic7: { ar: 'كيف تطير الطائرة',            en: 'How Does an Airplane Fly?' },
-        // Islamic Education
-        islamic1: { ar: 'قصة آل عمران',               en: 'The Story of the Family of Imran' },
-        islamic2: { ar: 'ماذا يريد الإنسان بدعوته',   en: 'What Does Man Seek in His Prayer?' },
-        islamic3: { ar: 'ابتلاءات النبي محمد ﷺ',      en: 'The Trials of Prophet Muhammad ﷺ' },
-        islamic4: { ar: 'ما الحكمة التي خلقها الله',   en: 'The Divine Wisdom Behind Creation' },
-        islamic5: { ar: 'الجنة',                       en: 'Paradise (Jannah)' },
-        islamic6: { ar: 'معجزات القرآن',               en: 'Miracles of the Quran' },
-        islamic7: { ar: 'قصة سيدنا يوسف عليه السلام', en: 'The Story of Prophet Yusuf (AS)' },
-    };
-
-    /* Helper: get title for a video in current language */
-    const getVideoTitle = (video) => {
-        if (video.filename) {
-            const stem = video.filename.replace('.mp4', '');
-            const entry = videoTitles[stem];
-            if (entry) return entry[currentLang] || entry.ar;
-        }
-        return video.title || 'بدون عنوان';
-    };
-
-    /* ===================================================================== */
-
-    const translations = {
-        ar: {
-            menuTitle:"القائمة الرئيسية",yourProfile:"your profile",profileSub:"ملفك التعريفي",
-            navHome:"الصفحة الرئيسية",navVideos:"الفيديوهات التعليمية",navArticles:"المقالات الحصرية",
-            navGames:"ساحة الألعاب",navExams:"مركز الاختبارات",navSign:"مركز لغة الإشارة",
-            navQuran:"اسلاميات",navVoice:"الغرف الصوتية",navQuestions:"قسم الاستفسارات",
-            navFamily:"توعية في الرقابة الابوية",navSupport:"تعريف عن الراعي",logout:"تسجيل خروج",
-            heroTitle:"مكتبة الفيديو التعليمية",heroSub:"استكشف عالماً من المعرفة والتميز",
-            catAll:"الكل",catEnglishEdu:"فيديوهات تعليمية إنجليزية",catArabicEdu:"فيديوهات تعليمية عربية",
-            catHistory:"فيديوهات التاريخ",catGeography:"فيديوهات الجغرافيا",catIslamic:"التربية الإسلامية",
-            searchPlaceholder:"ابحث عن محاضرة...",adminTitle:"لوحة التحكم",
-            adminTitlePlaceholder:"عنوان الفيديو",adminTeacherPlaceholder:"اسم المعلم",
-            adminUrlPlaceholder:"رابط يوتيوب (اختياري)",uploadBtn:"رفع فيديو",addLinkBtn:"إضافة رابط",
-            sectionTitle:"المحاضرات المتاحة",deleteLabel:"حذف الفيديو",newLabel:"جديد",featuredLabel:"مميز",
-            ccOff:"إيقاف الترجمة",ccUpload:"تحميل ملف ترجمة (.vtt)",ccTitle:"الترجمة المرفقة",ccOn:"تشغيل الترجمة",
-        },
-        en: {
-            menuTitle:"Main Menu",yourProfile:"your profile",profileSub:"View your profile",
-            navHome:"Home",navVideos:"Educational Videos",navArticles:"Exclusive Articles",
-            navGames:"Games Arena",navExams:"Exams Center",navSign:"Sign Language Hub",
-            navQuran:"Islamic Studies",navVoice:"Voice Rooms",navQuestions:"Q&A Section",
-            navFamily:"Parental Guidance",navSupport:"About the Sponsor",logout:"Log Out",
-            heroTitle:"Educational Video Library",heroSub:"Explore a world of knowledge and excellence",
-            catAll:"All",catEnglishEdu:"English Educational Videos",catArabicEdu:"Arabic Educational Videos",
-            catHistory:"History Videos",catGeography:"Geography Videos",catIslamic:"Islamic Studies",
-            searchPlaceholder:"Search for a lecture...",adminTitle:"Control Panel",
-            adminTitlePlaceholder:"Video title",adminTeacherPlaceholder:"Teacher name",
-            adminUrlPlaceholder:"YouTube link (optional)",uploadBtn:"Upload Video",addLinkBtn:"Add Link",
-            sectionTitle:"Available Lectures",deleteLabel:"Delete Video",newLabel:"New",featuredLabel:"Featured",
-            ccOff:"Turn Off Captions",ccUpload:"Load Caption File (.vtt)",ccTitle:"Captions",ccOn:"Turn On Captions",
-        }
-    };
-
     let currentLang = 'ar';
+    const videoTitles = { history1: { ar: 'الدولة العثمانية', en: 'The Ottoman Empire' }, history2: { ar: 'حضارة مصر', en: 'Egyptian Civilization' }, history3: { ar: 'فتح القسطنطينية', en: 'The Conquest of Constantinople' }, history4: { ar: 'الأندلس', en: 'Al-Andalus' }, geography1: { ar: 'الدولة الغارقة', en: 'The Sinking Country' }, geography2: { ar: 'أطول دولة في العالم (شيلي)', en: 'The Longest Country in the World (Chile)' }, geography3: { ar: 'انشقاق الأرض في أفريقيا', en: "Africa's Great Rift" }, geography4: { ar: 'المكان الأكثر عزلة', en: 'The Most Isolated Place on Earth' }, geography5: { ar: 'دولة داخل دولة', en: 'A Country Within a Country' }, geography6: { ar: 'أكثر المناطق برودة', en: 'The Coldest Places on Earth' }, english1: { ar: 'أطول ناطحة سحاب مخيفة', en: 'The Scariest Tallest Skyscraper' }, english2: { ar: 'لماذا نحلم؟', en: 'Why Do We Dream?' }, english3: { ar: 'ما حجم الكون؟', en: 'How Big Is the Universe?' }, english4: { ar: 'كيف يُصنع الشوكولاتة؟', en: 'How Is Chocolate Made?' }, english5: { ar: 'التجربة', en: 'The Experiment' }, english6: { ar: 'الحرب العالمية الثانية', en: 'World War II' }, arabic1: { ar: 'كيف يتشكل المطر', en: 'How Rain Forms' }, arabic2: { ar: 'دورة الماء في الطبيعة', en: 'The Water Cycle in Nature' }, arabic3: { ar: 'النظام الشمسي', en: 'The Solar System' }, arabic4: { ar: 'كيف يعمل القلب', en: 'How the Heart Works' }, arabic5: { ar: 'لماذا يحدث زلزال', en: 'Why Do Earthquakes Happen?' }, arabic6: { ar: 'طبقات الأرض', en: 'Layers of the Earth' }, arabic7: { ar: 'كيف تطير الطائرة', en: 'How Does an Airplane Fly?' }, islamic1: { ar: 'قصة آل عمران', en: 'The Story of the Family of Imran' }, islamic2: { ar: 'ماذا يريد الإنسان بدعوته', en: 'What Does Man Seek in His Prayer?' }, islamic3: { ar: 'ابتلاءات النبي محمد ﷺ', en: 'The Trials of Prophet Muhammad ﷺ' }, islamic4: { ar: 'ما الحكمة التي خلقها الله', en: 'The Divine Wisdom Behind Creation' }, islamic5: { ar: 'الجنة', en: 'Paradise (Jannah)' }, islamic6: { ar: 'معجزات القرآن', en: 'Miracles of the Quran' }, islamic7: { ar: 'قصة سيدنا يوسف عليه السلام', en: 'The Story of Prophet Yusuf (AS)' } };
+    const getVideoTitle = (video) => { if (video.filename) { const stem = video.filename.replace('.mp4', ''); const entry = videoTitles[stem]; if (entry) return entry[currentLang] || entry.ar; } return video.title || 'بدون عنوان'; };
+    const translations = { ar: { heroTitle:"مكتبة الفيديو التعليمية",heroSub:"استكشف عالماً من المعرفة والتميز", catAll:"الكل",catEnglishEdu:"فيديوهات تعليمية إنجليزية",catArabicEdu:"فيديوهات تعليمية عربية", catHistory:"فيديوهات التاريخ",catGeography:"فيديوهات الجغرافيا",catIslamic:"التربية الإسلامية", searchPlaceholder:"ابحث عن محاضرة...",adminTitle:"لوحة التحكم", sectionTitle:"المحاضرات المتاحة",deleteLabel:"حذف الفيديو",newLabel:"جديد",featuredLabel:"مميز", ccOff:"إيقاف الترجمة",ccUpload:"تحميل ملف ترجمة (.vtt)",ccTitle:"الترجمة المرفقة", logoTagline:"منصة التعليم الذكية" }, en: { heroTitle:"Educational Video Library",heroSub:"Explore a world of knowledge and excellence", catAll:"All",catEnglishEdu:"English Educational Videos",catArabicEdu:"Arabic Educational Videos", catHistory:"History Videos",catGeography:"Geography Videos",catIslamic:"Islamic Studies", searchPlaceholder:"Search for a lecture...",adminTitle:"Control Panel", sectionTitle:"Available Lectures",deleteLabel:"Delete Video",newLabel:"New",featuredLabel:"Featured", ccOff:"Turn Off Captions",ccUpload:"Load Caption File (.vtt)",ccTitle:"Captions", logoTagline:"Smart Education Platform" } };
 
-    const langSwitcher = document.getElementById('langSwitcher');
-    const langDropdown = document.getElementById('langDropdown');
-    langSwitcher.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = langDropdown.classList.contains('open');
-        langDropdown.classList.toggle('open', !isOpen);
-        langSwitcher.classList.toggle('open', !isOpen);
-    });
-    document.addEventListener('click', () => {
-        langDropdown.classList.remove('open');
-        langSwitcher.classList.remove('open');
-    });
-    document.querySelectorAll('.lang-option').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const chosen = opt.dataset.lang;
-            if (chosen === currentLang) { langDropdown.classList.remove('open'); langSwitcher.classList.remove('open'); return; }
-            currentLang = chosen;
-            applyTranslations();
-            renderVideos();
-            langDropdown.classList.remove('open');
-            langSwitcher.classList.remove('open');
-        });
-    });
-
-    const applyTranslations = () => {
-        const t = translations[currentLang];
-        const isAr = currentLang === 'ar';
-        document.documentElement.lang = currentLang;
-        document.documentElement.dir = isAr ? 'rtl' : 'ltr';
-        document.getElementById('langLabel').textContent = isAr ? 'عربي' : 'English';
-        document.getElementById('langFlagDisplay').textContent = isAr ? '🇸🇦' : '🇬🇧';
-        document.getElementById('optAr').classList.toggle('active', isAr);
-        document.getElementById('optEn').classList.toggle('active', !isAr);
-        document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (t[key]) el.textContent = t[key]; });
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { const key = el.getAttribute('data-i18n-placeholder'); if (t[key]) el.placeholder = t[key]; });
-        document.querySelectorAll('.admin-select option[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (t[key]) el.textContent = t[key]; });
-        document.title = isAr ? 'SITEJ - مكتبة الفيديو' : 'SITEJ - Video Library';
-    };
+    function applyTranslations(){ const t=translations[currentLang]; document.documentElement.lang=currentLang; document.documentElement.dir=currentLang==='ar'?'rtl':'ltr'; document.getElementById('langFlag').textContent=currentLang==='ar'?'🇸🇦':'🇬🇧'; document.getElementById('langLabelText').textContent=currentLang==='ar'?'العربية':'English'; document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key])el.textContent=t[key];}); document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const key=el.dataset.i18nPlaceholder;if(t[key])el.placeholder=t[key];}); document.title=currentLang==='ar'?'SITEJ - مكتبة الفيديو':'SITEJ - Video Library'; renderVideos(); }
+    window.setLang = function(lang){ if(lang===currentLang) return; currentLang=lang; applyTranslations(); };
     applyTranslations();
 
-    const getCategoryLabel = (cat) => {
-        const t = translations[currentLang];
-        const map = { 'all':t.catAll,'english-edu':t.catEnglishEdu,'arabic-edu':t.catArabicEdu,'history':t.catHistory,'geography':t.catGeography,'islamic':t.catIslamic };
-        return map[cat] || cat;
-    };
+    function renderVideos(){ const t=translations[currentLang]; const grid=document.getElementById('videoGrid'); grid.innerHTML=''; const filtered=currentCategory==='all'?allVideos:allVideos.filter(v=>v.category===currentCategory); if(filtered.length===0){ grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;"><i class="fas fa-film" style="font-size:4rem;opacity:0.3;"></i><p>${currentLang==='ar'?'لا توجد فيديوهات':'No videos'}</p></div>`; return; } filtered.forEach((video,idx)=>{ const card=document.createElement('div'); card.className='video-card'; card.setAttribute('data-video',JSON.stringify(video)); const displayTitle=getVideoTitle(video); card.innerHTML=`<div class="thumbnail-wrapper" onclick='playVideoFromCard(this.closest(".video-card"))'><img src="${video.thumbnail}" alt="${displayTitle}" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400'"><div class="play-overlay"><div class="play-button"><i class="fas fa-play"></i></div></div><div class="video-badge">${getCategoryLabel(video.category)}</div></div><div class="video-info"><h3 class="video-title">${displayTitle}</h3><div class="video-meta"><span><i class="fas fa-clock"></i> ${t.newLabel}</span><span><i class="fas fa-star"></i> ${t.featuredLabel}</span></div><div class="video-teacher"><div class="teacher-avatar"><i class="fas fa-user-tie"></i></div><span>${video.teacher}</span></div>${canManage && video.firestoreId ? `<div class="delete-btn" onclick="event.stopPropagation(); deleteVideo('${video.firestoreId}')"><i class="fas fa-trash-alt"></i> ${t.deleteLabel}</div>` : ''}</div>`; grid.appendChild(card); }); }
+    function getCategoryLabel(cat){ const t=translations[currentLang]; const map={'all':t.catAll,'english-edu':t.catEnglishEdu,'arabic-edu':t.catArabicEdu,'history':t.catHistory,'geography':t.catGeography,'islamic':t.catIslamic}; return map[cat]||cat; }
 
-    const renderVideos = () => {
-        const t = translations[currentLang];
-        const grid = document.getElementById('videoGrid');
-        grid.innerHTML = '';
-        const filtered = currentCategory === 'all' ? allVideos : allVideos.filter(v => v.category === currentCategory);
-        if (filtered.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-gray);"><i class="fas fa-film" style="font-size:4rem;margin-bottom:20px;opacity:0.3;display:block;"></i><p style="font-size:1.2rem;">${currentLang==='ar'?'لا توجد فيديوهات في هذا القسم':'No videos in this section yet'}</p></div>`;
-            return;
-        }
-        filtered.forEach((video, index) => {
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.style.animationDelay = (index * 0.1) + 's';
-            card.setAttribute('data-video', JSON.stringify(video));
-            const displayTitle = getVideoTitle(video);
-            card.innerHTML = `
-                <div class="thumbnail-wrapper" onclick='playVideoFromCard(this.closest(".video-card"))'>
-                    <img src="${video.thumbnail}" alt="${displayTitle}" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400'">
-                    <div class="play-overlay"><div class="play-button"><i class="fas fa-play"></i></div></div>
-                    <div class="video-badge">${getCategoryLabel(video.category)}</div>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">${displayTitle}</h3>
-                    <div class="video-meta">
-                        <span><i class="fas fa-clock"></i> ${t.newLabel}</span>
-                        <span><i class="fas fa-star"></i> ${t.featuredLabel}</span>
-                    </div>
-                    <div class="video-teacher">
-                        <div class="teacher-avatar"><i class="fas fa-user-tie"></i></div>
-                        <span>${video.teacher}</span>
-                    </div>
-                    ${canManage && video.firestoreId ? `<div class="delete-btn" onclick="event.stopPropagation(); deleteVideo('${video.firestoreId}')"><i class="fas fa-trash-alt"></i> ${t.deleteLabel}</div>` : ''}
-                </div>`;
-            grid.appendChild(card);
-        });
-    };
-
-    const predefinedVideos = [
-        // Arabic Educational
-        {id:'arabic1',title:'arabic1',teacher:'مدرب',filename:'arabic1.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic2',title:'arabic2',teacher:'مدرب',filename:'arabic2.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic3',title:'arabic3',teacher:'مدرب',filename:'arabic3.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic4',title:'arabic4',teacher:'مدرب',filename:'arabic4.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic5',title:'arabic5',teacher:'مدرب',filename:'arabic5.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic6',title:'arabic6',teacher:'مدرب',filename:'arabic6.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        {id:'arabic7',title:'arabic7',teacher:'مدرب',filename:'arabic7.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'},
-        // English Educational
-        {id:'english1',title:'english1',teacher:'Teacher',filename:'english1.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        {id:'english2',title:'english2',teacher:'Teacher',filename:'english2.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        {id:'english3',title:'english3',teacher:'Teacher',filename:'english3.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        {id:'english4',title:'english4',teacher:'Teacher',filename:'english4.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        {id:'english5',title:'english5',teacher:'Teacher',filename:'english5.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        {id:'english6',title:'english6',teacher:'Teacher',filename:'english6.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'},
-        // Geography
-        {id:'geography1',title:'geography1',teacher:'مدرب',filename:'geography1.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        {id:'geography2',title:'geography2',teacher:'مدرب',filename:'geography2.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        {id:'geography3',title:'geography3',teacher:'مدرب',filename:'geography3.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        {id:'geography4',title:'geography4',teacher:'مدرب',filename:'geography4.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        {id:'geography5',title:'geography5',teacher:'مدرب',filename:'geography5.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        {id:'geography6',title:'geography6',teacher:'مدرب',filename:'geography6.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'},
-        // History
-        {id:'history1',title:'history1',teacher:'مدرب',filename:'history1.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'},
-        {id:'history2',title:'history2',teacher:'مدرب',filename:'history2.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'},
-        {id:'history3',title:'history3',teacher:'مدرب',filename:'history3.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'},
-        {id:'history4',title:'history4',teacher:'مدرب',filename:'history4.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'},
-        // Islamic
-        {id:'islamic1',title:'islamic1',teacher:'مدرب',filename:'islamic1.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic2',title:'islamic2',teacher:'مدرب',filename:'islamic2.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic3',title:'islamic3',teacher:'مدرب',filename:'islamic3.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic4',title:'islamic4',teacher:'مدرب',filename:'islamic4.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic5',title:'islamic5',teacher:'مدرب',filename:'islamic5.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic6',title:'islamic6',teacher:'مدرب',filename:'islamic6.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-        {id:'islamic7',title:'islamic7',teacher:'مدرب',filename:'islamic7.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'},
-    ];
-
-    const loadVideos = () => {
-        allVideos = [...predefinedVideos];
-        renderVideos();
-        const q = query(collection(db, "videos"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            allVideos = [...predefinedVideos];
-            snapshot.forEach((vDoc) => {
-                const video = vDoc.data();
-                const isYoutube = video.url && (video.url.includes('youtube.com') || video.url.includes('youtu.be'));
-                let thumbnail = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400";
-                if (isYoutube) thumbnail = `https://img.youtube.com/vi/${extractID(video.url)}/mqdefault.jpg`;
-                allVideos.push({ id:vDoc.id, firestoreId:vDoc.id, title:video.title||'بدون عنوان', teacher:video.teacher||'مدرب', url:video.url, category:video.category||'all', filename:null, thumbnail, isYoutube });
-            });
-            renderVideos();
-        });
-    };
-
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentCategory = tab.dataset.category;
-            renderVideos();
-        });
-    });
-
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        document.querySelectorAll('.video-card').forEach(card => {
-            const v = JSON.parse(card.getAttribute('data-video'));
-            const title = getVideoTitle(v).toLowerCase();
-            card.style.display = (title.includes(term) || v.teacher.toLowerCase().includes(term)) ? 'block' : 'none';
-        });
-    });
-
-    window.addEventListener('scroll', () => {
-        document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-        const logoutBtn = document.getElementById('logoutBtn');
-        const adminPanel = document.getElementById('adminPanel');
-        if (user) {
-            try {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                const userData = userDoc.data();
-                logoutBtn.classList.remove('hidden');
-                const role = userData?.role?.toLowerCase() || "";
-                if (['teacher','admin','owner'].includes(role)) { canManage = true; adminPanel.style.display = 'block'; }
-            } catch(e) { console.error("Error:", e); }
-        }
-        loadVideos();
-    });
-
-    window.addNewVideo = async () => {
-        const title = document.getElementById('videoTitle').value;
-        const url = document.getElementById('videoUrl').value;
-        const teacher = document.getElementById('videoTeacher').value;
-        const category = document.getElementById('videoCategory').value;
-        if (!title || !url) { alert(currentLang==='ar'?"يرجى ملء العنوان والرابط":"Please fill in title and URL"); return; }
-        try {
-            await addDoc(collection(db,"videos"),{title,url,teacher:teacher||"مدرب",category:category||'all',createdAt:serverTimestamp()});
-            alert(currentLang==='ar'?"تمت الإضافة بنجاح ✨":"Added successfully ✨");
-            document.getElementById('videoTitle').value="";
-            document.getElementById('videoUrl').value="";
-            document.getElementById('videoTeacher').value="";
-        } catch(e) { alert("Error: "+e.message); }
-    };
-
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        const title = document.getElementById('videoTitle').value;
-        const category = document.getElementById('videoCategory').value;
-        if (!title) { alert(currentLang==='ar'?"اكتب العنوان أولاً":"Write the title first"); return; }
-        if (file) {
-            const storageRef = ref(storage,'videos/'+Date.now()+"_"+file.name);
-            const uploadTask = uploadBytesResumable(storageRef,file);
-            document.getElementById('uploadProgress').style.display='block';
-            document.getElementById('statusText').style.display='block';
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
-                    document.getElementById('progressBar').style.width=progress+'%';
-                    document.getElementById('statusText').innerText=(currentLang==='ar'?"جاري الرفع: ":"Uploading: ")+Math.round(progress)+"%";
-                },
-                (error) => { alert("Error: "+error.message); document.getElementById('uploadProgress').style.display='none'; document.getElementById('statusText').style.display='none'; },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async(url) => {
-                        await addDoc(collection(db,"videos"),{title,url,teacher:document.getElementById('videoTeacher').value||"مدرب",category:category||'all',createdAt:serverTimestamp()});
-                        alert(currentLang==='ar'?"تم الرفع بنجاح! 🎉":"Uploaded successfully! 🎉");
-                        document.getElementById('uploadProgress').style.display='none';
-                        document.getElementById('statusText').style.display='none';
-                        document.getElementById('videoTitle').value="";
-                        document.getElementById('videoTeacher').value="";
-                        document.getElementById('fileInput').value="";
-                    });
-                }
-            );
-        }
-    });
-
-    window.deleteVideo = async (id) => {
-        const msg = currentLang==='ar'?"هل أنت متأكد من حذف هذا الفيديو؟":"Are you sure you want to delete this video?";
-        if (confirm(msg)) {
-            try { await deleteDoc(doc(db,"videos",id)); alert(currentLang==='ar'?"تم الحذف بنجاح":"Deleted successfully"); }
-            catch(e) { alert("Error: "+e.message); }
-        }
-    };
-
-    window.playVideoFromCard = (cardElement) => {
-        const videoData = JSON.parse(cardElement.getAttribute('data-video'));
-        playVideo(videoData);
-    };
-
-    /* ============================================================
-       PLAY VIDEO — with Closed Captions (CC) support
-    ============================================================ */
-    window.playVideo = (videoData) => {
-        const player = document.getElementById('videoPlayer');
-        const url = videoData.url || '';
-        const filename = videoData.filename || '';
-        const src = filename || url;
-
-        if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
-            player.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${extractID(url)}?autoplay=1&cc_load_policy=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius:15px;"></iframe>`;
-        } else if (src) {
-            const t = translations[currentLang];
-            player.innerHTML = `
-            <div class="custom-player" id="customPlayer">
-                <video id="mainVideo" style="width:100%;height:100%;border-radius:15px 15px 0 0;background:#000;display:block;">
-                    <source src="${src}" type="video/mp4">
-                </video>
-                <div class="custom-controls" id="customControls">
-                    <div class="progress-area" id="progressArea">
-                        <div class="progress-bar-bg">
-                            <div class="progress-filled" id="progressFilled"></div>
-                            <div class="progress-thumb" id="progressThumb"></div>
-                        </div>
-                        <div class="time-display">
-                            <span id="currentTime">0:00</span>
-                            <span id="totalTime">0:00</span>
-                        </div>
-                    </div>
-                    <div class="controls-row">
-                        <div class="controls-left">
-                            <button class="ctrl-btn" id="playPauseBtn" title="Play/Pause">
-                                <i class="fas fa-play" id="playIcon"></i>
-                            </button>
-                            <button class="ctrl-btn" id="muteBtn" title="Mute">
-                                <i class="fas fa-volume-up" id="volumeIcon"></i>
-                            </button>
-                            <div class="volume-slider-wrap">
-                                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1">
-                            </div>
-                        </div>
-                        <div class="controls-right">
-                            <div style="position:relative;">
-                                <button class="ctrl-btn" id="ccBtn" title="${t.ccTitle}" style="font-size:0.75rem;font-weight:700;letter-spacing:0.5px;font-family:'Cairo',sans-serif;">CC</button>
-                                <div class="cc-menu" id="ccMenu">
-                                    <div class="cc-menu-title">${t.ccTitle}</div>
-                                    <div class="cc-option cc-opt-active" id="ccOffOpt">
-                                        <i class="fas fa-times-circle"></i>
-                                        <span>${t.ccOff}</span>
-                                    </div>
-                                    <label class="cc-upload-label" for="ccFileInput">
-                                        <i class="fas fa-file-alt"></i>
-                                        <span>${t.ccUpload}</span>
-                                    </label>
-                                    <input type="file" id="ccFileInput" accept=".vtt,.srt" style="display:none;">
-                                </div>
-                            </div>
-                            <button class="ctrl-btn" id="fullscreenBtn" title="Fullscreen">
-                                <i class="fas fa-expand" id="fullscreenIcon"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-
-            setTimeout(() => {
-                const video       = document.getElementById('mainVideo');
-                const playPauseBtn= document.getElementById('playPauseBtn');
-                const playIcon    = document.getElementById('playIcon');
-                const muteBtn     = document.getElementById('muteBtn');
-                const volumeIcon  = document.getElementById('volumeIcon');
-                const volumeSlider= document.getElementById('volumeSlider');
-                const progressFilled = document.getElementById('progressFilled');
-                const progressThumb  = document.getElementById('progressThumb');
-                const progressArea   = document.getElementById('progressArea');
-                const currentTimeEl  = document.getElementById('currentTime');
-                const totalTimeEl    = document.getElementById('totalTime');
-                const fullscreenBtn  = document.getElementById('fullscreenBtn');
-                const fullscreenIcon = document.getElementById('fullscreenIcon');
-                const customPlayer   = document.getElementById('customPlayer');
-                const ccBtn      = document.getElementById('ccBtn');
-                const ccMenu     = document.getElementById('ccMenu');
-                const ccOffOpt   = document.getElementById('ccOffOpt');
-                const ccFileInput= document.getElementById('ccFileInput');
-                let ccActive     = false;
-                let currentBlobUrl = null;
-
-                ccBtn.addEventListener('click', (e) => { e.stopPropagation(); ccMenu.classList.toggle('open'); });
-                document.addEventListener('click', () => ccMenu.classList.remove('open'));
-                ccMenu.addEventListener('click', (e) => e.stopPropagation());
-                ccOffOpt.addEventListener('click', () => { disableCaptions(); ccMenu.classList.remove('open'); });
-
-                ccFileInput.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); currentBlobUrl = null; }
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        let content = ev.target.result;
-                        if (file.name.endsWith('.srt')) content = srtToVtt(content);
-                        const blob = new Blob([content], { type: 'text/vtt' });
-                        currentBlobUrl = URL.createObjectURL(blob);
-                        attachCaptionTrack(currentBlobUrl, file.name.replace(/\.[^.]+$/, ''));
-                    };
-                    reader.readAsText(file, 'UTF-8');
-                    ccMenu.classList.remove('open');
-                    ccFileInput.value = '';
-                });
-
-                const attachCaptionTrack = (blobUrl, label) => {
-                    while (video.textTracks.length > 0) {
-                        const existingTrack = video.querySelector('track');
-                        if (existingTrack) existingTrack.remove(); else break;
-                    }
-                    const track = document.createElement('track');
-                    track.kind = 'captions'; track.label = label || 'Captions';
-                    track.src = blobUrl; track.default = true;
-                    video.appendChild(track);
-                    track.addEventListener('load', () => {
-                        for (let i = 0; i < video.textTracks.length; i++) video.textTracks[i].mode = 'showing';
-                        enableCaptionStyle();
-                    });
-                    setTimeout(() => {
-                        for (let i = 0; i < video.textTracks.length; i++) video.textTracks[i].mode = 'showing';
-                        enableCaptionStyle();
-                    }, 300);
-                };
-
-                const enableCaptionStyle = () => {
-                    ccActive = true; ccBtn.classList.add('cc-active');
-                    ccOffOpt.classList.remove('cc-opt-active');
-                };
-                const disableCaptions = () => {
-                    for (let i = 0; i < video.textTracks.length; i++) video.textTracks[i].mode = 'hidden';
-                    ccActive = false; ccBtn.classList.remove('cc-active');
-                    ccOffOpt.classList.add('cc-opt-active');
-                };
-                const srtToVtt = (srt) => {
-                    return 'WEBVTT\n\n' + srt.replace(/\r\n/g,'\n').replace(/^\d+\n/gm,'').replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g,'$1.$2').trim();
-                };
-
-                const formatTime = (s) => { const m=Math.floor(s/60),sec=Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; };
-                video.autoplay = true;
-                video.play().catch(()=>{});
-                playPauseBtn.addEventListener('click', () => { if (video.paused) video.play(); else video.pause(); });
-                video.addEventListener('play', () => { playIcon.className='fas fa-pause'; });
-                video.addEventListener('pause', () => { playIcon.className='fas fa-play'; });
-                video.addEventListener('timeupdate', () => {
-                    if (!video.duration) return;
-                    const pct = (video.currentTime/video.duration)*100;
-                    progressFilled.style.width = pct+'%';
-                    progressThumb.style.left   = pct+'%';
-                    currentTimeEl.textContent  = formatTime(video.currentTime);
-                });
-                video.addEventListener('loadedmetadata', () => { totalTimeEl.textContent = formatTime(video.duration); });
-                const progressBg = progressArea.querySelector('.progress-bar-bg');
-                progressBg.addEventListener('click', (e) => {
-                    const rect = progressBg.getBoundingClientRect();
-                    video.currentTime = ((e.clientX-rect.left)/rect.width) * video.duration;
-                });
-                let dragging = false;
-                progressThumb.addEventListener('mousedown', () => dragging=true);
-                document.addEventListener('mousemove', (e) => {
-                    if (!dragging) return;
-                    const rect = progressBg.getBoundingClientRect();
-                    const pct = Math.min(1,Math.max(0,(e.clientX-rect.left)/rect.width));
-                    video.currentTime = pct*video.duration;
-                });
-                document.addEventListener('mouseup', () => dragging=false);
-                volumeSlider.addEventListener('input', () => {
-                    video.volume = volumeSlider.value; video.muted = video.volume===0;
-                    volumeIcon.className = video.muted||video.volume===0 ? 'fas fa-volume-mute' : video.volume<0.5 ? 'fas fa-volume-down' : 'fas fa-volume-up';
-                });
-                muteBtn.addEventListener('click', () => {
-                    video.muted = !video.muted;
-                    volumeIcon.className = video.muted ? 'fas fa-volume-mute' : video.volume<0.5 ? 'fas fa-volume-down' : 'fas fa-volume-up';
-                    volumeSlider.value = video.muted ? 0 : video.volume;
-                });
-                fullscreenBtn.addEventListener('click', () => {
-                    if (!document.fullscreenElement) { customPlayer.requestFullscreen(); fullscreenIcon.className='fas fa-compress'; }
-                    else { document.exitFullscreen(); fullscreenIcon.className='fas fa-expand'; }
-                });
-                document.addEventListener('keydown', (e) => {
-                    if (e.code==='Space' && document.getElementById('videoModal').style.display==='flex') {
-                        e.preventDefault();
-                        if (video.paused) video.play(); else video.pause();
-                    }
-                });
-            }, 50);
-        }
-        document.getElementById('videoModal').style.display = 'flex';
-    };
-
-    window.closeVideo = () => {
-        document.getElementById('videoModal').style.display = 'none';
-        document.getElementById('videoPlayer').innerHTML = '';
-    };
-
-    function extractID(url) {
-        const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        const match = url.match(reg);
-        return (match && match[2].length===11) ? match[2] : null;
-    }
-
-    window.toggleMenu = () => {
-        document.getElementById('sideNav').classList.toggle('active');
-        document.getElementById('overlay').classList.toggle('active');
-        document.getElementById('burger').classList.toggle('active');
-    };
-
-    window.showNotifications = () => {
-        const msg = currentLang==='ar'
-            ? 'لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة'
-            : 'You have 3 new notifications:\n\n1. 📚 New lesson available\n2. ✅ Your exam has been graded\n3. 💬 New message';
-        alert(msg);
-    };
-
-    window.logout = () => { signOut(auth).then(()=>location.reload()); };
-
-    document.getElementById('videoModal').addEventListener('click', (e) => { if (e.target===e.currentTarget) closeVideo(); });
-    document.addEventListener('keydown', (e) => {
-        if (e.key==='Escape') {
-            closeVideo();
-            if (document.getElementById('sideNav').classList.contains('active')) toggleMenu();
-        }
-    });
+    const predefinedVideos = [ {id:'arabic1',title:'arabic1',teacher:'مدرب',filename:'arabic1.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic2',title:'arabic2',teacher:'مدرب',filename:'arabic2.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic3',title:'arabic3',teacher:'مدرب',filename:'arabic3.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic4',title:'arabic4',teacher:'مدرب',filename:'arabic4.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic5',title:'arabic5',teacher:'مدرب',filename:'arabic5.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic6',title:'arabic6',teacher:'مدرب',filename:'arabic6.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'arabic7',title:'arabic7',teacher:'مدرب',filename:'arabic7.mp4',category:'arabic-edu',thumbnail:'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'}, {id:'english1',title:'english1',teacher:'Teacher',filename:'english1.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'english2',title:'english2',teacher:'Teacher',filename:'english2.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'english3',title:'english3',teacher:'Teacher',filename:'english3.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'english4',title:'english4',teacher:'Teacher',filename:'english4.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'english5',title:'english5',teacher:'Teacher',filename:'english5.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'english6',title:'english6',teacher:'Teacher',filename:'english6.mp4',category:'english-edu',thumbnail:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400'}, {id:'geography1',title:'geography1',teacher:'مدرب',filename:'geography1.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'geography2',title:'geography2',teacher:'مدرب',filename:'geography2.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'geography3',title:'geography3',teacher:'مدرب',filename:'geography3.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'geography4',title:'geography4',teacher:'مدرب',filename:'geography4.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'geography5',title:'geography5',teacher:'مدرب',filename:'geography5.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'geography6',title:'geography6',teacher:'مدرب',filename:'geography6.mp4',category:'geography',thumbnail:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=400'}, {id:'history1',title:'history1',teacher:'مدرب',filename:'history1.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'}, {id:'history2',title:'history2',teacher:'مدرب',filename:'history2.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'}, {id:'history3',title:'history3',teacher:'مدرب',filename:'history3.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'}, {id:'history4',title:'history4',teacher:'مدرب',filename:'history4.mp4',category:'history',thumbnail:'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400'}, {id:'islamic1',title:'islamic1',teacher:'مدرب',filename:'islamic1.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic2',title:'islamic2',teacher:'مدرب',filename:'islamic2.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic3',title:'islamic3',teacher:'مدرب',filename:'islamic3.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic4',title:'islamic4',teacher:'مدرب',filename:'islamic4.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic5',title:'islamic5',teacher:'مدرب',filename:'islamic5.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic6',title:'islamic6',teacher:'مدرب',filename:'islamic6.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'}, {id:'islamic7',title:'islamic7',teacher:'مدرب',filename:'islamic7.mp4',category:'islamic',thumbnail:'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=400'} ];
+    function loadVideos(){ allVideos=[...predefinedVideos]; renderVideos(); const q=query(collection(db,"videos"),orderBy("createdAt","desc")); onSnapshot(q,(snapshot)=>{ allVideos=[...predefinedVideos]; snapshot.forEach(vDoc=>{ const video=vDoc.data(); const isYoutube=video.url&&(video.url.includes('youtube.com')||video.url.includes('youtu.be')); let thumbnail="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400"; if(isYoutube) thumbnail=`https://img.youtube.com/vi/${extractID(video.url)}/mqdefault.jpg`; allVideos.push({ id:vDoc.id, firestoreId:vDoc.id, title:video.title||'بدون عنوان', teacher:video.teacher||'مدرب', url:video.url, category:video.category||'all', filename:null, thumbnail, isYoutube }); }); renderVideos(); }); }
+    document.querySelectorAll('.filter-tab').forEach(tab=>{ tab.addEventListener('click',()=>{ document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); currentCategory=tab.dataset.category; renderVideos(); }); });
+    document.getElementById('searchInput').addEventListener('input',(e)=>{ const term=e.target.value.toLowerCase(); document.querySelectorAll('.video-card').forEach(card=>{ const v=JSON.parse(card.dataset.video); const title=getVideoTitle(v).toLowerCase(); card.style.display=(title.includes(term)||v.teacher.toLowerCase().includes(term))?'block':'none'; }); });
+    window.addEventListener('scroll',()=>{ document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50); });
+    onAuthStateChanged(auth, async (user)=>{ const adminPanel=document.getElementById('adminPanel'); if(user){ try{ const userDoc=await getDoc(doc(db,"users",user.uid)); const userData=userDoc.data(); const role=userData?.role?.toLowerCase()||""; if(['teacher','admin','owner'].includes(role)){ canManage=true; adminPanel.style.display='block'; } const snUserName=document.getElementById('snUserName'); const snUserRole=document.getElementById('snUserRole'); const snAvatar=document.getElementById('snAvatar'); if(snUserName) snUserName.textContent=userData?.name||user.email||'مرحباً بك'; if(snUserRole) snUserRole.textContent=role||'مستخدم'; if(snAvatar&&userData?.name){ const fc=userData.name.trim().charAt(0); if(fc){ snAvatar.textContent=fc; snAvatar.style.fontSize='1.4rem'; snAvatar.style.fontWeight='800'; } } if(role==='teacher'){ const tl=document.getElementById('teacherDashLink'); const dd=document.getElementById('dashDivider'); if(tl) tl.style.display='block'; if(dd) dd.style.display='block'; } if(['principal','vice_principal'].includes(role)){ const al=document.getElementById('adminDashLink'); const dd2=document.getElementById('dashDivider'); if(al) al.style.display='block'; if(dd2) dd2.style.display='block'; } }catch(e){} } loadVideos(); });
+    window.addNewVideo = async () => { const title=document.getElementById('videoTitle').value; const url=document.getElementById('videoUrl').value; const teacher=document.getElementById('videoTeacher').value; const category=document.getElementById('videoCategory').value; if(!title||!url){ alert(currentLang==='ar'?"يرجى ملء العنوان والرابط":"Please fill in title and URL"); return; } try{ await addDoc(collection(db,"videos"),{title,url,teacher:teacher||"مدرب",category:category||'all',createdAt:serverTimestamp()}); alert(currentLang==='ar'?"تمت الإضافة بنجاح ✨":"Added successfully ✨"); document.getElementById('videoTitle').value=""; document.getElementById('videoUrl').value=""; document.getElementById('videoTeacher').value=""; }catch(e){ alert("Error: "+e.message); } };
+    document.getElementById('fileInput').addEventListener('change',function(e){ const file=e.target.files[0]; const title=document.getElementById('videoTitle').value; const category=document.getElementById('videoCategory').value; if(!title){ alert(currentLang==='ar'?"اكتب العنوان أولاً":"Write the title first"); return; } if(file){ const storageRef=ref(storage,'videos/'+Date.now()+"_"+file.name); const uploadTask=uploadBytesResumable(storageRef,file); document.getElementById('uploadProgress').style.display='block'; uploadTask.on('state_changed',(snapshot)=>{ const progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100; document.getElementById('progressBar').style.width=progress+'%'; },(error)=>{ alert("Error: "+error.message); document.getElementById('uploadProgress').style.display='none'; },()=>{ getDownloadURL(uploadTask.snapshot.ref).then(async(url)=>{ await addDoc(collection(db,"videos"),{title,url,teacher:document.getElementById('videoTeacher').value||"مدرب",category:category||'all',createdAt:serverTimestamp()}); alert(currentLang==='ar'?"تم الرفع بنجاح! 🎉":"Uploaded successfully! 🎉"); document.getElementById('uploadProgress').style.display='none'; document.getElementById('videoTitle').value=""; document.getElementById('videoTeacher').value=""; document.getElementById('fileInput').value=""; }); }); } });
+    window.deleteVideo = async (id) => { if(confirm(currentLang==='ar'?"هل أنت متأكد من حذف هذا الفيديو؟":"Are you sure?")){ try{ await deleteDoc(doc(db,"videos",id)); alert(currentLang==='ar'?"تم الحذف بنجاح":"Deleted"); }catch(e){ alert("Error: "+e.message); } } };
+    window.playVideoFromCard = (cardElement) => { const videoData=JSON.parse(cardElement.getAttribute('data-video')); playVideo(videoData); };
+    function playVideo(videoData){ const player=document.getElementById('videoPlayer'); const url=videoData.url||''; const filename=videoData.filename||''; const src=filename||url; if(url&&(url.includes('youtube.com')||url.includes('youtu.be'))){ player.innerHTML=`<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${extractID(url)}?autoplay=1&cc_load_policy=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius:15px;"></iframe>`; }else if(src){ const t=translations[currentLang]; player.innerHTML=`<div class="custom-player" id="customPlayer"><video id="mainVideo" style="width:100%;height:100%;border-radius:15px 15px 0 0;background:#000;display:block;"><source src="${src}" type="video/mp4"></video><div class="custom-controls" id="customControls"><div class="progress-area" id="progressArea"><div class="progress-bar-bg"><div class="progress-filled" id="progressFilled"></div><div class="progress-thumb" id="progressThumb"></div></div><div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">0:00</span></div></div><div class="controls-row"><div class="controls-left"><button class="ctrl-btn" id="playPauseBtn"><i class="fas fa-play" id="playIcon"></i></button><button class="ctrl-btn" id="muteBtn"><i class="fas fa-volume-up" id="volumeIcon"></i></button><div class="volume-slider-wrap"><input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1"></div></div><div class="controls-right"><div style="position:relative;"><button class="ctrl-btn" id="ccBtn" style="font-size:0.75rem;">CC</button><div class="cc-menu" id="ccMenu"><div class="cc-menu-title">${t.ccTitle}</div><div class="cc-option cc-opt-active" id="ccOffOpt"><i class="fas fa-times-circle"></i><span>${t.ccOff}</span></div><label class="cc-upload-label" for="ccFileInput"><i class="fas fa-file-alt"></i><span>${t.ccUpload}</span></label><input type="file" id="ccFileInput" accept=".vtt,.srt" style="display:none;"></div></div><button class="ctrl-btn" id="fullscreenBtn"><i class="fas fa-expand" id="fullscreenIcon"></i></button></div></div></div></div>`; setTimeout(()=>{ const video=document.getElementById('mainVideo'); const playPauseBtn=document.getElementById('playPauseBtn'); const playIcon=document.getElementById('playIcon'); const muteBtn=document.getElementById('muteBtn'); const volumeIcon=document.getElementById('volumeIcon'); const volumeSlider=document.getElementById('volumeSlider'); const progressFilled=document.getElementById('progressFilled'); const progressThumb=document.getElementById('progressThumb'); const progressArea=document.getElementById('progressArea'); const currentTimeEl=document.getElementById('currentTime'); const totalTimeEl=document.getElementById('totalTime'); const fullscreenBtn=document.getElementById('fullscreenBtn'); const fullscreenIcon=document.getElementById('fullscreenIcon'); const customPlayer=document.getElementById('customPlayer'); const ccBtn=document.getElementById('ccBtn'); const ccMenu=document.getElementById('ccMenu'); const ccOffOpt=document.getElementById('ccOffOpt'); const ccFileInput=document.getElementById('ccFileInput'); let currentBlobUrl=null; ccBtn.addEventListener('click',(e)=>{ e.stopPropagation(); ccMenu.classList.toggle('open'); }); document.addEventListener('click',()=>ccMenu.classList.remove('open')); ccMenu.addEventListener('click',(e)=>e.stopPropagation()); ccOffOpt.addEventListener('click',()=>{ if(video.textTracks) for(let i=0;i<video.textTracks.length;i++) video.textTracks[i].mode='hidden'; ccBtn.classList.remove('cc-active'); ccOffOpt.classList.add('cc-opt-active'); ccMenu.classList.remove('open'); }); ccFileInput.addEventListener('change',(e)=>{ const file=e.target.files[0]; if(!file) return; if(currentBlobUrl) URL.revokeObjectURL(currentBlobUrl); const reader=new FileReader(); reader.onload=(ev)=>{ let content=ev.target.result; if(file.name.endsWith('.srt')) content='WEBVTT\n\n'+content.replace(/\r\n/g,'\n').replace(/^\d+\n/gm,'').replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g,'$1.$2'); const blob=new Blob([content],{type:'text/vtt'}); currentBlobUrl=URL.createObjectURL(blob); while(video.querySelector('track')) video.querySelector('track').remove(); const track=document.createElement('track'); track.kind='captions'; track.label=file.name; track.src=currentBlobUrl; track.default=true; video.appendChild(track); track.addEventListener('load',()=>{ for(let i=0;i<video.textTracks.length;i++) video.textTracks[i].mode='showing'; ccBtn.classList.add('cc-active'); ccOffOpt.classList.remove('cc-opt-active'); }); setTimeout(()=>{ if(video.textTracks) for(let i=0;i<video.textTracks.length;i++) video.textTracks[i].mode='showing'; ccBtn.classList.add('cc-active'); ccOffOpt.classList.remove('cc-opt-active'); },300); }; reader.readAsText(file,'UTF-8'); ccFileInput.value=''; ccMenu.classList.remove('open'); }); const formatTime=(s)=>{ const m=Math.floor(s/60),sec=Math.floor(s%60); return m+':'+(sec<10?'0':'')+sec; }; video.autoplay=true; video.play().catch(()=>{}); playPauseBtn.addEventListener('click',()=>{ if(video.paused) video.play(); else video.pause(); }); video.addEventListener('play',()=>{ playIcon.className='fas fa-pause'; }); video.addEventListener('pause',()=>{ playIcon.className='fas fa-play'; }); video.addEventListener('timeupdate',()=>{ if(!video.duration) return; const pct=(video.currentTime/video.duration)*100; progressFilled.style.width=pct+'%'; progressThumb.style.left=pct+'%'; currentTimeEl.textContent=formatTime(video.currentTime); }); video.addEventListener('loadedmetadata',()=>{ totalTimeEl.textContent=formatTime(video.duration); }); const progressBg=progressArea.querySelector('.progress-bar-bg'); progressBg.addEventListener('click',(e)=>{ const rect=progressBg.getBoundingClientRect(); video.currentTime=((e.clientX-rect.left)/rect.width)*video.duration; }); let dragging=false; progressThumb.addEventListener('mousedown',()=>dragging=true); document.addEventListener('mousemove',(e)=>{ if(!dragging) return; const rect=progressBg.getBoundingClientRect(); video.currentTime=Math.min(1,Math.max(0,(e.clientX-rect.left)/rect.width))*video.duration; }); document.addEventListener('mouseup',()=>dragging=false); volumeSlider.addEventListener('input',()=>{ video.volume=volumeSlider.value; video.muted=video.volume===0; volumeIcon.className=video.muted||video.volume===0?'fas fa-volume-mute':video.volume<0.5?'fas fa-volume-down':'fas fa-volume-up'; }); muteBtn.addEventListener('click',()=>{ video.muted=!video.muted; volumeIcon.className=video.muted?'fas fa-volume-mute':video.volume<0.5?'fas fa-volume-down':'fas fa-volume-up'; volumeSlider.value=video.muted?0:video.volume; }); fullscreenBtn.addEventListener('click',()=>{ if(!document.fullscreenElement){ customPlayer.requestFullscreen(); fullscreenIcon.className='fas fa-compress'; }else{ document.exitFullscreen(); fullscreenIcon.className='fas fa-expand'; } }); },50); } document.getElementById('videoModal').style.display='flex'; }
+    window.closeVideo = () => { document.getElementById('videoModal').style.display='none'; document.getElementById('videoPlayer').innerHTML=''; };
+    function extractID(url){ const reg=/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match=url.match(reg); return (match&&match[2].length===11)?match[2]:null; }
+    window.showNotifications = () => { alert(currentLang==='ar'?'لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة':'You have 3 new notifications:\n\n1. 📚 New lesson available\n2. ✅ Your exam has been graded\n3. 💬 New message'); };
+    document.getElementById('videoModal').addEventListener('click',(e)=>{ if(e.target===e.currentTarget) closeVideo(); });
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape'){ closeVideo(); snClose(); } });
 </script>
 
 <script>
-/* ══ UNIFIED SIDENAV + SETTINGS JS ══ */
-(function(){
-  var STEPS = ['small','medium','large','xlarge'];
-  var SIZES = {small:'13px',medium:'15px',large:'17px',xlarge:'20px'};
+    (function(){ var role=localStorage.getItem('userRole')||''; var uid=localStorage.getItem('userUid')||''; var userName=''; if(role==='student'){ userName=localStorage.getItem('studentName')||''; }else{ userName=localStorage.getItem('userName')||''; } var roleLabels={teacher:'معلم',vice_principal:'مساعد مدير',principal:'مدير المدرسة',student:'طالب'}; var unameEl=document.getElementById('snUserName'); var uroleEl=document.getElementById('snUserRole'); var avatarEl=document.getElementById('snAvatar'); if(unameEl) unameEl.textContent=userName||'مرحباً بك'; if(uroleEl) uroleEl.textContent=roleLabels[role]||'زائر'; if(avatarEl&&userName){ var fc=userName.trim().charAt(0); if(fc&&fc!=='👤'){ avatarEl.textContent=fc; avatarEl.style.fontSize='1.4rem'; avatarEl.style.fontWeight='800'; } } var profileBtn=document.getElementById('profileNavBtn'); if(profileBtn){ if(role==='student') profileBtn.href='student-profile.html'; else if(role&&uid) profileBtn.href='profile.html'; else profileBtn.href='login.html'; } if(role==='teacher'){ var tl=document.getElementById('teacherDashLink'); var dd=document.getElementById('dashDivider'); if(tl) tl.style.display='block'; if(dd) dd.style.display='block'; } if(role==='principal'||role==='vice_principal'){ var al=document.getElementById('adminDashLink'); var dd2=document.getElementById('dashDivider'); if(al) al.style.display='block'; if(dd2) dd2.style.display='block'; } if(!role&&!uid){ var logoutList=document.querySelector('.sn-logout'); if(logoutList) logoutList.style.display='none'; } })();
 
-  function loadS(){ try{return Object.assign({theme:'light',graphics:'full',fontSize:'medium',lang:'ar'},JSON.parse(localStorage.getItem('siteSettings')||'{}'));}catch(e){return {theme:'light',graphics:'full',fontSize:'medium',lang:'ar'};} }
-  function saveS(s){ localStorage.setItem('siteSettings',JSON.stringify(s)); if(window.SiteSettings) window.SiteSettings.applyAll(s); }
+    function snToggle(){ var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger'); if(!d) return; var op=!d.classList.contains('show'); d.classList.toggle('show',op); if(o) o.classList.toggle('show',op); if(b){ b.classList.toggle('active',op); b.setAttribute('aria-expanded',op); } document.body.style.overflow=op?'hidden':''; }
+    function snClose(){ var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger'); if(d) d.classList.remove('show'); if(o) o.classList.remove('show'); if(b){ b.classList.remove('active'); b.setAttribute('aria-expanded','false'); } document.body.style.overflow=''; }
+    function snToggleSettings(){ var p=document.getElementById('snSettingsPanel'),t=document.getElementById('snSettingsToggle'),c=document.getElementById('snChevron'); if(!p)return; var op=p.classList.toggle('open'); if(t) t.classList.toggle('open',op); if(c) c.style.transform=op?'rotate(180deg)':''; }
+    function snPickTheme(t){ ['light','dark'].forEach(id=>{ var el=document.getElementById('sn-th-'+id); if(el) el.classList.toggle('sel',id===t); }); document.documentElement.setAttribute('data-theme',t); try{ var s=JSON.parse(localStorage.getItem('siteSettings')||'{}'); s.theme=t; localStorage.setItem('siteSettings',JSON.stringify(s)); }catch(e){} }
+    function snPickGraphics(g){ ['full','reduced','minimal'].forEach(id=>{ var el=document.getElementById('sn-gr-'+id); if(el) el.classList.toggle('sel',id===g); }); }
+    var _snFontSizes=['13px','15px','17px','20px'];
+    function snSetFont(idx){ document.documentElement.style.fontSize=_snFontSizes[idx]||'15px'; var sl=document.getElementById('snFontSlider'); if(sl) sl.value=idx; document.querySelectorAll('.sn-font-labels span').forEach((s,i)=>{ s.classList.toggle('act',i===idx); }); }
+    function snFontInput(val){ snSetFont(parseInt(val)); }
+    function snSave(){ var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg'); if(m) m.textContent='تم حفظ الإعدادات ✓'; if(t){ t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); } }
+    function snLogout(){ localStorage.removeItem('userRole'); localStorage.removeItem('userName'); localStorage.removeItem('userUid'); localStorage.removeItem('studentName'); localStorage.removeItem('studentId'); localStorage.removeItem('teacherSubject'); localStorage.removeItem('teacherClasses'); window.location.href='login.html'; }
 
-  // open / close
-  window.snClose = function(){
-    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
-    if(d) d.classList.remove('show');
-    if(o) o.classList.remove('show');
-    if(b){b.classList.remove('open');b.setAttribute('aria-expanded','false');}
-    // legacy ids
-    ['sideNav','sidenav'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
-    ['overlay-bg','overlay'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active','show'); });
-  };
-  window.snOpen = function(){
-    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
-    if(d) d.classList.add('show');
-    if(o) o.classList.add('show');
-    if(b){b.classList.add('open');b.setAttribute('aria-expanded','true');}
-    snRenderSettings();
-  };
-  window.snToggle = function(){ var d=document.getElementById('snDrawer'); if(d && d.classList.contains('show')) snClose(); else snOpen(); };
-
-  // keep legacy toggleMenu / toggleNav working
-  window.toggleMenu = window.toggleNav = window.snToggle;
-  window.closeNav = window.snClose;
-
-  // settings panel toggle
-  window.snToggleSettings = function(){
-    var panel=document.getElementById('snSettingsPanel');
-    var toggle=document.getElementById('snSettingsToggle');
-    if(!panel) return;
-    panel.classList.toggle('open');
-    toggle.classList.toggle('open');
-  };
-
-  // render settings UI
-  function snRenderSettings(){
-    var s = loadS();
-    // theme
-    ['light','dark'].forEach(function(t){
-      var el=document.getElementById('sn-th-'+t);
-      if(el) el.classList.toggle('sel', s.theme===t);
-    });
-    // graphics
-    ['full','reduced','minimal'].forEach(function(g){
-      var el=document.getElementById('sn-gr-'+g);
-      if(el) el.classList.toggle('sel', s.graphics===g);
-    });
-    // font
-    var idx=STEPS.indexOf(s.fontSize); if(idx<0)idx=1;
-    var sl=document.getElementById('snFontSlider');
-    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
-    snUpdateFontLabels(idx);
-  }
-
-  function snUpdateSliderTrack(sl,idx){
-    sl.style.setProperty('--pct',(idx/3*100)+'%');
-  }
-  function snUpdateFontLabels(idx){
-    document.querySelectorAll('.sn-font-labels span').forEach(function(s,i){ s.classList.toggle('act',i===idx); });
-  }
-
-  window.snFontInput = function(val){
-    var idx=parseInt(val);
-    var sl=document.getElementById('snFontSlider');
-    if(sl) snUpdateSliderTrack(sl,idx);
-    snUpdateFontLabels(idx);
-    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
-  };
-  window.snSetFont = function(idx){
-    var sl=document.getElementById('snFontSlider');
-    if(sl){ sl.value=idx; snUpdateSliderTrack(sl,idx); }
-    snUpdateFontLabels(idx);
-    document.documentElement.style.fontSize=SIZES[STEPS[idx]];
-  };
-
-  window.snPickTheme = function(t){
-    ['light','dark'].forEach(function(x){ var el=document.getElementById('sn-th-'+x); if(el) el.classList.toggle('sel',x===t); });
-    var s=loadS(); s.theme=t; saveS(s);
-    snShowToast(t==='dark'? '🌙 تم تفعيل الوضع الداكن':'☀️ تم تفعيل الوضع الفاتح');
-  };
-  window.snPickGraphics = function(g){
-    ['full','reduced','minimal'].forEach(function(x){ var el=document.getElementById('sn-gr-'+x); if(el) el.classList.toggle('sel',x===g); });
-    var s=loadS(); s.graphics=g; saveS(s);
-  };
-
-  window.snSave = function(){
-    var s=loadS();
-    var sl=document.getElementById('snFontSlider');
-    if(sl) s.fontSize=STEPS[parseInt(sl.value)];
-    saveS(s);
-    snShowToast('✅ تم حفظ الإعدادات!');
-  };
-
-  window.snLogout = function(){
-    if(typeof firebase!=='undefined' && firebase.auth){ firebase.auth().signOut().then(function(){ window.location.href='login.html'; }); }
-    else { window.location.href='login.html'; }
-  };
-
-  function snShowToast(msg){
-    var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');
-    if(!t||!m) return;
-    m.textContent=msg; t.classList.add('show');
-    setTimeout(function(){ t.classList.remove('show'); },2500);
-  }
-
-  // scroll: shrink nav
-  window.addEventListener('scroll',function(){
-    var nav=document.querySelector('nav.top-bar,nav#topNav,header.top-bar');
-    if(nav) nav.classList.toggle('scrolled', window.scrollY>50);
-  },{passive:true});
-
-  // init on DOM ready
-  document.addEventListener('DOMContentLoaded', function(){
-    snRenderSettings();
-    // update burger id reference
-    var burgers = document.querySelectorAll('.burger,.burger-menu');
-    burgers.forEach(function(b){
-      if(!b.id) b.id='snBurger';
-      b.setAttribute('onclick','snToggle()');
-    });
-  });
-})();
+    var langWrap=document.getElementById('langSelectorWrap');
+    document.getElementById('langTriggerBtn').addEventListener('click',function(e){ e.stopPropagation(); langWrap.classList.toggle('open'); });
+    document.addEventListener('click',function(e){ if(!langWrap.contains(e.target)) langWrap.classList.remove('open'); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ snClose(); } });
 </script>
-
 </body>
 </html>
