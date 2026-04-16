@@ -77,8 +77,27 @@
         .burger.active .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
         .overlay,#snOverlay{position:fixed;inset:0;background:rgba(26,41,66,0.65);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .45s;}
         .overlay.show,#snOverlay.show{opacity:1;pointer-events:all;}
-        .sidenav,#snDrawer{position:fixed;top:0;right:-430px;width:400px;height:100%;z-index:3000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-left:3px solid var(--accent-blue);padding:28px 24px;overflow-y:auto;transition:right .55s cubic-bezier(.68,-.55,.265,1.55);box-shadow:-12px 0 50px rgba(26,41,66,0.15);}
-        .sidenav.show,#snDrawer.show{right:0!important;}
+
+        /* ══ SIDENAV — تفتح من الشمال ══ */
+        .sidenav,#snDrawer{
+            position:fixed;
+            top:0;
+            left:-430px;          /* ← من الشمال */
+            right:auto;           /* ← إلغاء right */
+            width:400px;
+            height:100%;
+            z-index:3000;
+            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+            backdrop-filter:blur(35px);
+            border-right:3px solid var(--accent-blue);   /* ← الحد على اليمين */
+            border-left:none;
+            padding:28px 24px;
+            overflow-y:auto;
+            transition:left .55s cubic-bezier(.68,-.55,.265,1.55);
+            box-shadow:12px 0 50px rgba(26,41,66,0.15);  /* ← ظل على اليمين */
+        }
+        .sidenav.show,#snDrawer.show{left:0!important;}  /* ← تظهر من الشمال */
+
         .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid var(--border-blue);}
         .sn-head h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
         .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
@@ -221,7 +240,7 @@
             .section-title{font-size:2.2rem;}
             .grid-container{grid-template-columns:1fr;gap:22px;padding:0 22px 60px;}
             .card{height:340px;}
-            #snDrawer{width:100%;right:-100%!important;}
+            #snDrawer{width:100%;left:-100%!important;}  /* موبايل: يفتح من الشمال */
         }
     </style>
     <script src="settings-apply.js"></script>
@@ -262,7 +281,6 @@
             </div>
         </div>
 
-        <!-- ══ رابط البروفايل — يتغير حسب نوع المستخدم تلقائياً ══ -->
         <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
 
         <div class="notification-btn" onclick="showNotifications()">
@@ -387,7 +405,7 @@
 <section class="stats-section">
     <div class="stats-grid">
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-number" data-i18n="stat1Title">مجتمعٌ عالمي نُعيد صياغته</div><div class="stat-label" data-i18n="stat1Desc">نستعد لاستقبال عشرة آلاف عقل طموح ليكونوا النواة الأولى لأكبر نهضة فكرية رقمية.</div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-video"></i></div><div class="stat-number" data-i18n="stat2Title">المحتوى الذي لم يجرؤ أحد على تقديمه</div><div class="stat-label" data-i18n="stat2Desc">أكثر من 500 وحدة معرفية استغرق بناؤها شهوراً من التخطيط العميق والعمل الدؤوب.</div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-video"></i></div><div class="stat-number" data-i18n="stat2Title">المحتوى الذي لم يجرؤ أحد على تقديمه</div><div class="stat-label" data-i18n="stat2Desc">أكثر من 500 وحدة معرفية استغرق بناؤها شهوداً من التخطيط العميق والعمل الدؤوب.</div></div>
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-certificate"></i></div><div class="stat-number" data-i18n="stat3Title">اعترافاتٌ تليق بكبار الطموح</div><div class="stat-label" data-i18n="stat3Desc">أكثر من 50 امتيازاً ووساماً واستحقاقاً معتمداً جاهزة لك.</div></div>
         <div class="stat-card"><div class="stat-icon"><i class="fas fa-award"></i></div><div class="stat-number" data-i18n="stat4Title">صرامة الإتقان</div><div class="stat-label" data-i18n="stat4Desc">نخضعك لبيئة تعليمية ذكية ومستفزة لقدراتك. نحن نصممك لتكون النجاح نفسه.</div></div>
     </div>
@@ -431,35 +449,19 @@
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════
-   نظام الصلاحيات — مُصلح بالكامل
-   ══════════════════════════════════════════════════ */
 (function () {
     var role = localStorage.getItem('userRole') || '';
     var uid  = localStorage.getItem('userUid')  || '';
-
-    // ════ الاسم: حسب نوع المستخدم بدقة ════
     var userName = '';
     if (role === 'student') {
-        // الطالب: من studentName فقط
         userName = localStorage.getItem('studentName') || '';
     } else {
-        // الكادر: من userName فقط
         userName = localStorage.getItem('userName') || '';
     }
-
-    var roleLabels = {
-        teacher:        'معلم',
-        vice_principal: 'مساعد مدير',
-        principal:      'مدير المدرسة',
-        student:        'طالب'
-    };
-
-    // تحديث بطاقة المستخدم في الـ sidenav
+    var roleLabels = {teacher:'معلم',vice_principal:'مساعد مدير',principal:'مدير المدرسة',student:'طالب'};
     var unameEl  = document.getElementById('snUserName');
     var uroleEl  = document.getElementById('snUserRole');
     var avatarEl = document.getElementById('snAvatar');
-
     if (unameEl) unameEl.textContent = userName || 'مرحباً بك';
     if (uroleEl) uroleEl.textContent = roleLabels[role] || 'زائر';
     if (avatarEl && userName) {
@@ -470,23 +472,12 @@
             avatarEl.style.fontWeight = '800';
         }
     }
-
-    // ════ رابط البروفايل: حسب نوع المستخدم ════
     var profileBtn = document.getElementById('profileNavBtn');
     if (profileBtn) {
-        if (role === 'student') {
-            // الطالب → صفحة بروفايل الطالب
-            profileBtn.href = 'student-profile.html';
-        } else if (role && uid) {
-            // الكادر → profile.html (Firebase Auth)
-            profileBtn.href = 'profile.html';
-        } else {
-            // زائر → صفحة تسجيل الدخول
-            profileBtn.href = 'login.html';
-        }
+        if (role === 'student') profileBtn.href = 'student-profile.html';
+        else if (role && uid)   profileBtn.href = 'profile.html';
+        else                    profileBtn.href = 'login.html';
     }
-
-    // ════ روابط الداشبورد ════
     if (role === 'teacher') {
         var tl = document.getElementById('teacherDashLink');
         var dd = document.getElementById('dashDivider');
@@ -499,8 +490,6 @@
         if (al)  al.style.display  = 'block';
         if (dd2) dd2.style.display = 'block';
     }
-
-    // ════ إخفاء زر الخروج إن لم يكن مسجلاً ════
     if (!role && !uid) {
         var logoutList = document.querySelector('.sn-logout');
         if (logoutList) logoutList.style.display = 'none';
