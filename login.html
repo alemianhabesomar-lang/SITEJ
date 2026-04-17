@@ -61,18 +61,9 @@
         .nav-actions { display: flex; align-items: center; gap: 14px; }
         .back-home { display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: rgba(255,255,255,0.85); border: 1.5px solid var(--border-blue); border-radius: 50px; color: var(--text-navy); text-decoration: none; font-weight: 700; transition: all 0.4s; }
         .back-home:hover { background: var(--gradient-blue-glow); color: white; }
-
-        /* زر اللغة */
-        .lang-btn {
-            display: flex; align-items: center; gap: 7px;
-            padding: 9px 18px; background: rgba(255,255,255,0.85);
-            border: 1.5px solid var(--border-blue); border-radius: 50px;
-            color: var(--text-navy); font-weight: 700; cursor: pointer;
-            transition: all 0.3s; font-family: inherit; font-size: 0.88rem;
-        }
+        .lang-btn { display: flex; align-items: center; gap: 7px; padding: 9px 18px; background: rgba(255,255,255,0.85); border: 1.5px solid var(--border-blue); border-radius: 50px; color: var(--text-navy); font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: inherit; font-size: 0.88rem; }
         .lang-btn:hover { background: var(--gradient-blue-glow); color: white; border-color: transparent; }
         .lang-btn i { font-size: 1rem; }
-
         .page-body { position: relative; z-index: 10; width: 100%; padding: 120px 20px 60px; display: flex; justify-content: center; }
         .login-card { width: 100%; max-width: 520px; background: rgba(255,255,255,0.95); border: 2px solid var(--border-blue); border-radius: 28px; padding: 0 0 38px; box-shadow: 0 24px 70px rgba(26,41,66,0.18); position: relative; overflow: hidden; }
         .login-tabs { display: flex; border-bottom: 2px solid var(--border-blue); position: relative; }
@@ -116,7 +107,6 @@
         .modal-header .modal-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
         .modal-body { flex: 1; overflow-y: auto; padding: 28px 32px 32px; }
         .modal-body::-webkit-scrollbar { width: 6px; }
-        .modal-body::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .modal-body::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 10px; }
         .register-badge { background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(74,144,226,0.05)); border: 1.5px solid rgba(139,92,246,0.2); border-radius: 14px; padding: 12px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-navy); }
         .register-badge i { color: #8b5cf6; font-size: 1.1rem; }
@@ -143,9 +133,6 @@
         .sidenav.show { right: 0; }
         .burger { cursor: pointer; width: 36px; height: 28px; display: flex; flex-direction: column; justify-content: space-between; }
         .bline { height: 3px; background: var(--accent-blue); border-radius: 4px; transition: 0.3s; }
-        .burger.open .bline:nth-child(1) { transform: rotate(45deg) translate(9px, 9px); }
-        .burger.open .bline:nth-child(2) { opacity: 0; }
-        .burger.open .bline:nth-child(3) { transform: rotate(-45deg) translate(9px, -9px); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 2500; opacity: 0; pointer-events: none; transition: 0.3s; }
         .overlay.show { opacity: 1; pointer-events: all; }
         .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-left: 6px; }
@@ -160,76 +147,20 @@
         .strength-text.weak { color: #ee5a6f; }
         .strength-text.medium { color: #f59e0b; }
         .strength-text.strong { color: #20c997; }
-
-        /* ══ حقول الصفوف والشعب والمادة ══ */
-        .teacher-section {
-            display: none;
-            background: rgba(74,144,226,0.05);
-            border: 1.5px solid rgba(74,144,226,0.2);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
+        .teacher-section { display: none; background: rgba(74,144,226,0.05); border: 1.5px solid rgba(74,144,226,0.2); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
         .teacher-section.visible { display: block; animation: fadeIn 0.3s ease; }
-        .teacher-section-title {
-            font-weight: 800; font-size: 0.85rem; color: var(--navy-dark);
-            margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
-        }
+        .teacher-section-title { font-weight: 800; font-size: 0.85rem; color: var(--navy-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
         .teacher-section-title i { color: var(--accent-blue); }
         .class-picker-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 10px; }
         .class-picker-row select { width: 100%; padding: 10px 14px; background: white; border: 2px solid var(--border-blue); border-radius: 12px; font-family: inherit; font-size: 0.9rem; outline: none; transition: all 0.3s; }
-        .class-picker-row select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(74,144,226,0.1); }
-        .add-class-btn {
-            padding: 10px 14px; background: var(--gradient-blue-glow); color: white;
-            border: none; border-radius: 12px; cursor: pointer; font-size: 1rem;
-            transition: all 0.3s; white-space: nowrap;
-        }
-        .add-class-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 15px var(--shadow-blue); }
+        .add-class-btn { padding: 10px 14px; background: var(--gradient-blue-glow); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
         .classes-tags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 10px; }
-        .class-tag {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--gradient-blue-glow); color: white;
-            padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
-            animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
-        }
-        .class-tag button { background: none; border: none; color: white; cursor: pointer; font-size: 0.75rem; opacity: 0.8; padding: 0; line-height: 1; }
-        .class-tag button:hover { opacity: 1; }
+        .class-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--gradient-blue-glow); color: white; padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+        .class-tag button { background: none; border: none; color: white; cursor: pointer; font-size: 0.75rem; }
         .no-classes-hint { font-size: 0.78rem; color: var(--text-gray); font-style: italic; }
-
-        /* لغة الصفحة - EN */
-        html[lang="en"] { direction: ltr; }
-        html[lang="en"] .forgot-row { text-align: right; }
-        html[lang="en"] nav.top-bar { flex-direction: row-reverse; }
-        html[lang="en"] .field-wrap .field-icon { right: auto; left: 16px; }
-        html[lang="en"] .field-wrap .toggle-pass { left: auto; right: 16px; }
-        html[lang="en"] .register-field .field-icon { right: auto; left: 14px; }
-        html[lang="en"] .register-field .toggle-pass { left: auto; right: 14px; }
-        html[lang="en"] .field input { padding: 13px 16px 13px 44px; }
-        html[lang="en"] .register-field input,
-        html[lang="en"] .register-field select { padding: 12px 16px 12px 42px; }
-        html[lang="en"] .sidenav { right: auto; left: -400px; }
-        html[lang="en"] .sidenav.show { left: 0; right: auto; }
-
-        /* ══ SECRET ADMIN PANEL ══ */
-        .secret-overlay {
-            position: fixed; inset: 0;
-            background: rgba(26,41,66,0.65);
-            backdrop-filter: blur(10px);
-            z-index: 99999;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.3s;
-            padding: 20px;
-        }
+        .secret-overlay { position: fixed; inset: 0; background: rgba(26,41,66,0.65); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
         .secret-overlay.show { opacity: 1; pointer-events: all; }
-        .secret-box {
-            background: #fff; border-radius: 22px; padding: 32px 28px 28px;
-            width: 90%; max-width: 360px; box-shadow: 0 24px 60px rgba(26,41,66,0.32);
-            border: 2px solid rgba(74,144,226,0.18);
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1);
-            text-align: center; position: relative;
-        }
+        .secret-box { background: #fff; border-radius: 22px; padding: 32px 28px 28px; width: 90%; max-width: 360px; box-shadow: 0 24px 60px rgba(26,41,66,0.32); border: 2px solid rgba(74,144,226,0.18); transform: scale(0.9) translateY(20px); transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1); text-align: center; position: relative; }
         .secret-overlay.show .secret-box { transform: scale(1) translateY(0); }
         .secret-strip { height: 4px; background: linear-gradient(90deg,#1a2942,#4a90e2,#87ceeb); border-radius: 18px 18px 0 0; margin: -32px -28px 26px; }
         .secret-icon { width: 62px; height: 62px; background: linear-gradient(135deg,#1a2942,#3d5a7f); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; box-shadow: 0 8px 25px rgba(26,41,66,0.25); }
@@ -237,26 +168,19 @@
         .secret-title { font-size: 1.12rem; font-weight: 900; color: #1a2942; margin-bottom: 3px; }
         .secret-sub { font-size: 0.78rem; color: #6b7c93; margin-bottom: 20px; }
         .secret-dots { display: flex; justify-content: center; gap: 7px; margin-bottom: 20px; }
-        .secret-dot { width: 9px; height: 9px; border-radius: 50%; background: #e0e7ef; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
-        .secret-dot.lit { background: #4a90e2; transform: scale(1.35); box-shadow: 0 0 7px rgba(74,144,226,0.55); }
-        .secret-input { width: 100%; padding: 13px 16px; border: 2px solid rgba(74,144,226,0.25); border-radius: 13px; font-family: 'Cairo',sans-serif; font-size: 1.05rem; text-align: center; letter-spacing: 5px; outline: none; margin-bottom: 8px; transition: border 0.3s, box-shadow 0.3s; direction: ltr; color: #1a2942; }
-        .secret-input:focus { border-color: #4a90e2; box-shadow: 0 0 0 3px rgba(74,144,226,0.12); }
+        .secret-dot { width: 9px; height: 9px; border-radius: 50%; background: #e0e7ef; transition: background 0.2s, transform 0.2s; }
+        .secret-dot.lit { background: #4a90e2; transform: scale(1.35); }
+        .secret-input { width: 100%; padding: 13px 16px; border: 2px solid rgba(74,144,226,0.25); border-radius: 13px; font-family: 'Cairo',sans-serif; font-size: 1.05rem; text-align: center; letter-spacing: 5px; outline: none; margin-bottom: 8px; transition: border 0.3s; direction: ltr; color: #1a2942; }
+        .secret-input:focus { border-color: #4a90e2; }
         .secret-err { font-size: 0.79rem; color: #ee5a6f; min-height: 20px; margin-bottom: 10px; display: none; font-weight: 600; }
-        .secret-err.show { display: block; animation: secretShake 0.4s; }
-        @keyframes secretShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
-        .secret-btn { width: 100%; padding: 13px; background: linear-gradient(135deg,#1a2942,#3d5a7f); color: #87ceeb; border: none; border-radius: 13px; font-family: 'Cairo',sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; letter-spacing: 0.5px; }
-        .secret-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(26,41,66,0.3); }
+        .secret-err.show { display: block; }
+        .secret-btn { width: 100%; padding: 13px; background: linear-gradient(135deg,#1a2942,#3d5a7f); color: #87ceeb; border: none; border-radius: 13px; font-family: 'Cairo',sans-serif; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; margin-bottom: 12px; }
         .secret-close { position: absolute; top: 14px; left: 14px; background: none; border: none; color: #6b7c93; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; font-size: 0.95rem; }
-        .secret-close:hover { background: rgba(238,90,111,0.1); color: #ee5a6f; transform: rotate(90deg); }
-
         @media (max-width: 600px) {
             nav.top-bar { padding: 14px 20px; }
             .tab-content { padding: 22px 20px 0; }
             .modal-body { padding: 20px; }
             .fields-row { grid-template-columns: 1fr; }
-            .modal-box { max-width: 95%; }
-            .class-picker-row { grid-template-columns: 1fr 1fr; }
-            .class-picker-row .add-class-btn { grid-column: 1/-1; }
         }
     </style>
 </head>
@@ -268,7 +192,7 @@
 </div>
 
 <nav class="top-bar" id="topBar">
-    <a href="index.html" class="logo-container" id="logoContainer">
+    <a href="index.html" class="logo-container">
         <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
         <div class="logo-text">
             <div class="logo">SITEJ</div>
@@ -293,12 +217,12 @@
 <div class="overlay" id="snOverlay" onclick="snClose()"></div>
 <div class="sidenav" id="snDrawer">
     <div style="display:flex;justify-content:space-between;margin-bottom:30px;">
-        <h2 data-ar="القائمة" data-en="Menu">القائمة</h2>
+        <h2>القائمة</h2>
         <div onclick="snClose()" style="cursor:pointer;font-size:1.5rem;">✕</div>
     </div>
     <ul style="list-style:none;">
-        <li style="margin-bottom:15px;"><a href="index.html" style="text-decoration:none;color:#1a2942;font-weight:600;"><i class="fas fa-home"></i> <span data-ar="الرئيسية" data-en="Home">الرئيسية</span></a></li>
-        <li><a href="#" onclick="handleLogout()" style="text-decoration:none;color:#ee5a6f;"><i class="fas fa-sign-out-alt"></i> <span data-ar="تسجيل الخروج" data-en="Logout">تسجيل الخروج</span></a></li>
+        <li style="margin-bottom:15px;"><a href="index.html" style="text-decoration:none;color:#1a2942;font-weight:600;"><i class="fas fa-home"></i> الرئيسية</a></li>
+        <li><a href="#" onclick="handleLogout()" style="text-decoration:none;color:#ee5a6f;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
     </ul>
 </div>
 
@@ -310,19 +234,18 @@
         <div class="modal-header" style="background:linear-gradient(135deg,#ee5a6f,#f093a3);">
             <button class="modal-close" onclick="closeForgotModal()"><i class="fas fa-times"></i></button>
             <i class="fas fa-key" style="font-size:2rem;color:white;margin-bottom:8px;display:block;"></i>
-            <h2 data-ar="نسيت كلمة المرور؟" data-en="Forgot Password?">نسيت كلمة المرور؟</h2>
+            <h2>نسيت كلمة المرور؟</h2>
         </div>
         <div class="modal-body">
             <div class="field">
-                <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                <label>البريد الإلكتروني</label>
                 <div class="field-wrap">
                     <input type="email" id="resetEmail" placeholder="example@school.com">
                     <i class="fas fa-envelope field-icon"></i>
                 </div>
             </div>
             <button onclick="sendResetEmail()" style="background:#ee5a6f;color:white;padding:12px;border:none;border-radius:12px;width:100%;cursor:pointer;font-weight:700;font-family:inherit;font-size:1rem;">
-                <i class="fas fa-paper-plane"></i>
-                <span data-ar="إرسال رابط الاسترداد" data-en="Send Reset Link">إرسال رابط الاسترداد</span>
+                <i class="fas fa-paper-plane"></i> إرسال رابط الاسترداد
             </button>
         </div>
     </div>
@@ -334,23 +257,23 @@
         <div class="modal-header">
             <button class="modal-close" onclick="closeRegisterModal()"><i class="fas fa-times"></i></button>
             <i class="fas fa-user-plus" style="font-size:2rem;color:white;margin-bottom:8px;display:block;"></i>
-            <h2 data-ar="تسجيل كادر جديد" data-en="New Staff Registration">تسجيل كادر جديد</h2>
+            <h2>تسجيل كادر جديد</h2>
         </div>
         <div class="modal-body" id="registerModalBody">
             <div class="register-badge">
                 <i class="fas fa-key"></i>
-                <span data-ar="⚠️ يجب إدخال كود تفعيل صالح من مساعد المدير أو المدير" data-en="⚠️ A valid activation code from the vice principal or principal is required">⚠️ يجب إدخال كود تفعيل صالح من مساعد المدير أو المدير</span>
+                <span>⚠️ يجب إدخال كود تفعيل صالح من مساعد المدير أو المدير</span>
             </div>
             <div class="fields-row">
                 <div class="register-field">
-                    <label data-ar="الاسم الأول *" data-en="First Name *">الاسم الأول *</label>
+                    <label>الاسم الأول *</label>
                     <div class="field-wrap">
                         <input type="text" id="regFirstName" placeholder="محمد">
                         <i class="fas fa-user field-icon"></i>
                     </div>
                 </div>
                 <div class="register-field">
-                    <label data-ar="اسم العائلة *" data-en="Last Name *">اسم العائلة *</label>
+                    <label>اسم العائلة *</label>
                     <div class="field-wrap">
                         <input type="text" id="regLastName" placeholder="الأحمد">
                         <i class="fas fa-user field-icon"></i>
@@ -358,88 +281,66 @@
                 </div>
             </div>
             <div class="register-field">
-                <label data-ar="البريد الإلكتروني *" data-en="Email Address *">البريد الإلكتروني *</label>
+                <label>البريد الإلكتروني *</label>
                 <div class="field-wrap">
                     <input type="email" id="regEmail" placeholder="example@school.com">
                     <i class="fas fa-envelope field-icon"></i>
                 </div>
             </div>
             <div class="register-field">
-                <label data-ar="الدور الوظيفي *" data-en="Job Role *">الدور الوظيفي *</label>
+                <label>الدور الوظيفي *</label>
                 <div class="field-wrap">
                     <select id="regRole" onchange="handleRoleChange()">
-                        <option value="" disabled selected data-ar="— اختر دورك —" data-en="— Select your role —">— اختر دورك —</option>
-                        <option value="teacher" data-ar="📑 أستاذ / معلم" data-en="📑 Teacher">📑 أستاذ / معلم</option>
-                        <option value="vice_principal" data-ar="⭐ مساعد مدير" data-en="⭐ Vice Principal">⭐ مساعد مدير</option>
-                        <option value="principal" data-ar="🏫 مدير المدرسة" data-en="🏫 Principal">🏫 مدير المدرسة</option>
+                        <option value="" disabled selected>— اختر دورك —</option>
+                        <option value="teacher">📑 أستاذ / معلم</option>
+                        <option value="vice_principal">⭐ مساعد مدير</option>
+                        <option value="principal">🏫 مدير المدرسة</option>
                     </select>
                     <i class="fas fa-briefcase field-icon"></i>
                 </div>
             </div>
-
-            <!-- قسم المعلم فقط -->
             <div class="teacher-section" id="teacherSection">
-                <!-- المادة -->
-                <div class="teacher-section-title">
-                    <i class="fas fa-book-open"></i>
-                    <span data-ar="المادة التي تدرّسها" data-en="Subject You Teach">المادة التي تدرّسها</span>
-                </div>
+                <div class="teacher-section-title"><i class="fas fa-book-open"></i> المادة التي تدرّسها</div>
                 <div class="register-field" style="margin-bottom:16px;">
                     <div class="field-wrap">
-                        <input type="text" id="regSubject" placeholder="مثال: رياضيات" data-ar-placeholder="مثال: رياضيات" data-en-placeholder="Example: Mathematics">
+                        <input type="text" id="regSubject" placeholder="مثال: رياضيات">
                         <i class="fas fa-book field-icon"></i>
                     </div>
                 </div>
-
-                <!-- الصفوف والشعب -->
-                <div class="teacher-section-title" style="margin-top:8px;">
-                    <i class="fas fa-chalkboard"></i>
-                    <span data-ar="الصفوف والشعب التي تدرّسها" data-en="Classes & Sections You Teach">الصفوف والشعب التي تدرّسها</span>
-                </div>
+                <div class="teacher-section-title" style="margin-top:8px;"><i class="fas fa-chalkboard"></i> الصفوف والشعب</div>
                 <div class="class-picker-row">
                     <div>
-                        <label style="font-size:0.78rem;font-weight:700;color:var(--text-gray);margin-bottom:5px;display:block;" data-ar="الصف" data-en="Grade">الصف</label>
+                        <label style="font-size:0.78rem;font-weight:700;color:var(--text-gray);margin-bottom:5px;display:block;">الصف</label>
                         <select id="gradeSelect" onchange="updateSections()">
-                            <option value="" disabled selected data-ar="— الصف —" data-en="— Grade —">— الصف —</option>
-                            <option value="1" data-ar="الأول" data-en="Grade 1">الأول</option>
-                            <option value="2" data-ar="الثاني" data-en="Grade 2">الثاني</option>
-                            <option value="3" data-ar="الثالث" data-en="Grade 3">الثالث</option>
-                            <option value="4" data-ar="الرابع" data-en="Grade 4">الرابع</option>
-                            <option value="5" data-ar="الخامس" data-en="Grade 5">الخامس</option>
-                            <option value="6" data-ar="السادس" data-en="Grade 6">السادس</option>
-                            <option value="7" data-ar="السابع" data-en="Grade 7">السابع</option>
-                            <option value="8" data-ar="الثامن" data-en="Grade 8">الثامن</option>
-                            <option value="9" data-ar="التاسع" data-en="Grade 9">التاسع</option>
-                            <option value="10" data-ar="العاشر" data-en="Grade 10">العاشر</option>
-                            <option value="11" data-ar="الأول ثانوي" data-en="Grade 11">الأول ثانوي</option>
-                            <option value="12" data-ar="التوجيهي" data-en="Grade 12 (Tawjihi)">التوجيهي</option>
+                            <option value="" disabled selected>— الصف —</option>
+                            <option value="1">الأول</option><option value="2">الثاني</option>
+                            <option value="3">الثالث</option><option value="4">الرابع</option>
+                            <option value="5">الخامس</option><option value="6">السادس</option>
+                            <option value="7">السابع</option><option value="8">الثامن</option>
+                            <option value="9">التاسع</option><option value="10">العاشر</option>
+                            <option value="11">الأول ثانوي</option><option value="12">التوجيهي</option>
                         </select>
                     </div>
                     <div>
-                        <label style="font-size:0.78rem;font-weight:700;color:var(--text-gray);margin-bottom:5px;display:block;" data-ar="الشعبة" data-en="Section">الشعبة</label>
-                        <select id="sectionSelect">
-                            <option value="" disabled selected data-ar="— الشعبة —" data-en="— Section —">— الشعبة —</option>
-                        </select>
+                        <label style="font-size:0.78rem;font-weight:700;color:var(--text-gray);margin-bottom:5px;display:block;">الشعبة</label>
+                        <select id="sectionSelect"><option value="" disabled selected>— الشعبة —</option></select>
                     </div>
-                    <button class="add-class-btn" onclick="addClass()" type="button">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <button class="add-class-btn" onclick="addClass()" type="button"><i class="fas fa-plus"></i></button>
                 </div>
                 <div class="classes-tags" id="classesTags">
-                    <span class="no-classes-hint" id="noClassesHint" data-ar="لم تُضف أي صف بعد" data-en="No classes added yet">لم تُضف أي صف بعد</span>
+                    <span class="no-classes-hint" id="noClassesHint">لم تُضف أي صف بعد</span>
                 </div>
                 <input type="hidden" id="regClasses" value="[]">
             </div>
-
             <div class="register-field">
-                <label data-ar="كود التفعيل *" data-en="Activation Code *">كود التفعيل *</label>
+                <label>كود التفعيل *</label>
                 <div class="field-wrap">
                     <input type="text" id="regActivationCode" placeholder="أدخل الكود المقدم">
                     <i class="fas fa-qrcode field-icon"></i>
                 </div>
             </div>
             <div class="register-field">
-                <label data-ar="كلمة المرور *" data-en="Password *">كلمة المرور *</label>
+                <label>كلمة المرور *</label>
                 <div class="field-wrap">
                     <input type="password" id="regPassword" placeholder="8 أحرف على الأقل" oninput="checkPassStrength(this.value)">
                     <i class="fas fa-lock field-icon"></i>
@@ -449,11 +350,11 @@
                 </div>
                 <div class="pass-strength">
                     <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-                    <span class="strength-text" id="strengthText" data-ar="أدخل كلمة المرور" data-en="Enter password">أدخل كلمة المرور</span>
+                    <span class="strength-text" id="strengthText">أدخل كلمة المرور</span>
                 </div>
             </div>
             <div class="register-field">
-                <label data-ar="تأكيد كلمة المرور *" data-en="Confirm Password *">تأكيد كلمة المرور *</label>
+                <label>تأكيد كلمة المرور *</label>
                 <div class="field-wrap">
                     <input type="password" id="regPasswordConfirm" placeholder="أعد إدخال كلمة المرور">
                     <i class="fas fa-lock field-icon"></i>
@@ -463,14 +364,13 @@
                 </div>
             </div>
             <button class="btn-register-modal" id="registerModalBtn" onclick="registerStaffWithCode()">
-                <i class="fas fa-check-circle"></i>
-                <span data-ar="إنشاء الحساب" data-en="Create Account">إنشاء الحساب</span>
+                <i class="fas fa-check-circle"></i> إنشاء الحساب
             </button>
         </div>
     </div>
 </div>
 
-<!-- ══ SECRET ADMIN MODAL ══ -->
+<!-- SECRET ADMIN MODAL -->
 <div class="secret-overlay" id="secretOverlay">
     <div class="secret-box">
         <div class="secret-strip"></div>
@@ -481,21 +381,12 @@
             <div class="secret-dot"></div><div class="secret-dot"></div>
             <div class="secret-dot"></div>
         </div>
-        <div class="secret-title" data-ar="وصول المشرف" data-en="Admin Access">وصول المشرف</div>
-        <div class="secret-sub" data-ar="أدخل رمز الوصول السري" data-en="Enter the secret access code">أدخل رمز الوصول السري</div>
+        <div class="secret-title">وصول المشرف</div>
+        <div class="secret-sub">أدخل رمز الوصول السري</div>
         <input class="secret-input" type="password" id="secretCodeInput" placeholder="● ● ● ● ● ●" onkeydown="if(event.key==='Enter') submitSecret()">
-        <div class="secret-err" id="secretErr">
-            <i class="fas fa-times-circle"></i>
-            <span data-ar="رمز غير صحيح" data-en="Incorrect code">رمز غير صحيح</span>
-        </div>
-        <button class="secret-btn" onclick="submitSecret()">
-            <i class="fas fa-sign-in-alt"></i>
-            <span data-ar="دخول لوحة الإدارة" data-en="Enter Admin Panel">دخول لوحة الإدارة</span>
-        </button>
-        <div style="font-size:0.73rem;color:#6b7c93;">
-            <i class="fas fa-lock" style="margin-left:4px;"></i>
-            <span data-ar="للمشرف العام فقط" data-en="For super admin only">للمشرف العام فقط</span>
-        </div>
+        <div class="secret-err" id="secretErr"><i class="fas fa-times-circle"></i> رمز غير صحيح</div>
+        <button class="secret-btn" onclick="submitSecret()"><i class="fas fa-sign-in-alt"></i> دخول لوحة الإدارة</button>
+        <div style="font-size:0.73rem;color:#6b7c93;"><i class="fas fa-lock" style="margin-left:4px;"></i> للمشرف العام فقط</div>
     </div>
 </div>
 
@@ -503,12 +394,10 @@
     <div class="login-card">
         <div class="login-tabs">
             <button class="tab-btn active" id="staffTabBtn" onclick="switchTab('staff')">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span data-ar="الكادر" data-en="Staff">الكادر</span>
+                <i class="fas fa-chalkboard-teacher"></i> الكادر
             </button>
             <button class="tab-btn" id="studentTabBtn" onclick="switchTab('student')">
-                <i class="fas fa-user-graduate"></i>
-                <span data-ar="الطالب" data-en="Student">الطالب</span>
+                <i class="fas fa-user-graduate"></i> الطالب
             </button>
             <div class="tab-indicator" id="tabIndicator"></div>
         </div>
@@ -516,22 +405,22 @@
         <div class="tab-content active" id="staffTab">
             <div class="card-head">
                 <div class="card-icon staff-icon"><i class="fas fa-user-shield"></i></div>
-                <div class="card-title" data-ar="دخول الكادر" data-en="Staff Login">دخول الكادر</div>
-                <div class="card-sub" data-ar="للمدراء والأساتذة والإدارة" data-en="For principals, teachers & administration">للمدراء والأساتذة والإدارة</div>
+                <div class="card-title">دخول الكادر</div>
+                <div class="card-sub">للمدراء والأساتذة والإدارة</div>
             </div>
             <div class="beta-bar">
-                <strong>⚙️ <span data-ar="نظام متكامل:" data-en="Integrated System:">نظام متكامل:</span></strong>
-                <span data-ar="يتم تفعيل الحسابات عبر أكواد التفعيل من مساعد المدير أو المدير." data-en="Accounts are activated via activation codes from the vice principal or principal.">يتم تفعيل الحسابات عبر أكواد التفعيل من مساعد المدير أو المدير.</span>
+                <strong>⚙️ نظام متكامل:</strong>
+                <span>يتم تفعيل الحسابات عبر أكواد التفعيل من مساعد المدير أو المدير.</span>
             </div>
             <div class="field">
-                <label data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                <label>البريد الإلكتروني</label>
                 <div class="field-wrap">
                     <input type="email" id="staffEmail" placeholder="example@school.com">
                     <i class="fas fa-envelope field-icon"></i>
                 </div>
             </div>
             <div class="field">
-                <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                <label>كلمة المرور</label>
                 <div class="field-wrap">
                     <input type="password" id="staffPassword" placeholder="كلمة المرور">
                     <i class="fas fa-lock field-icon"></i>
@@ -539,42 +428,36 @@
                 </div>
             </div>
             <div class="forgot-row">
-                <span onclick="openForgotModal()">
-                    <i class="fas fa-key"></i>
-                    <span data-ar="نسيت كلمة المرور؟" data-en="Forgot password?">نسيت كلمة المرور؟</span>
-                </span>
+                <span onclick="openForgotModal()"><i class="fas fa-key"></i> نسيت كلمة المرور؟</span>
             </div>
             <button class="btn-main btn-staff" id="staffLoginBtn" onclick="staffLogin()">
-                <i class="fas fa-sign-in-alt"></i>
-                <span data-ar="تسجيل الدخول" data-en="Login">تسجيل الدخول</span>
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
             </button>
             <div class="switch-link">
-                <span data-ar="ليس لديك حساب؟" data-en="Don't have an account?">ليس لديك حساب؟</span>
-                <a onclick="openRegisterModal()">
-                    <span data-ar="أنشئ حساباً جديداً (كادر)" data-en="Create new account (Staff)">أنشئ حساباً جديداً (كادر)</span>
-                </a>
+                <span>ليس لديك حساب؟</span>
+                <a onclick="openRegisterModal()">أنشئ حساباً جديداً (كادر)</a>
             </div>
         </div>
 
         <div class="tab-content" id="studentTab">
             <div class="card-head">
                 <div class="card-icon student-icon"><i class="fas fa-user-graduate"></i></div>
-                <div class="card-title" data-ar="دخول الطالب" data-en="Student Login">دخول الطالب</div>
-                <div class="card-sub" data-ar="أدخل كود التفعيل وكلمة المرور" data-en="Enter your activation code and password">أدخل كود التفعيل وكلمة المرور</div>
+                <div class="card-title">دخول الطالب</div>
+                <div class="card-sub">أدخل كود التفعيل وكلمة المرور</div>
             </div>
             <div class="student-badge">
                 <i class="fas fa-info-circle"></i>
-                <span data-ar="كود التفعيل يصدر من المدرسة، لا يمكن إنشاء حساب طالب بنفسك." data-en="Activation code is issued by the school. Students cannot self-register.">كود التفعيل يصدر من المدرسة، لا يمكن إنشاء حساب طالب بنفسك.</span>
+                <span>كود التفعيل يصدر من المدرسة، لا يمكن إنشاء حساب طالب بنفسك.</span>
             </div>
             <div class="field">
-                <label data-ar="كود التفعيل" data-en="Activation Code">كود التفعيل</label>
+                <label>كود التفعيل</label>
                 <div class="field-wrap">
                     <input type="text" id="studentNumber" placeholder="مثال: 2026-003">
                     <i class="fas fa-id-card field-icon"></i>
                 </div>
             </div>
             <div class="field">
-                <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                <label>كلمة المرور</label>
                 <div class="field-wrap">
                     <input type="password" id="studentPassword" placeholder="كلمة المرور">
                     <i class="fas fa-lock field-icon"></i>
@@ -582,219 +465,104 @@
                 </div>
             </div>
             <button class="btn-main btn-student" id="studentLoginBtn" onclick="studentLogin()">
-                <i class="fas fa-sign-in-alt"></i>
-                <span data-ar="دخول" data-en="Login">دخول</span>
+                <i class="fas fa-sign-in-alt"></i> دخول
             </button>
         </div>
     </div>
 </div>
 
-<!-- ══ SECRET ADMIN SCRIPT ══ -->
+<!-- SECRET ADMIN SCRIPT -->
 <script>
 (function(){
-    const ADMIN_CODE  = '2026_159';
-    const ADMIN_PAGE  = 'Admin-dashboard.html';
-    const SECRET_KEY  = 's';
-    const PRESS_COUNT = 5;
-    const RESET_MS    = 1800;
-    let count = 0, timer = null;
-
-    document.addEventListener('keydown', function(e){
+    const ADMIN_CODE='2026_159', ADMIN_PAGE='Admin-dashboard.html', SECRET_KEY='s', PRESS_COUNT=5, RESET_MS=1800;
+    let count=0, timer=null;
+    document.addEventListener('keydown',function(e){
         if(document.getElementById('secretOverlay').classList.contains('show')) return;
-        const tag = document.activeElement.tagName;
-        if(tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-        if(e.key.toLowerCase() === SECRET_KEY){
-            count++;
-            lightDot(count - 1);
-            clearTimeout(timer);
-            timer = setTimeout(() => { count = 0; resetDots(); }, RESET_MS);
-            if(count >= PRESS_COUNT){ count = 0; clearTimeout(timer); resetDots(); openSecret(); }
-        } else { count = 0; clearTimeout(timer); resetDots(); }
+        const tag=document.activeElement.tagName;
+        if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT') return;
+        if(e.key.toLowerCase()===SECRET_KEY){
+            count++; lightDot(count-1); clearTimeout(timer);
+            timer=setTimeout(()=>{count=0;resetDots();},RESET_MS);
+            if(count>=PRESS_COUNT){count=0;clearTimeout(timer);resetDots();openSecret();}
+        } else {count=0;clearTimeout(timer);resetDots();}
     });
-
-    function lightDot(i){ const d = document.querySelectorAll('.secret-dot'); if(d[i]) d[i].classList.add('lit'); }
-    function resetDots(){ document.querySelectorAll('.secret-dot').forEach(d => d.classList.remove('lit')); }
-
-    window.openSecret = function(){
-        document.getElementById('secretCodeInput').value = '';
-        document.getElementById('secretErr').classList.remove('show');
-        document.getElementById('secretOverlay').classList.add('show');
-        setTimeout(() => document.getElementById('secretCodeInput').focus(), 380);
-    };
-    window.closeSecret = function(){ document.getElementById('secretOverlay').classList.remove('show'); count = 0; resetDots(); };
-    document.getElementById('secretOverlay').addEventListener('click', function(e){ if(e.target === this) closeSecret(); });
-    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeSecret(); });
-
-    window.submitSecret = function(){
-        const val = document.getElementById('secretCodeInput').value.trim();
-        if(val === ADMIN_CODE){ window.location.href = ADMIN_PAGE; }
-        else {
-            const err = document.getElementById('secretErr');
-            err.classList.remove('show'); void err.offsetWidth; err.classList.add('show');
-            document.getElementById('secretCodeInput').value = '';
-            document.getElementById('secretCodeInput').focus();
-        }
-    };
+    function lightDot(i){const d=document.querySelectorAll('.secret-dot');if(d[i])d[i].classList.add('lit');}
+    function resetDots(){document.querySelectorAll('.secret-dot').forEach(d=>d.classList.remove('lit'));}
+    window.openSecret=function(){document.getElementById('secretCodeInput').value='';document.getElementById('secretErr').classList.remove('show');document.getElementById('secretOverlay').classList.add('show');setTimeout(()=>document.getElementById('secretCodeInput').focus(),380);};
+    window.closeSecret=function(){document.getElementById('secretOverlay').classList.remove('show');count=0;resetDots();};
+    document.getElementById('secretOverlay').addEventListener('click',function(e){if(e.target===this)closeSecret();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSecret();});
+    window.submitSecret=function(){const val=document.getElementById('secretCodeInput').value.trim();if(val===ADMIN_CODE){window.location.href=ADMIN_PAGE;}else{const err=document.getElementById('secretErr');err.classList.remove('show');void err.offsetWidth;err.classList.add('show');document.getElementById('secretCodeInput').value='';document.getElementById('secretCodeInput').focus();}};
 })();
 </script>
 
-<!-- ══ LANGUAGE SYSTEM ══ -->
+<!-- LANGUAGE -->
 <script>
 let currentLang = localStorage.getItem('sitejLang') || 'ar';
-
 function applyLang(lang) {
     currentLang = lang;
     localStorage.setItem('sitejLang', lang);
-    const html = document.getElementById('htmlRoot');
-    html.lang = lang;
-    html.dir  = lang === 'ar' ? 'rtl' : 'ltr';
-
+    document.getElementById('htmlRoot').lang = lang;
+    document.getElementById('htmlRoot').dir  = lang === 'ar' ? 'rtl' : 'ltr';
     document.getElementById('langBtnText').textContent = lang === 'ar' ? 'English' : 'عربي';
-
-    // تحديث كل العناصر التي عندها data-ar و data-en
     document.querySelectorAll('[data-ar]').forEach(el => {
         el.textContent = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
     });
-
-    // تحديث placeholder الحقول
-    const placeholders = {
-        ar: {
-            staffEmail: 'example@school.com', staffPassword: 'كلمة المرور',
-            studentNumber: 'مثال: 2026-003', studentPassword: 'كلمة المرور',
-            resetEmail: 'example@school.com',
-            regFirstName: 'محمد', regLastName: 'الأحمد',
-            regEmail: 'example@school.com',
-            regActivationCode: 'أدخل الكود المقدم',
-            regPassword: '8 أحرف على الأقل', regPasswordConfirm: 'أعد إدخال كلمة المرور'
-        },
-        en: {
-            staffEmail: 'example@school.com', staffPassword: 'Password',
-            studentNumber: 'Example: 2026-003', studentPassword: 'Password',
-            resetEmail: 'example@school.com',
-            regFirstName: 'John', regLastName: 'Smith',
-            regEmail: 'example@school.com',
-            regActivationCode: 'Enter the provided code',
-            regPassword: 'At least 8 characters', regPasswordConfirm: 'Re-enter password'
-        }
-    };
-    Object.entries(placeholders[lang]).forEach(([id, ph]) => {
-        const el = document.getElementById(id);
-        if(el) el.placeholder = ph;
-    });
-
-    // تحديث خيارات القوائم المنسدلة
-    document.querySelectorAll('option[data-ar]').forEach(opt => {
-        opt.textContent = lang === 'ar' ? opt.getAttribute('data-ar') : opt.getAttribute('data-en');
-    });
-
-    // تحديث مؤشر الباسورد
-    const strengthText = document.getElementById('strengthText');
-    if(strengthText && (strengthText.textContent === 'أدخل كلمة المرور' || strengthText.textContent === 'Enter password')) {
-        strengthText.textContent = lang === 'ar' ? 'أدخل كلمة المرور' : 'Enter password';
-    }
-
-    // سهم الرجوع
     const arrow = document.getElementById('backArrow');
     if(arrow) arrow.className = lang === 'ar' ? 'fas fa-arrow-right' : 'fas fa-arrow-left';
-
-    // تحديث placeholder المادة
-    const subjectInput = document.getElementById('regSubject');
-    if(subjectInput) subjectInput.placeholder = lang === 'ar' ? 'مثال: رياضيات' : 'Example: Mathematics';
 }
-
-window.toggleLang = function() {
-    applyLang(currentLang === 'ar' ? 'en' : 'ar');
-};
-
-// تطبيق اللغة عند التحميل
+window.toggleLang = function() { applyLang(currentLang === 'ar' ? 'en' : 'ar'); };
 document.addEventListener('DOMContentLoaded', () => applyLang(currentLang));
 </script>
 
-<!-- ══ TEACHER CLASSES SYSTEM ══ -->
+<!-- TEACHER CLASSES -->
 <script>
-const sections = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y'];
+const sections = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
 let selectedClasses = [];
-
 window.handleRoleChange = function() {
     const role = document.getElementById('regRole').value;
-    const sec  = document.getElementById('teacherSection');
-    if(role === 'teacher') sec.classList.add('visible');
-    else sec.classList.remove('visible');
+    document.getElementById('teacherSection').classList.toggle('visible', role === 'teacher');
 };
-
 window.updateSections = function() {
-    const secSel = document.getElementById('sectionSelect');
-    secSel.innerHTML = `<option value="" disabled selected>${currentLang === 'ar' ? '— الشعبة —' : '— Section —'}</option>`;
-    sections.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s; opt.textContent = s;
-        secSel.appendChild(opt);
-    });
+    const sel = document.getElementById('sectionSelect');
+    sel.innerHTML = '<option value="" disabled selected>— الشعبة —</option>';
+    sections.forEach(s => { const o = document.createElement('option'); o.value=s; o.textContent=s; sel.appendChild(o); });
 };
-
 window.addClass = function() {
     const grade = document.getElementById('gradeSelect').value;
     const section = document.getElementById('sectionSelect').value;
-    if(!grade || !section) {
-        snShowToast(currentLang === 'ar' ? '⚠️ اختر الصف والشعبة أولاً' : '⚠️ Select grade and section first');
-        return;
-    }
-    const classKey = `${grade}${section}`;
-    if(selectedClasses.includes(classKey)) {
-        snShowToast(currentLang === 'ar' ? '⚠️ هذا الصف مضاف مسبقاً' : '⚠️ This class is already added');
-        return;
-    }
-    selectedClasses.push(classKey);
+    if(!grade||!section){snShowToast('⚠️ اختر الصف والشعبة أولاً');return;}
+    const key = `${grade}${section}`;
+    if(selectedClasses.includes(key)){snShowToast('⚠️ هذا الصف مضاف مسبقاً');return;}
+    selectedClasses.push(key);
     document.getElementById('regClasses').value = JSON.stringify(selectedClasses);
     renderClassTags();
-    document.getElementById('gradeSelect').value = '';
-    document.getElementById('sectionSelect').innerHTML = `<option value="" disabled selected>${currentLang === 'ar' ? '— الشعبة —' : '— Section —'}</option>`;
 };
-
 function renderClassTags() {
     const container = document.getElementById('classesTags');
-    const hint = document.getElementById('noClassesHint');
     container.innerHTML = '';
-    if(selectedClasses.length === 0) {
-        container.appendChild(hint || (() => {
-            const s = document.createElement('span');
-            s.className = 'no-classes-hint';
-            s.id = 'noClassesHint';
-            s.textContent = currentLang === 'ar' ? 'لم تُضف أي صف بعد' : 'No classes added yet';
-            return s;
-        })());
-        return;
+    if(selectedClasses.length===0){
+        const s=document.createElement('span'); s.className='no-classes-hint'; s.textContent='لم تُضف أي صف بعد';
+        container.appendChild(s); return;
     }
     selectedClasses.forEach(cls => {
-        const tag = document.createElement('span');
-        tag.className = 'class-tag';
-        const gradeNum = cls.replace(/[A-Z]/g,'');
-        const gradeNames = {ar:{'1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩','10':'١٠','11':'١١ث','12':'توجيهي'},en:{'1':'1','2':'2','3':'3','4':'4','5':'5','6':'6','7':'7','8':'8','9':'9','10':'10','11':'11','12':'12'}};
-        const sec = cls.replace(/[0-9]/g,'');
-        const gLabel = (currentLang === 'ar' ? gradeNames.ar : gradeNames.en)[gradeNum] || gradeNum;
-        tag.innerHTML = `${currentLang === 'ar' ? 'الصف' : 'Gr.'} ${gLabel}${sec} <button onclick="removeClass('${cls}')" type="button"><i class="fas fa-times"></i></button>`;
+        const tag=document.createElement('span'); tag.className='class-tag';
+        tag.innerHTML=`الصف ${cls} <button onclick="removeClass('${cls}')" type="button"><i class="fas fa-times"></i></button>`;
         container.appendChild(tag);
     });
 }
-
 window.removeClass = function(cls) {
-    selectedClasses = selectedClasses.filter(c => c !== cls);
+    selectedClasses = selectedClasses.filter(c=>c!==cls);
     document.getElementById('regClasses').value = JSON.stringify(selectedClasses);
     renderClassTags();
 };
 </script>
 
-<!-- ══ FIREBASE MODULE ══ -->
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import {
-    getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
-    sendPasswordResetEmail, sendEmailVerification, signOut, updateProfile
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import {
-    getFirestore, doc, getDoc, setDoc, collection, query,
-    where, getDocs, serverTimestamp, updateDoc
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, serverTimestamp, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDJRA6KpLir1Jo-oVqqAANOglWEBXXn8oA",
@@ -808,244 +576,202 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-const t = (ar, en) => (localStorage.getItem('sitejLang') || 'ar') === 'ar' ? ar : en;
-
-/* ─── Toast ─── */
+// Toast
 function snShowToast(msg) {
-    const toast = document.getElementById('snToast'), m = document.getElementById('snToastMsg');
-    if(toast && m){ m.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
+    const toast=document.getElementById('snToast'), m=document.getElementById('snToastMsg');
+    if(toast&&m){m.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3500);}
 }
 window.snShowToast = snShowToast;
 
-/* ─── Drawer ─── */
-window.snClose  = () => { document.getElementById('snDrawer')?.classList.remove('show'); document.getElementById('snOverlay')?.classList.remove('show'); document.getElementById('snBurger')?.classList.remove('open'); };
-window.snOpen   = () => { document.getElementById('snDrawer')?.classList.add('show'); document.getElementById('snOverlay')?.classList.add('show'); document.getElementById('snBurger')?.classList.add('open'); };
-window.snToggle = () => document.getElementById('snDrawer')?.classList.contains('show') ? snClose() : snOpen();
-window.handleLogout = async () => { try { await signOut(auth); } catch(e){} localStorage.clear(); window.location.href = 'login.html'; };
+// Drawer
+window.snClose  = ()=>{document.getElementById('snDrawer')?.classList.remove('show');document.getElementById('snOverlay')?.classList.remove('show');};
+window.snOpen   = ()=>{document.getElementById('snDrawer')?.classList.add('show');document.getElementById('snOverlay')?.classList.add('show');};
+window.snToggle = ()=>document.getElementById('snDrawer')?.classList.contains('show')?snClose():snOpen();
+window.handleLogout = async ()=>{try{await signOut(auth);}catch(e){} localStorage.clear(); window.location.href='login.html';};
 
-/* ─── مؤشر قوة كلمة المرور ─── */
+// Password strength
 window.checkPassStrength = function(val) {
-    const fill = document.getElementById('strengthFill');
-    const text = document.getElementById('strengthText');
-    if(!fill || !text) return;
-    if(!val){ fill.className='strength-fill'; text.className='strength-text'; text.textContent=t('أدخل كلمة المرور','Enter password'); return; }
-    let score = 0;
-    if(val.length >= 8) score++;
-    if(/[A-Z]/.test(val)) score++;
-    if(/[0-9]/.test(val)) score++;
-    if(/[^A-Za-z0-9]/.test(val)) score++;
-    if(score <= 1)      { fill.className='strength-fill weak';   text.className='strength-text weak';   text.textContent=t('ضعيفة','Weak'); }
-    else if(score <= 2) { fill.className='strength-fill medium'; text.className='strength-text medium'; text.textContent=t('متوسطة','Medium'); }
-    else                { fill.className='strength-fill strong'; text.className='strength-text strong'; text.textContent=t('قوية ✓','Strong ✓'); }
+    const fill=document.getElementById('strengthFill'), text=document.getElementById('strengthText');
+    if(!fill||!text) return;
+    if(!val){fill.className='strength-fill';text.className='strength-text';text.textContent='أدخل كلمة المرور';return;}
+    let score=0;
+    if(val.length>=8)score++;if(/[A-Z]/.test(val))score++;if(/[0-9]/.test(val))score++;if(/[^A-Za-z0-9]/.test(val))score++;
+    if(score<=1){fill.className='strength-fill weak';text.className='strength-text weak';text.textContent='ضعيفة';}
+    else if(score<=2){fill.className='strength-fill medium';text.className='strength-text medium';text.textContent='متوسطة';}
+    else{fill.className='strength-fill strong';text.className='strength-text strong';text.textContent='قوية ✓';}
 };
 
-/* ─── التحقق من كود التفعيل (لا نهائي) ─── */
+// Validate activation code
 async function validateActivationCode(code, targetRole) {
     try {
-        const snap = await getDocs(query(collection(db, 'activationCodes'), where('code', '==', code)));
-        if(snap.empty) return { valid: false, reason: t('الكود غير موجود في النظام','Code not found in system') };
-        const codeDoc  = snap.docs[0];
-        const codeData = codeDoc.data();
-        // ✅ لا يوجد تحقق من used — الكود لا نهائي الاستخدام
-        if(codeData.expiresAt) {
-            const exp = codeData.expiresAt.toDate ? codeData.expiresAt.toDate() : new Date(codeData.expiresAt);
-            if(exp < new Date()) return { valid: false, reason: t('انتهت صلاحية الكود','Code has expired'), doc: codeDoc };
+        const snap = await getDocs(query(collection(db,'activationCodes'), where('code','==',code)));
+        if(snap.empty) return {valid:false, reason:'الكود غير موجود في النظام'};
+        const codeDoc=snap.docs[0], codeData=codeDoc.data();
+        if(codeData.expiresAt){
+            const exp=codeData.expiresAt.toDate?codeData.expiresAt.toDate():new Date(codeData.expiresAt);
+            if(exp<new Date()) return {valid:false, reason:'انتهت صلاحية الكود', doc:codeDoc};
         }
-        const allowedRole = codeData.allowedRole;
-        if(allowedRole === 'principal'     && targetRole === 'principal')     return { valid: true, doc: codeDoc };
-        if(allowedRole === 'vice_principal' && (targetRole === 'vice_principal' || targetRole === 'teacher')) return { valid: true, doc: codeDoc };
-        if(allowedRole === 'teacher'       && targetRole === 'teacher')       return { valid: true, doc: codeDoc };
-        if(allowedRole === targetRole)                                         return { valid: true, doc: codeDoc };
-        const names = { teacher: t('معلم','Teacher'), vice_principal: t('مساعد مدير','Vice Principal'), principal: t('مدير','Principal') };
-        return { valid: false, reason: `${t('الكود مخصص لـ','Code is for')} ${names[allowedRole]||allowedRole} ${t('وليس لـ','not for')} ${names[targetRole]||targetRole}`, doc: codeDoc };
-    } catch(err) {
-        return { valid: false, reason: t('حدث خطأ في التحقق من الكود','Error validating code') };
-    }
+        const allowedRole=codeData.allowedRole;
+        if(allowedRole===targetRole||
+           (allowedRole==='vice_principal'&&targetRole==='teacher')||
+           allowedRole===targetRole) return {valid:true, doc:codeDoc};
+        return {valid:false, reason:`الكود مخصص لـ ${allowedRole} وليس لـ ${targetRole}`, doc:codeDoc};
+    } catch(err) { return {valid:false, reason:'حدث خطأ في التحقق من الكود'}; }
 }
 
-/* ─── تسجيل كادر جديد ─── */
+// Register staff
 window.registerStaffWithCode = async function() {
-    const firstName      = document.getElementById('regFirstName').value.trim();
-    const lastName       = document.getElementById('regLastName').value.trim();
-    const email          = document.getElementById('regEmail').value.trim();
-    const role           = document.getElementById('regRole').value;
-    const activationCode = document.getElementById('regActivationCode').value.trim();
-    const password       = document.getElementById('regPassword').value;
-    const confirm        = document.getElementById('regPasswordConfirm').value;
-    const btn            = document.getElementById('registerModalBtn');
-
-    if(!firstName || !lastName)                     { snShowToast(t('⚠️ يرجى إدخال الاسم الكامل','⚠️ Please enter full name')); return; }
-    if(!email)                                      { snShowToast(t('⚠️ يرجى إدخال البريد الإلكتروني','⚠️ Please enter email')); return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))  { snShowToast(t('⚠️ بريد إلكتروني غير صالح','⚠️ Invalid email')); return; }
-    if(!role)                                       { snShowToast(t('⚠️ يرجى اختيار الدور الوظيفي','⚠️ Please select a role')); return; }
-    if(!activationCode)                             { snShowToast(t('⚠️ يرجى إدخال كود التفعيل','⚠️ Please enter activation code')); return; }
-    if(password.length < 8)                         { snShowToast(t('⚠️ كلمة المرور 8 أحرف على الأقل','⚠️ Password must be at least 8 characters')); return; }
-    if(password !== confirm)                        { snShowToast(t('⚠️ كلمتا المرور غير متطابقتين','⚠️ Passwords do not match')); return; }
-
-    // تحقق إضافي للمعلم
-    let subjectValue = '';
-    let classesValue = [];
-    if(role === 'teacher') {
-        subjectValue = document.getElementById('regSubject').value.trim();
-        if(!subjectValue) { snShowToast(t('⚠️ يرجى إدخال المادة التي تدرّسها','⚠️ Please enter the subject you teach')); return; }
-        try { classesValue = JSON.parse(document.getElementById('regClasses').value || '[]'); } catch(e){ classesValue = []; }
-        if(classesValue.length === 0) { snShowToast(t('⚠️ يرجى إضافة صف وشعبة واحدة على الأقل','⚠️ Please add at least one class')); return; }
+    const firstName=document.getElementById('regFirstName').value.trim();
+    const lastName=document.getElementById('regLastName').value.trim();
+    const email=document.getElementById('regEmail').value.trim();
+    const role=document.getElementById('regRole').value;
+    const activationCode=document.getElementById('regActivationCode').value.trim();
+    const password=document.getElementById('regPassword').value;
+    const confirm=document.getElementById('regPasswordConfirm').value;
+    const btn=document.getElementById('registerModalBtn');
+    if(!firstName||!lastName){snShowToast('⚠️ يرجى إدخال الاسم الكامل');return;}
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){snShowToast('⚠️ بريد إلكتروني غير صالح');return;}
+    if(!role){snShowToast('⚠️ يرجى اختيار الدور الوظيفي');return;}
+    if(!activationCode){snShowToast('⚠️ يرجى إدخال كود التفعيل');return;}
+    if(password.length<8){snShowToast('⚠️ كلمة المرور 8 أحرف على الأقل');return;}
+    if(password!==confirm){snShowToast('⚠️ كلمتا المرور غير متطابقتين');return;}
+    let subjectValue='', classesValue=[];
+    if(role==='teacher'){
+        subjectValue=document.getElementById('regSubject').value.trim();
+        if(!subjectValue){snShowToast('⚠️ يرجى إدخال المادة');return;}
+        try{classesValue=JSON.parse(document.getElementById('regClasses').value||'[]');}catch(e){classesValue=[];}
+        if(classesValue.length===0){snShowToast('⚠️ يرجى إضافة صف وشعبة واحدة على الأقل');return;}
     }
-
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner"></span> ${t('جاري التحقق من الكود...','Validating code...')}`;
-
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> جاري التحقق من الكود...';
     try {
-        const result = await validateActivationCode(activationCode, role);
-        if(!result.valid) {
-            snShowToast(`❌ ${result.reason}`);
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fas fa-check-circle"></i> ${t('إنشاء الحساب','Create Account')}`;
-            return;
-        }
-        btn.innerHTML = `<span class="spinner"></span> ${t('جاري إنشاء الحساب...','Creating account...')}`;
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        const uid  = cred.user.uid;
-        await updateProfile(cred.user, { displayName: firstName + ' ' + lastName });
-        try { await sendEmailVerification(cred.user); } catch(e){}
-
-        const userData = {
-            firstName, lastName,
-            fullName: firstName + ' ' + lastName,
-            email, role,
-            status: 'active',
-            emailVerified: false,
-            createdAt: serverTimestamp(),
-            uid,
-            activatedByCode: activationCode
-        };
-        // إضافة بيانات المعلم إذا كان معلماً
-        if(role === 'teacher') {
-            userData.subject = subjectValue;
-            userData.classes = classesValue;
-        }
-
-        await setDoc(doc(db, 'users', uid), userData);
-        // تسجيل آخر استخدام بدون تعطيل الكود
-        await updateDoc(result.doc.ref, { lastUsedBy: uid, lastUsedAt: serverTimestamp() });
+        const result=await validateActivationCode(activationCode, role);
+        if(!result.valid){snShowToast(`❌ ${result.reason}`);btn.disabled=false;btn.innerHTML='<i class="fas fa-check-circle"></i> إنشاء الحساب';return;}
+        btn.innerHTML='<span class="spinner"></span> جاري إنشاء الحساب...';
+        const cred=await createUserWithEmailAndPassword(auth, email, password);
+        const uid=cred.user.uid;
+        await updateProfile(cred.user, {displayName: firstName+' '+lastName});
+        try{await sendEmailVerification(cred.user);}catch(e){}
+        const userData={firstName,lastName,fullName:firstName+' '+lastName,email,role,status:'active',emailVerified:false,createdAt:serverTimestamp(),uid,activatedByCode:activationCode};
+        if(role==='teacher'){userData.subject=subjectValue;userData.classes=classesValue;}
+        await setDoc(doc(db,'users',uid), userData);
+        await updateDoc(result.doc.ref, {lastUsedBy:uid, lastUsedAt:serverTimestamp()});
         await signOut(auth);
-
-        const roleLabel = { teacher: t('معلم','Teacher'), vice_principal: t('مساعد مدير','Vice Principal'), principal: t('مدير','Principal') }[role] || role;
-        document.getElementById('registerModalBody').innerHTML = `
+        document.getElementById('registerModalBody').innerHTML=`
             <div class="success-state">
                 <div class="success-icon"><i class="fas fa-check"></i></div>
-                <h3>🎉 ${t('تم إنشاء الحساب بنجاح!','Account created successfully!')}</h3>
-                <p>${t('تم تفعيل حسابك كـ','Your account was activated as')} <strong>${roleLabel}</strong>.</p>
-                ${role === 'teacher' ? `<p style="color:var(--accent-blue);font-size:0.85rem;">📚 ${t('المادة:','Subject:')} ${subjectValue} | 🏫 ${t('الصفوف:','Classes:')} ${classesValue.join(', ')}</p>` : ''}
-                <p style="color:var(--accent-blue);">${t('يمكنك الآن تسجيل الدخول بالبريد وكلمة المرور.','You can now login with your email and password.')}</p>
-                <button class="btn-register-modal" onclick="closeRegisterModal(); switchTab('staff');" style="margin-top:20px;">
-                    <i class="fas fa-sign-in-alt"></i> ${t('الذهاب لتسجيل الدخول','Go to Login')}
+                <h3>🎉 تم إنشاء الحساب بنجاح!</h3>
+                <p>يمكنك الآن تسجيل الدخول بالبريد وكلمة المرور.</p>
+                <button class="btn-register-modal" onclick="closeRegisterModal();switchTab('staff');" style="margin-top:20px;">
+                    <i class="fas fa-sign-in-alt"></i> الذهاب لتسجيل الدخول
                 </button>
             </div>`;
-        snShowToast(t('🎉 تم إنشاء الحساب بنجاح','🎉 Account created successfully'));
+        snShowToast('🎉 تم إنشاء الحساب بنجاح');
     } catch(err) {
-        const msgs = {
-            'auth/email-already-in-use': t('البريد الإلكتروني مسجل مسبقاً','Email already in use'),
-            'auth/weak-password':        t('كلمة المرور ضعيفة جداً','Password is too weak'),
-            'auth/invalid-email':        t('بريد إلكتروني غير صالح','Invalid email'),
-            'auth/network-request-failed': t('تحقق من اتصالك بالإنترنت','Check your internet connection')
-        };
-        snShowToast(`❌ ${msgs[err.code] || t('حدث خطأ، حاول مرة أخرى','An error occurred, try again')}`);
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fas fa-check-circle"></i> ${t('إنشاء الحساب','Create Account')}`;
+        const msgs={'auth/email-already-in-use':'البريد الإلكتروني مسجل مسبقاً','auth/weak-password':'كلمة المرور ضعيفة جداً','auth/invalid-email':'بريد إلكتروني غير صالح'};
+        snShowToast(`❌ ${msgs[err.code]||'حدث خطأ، حاول مرة أخرى'}`);
+        btn.disabled=false; btn.innerHTML='<i class="fas fa-check-circle"></i> إنشاء الحساب';
     }
 };
 
-/* ─── تسجيل دخول الكادر ─── */
+// ════════════════════════════════════
+// تسجيل دخول الكادر
+// ════════════════════════════════════
 window.staffLogin = async function() {
-    const email    = document.getElementById('staffEmail').value.trim();
-    const password = document.getElementById('staffPassword').value;
-    if(!email || !password){ snShowToast(t('⚠️ أدخل البريد وكلمة المرور','⚠️ Enter email and password')); return; }
-    const btn = document.getElementById('staffLoginBtn');
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner"></span> ${t('جاري التحقق...','Verifying...')}`;
+    const email=document.getElementById('staffEmail').value.trim();
+    const password=document.getElementById('staffPassword').value;
+    if(!email||!password){snShowToast('⚠️ أدخل البريد وكلمة المرور');return;}
+    const btn=document.getElementById('staffLoginBtn');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> جاري التحقق...';
     try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        const snap = await getDoc(doc(db, 'users', cred.user.uid));
-        if(!snap.exists()){ await signOut(auth); snShowToast(t('⚠️ لم يتم العثور على بيانات المستخدم','⚠️ User data not found')); btn.disabled=false; btn.innerHTML=`<i class="fas fa-sign-in-alt"></i> ${t('تسجيل الدخول','Login')}`; return; }
-        const data = snap.data();
-        if(data.status && data.status !== 'active'){ await signOut(auth); snShowToast(t('⏳ الحساب غير مفعل، تواصل مع الإدارة','⏳ Account inactive, contact administration')); btn.disabled=false; btn.innerHTML=`<i class="fas fa-sign-in-alt"></i> ${t('تسجيل الدخول','Login')}`; return; }
+        const cred=await signInWithEmailAndPassword(auth, email, password);
+        const snap=await getDoc(doc(db,'users',cred.user.uid));
+        if(!snap.exists()){await signOut(auth);snShowToast('⚠️ لم يتم العثور على بيانات المستخدم');btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';return;}
+        const data=snap.data();
+        if(data.status&&data.status!=='active'){await signOut(auth);snShowToast('⏳ الحساب غير مفعل، تواصل مع الإدارة');btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';return;}
+
+        // ── امسح بيانات الطالب القديمة لتجنب التعارض ──
+        localStorage.removeItem('studentName');
+        localStorage.removeItem('studentId');
+
+        // ── احفظ بيانات الكادر ──
         localStorage.setItem('userRole', data.role);
         localStorage.setItem('userName', data.fullName || data.firstName || '');
         localStorage.setItem('userUid', cred.user.uid);
-        if(data.role === 'teacher') {
-            localStorage.setItem('teacherSubject', data.subject || '');
-            localStorage.setItem('teacherClasses', JSON.stringify(data.classes || []));
+        if(data.role==='teacher'){
+            localStorage.setItem('teacherSubject', data.subject||'');
+            localStorage.setItem('teacherClasses', JSON.stringify(data.classes||[]));
         }
-        snShowToast(`✅ ${t('مرحباً','Welcome')} ${data.firstName || ''}`);
-        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+        snShowToast(`✅ مرحباً ${data.firstName||''}`);
+        setTimeout(()=>{window.location.href='index.html';}, 1000);
     } catch(err) {
-        snShowToast(t('⚠️ البريد الإلكتروني أو كلمة المرور غير صحيحة','⚠️ Incorrect email or password'));
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${t('تسجيل الدخول','Login')}`;
+        snShowToast('⚠️ البريد الإلكتروني أو كلمة المرور غير صحيحة');
+        btn.disabled=false; btn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
     }
 };
 
-/* ─── تسجيل دخول الطالب ─── */
+// ════════════════════════════════════
+// تسجيل دخول الطالب — مُصلح
+// ════════════════════════════════════
 window.studentLogin = async function() {
-    const activationCode = document.getElementById('studentNumber').value.trim();
-    const password       = document.getElementById('studentPassword').value;
-    if(!activationCode || !password){ snShowToast(t('⚠️ كود التفعيل وكلمة المرور مطلوبة','⚠️ Activation code and password required')); return; }
-    const btn = document.getElementById('studentLoginBtn');
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner"></span> ${t('جاري التحقق...','Verifying...')}`;
+    const activationCode=document.getElementById('studentNumber').value.trim();
+    const password=document.getElementById('studentPassword').value;
+    if(!activationCode||!password){snShowToast('⚠️ كود التفعيل وكلمة المرور مطلوبة');return;}
+    const btn=document.getElementById('studentLoginBtn');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> جاري التحقق...';
     try {
-        const snap = await getDocs(query(collection(db, 'students'), where('activationCode', '==', activationCode)));
-        if(snap.empty){ snShowToast(t('⚠️ كود التفعيل غير موجود','⚠️ Activation code not found')); btn.disabled=false; btn.innerHTML=`<i class="fas fa-sign-in-alt"></i> ${t('دخول','Login')}`; return; }
-        const docData = snap.docs[0].data();
-        if(docData.status === 'banned'){ snShowToast(t('🚫 هذا الحساب محظور، تواصل مع الإدارة','🚫 This account is banned, contact administration')); btn.disabled=false; btn.innerHTML=`<i class="fas fa-sign-in-alt"></i> ${t('دخول','Login')}`; return; }
-        if(docData.password !== password){ snShowToast(t('⚠️ كلمة مرور خاطئة','⚠️ Incorrect password')); btn.disabled=false; btn.innerHTML=`<i class="fas fa-sign-in-alt"></i> ${t('دخول','Login')}`; return; }
+        const snap=await getDocs(query(collection(db,'students'), where('activationCode','==',activationCode)));
+        if(snap.empty){snShowToast('⚠️ كود التفعيل غير موجود');btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> دخول';return;}
+        const studentDoc=snap.docs[0];
+        const docData=studentDoc.data();
+        if(docData.status==='banned'){snShowToast('🚫 هذا الحساب محظور، تواصل مع الإدارة');btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> دخول';return;}
+        if(docData.password!==password){snShowToast('⚠️ كلمة مرور خاطئة');btn.disabled=false;btn.innerHTML='<i class="fas fa-sign-in-alt"></i> دخول';return;}
+
+        // ── امسح بيانات الكادر القديمة لتجنب التعارض ──
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userUid');
+        localStorage.removeItem('teacherSubject');
+        localStorage.removeItem('teacherClasses');
+
+        // ── احفظ بيانات الطالب ──
+        localStorage.setItem('userRole',    'student');
         localStorage.setItem('studentName', docData.name);
-        localStorage.setItem('studentId', snap.docs[0].id);
-        localStorage.setItem('userRole', 'student');
-        snShowToast(`✅ ${t('مرحباً','Welcome')} ${docData.name}`);
-        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+        localStorage.setItem('studentId',   studentDoc.id);
+
+        snShowToast(`✅ مرحباً ${docData.name}`);
+        setTimeout(()=>{window.location.href='index.html';}, 1000);
     } catch(e) {
-        snShowToast(t('⚠️ خطأ في الاتصال، حاول مرة أخرى','⚠️ Connection error, try again'));
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${t('دخول','Login')}`;
+        snShowToast('⚠️ خطأ في الاتصال، حاول مرة أخرى');
+        btn.disabled=false; btn.innerHTML='<i class="fas fa-sign-in-alt"></i> دخول';
     }
 };
 
-/* ─── مودالات ─── */
-window.openRegisterModal  = () => { selectedClasses = []; document.getElementById('regClasses').value = '[]'; document.getElementById('registerStaffModal').classList.add('show'); };
-window.closeRegisterModal = () => document.getElementById('registerStaffModal').classList.remove('show');
-window.openForgotModal    = () => document.getElementById('forgotModal').classList.add('show');
-window.closeForgotModal   = () => document.getElementById('forgotModal').classList.remove('show');
-
+// Modals
+window.openRegisterModal  = ()=>{selectedClasses=[];document.getElementById('regClasses').value='[]';document.getElementById('registerStaffModal').classList.add('show');};
+window.closeRegisterModal = ()=>document.getElementById('registerStaffModal').classList.remove('show');
+window.openForgotModal    = ()=>document.getElementById('forgotModal').classList.add('show');
+window.closeForgotModal   = ()=>document.getElementById('forgotModal').classList.remove('show');
 window.sendResetEmail = async function() {
-    const email = document.getElementById('resetEmail').value.trim();
-    if(!email){ snShowToast(t('⚠️ أدخل بريدك الإلكتروني','⚠️ Enter your email')); return; }
-    try {
-        await sendPasswordResetEmail(auth, email);
-        snShowToast(t('✅ تم إرسال رابط الاسترداد إلى بريدك الإلكتروني','✅ Reset link sent to your email'));
-        closeForgotModal();
-    } catch(e) {
-        snShowToast(`⚠️ ${e.code === 'auth/user-not-found' ? t('البريد الإلكتروني غير مسجل','Email not registered') : t('حدث خطأ، حاول مرة أخرى','Error, try again')}`);
-    }
+    const email=document.getElementById('resetEmail').value.trim();
+    if(!email){snShowToast('⚠️ أدخل بريدك الإلكتروني');return;}
+    try{await sendPasswordResetEmail(auth,email);snShowToast('✅ تم إرسال رابط الاسترداد');closeForgotModal();}
+    catch(e){snShowToast(`⚠️ ${e.code==='auth/user-not-found'?'البريد الإلكتروني غير مسجل':'حدث خطأ'}`);}
 };
 
-/* ─── التبويب والباسورد ─── */
+// Tabs & toggles
 window.switchTab = function(tab) {
-    ['staff','student'].forEach(t => { document.getElementById(t+'Tab').classList.remove('active'); document.getElementById(t+'TabBtn').classList.remove('active'); });
+    ['staff','student'].forEach(t=>{document.getElementById(t+'Tab').classList.remove('active');document.getElementById(t+'TabBtn').classList.remove('active');});
     document.getElementById(tab+'Tab').classList.add('active');
     document.getElementById(tab+'TabBtn').classList.add('active');
-    document.getElementById('tabIndicator').style.right = (tab === 'staff') ? '0%' : '50%';
+    document.getElementById('tabIndicator').style.right=(tab==='staff')?'0%':'50%';
 };
-window.togglePassStaff   = () => { const i=document.getElementById('staffPassword'),   ic=document.getElementById('staffEyeIcon');   const p=i.type==='password'; i.type=p?'text':'password'; ic.className=p?'fas fa-eye-slash':'fas fa-eye'; };
-window.togglePassStudent = () => { const i=document.getElementById('studentPassword'), ic=document.getElementById('studentEyeIcon'); const p=i.type==='password'; i.type=p?'text':'password'; ic.className=p?'fas fa-eye-slash':'fas fa-eye'; };
-window.togglePassModal   = (id,iconId) => { const i=document.getElementById(id), ic=document.getElementById(iconId); const p=i.type==='password'; i.type=p?'text':'password'; ic.className=p?'fas fa-eye-slash':'fas fa-eye'; };
+window.togglePassStaff   = ()=>{const i=document.getElementById('staffPassword'),ic=document.getElementById('staffEyeIcon');const p=i.type==='password';i.type=p?'text':'password';ic.className=p?'fas fa-eye-slash':'fas fa-eye';};
+window.togglePassStudent = ()=>{const i=document.getElementById('studentPassword'),ic=document.getElementById('studentEyeIcon');const p=i.type==='password';i.type=p?'text':'password';ic.className=p?'fas fa-eye-slash':'fas fa-eye';};
+window.togglePassModal   = (id,iconId)=>{const i=document.getElementById(id),ic=document.getElementById(iconId);const p=i.type==='password';i.type=p?'text':'password';ic.className=p?'fas fa-eye-slash':'fas fa-eye';};
 
-/* ─── أحداث عامة ─── */
-window.addEventListener('scroll', () => document.getElementById('topBar').classList.toggle('scrolled', window.scrollY > 30));
-document.getElementById('staffPassword')?.addEventListener('keydown',   e => { if(e.key==='Enter') staffLogin(); });
-document.getElementById('studentPassword')?.addEventListener('keydown', e => { if(e.key==='Enter') studentLogin(); });
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('show'); }));
+window.addEventListener('scroll',()=>document.getElementById('topBar').classList.toggle('scrolled',window.scrollY>30));
+document.getElementById('staffPassword')?.addEventListener('keydown', e=>{if(e.key==='Enter')staffLogin();});
+document.getElementById('studentPassword')?.addEventListener('keydown', e=>{if(e.key==='Enter')studentLogin();});
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('show');}));
 </script>
 </body>
 </html>

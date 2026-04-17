@@ -1,2279 +1,571 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة المحاكاة العلمية | SITEJ</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Cairo',sans-serif; background:#f0f4f8; }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="SITEJ - المختبر التفاعلي">
+    <meta name="theme-color" content="#1a2942">
+    <title>المختبر التفاعلي | SITEJ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root{
+            --navy-darkest:#0a1628;--navy-darker:#112240;--navy-dark:#1a2942;
+            --navy-medium:#233554;--navy-light:#2d4263;--navy-lighter:#3d5a7f;
+            --white-pure:#ffffff;--white-soft:#f8f9fa;--white-light:#e8eef5;
+            --blue-lightest:#d4dfe9;--blue-lighter:#b8c9dc;--blue-light:#9bb4d0;
+            --blue-medium:#7a9ac2;--blue-navy:#5a7fa8;
+            --accent-blue:#4a90e2;--accent-light-blue:#6fa8ec;--accent-sky:#87ceeb;
+            --gradient-navy-soft:linear-gradient(135deg,#1a2942 0%,#3d5a7f 50%,#b8c9dc 100%);
+            --gradient-blue-glow:linear-gradient(135deg,#4a90e2 0%,#6fa8ec 50%,#87ceeb 100%);
+            --glass-white:rgba(255,255,255,0.95);--glass-light:rgba(255,255,255,0.1);
+            --glass-medium:rgba(255,255,255,0.15);--glass-strong:rgba(255,255,255,0.25);
+            --border-blue:rgba(74,144,226,0.3);--border-white:rgba(255,255,255,0.3);
+            --shadow-blue:rgba(74,144,226,0.2);--shadow-glow:rgba(74,144,226,0.5);
+            --text-navy:#0a1628;--text-gray:#6b7c93;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+        html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+        body{
+            font-family:'Cairo','Tajawal',sans-serif;
+            background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 8%,#e8eef5 20%,#d4dfe9 35%,#b8c9dc 50%,#9bb4d0 65%,#7a9ac2 80%,#5a7fa8 90%,#3d5a7f 95%,#1a2942 100%);
+            background-attachment:fixed;color:#0a1628;min-height:100vh;overflow-x:hidden;
+        }
+        .bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden;}
+        .bg-shape{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.10;}
+        .shape-1{width:600px;height:600px;background:radial-gradient(circle,rgba(74,144,226,0.35) 0%,transparent 70%);top:-200px;right:-200px;}
+        .shape-2{width:500px;height:500px;background:radial-gradient(circle,rgba(26,41,66,0.25) 0%,transparent 70%);bottom:-150px;left:-150px;}
+        .shape-3{width:450px;height:450px;background:radial-gradient(circle,rgba(155,180,208,0.2) 0%,transparent 70%);top:35%;left:45%;}
 
-.header {
-  background:linear-gradient(135deg,#1e3c72,#2a5298);
-  color:white; padding:20px 40px;
-  display:flex; justify-content:space-between; align-items:center;
-  flex-wrap:wrap; gap:15px; position:sticky; top:0; z-index:200;
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
-}
-.logo h1 { font-size:1.8rem; }
-.logo p { font-size:0.8rem; opacity:0.8; }
-.role-buttons { display:flex; gap:10px; }
-.role-btn { padding:8px 25px; border:none; border-radius:30px; font-weight:bold; cursor:pointer; background:rgba(255,255,255,0.2); color:white; font-family:'Cairo',sans-serif; transition:.2s; }
-.role-btn:hover { background:rgba(255,255,255,0.35); }
-.role-btn.active { background:#ff9800; color:#1e3c72; }
+        /* ══ NAVBAR ══ */
+        nav.top-bar{display:flex;justify-content:space-between;align-items:center;padding:22px 70px;position:fixed;width:100%;top:0;z-index:1000;background:#ffffff;border-bottom:2px solid rgba(74,144,226,0.25);box-shadow:0 2px 20px rgba(26,41,66,0.10);transition:padding .4s,box-shadow .4s,background .4s;}
+        nav.top-bar.scrolled{padding:13px 70px;background:#ffffff;border-bottom:2px solid var(--accent-blue);box-shadow:0 4px 30px rgba(26,41,66,0.14);}
+        .logo-container{display:flex;align-items:center;gap:18px;cursor:pointer;transition:transform .35s;text-decoration:none;}
+        .logo-container:hover{transform:scale(1.06);}
+        .logo-icon{width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px var(--shadow-blue);transition:transform .4s;}
+        .logo-icon i{font-size:1.6rem;color:#fff;}
+        .logo-text{display:flex;flex-direction:column;gap:4px;}
+        .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .logo-tagline{font-size:0.75rem;color:var(--text-gray);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
+        .nav-actions{display:flex;align-items:center;gap:16px;}
 
-.hero { text-align:center; padding:40px 20px 20px; background:white; }
-.hero h2 { color:#1e3c72; font-size:2rem; }
-.hero p { color:#555; margin-top:8px; }
-.hero-stats { display:flex; justify-content:center; gap:30px; margin-top:20px; flex-wrap:wrap; }
-.stat { text-align:center; }
-.stat-num { font-size:2rem; font-weight:900; color:#ff9800; }
-.stat-lbl { font-size:0.75rem; color:#666; }
+        /* ══ LANG SELECTOR ══ */
+        .lang-selector-wrap{position:relative;user-select:none;}
+        .lang-trigger-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;color:var(--accent-blue);white-space:nowrap;min-width:110px;justify-content:space-between;transition:background .3s,transform .3s,box-shadow .3s;}
+        .lang-trigger-btn:hover{background:rgba(74,144,226,0.14);border-color:var(--accent-blue);transform:translateY(-2px);}
+        .lang-flag{font-size:1.1rem;}
+        .lang-label{flex:1;text-align:center;}
+        .lang-chevron{width:14px;height:14px;color:var(--accent-blue);transition:transform .35s;}
+        .lang-selector-wrap.open .lang-chevron{transform:rotate(180deg);}
+        .lang-dropdown-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:155px;background:rgba(255,255,255,0.99);border:1.5px solid var(--border-blue);border-radius:14px;overflow:hidden;box-shadow:0 16px 45px rgba(26,41,66,0.18);transform-origin:top right;transform:scale(0.85) translateY(-10px);opacity:0;transition:transform .35s,opacity .25s;z-index:9999;pointer-events:none;}
+        .lang-selector-wrap.open .lang-dropdown-menu{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+        .lang-option-item{display:flex;align-items:center;gap:12px;padding:13px 17px;cursor:pointer;font-size:0.92rem;font-weight:600;color:var(--text-navy);transition:background .2s,color .2s;}
+        .lang-option-item:hover{background:rgba(74,144,226,0.09);color:var(--accent-blue);}
+        .lang-option-item.lang-active{color:var(--accent-blue);background:rgba(74,144,226,0.07);}
+        .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity .2s;}
+        .lang-option-item.lang-active .lang-check{opacity:1;}
+        .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
 
-.tabs { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; padding:18px 20px; background:white; border-bottom:2px solid #e2e8f0; }
-.tab { padding:8px 20px; border:none; border-radius:30px; background:#e2e8f0; cursor:pointer; font-weight:bold; font-family:'Cairo',sans-serif; transition:.2s; font-size:0.85rem; }
-.tab:hover { background:#cbd5e1; }
-.tab.active { background:linear-gradient(135deg,#1e3c72,#2a5298); color:white; }
+        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s,box-shadow .35s;flex-shrink:0;}
+        .profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px var(--shadow-glow);}
+        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+        .notification-btn{position:relative;width:46px;height:46px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .35s;}
+        .notification-btn:hover{background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);box-shadow:0 8px 22px var(--shadow-blue);}
+        .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
+        .notification-badge{position:absolute;top:-5px;right:-5px;width:20px;height:20px;background:linear-gradient(135deg,#ff6b6b,#ee5a6f);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:#fff;}
+        .burger{cursor:pointer;width:38px;height:28px;display:flex;flex-direction:column;justify-content:space-between;z-index:10000;position:relative;}
+        .bline{width:100%;height:3px;background:linear-gradient(135deg,#4a90e2,#6fa8ec);border-radius:4px;transition:all .45s cubic-bezier(.68,-.55,.265,1.55);}
+        .burger.active .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
+        .burger.active .bline:nth-child(2){opacity:0;transform:translateX(20px);}
+        .burger.active .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
 
-.grade-filter { display:flex; justify-content:center; gap:7px; flex-wrap:wrap; padding:14px 20px; background:#f8fafc; }
-.grade-btn { padding:5px 13px; border:1.5px solid #cbd5e1; border-radius:20px; background:white; cursor:pointer; font-family:'Cairo',sans-serif; font-weight:700; font-size:0.8rem; transition:.2s; }
-.grade-btn:hover { border-color:#2a5298; color:#2a5298; }
-.grade-btn.active { background:#2a5298; color:white; border-color:#2a5298; }
+        /* ══ OVERLAY ══ */
+        .overlay{position:fixed;inset:0;background:rgba(26,41,66,0.65);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .45s;}
+        .overlay.show{opacity:1;pointer-events:all;}
 
-.teacher-panel { display:none; background:#fef3c7; border:1px solid #f59e0b; border-radius:15px; padding:15px; margin:20px 40px; text-align:center; }
-.teacher-panel h3 { color:#b45309; margin-bottom:10px; }
-.teacher-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.teacher-btn { padding:8px 20px; background:#f59e0b; border:none; border-radius:25px; color:white; cursor:pointer; font-family:'Cairo',sans-serif; font-weight:700; transition:.2s; }
-.teacher-btn:hover { background:#d97706; }
+        /* ══ SIDENAV — من اليسار ══ */
+        .sidenav{
+            position:fixed;
+            top:0;
+            left:-430px; /* من اليسار */
+            width:400px;
+            height:100%;
+            z-index:3000;
+            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
+            backdrop-filter:blur(35px);
+            border-right:3px solid var(--accent-blue); /* حد يمين لأنها من اليسار */
+            padding:28px 24px;
+            overflow-y:auto;
+            transition:left .55s cubic-bezier(.68,-.55,.265,1.55);
+            box-shadow:12px 0 50px rgba(26,41,66,0.15);
+        }
+        .sidenav.show{left:0!important;}
 
-.search-bar { display:flex; justify-content:center; padding:16px 20px 0; }
-.search-bar input { width:100%; max-width:500px; padding:10px 20px; border:2px solid #e2e8f0; border-radius:30px; font-family:'Cairo',sans-serif; font-size:0.9rem; outline:none; transition:.2s; }
-.search-bar input:focus { border-color:#2a5298; }
+        .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid var(--border-blue);}
+        .sn-head h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
+        .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
+        .sn-close:hover{background:rgba(238,90,111,0.15);color:#ee5a6f;transform:rotate(90deg);}
+        .sn-user{display:flex;align-items:center;gap:15px;padding:18px;background:rgba(74,144,226,0.07);border:1.5px solid var(--border-blue);border-radius:18px;margin-bottom:20px;transition:all .35s;}
+        .sn-user:hover{transform:translateY(-3px);box-shadow:0 8px 24px var(--shadow-blue);}
+        .sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--gradient-blue-glow);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px var(--shadow-blue);flex-shrink:0;}
+        .sn-uname{color:var(--text-navy);font-size:1.05rem;font-weight:700;}
+        .sn-urole{color:var(--text-gray);font-size:0.82rem;}
+        .sn-links{list-style:none;padding:0;margin:0;}
+        .sn-links li{margin-bottom:4px;}
+        .sn-links a{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:15px 16px;text-decoration:none;font-size:1rem;font-weight:600;color:var(--text-navy);border-radius:14px;transition:all .4s;position:relative;overflow:hidden;}
+        .sn-links a:hover{transform:translateX(-8px);color:var(--accent-blue);}
+        .sn-links a i{color:var(--accent-blue);font-size:1.2rem;width:28px;text-align:center;display:inline-block;}
+        .sn-links a.active-page{background:rgba(74,144,226,0.1);border:1.5px solid rgba(74,144,226,0.3);color:var(--accent-blue);}
+        .dash-link-teacher a{background:linear-gradient(135deg,rgba(74,144,226,0.08),rgba(111,168,236,0.05));border:1.5px solid rgba(74,144,226,0.25);border-radius:14px;color:var(--accent-blue)!important;}
+        .dash-link-admin a{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(99,102,241,0.05));border:1.5px solid rgba(139,92,246,0.25);border-radius:14px;color:#8b5cf6!important;}
+        .dash-divider{height:1px;background:linear-gradient(to left,transparent,var(--border-blue),transparent);margin:10px 8px;}
+        .dash-section-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent-blue);padding:6px 16px 4px;opacity:0.7;}
+        .sn-logout{margin-top:16px;padding-top:16px;border-top:1.5px solid rgba(238,90,111,0.2);}
+        .sn-logout a,.sn-logout a i{color:#ee5a6f!important;}
+        .sn-settings-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;cursor:pointer;background:rgba(74,144,226,0.07);border:1.5px solid rgba(74,144,226,0.25);margin-bottom:4px;color:var(--text-navy);font-weight:700;font-size:0.95rem;transition:all .4s;}
+        .sn-settings-toggle:hover{background:rgba(74,144,226,0.14);transform:translateX(-4px);}
+        .sn-settings-toggle i{color:var(--accent-blue);}
+        .sn-settings-chevron{color:var(--accent-blue);font-size:0.8rem;transition:transform .4s;}
+        .sn-settings-panel{max-height:0;overflow:hidden;transition:max-height .6s,opacity .4s;opacity:0;}
+        .sn-settings-panel.open{max-height:800px;opacity:1;}
+        .sn-settings-inner{padding:18px 14px;background:rgba(248,249,250,0.9);border:1.5px solid rgba(74,144,226,0.2);border-radius:16px;margin-top:8px;margin-bottom:8px;}
+        .sn-s-label{font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-blue);margin-bottom:10px;margin-top:16px;display:flex;align-items:center;gap:7px;}
+        .sn-s-label:first-child{margin-top:0;}
+        .sn-theme-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .sn-t-opt{border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;height:70px;position:relative;transition:all .35s;}
+        .sn-t-opt.sel{border-color:var(--accent-blue);}
+        .sn-t-preview{width:100%;height:100%;}
+        .sn-t-light{background:linear-gradient(135deg,#f8f9fa,#e8eef5,#b8c9dc);}
+        .sn-t-dark{background:linear-gradient(135deg,#0a1628,#112240,#1a2942);}
+        .sn-t-label{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:0.72rem;font-weight:700;}
+        .sn-t-light .sn-t-label{color:#1a2942;}
+        .sn-t-dark .sn-t-label{color:#e8eef5;}
+        .sn-t-check{position:absolute;top:5px;left:5px;width:18px;height:18px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.55rem;opacity:0;transform:scale(.4);transition:all .25s;}
+        .sn-t-opt.sel .sn-t-check{opacity:1;transform:scale(1);}
+        .sn-g-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+        .sn-g-opt{padding:10px 6px;border-radius:12px;cursor:pointer;border:1.5px solid rgba(74,144,226,0.25);text-align:center;transition:all .35s;position:relative;}
+        .sn-g-opt.sel{border-color:var(--accent-blue);background:rgba(74,144,226,0.08);}
+        .sn-g-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
+        .sn-g-name{font-size:0.65rem;font-weight:700;color:var(--text-navy);}
+        .sn-g-chk{position:absolute;top:4px;left:4px;width:16px;height:16px;border-radius:50%;background:var(--accent-blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.5rem;opacity:0;transform:scale(0);transition:all .25s;}
+        .sn-g-opt.sel .sn-g-chk{opacity:1;transform:scale(1);}
+        .sn-font-slider{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:99px;outline:none;cursor:pointer;background:linear-gradient(to right,#4a90e2 var(--pct,33%),rgba(74,144,226,0.18) var(--pct,33%));direction:ltr;}
+        .sn-font-labels{display:flex;justify-content:space-between;margin-top:7px;direction:ltr;}
+        .sn-font-labels span{font-size:0.62rem;color:var(--text-gray);font-weight:600;cursor:pointer;padding:3px 5px;border-radius:6px;}
+        .sn-save-btn{width:100%;margin-top:14px;padding:12px;background:var(--gradient-blue-glow);border:none;border-radius:12px;color:#fff;font-weight:700;font-family:'Cairo','Tajawal',sans-serif;font-size:0.9rem;cursor:pointer;}
+        .sn-toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,var(--navy-dark),var(--navy-lighter));color:#fff;padding:12px 26px;border-radius:50px;font-size:0.88rem;font-weight:600;opacity:0;pointer-events:none;z-index:99999;box-shadow:0 8px 28px rgba(26,41,66,0.3);display:flex;align-items:center;gap:9px;transition:all .38s;}
+        .sn-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; padding:30px 40px 50px; max-width:1400px; margin:0 auto; }
-.card { background:white; border-radius:20px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.08); cursor:pointer; transition:.3s; border:2px solid transparent; }
-.card:hover { transform:translateY(-6px); box-shadow:0 12px 30px rgba(30,60,114,0.2); border-color:#2a5298; }
-.card-icon { height:120px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; position:relative; }
-.card-badge { position:absolute; top:10px; right:10px; background:#ff9800; color:white; font-size:0.65rem; padding:3px 8px; border-radius:10px; font-weight:700; }
-.card-body { padding:18px; }
-.card-title { font-size:1.05rem; font-weight:800; color:#1e3c72; }
-.card-desc { color:#666; font-size:0.82rem; margin:6px 0 8px; line-height:1.5; }
-.card-grade { color:#2a5298; font-size:0.7rem; margin-bottom:12px; }
-.btn-play { width:100%; padding:10px; background:linear-gradient(135deg,#1e3c72,#2a5298); border:none; border-radius:12px; color:white; font-weight:bold; cursor:pointer; font-family:'Cairo',sans-serif; display:flex; align-items:center; justify-content:center; gap:8px; transition:.2s; }
-.btn-play:hover { background:linear-gradient(135deg,#ff9800,#f97316); }
+        /* ══ PAGE CONTENT ══ */
+        .page-wrap{padding-top:120px;min-height:100vh;position:relative;z-index:1;}
+        .content-area{max-width:1300px;margin:0 auto;padding:0 50px 80px;}
 
-/* MODAL */
-.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:1000; justify-content:center; align-items:center; padding:15px; }
-.modal.active { display:flex; }
-.modal-box { width:100%; max-width:980px; max-height:92vh; background:#1e293b; border-radius:24px; overflow:hidden; display:flex; flex-direction:column; border:2px solid #ff9800; box-shadow:0 0 50px rgba(255,152,0,0.2); }
-.modal-header { padding:14px 22px; background:#0f172a; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ff9800; flex-shrink:0; }
-.modal-title { font-size:1.1rem; font-weight:800; color:white; }
-.modal-close { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); width:34px; height:34px; border-radius:50%; color:white; cursor:pointer; font-size:1rem; transition:.2s; }
-.modal-close:hover { background:#ef4444; }
-.modal-body { flex:1; overflow-y:auto; padding:22px; }
+        /* ══ HERO LAB ══ */
+        .hero-lab{
+            background:linear-gradient(135deg,#152035 0%,#1e3d6e 100%);
+            color:white;padding:36px 40px;border-radius:28px;margin-bottom:40px;
+            position:relative;overflow:hidden;
+        }
+        .hero-lab::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:rgba(74,144,226,0.15);border-radius:50%;}
+        .hero-lab::after{content:'';position:absolute;bottom:-30px;left:100px;width:140px;height:140px;background:rgba(74,144,226,0.08);border-radius:50%;}
+        .hero-lab h2{font-size:1.8rem;font-weight:800;position:relative;z-index:1;}
+        .hero-lab p{color:rgba(255,255,255,0.7);margin-top:10px;position:relative;z-index:1;font-size:1rem;}
+        .count-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:0.82rem;font-weight:700;padding:6px 18px;border-radius:30px;margin-top:14px;position:relative;z-index:1;}
+        .topbar-date-lab{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;position:relative;z-index:1;}
 
-/* SIM SHARED */
-.sim-wrap { color:#e2e8f0; }
-.sim-h { font-size:1.4rem; font-weight:900; text-align:center; margin-bottom:18px; color:#ff9800; }
-.sim-layout { display:flex; gap:16px; flex-wrap:wrap; }
-.sim-canvas-box { background:#060d1a; border-radius:14px; border:1px solid #1e3a5f; overflow:hidden; display:flex; align-items:center; justify-content:center; flex:2; min-width:260px; }
-.sim-panel { flex:1; min-width:220px; display:flex; flex-direction:column; gap:12px; }
-.ctrl-box { background:#1e293b; border:1px solid #1e3a5f; border-radius:12px; padding:16px; }
-.ctrl-lbl { display:flex; justify-content:space-between; font-size:0.82rem; color:#94a3b8; margin-bottom:6px; }
-.ctrl-lbl span { color:#ff9800; font-weight:700; }
-input[type=range] { width:100%; -webkit-appearance:none; height:5px; background:#1e3a5f; border-radius:3px; outline:none; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; background:#ff9800; border-radius:50%; cursor:pointer; border:2px solid #0f172a; }
-.info-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:8px; }
-.ibox { background:#0f172a; border:1px solid #1e3a5f; border-radius:10px; padding:10px; text-align:center; }
-.ibox .v { font-size:1.3rem; font-weight:900; color:#ff9800; }
-.ibox .l { font-size:0.7rem; color:#94a3b8; margin-top:2px; }
-.sbtn { padding:8px 18px; border-radius:20px; border:1.5px solid #ff9800; background:transparent; color:#ff9800; font-family:'Cairo',sans-serif; font-weight:700; font-size:0.82rem; cursor:pointer; transition:.2s; }
-.sbtn:hover, .sbtn.on { background:#ff9800; color:#0f172a; }
-.sbtn.red { border-color:#ef4444; color:#ef4444; }
-.sbtn.red:hover { background:#ef4444; color:white; }
-.sbtn.grn { border-color:#10b981; color:#10b981; }
-.sbtn.grn:hover { background:#10b981; color:white; }
-.sbtn-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
-.info-card { background:#0f172a; border:1px solid #1e3a5f; border-radius:10px; padding:12px; font-size:0.83rem; line-height:1.7; color:#94a3b8; }
-.info-card b { color:#ff9800; }
+        /* ══ SIMULATOR GRID ══ */
+        #simGrid{display:grid;gap:28px;transition:grid-template-columns .4s ease;}
+        #simGrid.count-1{grid-template-columns:minmax(0,560px);justify-content:center;}
+        #simGrid.count-1 .sim-card-header{height:220px;}
+        #simGrid.count-1 .sim-icon-wrapper{width:110px;height:110px;font-size:3.8rem;border-radius:30px;}
+        #simGrid.count-1 .sim-card-body{padding:32px;}
+        #simGrid.count-1 .sim-title{font-size:1.4rem;}
+        #simGrid.count-1 .sim-desc{font-size:0.9rem;}
+        #simGrid.count-1 .sim-features{display:flex!important;}
+        #simGrid.count-1 .sim-subject-tag{display:inline-flex!important;}
+        #simGrid.count-1 .btn-launch{padding:17px;font-size:1rem;}
+        #simGrid.count-1 .btn-launch .arrow-icon{width:34px;height:34px;}
+        #simGrid.count-1 .pulse-wrapper{display:block!important;}
+        #simGrid.count-2{grid-template-columns:repeat(2,1fr);}
+        #simGrid.count-2 .sim-card-header{height:165px;}
+        #simGrid.count-2 .sim-icon-wrapper{width:80px;height:80px;font-size:2.8rem;border-radius:22px;}
+        #simGrid.count-2 .sim-card-body{padding:22px;}
+        #simGrid.count-2 .sim-title{font-size:1.15rem;}
+        #simGrid.count-2 .sim-features{display:flex!important;}
+        #simGrid.count-3{grid-template-columns:repeat(3,1fr);}
+        #simGrid.count-3 .sim-card-header{height:135px;}
+        #simGrid.count-3 .sim-icon-wrapper{width:64px;height:64px;font-size:2.2rem;border-radius:18px;}
+        #simGrid.count-3 .sim-card-body{padding:18px;}
+        #simGrid.count-3 .sim-title{font-size:1rem;}
+        #simGrid.count-3 .sim-features{display:none!important;}
+        #simGrid.count-4plus{grid-template-columns:repeat(4,1fr);}
+        #simGrid.count-4plus .sim-card-header{height:110px;}
+        #simGrid.count-4plus .sim-icon-wrapper{width:52px;height:52px;font-size:1.8rem;border-radius:14px;animation:none;}
+        #simGrid.count-4plus .sim-card-body{padding:14px;}
+        #simGrid.count-4plus .sim-title{font-size:0.86rem;}
+        #simGrid.count-4plus .sim-features{display:none!important;}
+        #simGrid.count-4plus .sim-subject-tag{display:none!important;}
+        #simGrid.count-4plus .btn-launch{padding:9px;font-size:0.78rem;}
 
-.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#1e3c72,#2a5298); color:white; padding:11px 26px; border-radius:50px; opacity:0; pointer-events:none; transition:.3s; z-index:2000; font-weight:600; font-size:0.9rem; }
-.toast.show { opacity:1; }
+        /* ══ CARD ══ */
+        .sim-card-wrap{position:relative;}
+        .sim-card{background:rgba(255,255,255,0.97);border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(26,41,66,0.1);border:1.5px solid rgba(74,144,226,0.2);transition:transform .35s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow .35s ease,border-color .35s ease;width:100%;}
+        .sim-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 24px 60px rgba(74,144,226,0.2);border-color:#4a90e2;}
+        .sim-card-header{background:linear-gradient(135deg,#0a1628 0%,#1a3a5c 55%,#0e4d6e 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:height .4s ease;}
+        .sim-card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(74,144,226,0.25) 0%,transparent 65%);}
+        .sim-card-header::after{content:'';position:absolute;top:-15px;right:-15px;width:90px;height:90px;border:1.5px solid rgba(74,144,226,0.15);border-radius:50%;}
+        .sim-icon-wrapper{position:relative;z-index:2;background:rgba(255,255,255,0.08);border:1.5px solid rgba(74,144,226,0.35);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.1);animation:float 3s ease-in-out infinite;transition:width .4s ease,height .4s ease,font-size .4s ease,border-radius .4s ease;}
+        @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+        .sim-badge{position:absolute;top:12px;right:12px;z-index:3;background:linear-gradient(135deg,#4a90e2,#6fa8ec);color:white;font-size:0.62rem;font-weight:700;padding:5px 12px;border-radius:30px;box-shadow:0 3px 10px rgba(74,144,226,0.35);}
+        .sim-card-body{transition:padding .4s ease;}
+        .sim-subject-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(74,144,226,0.08);color:#4a90e2;font-size:0.72rem;font-weight:700;padding:5px 14px;border-radius:30px;border:1px solid rgba(74,144,226,0.2);margin-bottom:12px;}
+        .sim-title{font-weight:900;color:#1a2942;margin-bottom:8px;line-height:1.35;transition:font-size .4s ease;}
+        .sim-desc{color:#6b7c93;line-height:1.6;margin-bottom:16px;transition:all .4s;}
+        .sim-features{gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+        .sim-feature{background:#f0f4f8;color:#3d5a7f;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:20px;}
+        .btn-launch{width:100%;background:linear-gradient(135deg,#1a2942,#3d5a7f);border:none;border-radius:14px;color:white;font-weight:800;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;text-decoration:none;position:relative;overflow:hidden;}
+        .btn-launch::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#4a90e2,#6fa8ec);opacity:0;transition:opacity .3s;}
+        .btn-launch:hover::before{opacity:1;}
+        .btn-launch>*{position:relative;z-index:1;}
+        .btn-launch:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,144,226,0.35);}
+        .arrow-icon{background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .4s;}
+        .pulse-wrapper{position:absolute;inset:-20px;pointer-events:none;display:none;z-index:-1;}
+        .pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;border:1px solid rgba(74,144,226,0.13);border-radius:28px;animation:pulse-ring 3.5s ease-out infinite;}
+        .pulse-ring:nth-child(2){animation-delay:1.1s;width:108%;height:108%;}
+        .pulse-ring:nth-child(3){animation-delay:2.2s;width:116%;height:116%;}
+        @keyframes pulse-ring{0%{opacity:.5;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05);}}
 
-.footer { text-align:center; padding:22px; background:#1e293b; color:#64748b; font-size:0.82rem; margin-top:20px; }
+        /* ══ FOOTER ══ */
+        .footer{background:linear-gradient(180deg,rgba(26,41,66,0.98) 0%,rgba(10,22,40,1) 100%);border-top:2px solid var(--accent-blue);padding:60px 50px 35px;position:relative;z-index:1;}
+        .footer-content{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:50px;margin-bottom:40px;}
+        .footer-section h3{color:var(--accent-light-blue);font-size:1.3rem;margin-bottom:22px;font-weight:800;}
+        .footer-section p,.footer-section a{color:var(--blue-lightest);line-height:2.2;text-decoration:none;display:block;font-size:1rem;transition:transform .3s,color .3s;}
+        .footer-section a:hover{color:#fff;transform:translateX(-8px);}
+        .footer-bottom{text-align:center;padding-top:30px;border-top:1px solid var(--border-white);color:var(--blue-lightest);font-size:1rem;}
 
-canvas { display:block; }
-@media(max-width:768px) { .header{padding:12px 16px;} .grid{padding:16px;} .teacher-panel{margin:15px;} }
-</style>
+        .scroll-top{position:fixed;bottom:100px;left:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .4s;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);}
+        .scroll-top.visible{opacity:1;pointer-events:all;}
+        .scroll-top i{color:#fff;font-size:1.4rem;}
+
+        @media(max-width:1100px){#simGrid.count-4plus{grid-template-columns:repeat(3,1fr);}}
+        @media(max-width:768px){
+            nav.top-bar{padding:16px 20px!important;}
+            .content-area{padding:0 20px 60px;}
+            .hero-lab{padding:24px 22px;}
+            .hero-lab h2{font-size:1.3rem;}
+            #simGrid.count-4plus,#simGrid.count-3{grid-template-columns:repeat(2,1fr);}
+            .sidenav{width:100%;left:-100%!important;}
+        }
+        @media(max-width:500px){
+            #simGrid.count-4plus,#simGrid.count-3,#simGrid.count-2{grid-template-columns:1fr;}
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">
-    <h1><i class="fas fa-atom"></i> SITEJ</h1>
-    <p>منصة المحاكاة العلمية التفاعلية</p>
-  </div>
-  <div class="role-buttons">
-    <button class="role-btn student active" onclick="setRole('student')">📖 طالب</button>
-    <button class="role-btn teacher" onclick="setRole('teacher')">👨‍🏫 معلم</button>
-  </div>
+<div class="bg-animation">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
 </div>
 
-<div class="hero">
-  <h2>اكتشف العلم بطريقة تفاعلية 🚀</h2>
-  <p>محاكاة علمية متكاملة — فيزياء، كيمياء، أحياء، رياضيات، برمجة وأكثر!</p>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-num">28</div><div class="stat-lbl">تجربة تفاعلية</div></div>
-    <div class="stat"><div class="stat-num">7</div><div class="stat-lbl">مواد دراسية</div></div>
-    <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">صفاً دراسياً</div></div>
-  </div>
-</div>
-
-<div class="search-bar">
-  <input type="text" placeholder="🔍 ابحث عن تجربة..." oninput="searchSims(this.value)">
-</div>
-
-<div class="tabs">
-  <button class="tab active" data-filter="all">🔭 الكل</button>
-  <button class="tab" data-filter="phys">⚡ الفيزياء</button>
-  <button class="tab" data-filter="chem">🧪 الكيمياء</button>
-  <button class="tab" data-filter="bio">🔬 الأحياء</button>
-  <button class="tab" data-filter="earth">🌍 علوم الأرض</button>
-  <button class="tab" data-filter="math">📐 الرياضيات</button>
-  <button class="tab" data-filter="prog">💻 البرمجة</button>
-</div>
-
-<div class="grade-filter">
-  <button class="grade-btn active" data-grade="all">الكل</button>
-  <button class="grade-btn" data-grade="1">1</button><button class="grade-btn" data-grade="2">2</button>
-  <button class="grade-btn" data-grade="3">3</button><button class="grade-btn" data-grade="4">4</button>
-  <button class="grade-btn" data-grade="5">5</button><button class="grade-btn" data-grade="6">6</button>
-  <button class="grade-btn" data-grade="7">7</button><button class="grade-btn" data-grade="8">8</button>
-  <button class="grade-btn" data-grade="9">9</button><button class="grade-btn" data-grade="10">10</button>
-  <button class="grade-btn" data-grade="11">11</button><button class="grade-btn" data-grade="12">12</button>
-</div>
-
-<div class="teacher-panel" id="teacherPanel">
-  <h3><i class="fas fa-chalkboard-teacher"></i> لوحة تحكم المعلم</h3>
-  <div class="teacher-btns">
-    <button class="teacher-btn" onclick="showMsg('📊 تقرير أداء الطلاب')">تقرير الأداء</button>
-    <button class="teacher-btn" onclick="showMsg('📝 تم إنشاء مهمة')">إنشاء مهمة</button>
-    <button class="teacher-btn" onclick="showMsg('🔓 تم فتح جميع المحاكيات')">فتح الكل</button>
-    <button class="teacher-btn" onclick="showMsg('📤 تم مشاركة التجربة')">مشاركة</button>
-  </div>
-</div>
-
-<div class="grid" id="simsGrid"></div>
-<footer class="footer">© 2025 SITEJ — منصة المحاكاة العلمية | جميع الحقوق محفوظة</footer>
-
-<div class="modal" id="simModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <span class="modal-title" id="modalTitle">تجربة تفاعلية</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+<!-- ══ NAVBAR ══ -->
+<nav class="top-bar" id="navbar">
+    <a href="index.html" class="logo-container">
+        <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="logo-text">
+            <div class="logo">SITEJ</div>
+            <div class="logo-tagline">منصة التعليم الذكية</div>
+        </div>
+    </a>
+    <div class="nav-actions">
+        <div class="lang-selector-wrap" id="langSelectorWrap">
+            <div class="lang-trigger-btn" id="langTriggerBtn">
+                <span class="lang-flag" id="langFlag">🇸🇦</span>
+                <span class="lang-label" id="langLabelText">العربية</span>
+                <svg class="lang-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="lang-dropdown-menu" id="langDropdownMenu">
+                <div class="lang-option-item lang-active" data-lang="ar" onclick="setLang('ar')">
+                    <span>🇸🇦</span><span>العربية</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="lang-divider-line"></div>
+                <div class="lang-option-item" data-lang="en" onclick="setLang('en')">
+                    <span>🇬🇧</span><span>English</span>
+                    <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+            </div>
+        </div>
+        <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
+        <div class="notification-btn" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notifBadge">3</span>
+        </div>
+        <div class="burger" id="snBurger" onclick="snToggle()" aria-label="القائمة" aria-expanded="false">
+            <div class="bline"></div><div class="bline"></div><div class="bline"></div>
+        </div>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
+</nav>
+
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+    <div class="sn-head">
+        <h2>القائمة</h2>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
+    </div>
+
+    <div class="sn-user">
+        <div class="sn-avatar" id="snAvatar">👤</div>
+        <div>
+            <div class="sn-uname" id="snUserName">مرحباً بك</div>
+            <div class="sn-urole" id="snUserRole">زائر</div>
+        </div>
+    </div>
+
+    <ul class="sn-links">
+        <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+        <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
+        <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+        <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+
+        <li id="dashDivider" style="display:none;">
+            <div class="dash-divider"></div>
+            <div class="dash-section-label">لوحات التحكم</div>
+        </li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
+            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
+        </li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin">
+            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
+        </li>
+    </ul>
+
+    <div style="margin-top:12px;">
+        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
+            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+        </div>
+        <div class="sn-settings-panel" id="snSettingsPanel">
+            <div class="sn-settings-inner">
+                <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+                <div class="sn-theme-row">
+                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+                        <div class="sn-t-preview sn-t-light"></div>
+                        <div class="sn-t-label">فاتح</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+                        <div class="sn-t-preview sn-t-dark"></div>
+                        <div class="sn-t-label">داكن</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+                <div class="sn-g-row">
+                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')"><span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')"><span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')"><span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                </div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+                <div>
+                    <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)">
+                    <div class="sn-font-labels">
+                        <span onclick="snSetFont(0)" data-idx="0">S</span>
+                        <span onclick="snSetFont(1)" data-idx="1">M</span>
+                        <span onclick="snSetFont(2)" data-idx="2">L</span>
+                        <span onclick="snSetFont(3)" data-idx="3">XL</span>
+                    </div>
+                </div>
+                <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+    <ul class="sn-links sn-logout" style="margin-top:16px;">
+        <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+    </ul>
 </div>
-<div class="toast" id="toastEl"></div>
+
+<div class="sn-toast" id="snToast"><i class="fas fa-check-circle"></i><span id="snToastMsg"></span></div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<div class="page-wrap">
+    <div class="content-area">
+
+        <div class="hero-lab">
+            <h2>🔬 المختبر التفاعلي</h2>
+            <p>اكتشف العلوم بطريقة مختلفة — محاكاة تفاعلية مبنية بعناية</p>
+            <div class="topbar-date-lab" id="currentDate"></div>
+            <div class="count-badge">
+                <i class="fas fa-layer-group" style="font-size:0.7rem"></i>
+                <span id="heroCount">١ محاكي متاح</span>
+            </div>
+        </div>
+
+        <div id="simGrid">
+
+            <!-- ===== المحاكي 1 ===== -->
+            <div class="sim-card-wrap">
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">🧪 كيمياء</div>
+                        <div class="sim-icon-wrapper">🧪</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">كيمياء</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">🖱️ تفاعلي</span>
+                        </div>
+                        <a href="sim1.html" class="btn-launch">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            لإضافة محاكي جديد، انسخ الكود أدناه وعدّل البيانات:
+
+            <div class="sim-card-wrap">
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">🧪 كيمياء</div>
+                        <div class="sim-icon-wrapper">🧪</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">كيمياء</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">🖱️ تفاعلي</span>
+                        </div>
+                        <a href="simulator2.html" class="btn-launch">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            -->
+
+        </div>
+    </div>
+</div>
+
+
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
 <script>
-/* ══════════ DATA ══════════ */
-const experiments = [
-  // PHYSICS
-  {id:1,  name:"تجربة الكثافة والطفو",      subject:"phys", desc:"اكتشف لماذا تطفو الأجسام — غيّر الكتلة والحجم وشاهد النتيجة", grades:[4,5,6,7,8,9,10,11,12], icon:"⚖️", bg:"linear-gradient(135deg,#1a3a5c,#0e4d6e)", type:"density",     badge:""},
-  {id:2,  name:"حركة المقذوفات",             subject:"phys", desc:"أطلق قذيفة وشاهد مسارها مع تغيير الزاوية والسرعة والجاذبية", grades:[9,10,11,12], icon:"🎯", bg:"linear-gradient(135deg,#1a1a2e,#16213e)", type:"projectile", badge:""},
-  {id:3,  name:"الموجات الميكانيكية",         subject:"phys", desc:"استكشف التردد والسعة والطول الموجي في موجة حقيقية", grades:[8,9,10,11], icon:"〰️", bg:"linear-gradient(135deg,#0f2027,#203a43)", type:"waves",      badge:""},
-  {id:4,  name:"الدوائر الكهربائية",          subject:"phys", desc:"ابنِ دوائر وطبّق قانون أوم وشاهد الإلكترونات تتحرك", grades:[8,9,10,11,12], icon:"⚡", bg:"linear-gradient(135deg,#1a1a00,#2a2a00)", type:"circuit",    badge:""},
-  {id:5,  name:"قانون نيوتن — الحركة",       subject:"phys", desc:"طبّق القوة على كتلة وشاهد العجلة والسرعة لحظة بلحظة", grades:[9,10,11,12], icon:"🏃", bg:"linear-gradient(135deg,#0d2137,#1a3a5c)", type:"newton",     badge:"جديد"},
-  {id:6,  name:"المغناطيسية والحقول",        subject:"phys", desc:"شاهد خطوط الحقل المغناطيسي حول المغناطيس", grades:[8,9,10,11], icon:"🧲", bg:"linear-gradient(135deg,#1a001a,#2d003d)", type:"magnetic",   badge:"جديد"},
-  {id:7,  name:"الحرارة وانتقالها",          subject:"phys", desc:"محاكاة الحرارة من جسم ساخن لآخر — التوصيل والإشعاع", grades:[7,8,9,10,11], icon:"🌡️", bg:"linear-gradient(135deg,#2d0000,#4a0000)", type:"heat",       badge:""},
-  {id:8,  name:"الضوء والبصريات",            subject:"phys", desc:"انعكاس وانكسار الضوء — العدسات والمرايا", grades:[9,10,11,12], icon:"🔦", bg:"linear-gradient(135deg,#1a1a00,#2a2600)", type:"optics",     badge:"جديد"},
-  // CHEMISTRY
-  {id:9,  name:"مقياس pH والتفاعل",          subject:"chem", desc:"أضف أحماضاً وقواعد وشاهد تغيّر اللون والفقاعات", grades:[8,9,10,11,12], icon:"🧪", bg:"linear-gradient(135deg,#12001a,#1a0030)", type:"ph",         badge:""},
-  {id:10, name:"التفاعلات الكيميائية",        subject:"chem", desc:"تفاعل بين عناصر مختلفة وشاهد المعادلة الكيميائية", grades:[9,10,11,12], icon:"⚗️", bg:"linear-gradient(135deg,#0a2a00,#143d00)", type:"reactions",  badge:"جديد"},
-  {id:11, name:"الجدول الدوري التفاعلي",     subject:"chem", desc:"استكشف عناصر الجدول الدوري وخصائصها", grades:[9,10,11,12], icon:"📊", bg:"linear-gradient(135deg,#001a2e,#002e47)", type:"periodic",   badge:"جديد"},
-  // BIOLOGY
-  {id:12, name:"الخلية الحية",               subject:"bio", desc:"استكشف مكونات الخلية النباتية والحيوانية بالنقر عليها", grades:[7,8,9,10,11], icon:"🔬", bg:"linear-gradient(135deg,#001a0d,#003318)", type:"cell",       badge:""},
-  {id:13, name:"الانقسام الخلوي",            subject:"bio", desc:"شاهد مراحل الانقسام المتساوي (الميتوزا) خطوة بخطوة", grades:[9,10,11,12], icon:"🧬", bg:"linear-gradient(135deg,#001a00,#002e00)", type:"mitosis",    badge:"جديد"},
-  {id:14, name:"الهضم والجهاز الهضمي",      subject:"bio", desc:"تتبع رحلة الطعام من الفم حتى الأمعاء", grades:[5,6,7,8,9], icon:"🫁", bg:"linear-gradient(135deg,#1a0a0a,#2e1515)", type:"digestion",  badge:"جديد"},
-  {id:15, name:"الوراثة وقوانين مندل",       subject:"bio", desc:"حدد صفات الأب والأم وشاهد احتمالات صفات الأبناء", grades:[10,11,12], icon:"🧫", bg:"linear-gradient(135deg,#00001a,#00002e)", type:"genetics",   badge:"جديد"},
-  {id:16, name:"البناء الضوئي",              subject:"bio", desc:"كيف تحوّل النباتات ضوء الشمس إلى طعام؟", grades:[7,8,9,10], icon:"🌿", bg:"linear-gradient(135deg,#002200,#003a00)", type:"photosyn",   badge:"جديد"},
-  // EARTH
-  {id:17, name:"طبقات الأرض",               subject:"earth", desc:"قطاع تشريحي تفاعلي لباطن الأرض بالأعماق والحرارة", grades:[7,8,9,10], icon:"🌍", bg:"linear-gradient(135deg,#1a0a00,#2e1500)", type:"layers",     badge:""},
-  {id:18, name:"النظام الشمسي",              subject:"earth", desc:"حركة الكواكب بسرعات حقيقية نسبية مع معلومات تفصيلية", grades:[4,5,6,7,8], icon:"🪐", bg:"linear-gradient(135deg,#000010,#000a20)", type:"solar",      badge:""},
-  {id:19, name:"الزلازل وقياسها",            subject:"earth", desc:"كيف تنشأ الزلازل وكيف يعمل مقياس ريختر", grades:[7,8,9,10,11], icon:"📳", bg:"linear-gradient(135deg,#1a0a00,#2e1a00)", type:"earthquake", badge:"جديد"},
-  // MATH
-  {id:20, name:"جدول الضرب المرئي",          subject:"math", desc:"تعلّم الضرب بشبكة نقاط ملوّنة تفاعلية", grades:[2,3,4,5], icon:"✖️", bg:"linear-gradient(135deg,#001a1a,#002e2e)", type:"multiplication", badge:""},
-  {id:21, name:"الأشكال الهندسية",           subject:"math", desc:"6 أشكال مع حساب المساحة والمحيط تلقائياً", grades:[1,2,3,4,5], icon:"📐", bg:"linear-gradient(135deg,#1a001a,#2e002e)", type:"shapes",     badge:""},
-  {id:22, name:"الكسور والنسب",              subject:"math", desc:"افهم الكسور بياناً ومقارنةً بطريقة بصرية", grades:[3,4,5,6,7], icon:"½", bg:"linear-gradient(135deg,#001a0d,#002e18)", type:"fractions",  badge:"جديد"},
-  {id:23, name:"الاحتمالات",                subject:"math", desc:"نرد وعملة — جرّب قانون الأعداد الكبيرة", grades:[8,9,10,11,12], icon:"🎲", bg:"linear-gradient(135deg,#1a1200,#2e1f00)", type:"probability", badge:"جديد"},
-  {id:24, name:"رسم الدوال والمعادلات",      subject:"math", desc:"ارسم أي دالة رياضية واستكشف شكلها البياني", grades:[8,9,10,11,12], icon:"📈", bg:"linear-gradient(135deg,#001a2e,#002e47)", type:"graphing",   badge:"جديد"},
-  {id:25, name:"المتتاليات والأنماط",        subject:"math", desc:"اكتشف أنماط فيبوناتشي والمتتاليات الحسابية والهندسية", grades:[6,7,8,9,10], icon:"🔢", bg:"linear-gradient(135deg,#1a0a1a,#2e1530)", type:"sequences",  badge:"جديد"},
-  // PROGRAMMING
-  {id:26, name:"تعلّم البرمجة — الحلقات",   subject:"prog", desc:"شاهد كيف تعمل حلقة for بصرياً خطوة بخطوة", grades:[7,8,9,10,11,12], icon:"💻", bg:"linear-gradient(135deg,#001a0a,#002e14)", type:"loops",      badge:"جديد"},
-  {id:27, name:"الخوارزميات وترتيب البيانات",subject:"prog", desc:"شاهد خوارزمية الفرز بصرياً — Bubble Sort", grades:[9,10,11,12], icon:"🔀", bg:"linear-gradient(135deg,#0a001a,#14002e)", type:"sorting",    badge:"جديد"},
-  {id:28, name:"البيانات الثنائية (Binary)", subject:"prog", desc:"حوّل الأرقام من عشري إلى ثنائي بصرياً", grades:[8,9,10,11,12], icon:"01", bg:"linear-gradient(135deg,#001a1a,#002e2a)", type:"binary",     badge:"جديد"},
-];
+/* ══ التاريخ ══ */
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-let currentRole="student", currentFilter="all", currentGrade="all", searchQ="";
-let animFrame=null;
+/* ══ الصلاحيات ══ */
+(function(){
+    var role=localStorage.getItem('userRole')||'';
+    var uid=localStorage.getItem('userUid')||'';
+    var userName=role==='student'?(localStorage.getItem('studentName')||''):(localStorage.getItem('userName')||'');
+    var roleLabels={teacher:'معلم',vice_principal:'مساعد مدير',principal:'مدير المدرسة',student:'طالب'};
+    var unameEl=document.getElementById('snUserName');
+    var uroleEl=document.getElementById('snUserRole');
+    var avatarEl=document.getElementById('snAvatar');
+    if(unameEl)unameEl.textContent=userName||'مرحباً بك';
+    if(uroleEl)uroleEl.textContent=roleLabels[role]||'زائر';
+    if(avatarEl&&userName){var fc=userName.trim().charAt(0);if(fc&&fc!=='👤'){avatarEl.textContent=fc;avatarEl.style.fontSize='1.4rem';avatarEl.style.fontWeight='800';}}
+    var profileBtn=document.getElementById('profileNavBtn');
+    if(profileBtn){if(role==='student')profileBtn.href='student-profile.html';else if(role&&uid)profileBtn.href='profile.html';else profileBtn.href='login.html';}
+    if(role==='teacher'){var tl=document.getElementById('teacherDashLink');var dd=document.getElementById('dashDivider');if(tl)tl.style.display='block';if(dd)dd.style.display='block';}
+    if(role==='principal'||role==='vice_principal'){var al=document.getElementById('adminDashLink');var dd2=document.getElementById('dashDivider');if(al)al.style.display='block';if(dd2)dd2.style.display='block';}
+    if(!role&&!uid){var logoutList=document.querySelector('.sn-logout');if(logoutList)logoutList.style.display='none';}
+})();
 
-function renderCards(){
-  let list=experiments.filter(e=>{
-    if(currentFilter!=="all"&&e.subject!==currentFilter)return false;
-    if(currentGrade!=="all"&&!e.grades.includes(+currentGrade))return false;
-    if(searchQ&&!e.name.includes(searchQ)&&!e.desc.includes(searchQ))return false;
-    return true;
-  });
-  const g=document.getElementById("simsGrid");
-  if(!list.length){g.innerHTML='<div style="text-align:center;padding:60px;color:#888;grid-column:1/-1;">لا توجد نتائج</div>';return;}
-  g.innerHTML=list.map(e=>`
-    <div class="card">
-      <div class="card-icon" style="background:${e.bg}">
-        ${e.badge?`<div class="card-badge">${e.badge}</div>`:""}
-        ${e.icon}
-      </div>
-      <div class="card-body">
-        <div class="card-title">${e.name}</div>
-        <div class="card-desc">${e.desc}</div>
-        <div class="card-grade"><i class="fas fa-graduation-cap"></i> الصفوف: ${e.grades.join(" · ")}</div>
-        <button class="btn-play" onclick="openExp('${e.type}','${e.name}')"><i class="fas fa-play-circle"></i> تشغيل التجربة</button>
-      </div>
-    </div>`).join("");
-  document.getElementById("teacherPanel").style.display=currentRole==="teacher"?"block":"none";
+/* ══ NAVBAR SCROLL ══ */
+window.addEventListener('scroll',function(){
+    document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+    document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400);
+},{passive:true});
+
+/* ══ SIDENAV — من اليسار ══ */
+function snToggle(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(!d)return;
+    var op=!d.classList.contains('show');
+    d.classList.toggle('show',op);
+    if(o)o.classList.toggle('show',op);
+    if(b){b.classList.toggle('active',op);b.setAttribute('aria-expanded',op);}
+    document.body.style.overflow=op?'hidden':'';
 }
-function searchSims(q){searchQ=q;renderCards();}
-function setRole(r){currentRole=r;document.querySelectorAll(".role-btn").forEach(b=>b.classList.remove("active"));document.querySelector(".role-btn."+r).classList.add("active");document.getElementById("teacherPanel").style.display=r==="teacher"?"block":"none";showMsg(r==="teacher"?"وضع المعلم — لوحة التحكم متاحة":"وضع الطالب");}
-function showMsg(m){const t=document.getElementById("toastEl");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}
-function closeModal(){if(animFrame){cancelAnimationFrame(animFrame);animFrame=null;}document.getElementById("simModal").classList.remove("active");document.body.style.overflow="auto";document.getElementById("modalBody").innerHTML="";}
-function openExp(type,name){
-  if(animFrame){cancelAnimationFrame(animFrame);animFrame=null;}
-  document.getElementById("modalTitle").textContent=name;
-  document.getElementById("modalBody").innerHTML="";
-  document.getElementById("simModal").classList.add("active");
-  document.body.style.overflow="hidden";
-  setTimeout(()=>{
-    const B={density:buildDensity,projectile:buildProjectile,waves:buildWaves,circuit:buildCircuit,
-              newton:buildNewton,magnetic:buildMagnetic,heat:buildHeat,optics:buildOptics,
-              ph:buildPH,reactions:buildReactions,periodic:buildPeriodic,
-              cell:buildCell,mitosis:buildMitosis,digestion:buildDigestion,genetics:buildGenetics,photosyn:buildPhotosyn,
-              layers:buildLayers,solar:buildSolar,earthquake:buildEarthquake,
-              multiplication:buildMultiplication,shapes:buildShapes,fractions:buildFractions,
-              probability:buildProbability,graphing:buildGraphing,sequences:buildSequences,
-              loops:buildLoops,sorting:buildSorting,binary:buildBinary};
-    if(B[type]) B[type](document.getElementById("modalBody"));
-  },60);
+function snClose(){
+    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
+    if(d)d.classList.remove('show');
+    if(o)o.classList.remove('show');
+    if(b){b.classList.remove('active');b.setAttribute('aria-expanded','false');}
+    document.body.style.overflow='';
 }
-document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");currentFilter=t.dataset.filter;renderCards();}));
-document.querySelectorAll(".grade-btn").forEach(g=>g.addEventListener("click",()=>{document.querySelectorAll(".grade-btn").forEach(x=>x.classList.remove("active"));g.classList.add("active");currentGrade=g.dataset.grade;renderCards();}));
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+function snToggleSettings(){var p=document.getElementById('snSettingsPanel'),t=document.getElementById('snSettingsToggle'),c=document.getElementById('snChevron');if(!p)return;var op=p.classList.toggle('open');if(t)t.classList.toggle('open',op);if(c)c.style.transform=op?'rotate(180deg)':'';}
+function snPickTheme(t){['light','dark'].forEach(function(id){var el=document.getElementById('sn-th-'+id);if(el)el.classList.toggle('sel',id===t);});document.documentElement.setAttribute('data-theme',t);try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.theme=t;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}}
+function snPickGraphics(g){['full','reduced','minimal'].forEach(function(id){var el=document.getElementById('sn-gr-'+id);if(el)el.classList.toggle('sel',id===g);});}
+var _snFontSizes=['13px','15px','17px','20px'];
+function snSetFont(idx){document.documentElement.style.fontSize=_snFontSizes[idx]||'15px';var sl=document.getElementById('snFontSlider');if(sl)sl.value=idx;}
+function snFontInput(val){snSetFont(parseInt(val));}
+function snSave(){var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');if(m)m.textContent='تم حفظ الإعدادات ✓';if(t){t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}}
+function snLogout(){localStorage.removeItem('userRole');localStorage.removeItem('userName');localStorage.removeItem('userUid');localStorage.removeItem('studentName');localStorage.removeItem('studentId');window.location.href='login.html';}
 
-/* ══════════════════════════════════════════════
-   HELPER: make canvas responsive
-══════════════════════════════════════════════ */
-function mkCanvas(id,h){
-  const c=document.getElementById(id);
-  c.width=c.parentElement.offsetWidth||600; c.height=h;
-  return c;
+/* ══ LANGUAGE ══ */
+var currentLang='ar';
+var langWrap=document.getElementById('langSelectorWrap');
+document.getElementById('langTriggerBtn').addEventListener('click',function(e){e.stopPropagation();langWrap.classList.toggle('open');});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))langWrap.classList.remove('open');});
+function setLang(lang){
+    if(lang===currentLang){langWrap.classList.remove('open');return;}
+    currentLang=lang;
+    document.documentElement.setAttribute('lang',lang);
+    document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+    document.getElementById('langFlag').textContent=lang==='ar'?'🇸🇦':'🇬🇧';
+    document.getElementById('langLabelText').textContent=lang==='ar'?'العربية':'English';
+    document.querySelectorAll('.lang-option-item').forEach(function(el){el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);});
+    langWrap.classList.remove('open');
 }
 
-/* ══════════════════════════════════════════════
-   1. DENSITY
-══════════════════════════════════════════════ */
-function buildDensity(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">⚖️ تجربة الكثافة والطفو</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:340px"><canvas id="dC" height="330"></canvas></div>
-    <div class="sim-panel">
-      <div class="ctrl-box">
-        <div style="font-weight:700;margin-bottom:10px;color:#e2e8f0">اختر المادة:</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-          ${[["حديد","⚙️",7.87,"#8892a4"],["خشب","🪵",0.6,"#8B5E3C"],["صابون","🧼",0.85,"#f4d03f"],["ماء","💧",1.0,"#3b82f6"],["زيت","🛢️",0.92,"#f59e0b"],["نحاس","🔶",8.96,"#cd7f32"],["جليد","🧊",0.92,"#a5f3fc"],["ذهب","🥇",19.3,"#FFD700"]].map(([n,ic,d,c])=>
-            `<button class="sbtn" style="text-align:right;padding:9px;font-size:0.78rem" onclick="dSet(${d},'${n}','${ic}','${c}')">${ic} ${n}<br><small style="opacity:.7">${d}</small></button>`).join("")}
-        </div>
-      </div>
-      <div class="ctrl-box">
-        <div class="ctrl-lbl">الحجم <span id="dVolLbl">1.0 L</span></div>
-        <input type="range" id="dVol" min="0.5" max="3" step="0.1" value="1" oninput="dUpdate()">
-      </div>
-      <div class="info-row">
-        <div class="ibox"><div class="v" id="dMV">7.87</div><div class="l">الكتلة kg</div></div>
-        <div class="ibox"><div class="v" id="dVV">1.0</div><div class="l">الحجم L</div></div>
-        <div class="ibox"><div class="v" id="dDV">7.87</div><div class="l">الكثافة</div></div>
-      </div>
-      <div id="dRes" class="info-card" style="text-align:center;font-size:1rem;font-weight:700"></div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("dC",330), ctx=c.getContext("2d");
-  let den=7.87,name="حديد",icon="⚙️",col="#8892a4",vol=1,oy=50,ovy=0;
-  window.dSet=(d,n,i,co)=>{den=d;name=n;icon=i;col=co;dUpdate();};
-  window.dUpdate=()=>{
-    vol=parseFloat(document.getElementById("dVol").value);
-    document.getElementById("dVolLbl").textContent=vol.toFixed(1)+" L";
-    const m=(den*vol).toFixed(2);
-    document.getElementById("dMV").textContent=m;
-    document.getElementById("dVV").textContent=vol.toFixed(1);
-    document.getElementById("dDV").textContent=den.toFixed(2);
-    const r=document.getElementById("dRes");
-    if(den>1){r.innerHTML="⬇️ يغرق — كثافته أكبر من الماء";r.style.color="#ef4444";}
-    else if(den<1){r.innerHTML="⬆️ يطفو — كثافته أصغر من الماء";r.style.color="#10b981";}
-    else{r.innerHTML="⚖️ يتوازن — نفس كثافة الماء";r.style.color="#f59e0b";}
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);
-    const wY=H*0.45;
-    // sky
-    ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,wY);
-    // water
-    const wg=ctx.createLinearGradient(0,wY,0,H);
-    wg.addColorStop(0,"rgba(37,99,235,0.65)");wg.addColorStop(1,"rgba(29,78,216,0.9)");
-    ctx.fillStyle=wg;ctx.fillRect(0,wY,W,H-wY);
-    // water surface
-    ctx.strokeStyle="rgba(147,197,253,0.5)";ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(0,wY);ctx.lineTo(W,wY);ctx.stroke();
-    ctx.fillStyle="rgba(147,197,253,0.5)";ctx.font="11px Cairo";
-    ctx.fillText("ماء — كثافة = 1.00 kg/L",10,wY+16);
-    // target
-    const sz=Math.max(30,Math.min(70,vol*40));
-    const tgt=den>1?H-sz-15:den<1?wY-sz*0.35:wY-sz*0.5;
-    ovy=(tgt-oy)*0.07;oy+=ovy;
-    // shadow
-    ctx.fillStyle="rgba(0,0,0,0.2)";ctx.beginPath();
-    ctx.ellipse(W/2,Math.min(oy+sz+4,H-6),sz*0.45,5,0,0,Math.PI*2);ctx.fill();
-    // object
-    const og=ctx.createRadialGradient(W/2-sz*0.2,oy+sz*0.2,2,W/2,oy+sz/2,sz);
-    og.addColorStop(0,"rgba(255,255,255,0.7)");og.addColorStop(0.4,col);og.addColorStop(1,"#0f172a");
-    ctx.fillStyle=og;ctx.beginPath();ctx.roundRect(W/2-sz/2,oy,sz,sz,8);ctx.fill();
-    ctx.strokeStyle="rgba(255,255,255,0.25)";ctx.lineWidth=1.5;ctx.stroke();
-    ctx.font=`${sz*0.55}px serif`;ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillText(icon,W/2,oy+sz/2);
-    ctx.textAlign="start";ctx.textBaseline="alphabetic";
-    // formula
-    ctx.fillStyle="rgba(255,255,255,0.5)";ctx.font="12px Cairo";
-    ctx.fillText("ρ = m/V = "+(den*vol/vol).toFixed(2)+" kg/L",10,22);
-    animFrame=requestAnimationFrame(draw);
-  }
-  dUpdate();draw();
-}
+/* ══ NOTIFICATIONS ══ */
+function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');}
 
-/* ══════════════════════════════════════════════
-   2. PROJECTILE
-══════════════════════════════════════════════ */
-function buildProjectile(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🎯 حركة المقذوفات</div>
-  <div class="sim-canvas-box" style="height:320px"><canvas id="pjC" height="310"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px">
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">الزاوية θ <span id="pjAL">45°</span></div>
-      <input type="range" id="pjA" min="1" max="89" value="45" oninput="pjCalc()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">السرعة v₀ <span id="pjSL">25 م/ث</span></div>
-      <input type="range" id="pjS" min="5" max="60" value="25" oninput="pjCalc()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">الجاذبية g <span id="pjGL">9.8 م/ث²</span></div>
-      <input type="range" id="pjG" min="1" max="25" step="0.1" value="9.8" oninput="pjCalc()">
-    </div>
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="pjR">—</div><div class="l">المدى (م)</div></div>
-    <div class="ibox"><div class="v" id="pjH">—</div><div class="l">الارتفاع (م)</div></div>
-    <div class="ibox"><div class="v" id="pjT">—</div><div class="l">الزمن (ث)</div></div>
-    <div class="ibox"><div class="v" id="pjVx">—</div><div class="l">Vx (م/ث)</div></div>
-    <div class="ibox"><div class="v" id="pjVy">—</div><div class="l">Vy (م/ث)</div></div>
-  </div>
-  <div class="sbtn-row">
-    <button class="sbtn on" onclick="pjLaunch()">🚀 إطلاق</button>
-    <button class="sbtn red" onclick="pjReset()">↺ إعادة</button>
-  </div></div>`;
-  const c=mkCanvas("pjC",310),ctx=c.getContext("2d");
-  let launched=false,t=0,trail=[],vx,vy,range,maxH,totalT,g2=9.8;
-  window.pjCalc=()=>{
-    const a=+document.getElementById("pjA").value,s=+document.getElementById("pjS").value;
-    g2=+document.getElementById("pjGL").value;
-    document.getElementById("pjAL").textContent=a+"°";
-    document.getElementById("pjSL").textContent=s+" م/ث";
-    document.getElementById("pjGL").textContent=g2+" م/ث²";
-    const r=a*Math.PI/180;vx=s*Math.cos(r);vy=s*Math.sin(r);
-    totalT=2*vy/g2;range=vx*totalT;maxH=vy*vy/(2*g2);
-    document.getElementById("pjR").textContent=range.toFixed(1);
-    document.getElementById("pjH").textContent=maxH.toFixed(1);
-    document.getElementById("pjT").textContent=totalT.toFixed(2);
-    document.getElementById("pjVx").textContent=vx.toFixed(1);
-    document.getElementById("pjVy").textContent=vy.toFixed(1);
-    launched=false;t=0;trail=[];
-  };
-  window.pjLaunch=()=>{pjCalc();launched=true;t=0;trail=[];};
-  window.pjReset=()=>{launched=false;t=0;trail=[];};
-  function w2c(x,y){
-    const W=c.width,H=c.height,pd=45;
-    return[pd+(x/range)*(W-pd*2), H-pd-(y/(maxH||1))*(H-pd*1.5)];
-  }
-  function draw(){
-    const W=c.width,H=c.height,pd=45;
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // ground
-    ctx.fillStyle="#166534";ctx.fillRect(pd,H-pd,W-pd*2,5);
-    // grid
-    ctx.strokeStyle="rgba(255,255,255,0.04)";ctx.lineWidth=1;
-    for(let i=1;i<5;i++){ctx.beginPath();ctx.moveTo(pd,pd+(H-pd*2)*i/5);ctx.lineTo(W-pd,pd+(H-pd*2)*i/5);ctx.stroke();}
-    // preview path
-    ctx.setLineDash([4,8]);ctx.strokeStyle="rgba(255,152,0,0.2)";ctx.lineWidth=1.5;
-    ctx.beginPath();
-    for(let tt=0;tt<=totalT;tt+=0.05){
-      const[px,py]=w2c(vx*tt,vy*tt-0.5*g2*tt*tt);
-      tt===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
-    }
-    ctx.stroke();ctx.setLineDash([]);
-    // trail
-    for(let i=1;i<trail.length;i++){
-      ctx.strokeStyle=`rgba(255,152,0,${i/trail.length})`;
-      ctx.lineWidth=1.5+i/trail.length*2;
-      ctx.beginPath();ctx.moveTo(trail[i-1][0],trail[i-1][1]);ctx.lineTo(trail[i][0],trail[i][1]);ctx.stroke();
-    }
-    // angle arrow
-    const[ox,oy]=w2c(0,0);
-    const ang=Math.atan2(vy,vx);
-    ctx.strokeStyle="rgba(0,212,255,0.7)";ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+45*Math.cos(ang),oy-45*Math.sin(ang));ctx.stroke();
-    // ball
-    let bx=ox,by=oy;
-    if(launched&&t<=totalT){
-      [bx,by]=w2c(vx*t,vy*t-0.5*g2*t*t);
-      trail.push([bx,by]);if(trail.length>90)trail.shift();
-      t+=0.04;
-    }else if(launched&&t>totalT){launched=false;}
-    const bg=ctx.createRadialGradient(bx,by,0,bx,by,14);
-    bg.addColorStop(0,"rgba(255,152,0,0.9)");bg.addColorStop(1,"transparent");
-    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(bx,by,14,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#ff9800";ctx.beginPath();ctx.arc(bx,by,7,0,Math.PI*2);ctx.fill();
-    animFrame=requestAnimationFrame(draw);
-  }
-  pjCalc();draw();
-}
+/* ══ KEYBOARD ══ */
+document.addEventListener('keydown',function(e){if(e.key==='Escape')snClose();});
 
-/* ══════════════════════════════════════════════
-   3. WAVES
-══════════════════════════════════════════════ */
-function buildWaves(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">〰️ الموجات الميكانيكية</div>
-  <div class="sim-canvas-box" style="height:240px"><canvas id="wvC" height="230"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">التردد f <span id="wvFL">2 Hz</span></div>
-      <input type="range" id="wvF" min="0.5" max="8" step="0.5" value="2" oninput="wvUpdate()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">السعة A <span id="wvAL">40</span></div>
-      <input type="range" id="wvA" min="10" max="90" value="40" oninput="wvUpdate()">
-    </div>
-  </div>
-  <div class="sbtn-row">
-    <button class="sbtn on" id="wvTyp" onclick="wvToggle()">موجة عرضية</button>
-    <button class="sbtn" onclick="wvAddWave()">+ أضف موجة</button>
-    <button class="sbtn red" onclick="wvClearExtra()">مسح</button>
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="wvFI">2</div><div class="l">التردد (Hz)</div></div>
-    <div class="ibox"><div class="v" id="wvTI">0.5</div><div class="l">الدور (ث)</div></div>
-    <div class="ibox"><div class="v" id="wvLI">150</div><div class="l">λ النسبي</div></div>
-    <div class="ibox"><div class="v" id="wvSI">300</div><div class="l">السرعة</div></div>
-  </div></div>`;
-  const c=mkCanvas("wvC",230),ctx=c.getContext("2d");
-  let freq=2,amp=40,phase=0,wtype="t",extra=[];
-  const colors=["#ff9800","#00d4ff","#10b981","#f43f5e","#a78bfa"];
-  window.wvUpdate=()=>{
-    freq=parseFloat(document.getElementById("wvF").value);
-    amp=parseInt(document.getElementById("wvA").value);
-    document.getElementById("wvFL").textContent=freq+" Hz";
-    document.getElementById("wvAL").textContent=amp;
-    document.getElementById("wvFI").textContent=freq;
-    document.getElementById("wvTI").textContent=(1/freq).toFixed(2);
-    document.getElementById("wvLI").textContent=Math.round(300/freq);
-    document.getElementById("wvSI").textContent=300;
-  };
-  window.wvToggle=()=>{wtype=wtype==="t"?"l":"t";document.getElementById("wvTyp").textContent=wtype==="t"?"موجة عرضية":"موجة طولية";};
-  window.wvAddWave=()=>{if(extra.length<3)extra.push({f:freq+0.5,a:amp*0.7,ph:phase});};
-  window.wvClearExtra=()=>{extra=[];};
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle="rgba(255,255,255,0.07)";ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
-    if(wtype==="t"){
-      [[freq,amp,phase,0],...extra.map((e,i)=>[e.f,e.a,e.ph,i+1])].forEach(([f,a,ph,ci])=>{
-        ctx.shadowColor=colors[ci];ctx.shadowBlur=ci===0?12:6;
-        ctx.strokeStyle=colors[ci];ctx.lineWidth=ci===0?3:1.5;
-        ctx.beginPath();
-        for(let x=0;x<=W;x++){ctx.lineTo(x,H/2+a*Math.sin(2*Math.PI*f*x/W-ph));}
-        ctx.stroke();ctx.shadowBlur=0;
-      });
-      // particles
-      for(let j=0;j<10;j++){
-        const px=(j/10)*W;
-        const py=H/2+amp*Math.sin(2*Math.PI*freq*px/W-phase);
-        ctx.fillStyle="#ff9800";ctx.beginPath();ctx.arc(px,py,4,0,Math.PI*2);ctx.fill();
-      }
-    }else{
-      for(let i=0;i<Math.round(freq*6);i++){
-        const x=((i/(freq*6))*W+(phase*40))%W;
-        const d=0.5+0.5*Math.sin(2*Math.PI*i/(freq*6));
-        const bw=W/(freq*6);
-        const gg=ctx.createLinearGradient(x,0,x+bw,0);
-        gg.addColorStop(0,"rgba(255,152,0,0)");gg.addColorStop(0.5,`rgba(255,152,0,${d*0.6})`);gg.addColorStop(1,"rgba(255,152,0,0)");
-        ctx.fillStyle=gg;ctx.fillRect(x,H*0.2,bw,H*0.6);
-      }
-      ctx.fillStyle="rgba(255,152,0,0.6)";ctx.font="12px Cairo";ctx.fillText("تضاغط ← → تخلخل",10,20);
-    }
-    phase+=0.04*freq;
-    extra.forEach(e=>e.ph+=0.04*e.f);
-    animFrame=requestAnimationFrame(draw);
-  }
-  wvUpdate();draw();
+/* ══ SMART GRID ══ */
+function updateGrid(){
+    var grid=document.getElementById('simGrid');
+    var cards=grid.querySelectorAll('.sim-card-wrap');
+    var count=cards.length;
+    grid.classList.remove('count-1','count-2','count-3','count-4plus');
+    if(count===1)grid.classList.add('count-1');
+    else if(count===2)grid.classList.add('count-2');
+    else if(count===3)grid.classList.add('count-3');
+    else grid.classList.add('count-4plus');
+    var labels={1:'١ محاكي متاح',2:'٢ محاكيات',3:'٣ محاكيات',4:'٤ محاكيات'};
+    document.getElementById('heroCount').textContent=labels[count]||count+' محاكياً';
+    grid.querySelectorAll('.pulse-wrapper').forEach(function(pw){pw.style.display=(count===1)?'block':'none';});
 }
-
-/* ══════════════════════════════════════════════
-   4. CIRCUIT
-══════════════════════════════════════════════ */
-function buildCircuit(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">⚡ الدوائر الكهربائية</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:300px"><canvas id="ciC" height="290"></canvas></div>
-    <div class="sim-panel">
-      <div class="ctrl-box">
-        <div class="ctrl-lbl">الجهد V <span id="ciVL">9 V</span></div>
-        <input type="range" id="ciV" min="1" max="24" value="9" oninput="ciUpdate()">
-        <div class="ctrl-lbl" style="margin-top:10px">المقاومة R <span id="ciRL">100 Ω</span></div>
-        <input type="range" id="ciR" min="10" max="1000" step="10" value="100" oninput="ciUpdate()">
-      </div>
-      <div class="info-row">
-        <div class="ibox"><div class="v" id="ciVI">9</div><div class="l">V (فولت)</div></div>
-        <div class="ibox"><div class="v" id="ciRI">100</div><div class="l">R (أوم)</div></div>
-        <div class="ibox"><div class="v" id="ciII">0.09</div><div class="l">I (أمبير)</div></div>
-        <div class="ibox"><div class="v" id="ciPI">0.81</div><div class="l">P (واط)</div></div>
-      </div>
-      <div class="sbtn-row">
-        <button class="sbtn on" id="ciModeBtn" onclick="ciToggleMode()">مباشر</button>
-        <button class="sbtn" onclick="ciAddBulb()">+ مصباح</button>
-      </div>
-      <div class="info-card">V = I × R<br>P = V × I<br><b>I = V/R = </b><span id="ciFormRes">0.09</span> A</div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("ciC",290),ctx=c.getContext("2d");
-  let V=9,R=100,mode="s",electrons=[],bulbs=1;
-  for(let i=0;i<16;i++)electrons.push({t:i/16,speed:0});
-  window.ciUpdate=()=>{
-    V=+document.getElementById("ciV").value;R=+document.getElementById("ciR").value;
-    document.getElementById("ciVL").textContent=V+" V";document.getElementById("ciRL").textContent=R+" Ω";
-    const I=V/R,P=V*I;
-    document.getElementById("ciVI").textContent=V;document.getElementById("ciRI").textContent=R;
-    document.getElementById("ciII").textContent=I.toFixed(3);document.getElementById("ciPI").textContent=P.toFixed(2);
-    document.getElementById("ciFormRes").textContent=I.toFixed(3);
-    electrons.forEach(e=>e.speed=I);
-  };
-  window.ciToggleMode=()=>{mode=mode==="s"?"p":"s";document.getElementById("ciModeBtn").textContent=mode==="s"?"مباشر":"متوازي";};
-  window.ciAddBulb=()=>{bulbs=bulbs<3?bulbs+1:1;};
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H/2;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    const I=V/R,bright=Math.min(I/0.09,1);
-    const rw=W*0.36,rh=H*0.36;
-    const path=[[cx-rw,cy-rh],[cx+rw,cy-rh],[cx+rw,cy+rh],[cx-rw,cy+rh]];
-    // wire
-    ctx.strokeStyle="#334155";ctx.lineWidth=4;
-    ctx.beginPath();path.forEach(([x,y])=>ctx.lineTo(x,y));ctx.closePath();ctx.stroke();
-    // battery
-    const bx=cx-rw;
-    ctx.strokeStyle="#10b981";ctx.lineWidth=3;
-    [[bx-8,cy-15],[bx+8,cy-15]].forEach(([x1,x2])=>{ctx.beginPath();ctx.moveTo(x1,cy-15);ctx.lineTo(x2,cy-15);ctx.lineWidth=4;ctx.stroke();});
-    ctx.beginPath();ctx.moveTo(bx-4,cy+15);ctx.lineTo(bx+4,cy+15);ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle="#10b981";ctx.font="bold 12px Cairo";ctx.fillText(V+"V",bx+13,cy+5);
-    // resistor
-    const rx2=cx+rw;
-    ctx.strokeStyle="#f59e0b";ctx.lineWidth=2;
-    ctx.strokeRect(rx2-12,cy-40,24,80);
-    ctx.fillStyle="#f59e0b";ctx.font="bold 11px Cairo";ctx.fillText(R+"Ω",rx2+14,cy+4);
-    // bulbs on top
-    for(let b=0;b<bulbs;b++){
-      const bx2=cx-rw+(b+1)*rw*2/(bulbs+1),by=cy-rh;
-      const bG=ctx.createRadialGradient(bx2,by,0,bx2,by,22);
-      bG.addColorStop(0,`rgba(255,220,60,${bright*0.95})`);
-      bG.addColorStop(0.5,`rgba(255,150,0,${bright*0.5})`);
-      bG.addColorStop(1,"transparent");
-      ctx.fillStyle=bG;ctx.beginPath();ctx.arc(bx2,by,22,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle=`rgba(255,220,60,${0.2+bright*0.8})`;ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(bx2,by,10,0,Math.PI*2);ctx.stroke();
-      ctx.font="16px serif";ctx.textAlign="center";ctx.fillText("💡",bx2,by+5);ctx.textAlign="start";
-    }
-    // electrons
-    electrons.forEach(e=>{
-      e.t=(e.t+(I*0.004))%1;
-      const seg=Math.floor(e.t*4),st=(e.t*4)%1;
-      const s=Math.min(seg,3);
-      const ex=path[s][0]+(path[(s+1)%4][0]-path[s][0])*st;
-      const ey=path[s][1]+(path[(s+1)%4][1]-path[s][1])*st;
-      ctx.fillStyle="rgba(0,212,255,0.9)";ctx.beginPath();ctx.arc(ex,ey,3.5,0,Math.PI*2);ctx.fill();
-    });
-    animFrame=requestAnimationFrame(draw);
-  }
-  ciUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   5. NEWTON
-══════════════════════════════════════════════ */
-function buildNewton(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🏃 قانون نيوتن — F = ma</div>
-  <div class="sim-canvas-box" style="height:260px"><canvas id="ntC" height="250"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">القوة F <span id="ntFL">50 N</span></div>
-      <input type="range" id="ntF" min="0" max="200" value="50" oninput="ntUpdate()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">الكتلة m <span id="ntML">5 kg</span></div>
-      <input type="range" id="ntM" min="1" max="50" value="5" oninput="ntUpdate()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">الاحتكاك μ <span id="ntFrL">0.1</span></div>
-      <input type="range" id="ntFr" min="0" max="0.8" step="0.05" value="0.1" oninput="ntUpdate()">
-    </div>
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="ntAI">9.0</div><div class="l">العجلة م/ث²</div></div>
-    <div class="ibox"><div class="v" id="ntVI">0</div><div class="l">السرعة م/ث</div></div>
-    <div class="ibox"><div class="v" id="ntXI">0</div><div class="l">الإزاحة م</div></div>
-    <div class="ibox"><div class="v" id="ntFfI">4.9</div><div class="l">الاحتكاك N</div></div>
-  </div>
-  <div class="sbtn-row">
-    <button class="sbtn on" onclick="ntStart()">▶ تشغيل</button>
-    <button class="sbtn red" onclick="ntReset()">↺ إعادة</button>
-  </div></div>`;
-  const c=mkCanvas("ntC",250),ctx=c.getContext("2d");
-  let F=50,m=5,fr=0.1,vv=0,xx=0,running=false,dt=0.05;
-  window.ntUpdate=()=>{
-    F=+document.getElementById("ntF").value;m=+document.getElementById("ntM").value;fr=+document.getElementById("ntFr").value;
-    document.getElementById("ntFL").textContent=F+" N";document.getElementById("ntML").textContent=m+" kg";document.getElementById("ntFrL").textContent=fr;
-    const Ff=fr*m*9.8,a=(F-Ff)/m;
-    document.getElementById("ntAI").textContent=Math.max(a,0).toFixed(2);document.getElementById("ntFfI").textContent=Ff.toFixed(1);
-  };
-  window.ntStart=()=>{running=true;};
-  window.ntReset=()=>{running=false;vv=0;xx=0;document.getElementById("ntVI").textContent=0;document.getElementById("ntXI").textContent=0;};
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // ground
-    ctx.fillStyle="#1e3a5f";ctx.fillRect(0,H*0.72,W,H*0.28);
-    ctx.strokeStyle="#2a5298";ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(0,H*0.72);ctx.lineTo(W,H*0.72);ctx.stroke();
-    // grid
-    for(let xi=0;xi<W;xi+=60){ctx.strokeStyle="rgba(255,255,255,0.04)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xi,0);ctx.lineTo(xi,H);ctx.stroke();}
-    if(running){
-      const Ff=fr*m*9.8,a=Math.max((F-Ff)/m,0);
-      vv+=a*dt;xx+=vv*dt;
-      document.getElementById("ntVI").textContent=vv.toFixed(1);
-      document.getElementById("ntXI").textContent=xx.toFixed(1);
-      if(xx>W*0.8/30){xx=0;vv=0;}
-    }
-    // box
-    const bx=60+xx*30,by=H*0.72-55,bs=50;
-    const bg=ctx.createLinearGradient(bx,by,bx+bs,by+bs);
-    bg.addColorStop(0,"#2a5298");bg.addColorStop(1,"#1e3c72");
-    ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(bx,by,bs,bs,6);ctx.fill();
-    ctx.strokeStyle="rgba(255,152,0,0.6)";ctx.lineWidth=2;ctx.stroke();
-    ctx.font="24px serif";ctx.textAlign="center";ctx.fillText("📦",bx+bs/2,by+bs/2+8);ctx.textAlign="start";
-    // force arrow
-    if(F>0){
-      const al=Math.min(F*0.8,120);
-      ctx.strokeStyle="#ff9800";ctx.lineWidth=3;
-      ctx.beginPath();ctx.moveTo(bx+bs,by+bs/2);ctx.lineTo(bx+bs+al,by+bs/2);ctx.stroke();
-      ctx.fillStyle="#ff9800";ctx.beginPath();ctx.moveTo(bx+bs+al,by+bs/2-7);ctx.lineTo(bx+bs+al+14,by+bs/2);ctx.lineTo(bx+bs+al,by+bs/2+7);ctx.fill();
-      ctx.font="11px Cairo";ctx.fillText("F="+F+"N",bx+bs+al/2-10,by+bs/2-10);
-    }
-    // friction arrow
-    const Ff2=fr*m*9.8;
-    if(Ff2>0&&vv>0){
-      ctx.strokeStyle="#ef4444";ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(bx,by+bs/2);ctx.lineTo(bx-Ff2*1.5,by+bs/2);ctx.stroke();
-      ctx.font="10px Cairo";ctx.fillStyle="#ef4444";ctx.fillText("Ff",bx-25,by+bs/2-8);
-    }
-    // velocity indicator
-    ctx.fillStyle="rgba(16,185,129,0.8)";ctx.font="bold 12px Cairo";
-    ctx.fillText("v="+vv.toFixed(1)+" م/ث",10,20);
-    animFrame=requestAnimationFrame(draw);
-  }
-  ntUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   6. MAGNETIC FIELD
-══════════════════════════════════════════════ */
-function buildMagnetic(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🧲 الحقل المغناطيسي</div>
-  <div class="sim-canvas-box" style="height:340px"><canvas id="mgC" height="330"></canvas></div>
-  <div class="sbtn-row" style="margin-top:14px">
-    <button class="sbtn on" id="mgTypeBtn" onclick="mgToggle()">مغناطيس قضيبي</button>
-    <button class="sbtn" onclick="mgAddMagnet()">+ مغناطيس آخر</button>
-    <button class="sbtn red" onclick="mgReset()">مسح</button>
-  </div>
-  <div class="info-card" style="margin-top:10px">خطوط الحقل تخرج من القطب الشمالي (N) وتدخل القطب الجنوبي (S). كثافة الخطوط تعكس شدة الحقل.</div>
-  </div>`;
-  const c=mkCanvas("mgC",330),ctx=c.getContext("2d");
-  let mtype="bar",magnets=[{x:0.5,y:0.5,pole:1}],dragging=null;
-  window.mgToggle=()=>{mtype=mtype==="bar"?"circular":"bar";document.getElementById("mgTypeBtn").textContent=mtype==="bar"?"مغناطيس قضيبي":"ملف دائري";};
-  window.mgAddMagnet=()=>{if(magnets.length<3)magnets.push({x:0.3+Math.random()*0.4,y:0.3+Math.random()*0.4,pole:-1});};
-  window.mgReset=()=>{magnets=[{x:0.5,y:0.5,pole:1}];};
-  c.addEventListener("mousedown",e=>{
-    const r=c.getBoundingClientRect(),mx=(e.clientX-r.left)/c.width,my=(e.clientY-r.top)/c.height;
-    magnets.forEach((m,i)=>{if(Math.hypot(mx-m.x,my-m.y)<0.06)dragging=i;});
-  });
-  c.addEventListener("mousemove",e=>{if(dragging!==null){const r=c.getBoundingClientRect();magnets[dragging].x=(e.clientX-r.left)/c.width;magnets[dragging].y=(e.clientY-r.top)/c.height;}});
-  c.addEventListener("mouseup",()=>dragging=null);
-  function fieldAt(px,py){
-    let bx=0,by=0;
-    magnets.forEach(m=>{
-      const dx=px-m.x*c.width,dy=py-m.y*c.height;
-      const r2=dx*dx+dy*dy+1;
-      bx+=m.pole*dx/Math.pow(r2,1.5)*5e7;by+=m.pole*dy/Math.pow(r2,1.5)*5e7;
-      bx-=m.pole*(-dx)/Math.pow(r2,1.5)*5e7;by-=m.pole*(-dy)/Math.pow(r2,1.5)*5e7;
-    });
-    return[bx,by];
-  }
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // field lines
-    const step=30;
-    for(let row=0;row<H;row+=step){
-      for(let col=0;col<W;col+=step){
-        const[bx,by]=fieldAt(col,row);
-        const mag=Math.sqrt(bx*bx+by*by);
-        if(mag<0.01)continue;
-        const nx=bx/mag,ny=by/mag;
-        const strength=Math.min(mag/50,1);
-        ctx.strokeStyle=`rgba(255,152,0,${0.15+strength*0.5})`;
-        ctx.lineWidth=1;
-        ctx.beginPath();ctx.moveTo(col,row);ctx.lineTo(col+nx*12,row+ny*12);ctx.stroke();
-        // arrow
-        ctx.fillStyle=`rgba(255,152,0,${0.15+strength*0.5})`;
-        const ax=col+nx*12,ay=row+ny*12;
-        ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-nx*5+ny*3,ay-ny*5-nx*3);ctx.lineTo(ax-nx*5-ny*3,ay-ny*5+nx*3);ctx.fill();
-      }
-    }
-    // magnets
-    magnets.forEach(m=>{
-      const mx=m.x*W,my=m.y*H;
-      if(mtype==="bar"){
-        ctx.fillStyle=m.pole>0?"#dc2626":"#2563eb";ctx.beginPath();ctx.roundRect(mx-30,my-12,30,24,4);ctx.fill();
-        ctx.fillStyle="white";ctx.font="bold 11px Cairo";ctx.textAlign="center";ctx.fillText(m.pole>0?"N":"S",mx-15,my+4);
-        ctx.fillStyle=m.pole>0?"#2563eb":"#dc2626";ctx.beginPath();ctx.roundRect(mx,my-12,30,24,4);ctx.fill();
-        ctx.fillStyle="white";ctx.fillText(m.pole>0?"S":"N",mx+15,my+4);ctx.textAlign="start";
-      }else{
-        ctx.strokeStyle=m.pole>0?"#ff9800":"#3b82f6";ctx.lineWidth=3;
-        ctx.beginPath();ctx.arc(mx,my,22,0,Math.PI*2);ctx.stroke();
-        ctx.fillStyle=m.pole>0?"#ff9800":"#3b82f6";ctx.font="bold 13px Cairo";ctx.textAlign="center";
-        ctx.fillText(m.pole>0?"N":"S",mx,my+4);ctx.textAlign="start";
-      }
-    });
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   7. HEAT
-══════════════════════════════════════════════ */
-function buildHeat(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🌡️ انتقال الحرارة</div>
-  <div class="sim-canvas-box" style="height:280px"><canvas id="htC" height="270"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">درجة حرارة المصدر <span id="htTL">400°</span></div>
-      <input type="range" id="htT" min="100" max="1000" value="400" oninput="htUpdate()">
-    </div>
-    <div class="ctrl-box">
-      <div class="ctrl-lbl">الموصلية k <span id="htKL">متوسطة</span></div>
-      <input type="range" id="htK" min="1" max="5" value="3" oninput="htUpdate()">
-    </div>
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="htH">400</div><div class="l">T الساخن °</div></div>
-    <div class="ibox"><div class="v" id="htM">25</div><div class="l">T المنتصف °</div></div>
-    <div class="ibox"><div class="v" id="htC2">25</div><div class="l">T البارد °</div></div>
-  </div></div>`;
-  const c=mkCanvas("htC",270),ctx=c.getContext("2d");
-  let Th=400,k=3,t=0;
-  window.htUpdate=()=>{
-    Th=+document.getElementById("htT").value;k=+document.getElementById("htK").value;
-    document.getElementById("htTL").textContent=Th+"°";
-    const klbl=["","منخفضة","منخفضة","متوسطة","عالية","عالية جداً"][k];
-    document.getElementById("htKL").textContent=klbl;
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    t+=0.02;
-    const Tc=25;
-    // heat map along rod
-    const rY=H*0.5,rH=30,rX=40,rW=W-80;
-    for(let i=0;i<=rW;i++){
-      const frac=i/rW;
-      const T=Tc+(Th-Tc)*Math.exp(-k*frac*2);
-      const heat=Math.min((T-Tc)/(Th-Tc),1);
-      // temp to color: blue->yellow->red
-      const r=Math.round(heat>0.5?(255):(heat*2*255));
-      const g=Math.round(heat<0.5?heat*2*180:Math.max(0,(1-heat)*2*180));
-      const b=Math.round(heat<0.5?(1-heat*2)*200:0);
-      ctx.fillStyle=`rgb(${r},${g},${b})`;ctx.fillRect(rX+i,rY-rH/2,1,rH);
-      // update display
-      if(i===0)document.getElementById("htH").textContent=Math.round(T);
-      if(i===Math.round(rW/2))document.getElementById("htM").textContent=Math.round(T);
-      if(i===rW)document.getElementById("htC2").textContent=Math.round(Tc+5);
-    }
-    ctx.strokeStyle="rgba(255,255,255,0.2)";ctx.lineWidth=2;
-    ctx.strokeRect(rX,rY-rH/2,rW,rH);
-    // particles moving
-    for(let p=0;p<20;p++){
-      const frac=(((p/20)+t*0.05*k)%1);
-      const T2=Tc+(Th-Tc)*Math.exp(-k*frac*2);
-      const ht2=Math.min((T2-Tc)/(Th-Tc),1);
-      const px=rX+frac*rW;
-      const py=rY+(Math.sin(t*2+p)*ht2*12);
-      ctx.fillStyle=`rgba(255,${Math.round(255*(1-ht2))},0,0.7)`;
-      ctx.beginPath();ctx.arc(px,py,ht2*4+1,0,Math.PI*2);ctx.fill();
-    }
-    // labels
-    ctx.fillStyle="rgba(255,80,80,0.9)";ctx.font="bold 12px Cairo";ctx.fillText("🔥 ساخن",rX,rY+32);
-    ctx.fillStyle="rgba(100,150,255,0.9)";ctx.fillText("❄️ بارد",rX+rW-45,rY+32);
-    animFrame=requestAnimationFrame(draw);
-  }
-  htUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   8. OPTICS
-══════════════════════════════════════════════ */
-function buildOptics(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🔦 الضوء والبصريات</div>
-  <div class="sim-canvas-box" style="height:300px"><canvas id="opC" height="290"></canvas></div>
-  <div class="sbtn-row" style="margin-top:14px">
-    <button class="sbtn on" id="opTypeBtn" onclick="opSetType('reflection')">انعكاس</button>
-    <button class="sbtn" id="opRefBtn" onclick="opSetType('refraction')">انكسار</button>
-    <button class="sbtn" id="opLensBtn" onclick="opSetType('lens')">عدسة محدبة</button>
-  </div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div class="ctrl-lbl">زاوية الشعاع <span id="opAnLbl">45°</span></div>
-    <input type="range" id="opAn" min="5" max="85" value="45" oninput="opUpdate()">
-  </div>
-  <div class="info-card" style="margin-top:10px" id="opInfo">انعكاس: زاوية السقوط = زاوية الانعكاس</div>
-  </div>`;
-  const c=mkCanvas("opC",290),ctx=c.getContext("2d");
-  let opType="reflection",angle=45;
-  window.opSetType=(t)=>{
-    opType=t;
-    document.querySelectorAll("[id$=Btn]").forEach(b=>b.classList.remove("on"));
-    document.getElementById("op"+t.charAt(0).toUpperCase()+t.slice(1)+"Btn")?.classList.add("on");
-    const infos={reflection:"انعكاس: زاوية السقوط = زاوية الانعكاس",refraction:"انكسار: الضوء يتغير اتجاهه عند دخول وسط مختلف — قانون سنيل",lens:"العدسة المحدبة تجمع الأشعة في نقطة البؤرة F"};
-    document.getElementById("opInfo").textContent=infos[t];
-  };
-  window.opUpdate=()=>{angle=+document.getElementById("opAn").value;document.getElementById("opAnLbl").textContent=angle+"°";};
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H/2;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    const rad=angle*Math.PI/180;
-    if(opType==="reflection"){
-      // mirror
-      ctx.strokeStyle="rgba(147,197,253,0.6)";ctx.lineWidth=4;
-      ctx.beginPath();ctx.moveTo(cx,cy-100);ctx.lineTo(cx,cy+100);ctx.stroke();
-      // normal
-      ctx.setLineDash([5,8]);ctx.strokeStyle="rgba(255,255,255,0.2)";ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(cx-80,cy);ctx.lineTo(cx+80,cy);ctx.stroke();ctx.setLineDash([]);
-      // incident
-      ctx.strokeStyle="#ff9800";ctx.lineWidth=2;ctx.shadowColor="#ff9800";ctx.shadowBlur=8;
-      ctx.beginPath();ctx.moveTo(cx-Math.cos(rad)*120,cy-Math.sin(rad)*120);ctx.lineTo(cx,cy);ctx.stroke();
-      // reflected
-      ctx.strokeStyle="#00d4ff";
-      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx-Math.cos(rad)*120,cy+Math.sin(rad)*120);ctx.stroke();
-      ctx.shadowBlur=0;
-      // angles
-      ctx.fillStyle="rgba(255,152,0,0.8)";ctx.font="12px Cairo";
-      ctx.fillText(angle+"°",cx-60,cy-20);
-      ctx.fillStyle="rgba(0,212,255,0.8)";ctx.fillText(angle+"°",cx-60,cy+30);
-    }else if(opType==="refraction"){
-      // surface
-      ctx.fillStyle="rgba(30,58,138,0.3)";ctx.fillRect(0,cy,W,cy);
-      ctx.strokeStyle="rgba(147,197,253,0.5)";ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
-      ctx.fillStyle="rgba(30,58,138,0.15)";ctx.fillText("n₂ = 1.5 (زجاج)",10,cy+20);
-      ctx.fillStyle="rgba(255,255,255,0.3)";ctx.fillText("n₁ = 1.0 (هواء)",10,cy-20);
-      // normal
-      ctx.setLineDash([5,8]);ctx.strokeStyle="rgba(255,255,255,0.15)";ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(cx,cy-100);ctx.lineTo(cx,cy+100);ctx.stroke();ctx.setLineDash([]);
-      const refAngle=Math.asin(Math.sin(rad)/1.5);
-      ctx.strokeStyle="#ff9800";ctx.lineWidth=2;ctx.shadowColor="#ff9800";ctx.shadowBlur=8;
-      ctx.beginPath();ctx.moveTo(cx-Math.cos(Math.PI/2-rad)*120,cy-Math.sin(Math.PI/2-rad)*120);ctx.lineTo(cx,cy);ctx.stroke();
-      ctx.strokeStyle="#00d4ff";
-      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.sin(refAngle)*100,cy+Math.cos(refAngle)*100);ctx.stroke();
-      ctx.shadowBlur=0;
-      ctx.fillStyle="rgba(255,152,0,0.8)";ctx.font="12px Cairo";ctx.fillText("θ₁="+angle+"°",cx-55,cy-30);
-      ctx.fillStyle="rgba(0,212,255,0.8)";ctx.fillText("θ₂="+Math.round(refAngle*180/Math.PI)+"°",cx+10,cy+40);
-    }else{
-      // lens
-      ctx.strokeStyle="rgba(147,197,253,0.6)";ctx.lineWidth=3;
-      ctx.beginPath();ctx.ellipse(cx,cy,15,80,0,0,Math.PI*2);ctx.stroke();
-      const f=100;
-      ctx.setLineDash([4,8]);ctx.strokeStyle="rgba(255,255,255,0.15)";
-      ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();ctx.setLineDash([]);
-      // focal points
-      ctx.fillStyle="#ff9800";ctx.beginPath();ctx.arc(cx+f,cy,5,0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.arc(cx-f,cy,5,0,Math.PI*2);ctx.fill();
-      ctx.font="11px Cairo";ctx.fillStyle="#ff9800";ctx.fillText("F",cx+f+8,cy-8);ctx.fillText("F",cx-f+8,cy-8);
-      // parallel rays converging
-      [-40,-20,0,20,40].forEach(dy=>{
-        ctx.strokeStyle="rgba(255,152,0,0.7)";ctx.lineWidth=1.5;ctx.shadowColor="#ff9800";ctx.shadowBlur=4;
-        ctx.beginPath();ctx.moveTo(0,cy+dy);ctx.lineTo(cx,cy+dy);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx,cy+dy);ctx.lineTo(cx+f,cy);ctx.stroke();
-        ctx.shadowBlur=0;
-      });
-    }
-    animFrame=requestAnimationFrame(draw);
-  }
-  opUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   9. PH
-══════════════════════════════════════════════ */
-function buildPH(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🧪 مقياس pH والتفاعلات</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:320px"><canvas id="phC" height="310"></canvas></div>
-    <div class="sim-panel">
-      <div class="ctrl-box">
-        <div style="font-weight:700;margin-bottom:8px">أضف مادة:</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-          ${[["HCl قوي","🧴",1,"#ef4444"],["حمض خل","🍋",3,"#f97316"],["ليمون","🍊",4.5,"#fb923c"],["ماء مقطر","💧",7,"#3b82f6"],["صودا الخبز","🥛",8.3,"#8b5cf6"],["أمونيا","🧹",11,"#7c3aed"],["NaOH","🧪",13.5,"#6d28d9"]].map(([n,i,ph,c])=>
-            `<button class="sbtn" style="text-align:right;padding:8px;font-size:0.78rem" onclick="phSet(${ph},'${c}')">${i} ${n}</button>`).join("")}
-        </div>
-        <div class="ctrl-lbl" style="margin-top:12px">ضبط يدوي <span id="phML">7</span></div>
-        <input type="range" id="phR" min="0" max="14" step="0.1" value="7" oninput="phManual()">
-      </div>
-      <div class="ibox" style="text-align:center;padding:16px">
-        <div class="v" id="phNum" style="font-size:2.5rem">7.0</div>
-        <div class="l" id="phTyp">محايد</div>
-      </div>
-      <div class="info-card" id="phDesc">pH 7 = محايد<br>pH &lt; 7 = حمض<br>pH &gt; 7 = قاعدة</div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("phC",310),ctx=c.getContext("2d");
-  let phVal=7,phCol="#3b82f6",bubbles=[];
-  for(let i=0;i<25;i++)bubbles.push({x:30+Math.random()*80,y:Math.random()*180,r:1.5+Math.random()*4,s:0.3+Math.random()*0.8});
-  window.phSet=(ph,col)=>{phVal=ph;phCol=col;document.getElementById("phR").value=ph;phDisp(ph);};
-  window.phManual=()=>{phVal=+document.getElementById("phR").value;phCol=phToCol(phVal);phDisp(phVal);};
-  function phToCol(ph){
-    if(ph<2)return"#ef4444";if(ph<5)return"#f97316";if(ph<7)return"#eab308";
-    if(ph===7)return"#3b82f6";if(ph<10)return"#8b5cf6";return"#6d28d9";
-  }
-  function phDisp(ph){
-    document.getElementById("phML").textContent=ph.toFixed(1);document.getElementById("phNum").textContent=ph.toFixed(1);
-    document.getElementById("phNum").style.color=phToCol(ph);
-    const desc=ph<2?"حمض قوي جداً ⚠️":ph<4?"حمض قوي":ph<7?"حمض خفيف":ph===7?"محايد 💧":ph<10?"قاعدة خفيفة":ph<12?"قاعدة قوية":"قاعدة قوية جداً ⚠️";
-    document.getElementById("phTyp").textContent=desc;
-  }
-  function lerpHex(a,b,t){
-    const r=c=>parseInt(c.slice(1,3),16);
-    const ri=(c,i)=>parseInt(c.slice(i,i+2),16);
-    return`rgb(${Math.round(ri(a,1)+(ri(b,1)-ri(a,1))*t)},${Math.round(ri(a,3)+(ri(b,3)-ri(a,3))*t)},${Math.round(ri(a,5)+(ri(b,5)-ri(a,5))*t)})`;
-  }
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    const bx=W/2-50,by=40,bw=100,bh=200,liqH=bh*0.75;
-    // liquid
-    ctx.fillStyle=phCol+"99";ctx.beginPath();ctx.roundRect(bx+4,by+bh-liqH,bw-8,liqH,4);ctx.fill();
-    // bubbles
-    const intensity=Math.abs(7-phVal)/7;
-    if(intensity>0.1){
-      bubbles.forEach(b=>{
-        b.y-=b.s*(0.5+intensity*3);
-        if(b.y<by+bh-liqH)b.y=by+bh;
-        ctx.strokeStyle=phCol;ctx.lineWidth=1;ctx.globalAlpha=0.4;
-        ctx.beginPath();ctx.arc(bx+5+b.x,by+bh-liqH+b.y%liqH,b.r,0,Math.PI*2);ctx.stroke();
-        ctx.globalAlpha=1;
-      });
-    }
-    // beaker
-    ctx.strokeStyle="rgba(147,197,253,0.6)";ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx,by+bh);ctx.lineTo(bx+bw,by+bh);ctx.lineTo(bx+bw,by);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx-12,by);ctx.lineTo(bx+bw+12,by);ctx.stroke();
-    // pH strip
-    const sx=W-35,sy=by+10,sh=bh-20;
-    const sg=ctx.createLinearGradient(sx,sy,sx,sy+sh);
-    sg.addColorStop(0,"#ef4444");sg.addColorStop(0.2,"#f97316");sg.addColorStop(0.4,"#eab308");
-    sg.addColorStop(0.5,"#22c55e");sg.addColorStop(0.65,"#3b82f6");sg.addColorStop(1,"#6d28d9");
-    ctx.fillStyle=sg;ctx.fillRect(sx,sy,18,sh);
-    const my=sy+(14-phVal)/14*sh;
-    ctx.fillStyle="#fff";ctx.beginPath();ctx.moveTo(sx-8,my);ctx.lineTo(sx,my+5);ctx.lineTo(sx,my-5);ctx.fill();
-    ctx.fillStyle="rgba(255,255,255,0.8)";ctx.font="10px Cairo";ctx.fillText(phVal.toFixed(1),sx-32,my+3);
-    ["0","7","14"].forEach((lbl,i)=>{ctx.fillStyle="rgba(255,255,255,0.4)";ctx.fillText(lbl,sx+22,sy+i*sh/2+4);});
-    animFrame=requestAnimationFrame(draw);
-  }
-  phDisp(7);draw();
-}
-
-/* ══════════════════════════════════════════════
-   10. REACTIONS
-══════════════════════════════════════════════ */
-function buildReactions(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">⚗️ التفاعلات الكيميائية</div>
-  <div class="sim-canvas-box" style="height:280px"><canvas id="rxC" height="270"></canvas></div>
-  <div style="margin-top:14px">
-    <div style="font-weight:700;color:#e2e8f0;margin-bottom:10px">اختر التفاعل:</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
-      ${[["H₂ + O₂ → H₂O","تكوين الماء","#3b82f6","water"],["C + O₂ → CO₂","احتراق الكربون","#f97316","burn"],["Na + Cl₂ → NaCl","ملح الطعام","#fbbf24","nacl"],["Fe + O₂ → Fe₂O₃","الصدأ","#dc2626","rust"],["HCl + NaOH → H₂O+NaCl","تعادل حمض-قاعدة","#10b981","neutralize"],["2H₂O → 2H₂+O₂","تحليل الماء","#a78bfa","electrolysis"]].map(([eq,n,c,t])=>
-        `<button class="sbtn" onclick="rxSet('${t}','${eq}','${c}')" style="text-align:right;padding:10px;font-size:0.78rem">
-          <div style="font-size:0.9rem;font-weight:800">${eq}</div>
-          <div style="font-size:0.7rem;opacity:0.7">${n}</div>
-        </button>`).join("")}
-    </div>
-  </div>
-  <div class="info-card" style="margin-top:12px" id="rxInfo">اختر تفاعلاً كيميائياً لمشاهدة المحاكاة</div>
-  </div>`;
-  const c=mkCanvas("rxC",270),ctx=c.getContext("2d");
-  let rxType="water",rxColor="#3b82f6",rxEq="H₂ + O₂ → H₂O",particles=[],t2=0;
-  function makeParticles(){
-    particles=[];
-    for(let i=0;i<40;i++)particles.push({
-      x:Math.random()*c.width,y:Math.random()*c.height,
-      vx:(Math.random()-0.5)*3,vy:(Math.random()-0.5)*3,
-      r:4+Math.random()*4,phase:Math.random()<0.5?"reactant":"product",timer:Math.random()*100
-    });
-  }
-  window.rxSet=(t,eq,col)=>{rxType=t;rxEq=eq;rxColor=col;makeParticles();document.getElementById("rxInfo").textContent="معادلة: "+eq;};
-  makeParticles();
-  const effects={water:{reactColors:["#3b82f6","#a3e635"],productColor:"#06b6d4"},
-    burn:{reactColors:["#1a1a1a","#ef4444"],productColor:"#f97316"},
-    nacl:{reactColors:["#c0c0c0","#facc15"],productColor:"#fbbf24"},
-    rust:{reactColors:["#6b7280","#ef4444"],productColor:"#dc2626"},
-    neutralize:{reactColors:["#ef4444","#3b82f6"],productColor:"#10b981"},
-    electrolysis:{reactColors:["#06b6d4","#06b6d4"],productColor:"#a78bfa"}};
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    t2++;
-    const eff=effects[rxType]||effects.water;
-    // reaction zone
-    const rxLine=W/2;
-    ctx.strokeStyle="rgba(255,152,0,0.3)";ctx.lineWidth=1;ctx.setLineDash([6,6]);
-    ctx.beginPath();ctx.moveTo(rxLine,0);ctx.lineTo(rxLine,H);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle="rgba(255,152,0,0.3)";ctx.font="10px Cairo";ctx.textAlign="center";
-    ctx.fillText("منطقة التفاعل",rxLine,20);ctx.textAlign="start";
-    // equation
-    ctx.fillStyle="rgba(255,255,255,0.7)";ctx.font="bold 13px Cairo";ctx.textAlign="center";
-    ctx.fillText(rxEq,W/2,H-10);ctx.textAlign="start";
-    // particles
-    particles.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1;
-      if(p.y<0||p.y>H)p.vy*=-1;
-      p.timer--;
-      if(p.timer<=0&&p.phase==="reactant"&&Math.abs(p.x-rxLine)<50){p.phase="product";p.timer=60;}
-      const col=p.phase==="reactant"?eff.reactColors[Math.floor(p.r)%eff.reactColors.length]:eff.productColor;
-      const pulse=p.phase==="product"?1+0.2*Math.sin(t2*0.1):1;
-      ctx.fillStyle=col;ctx.shadowColor=col;ctx.shadowBlur=p.phase==="product"?8:0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r*pulse,0,Math.PI*2);ctx.fill();
-      ctx.shadowBlur=0;
-    });
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   11. PERIODIC TABLE
-══════════════════════════════════════════════ */
-function buildPeriodic(el){
-  const elements=[
-    {n:"H",name:"هيدروجين",num:1,cat:"nonmetal",mass:1.008,group:1,period:1},
-    {n:"He",name:"هيليوم",num:2,cat:"noble",mass:4.003,group:18,period:1},
-    {n:"Li",name:"ليثيوم",num:3,cat:"alkali",mass:6.94,group:1,period:2},
-    {n:"Be",name:"بريليوم",num:4,cat:"alkaline",mass:9.012,group:2,period:2},
-    {n:"B",name:"بورون",num:5,cat:"metalloid",mass:10.81,group:13,period:2},
-    {n:"C",name:"كربون",num:6,cat:"nonmetal",mass:12.011,group:14,period:2},
-    {n:"N",name:"نيتروجين",num:7,cat:"nonmetal",mass:14.007,group:15,period:2},
-    {n:"O",name:"أكسجين",num:8,cat:"nonmetal",mass:15.999,group:16,period:2},
-    {n:"F",name:"فلور",num:9,cat:"halogen",mass:18.998,group:17,period:2},
-    {n:"Ne",name:"نيون",num:10,cat:"noble",mass:20.18,group:18,period:2},
-    {n:"Na",name:"صوديوم",num:11,cat:"alkali",mass:22.99,group:1,period:3},
-    {n:"Mg",name:"مغنيسيوم",num:12,cat:"alkaline",mass:24.305,group:2,period:3},
-    {n:"Al",name:"ألمنيوم",num:13,cat:"metal",mass:26.982,group:13,period:3},
-    {n:"Si",name:"سيليكون",num:14,cat:"metalloid",mass:28.085,group:14,period:3},
-    {n:"P",name:"فوسفور",num:15,cat:"nonmetal",mass:30.974,group:15,period:3},
-    {n:"S",name:"كبريت",num:16,cat:"nonmetal",mass:32.06,group:16,period:3},
-    {n:"Cl",name:"كلور",num:17,cat:"halogen",mass:35.45,group:17,period:3},
-    {n:"Ar",name:"أرغون",num:18,cat:"noble",mass:39.948,group:18,period:3},
-    {n:"K",name:"بوتاسيوم",num:19,cat:"alkali",mass:39.098,group:1,period:4},
-    {n:"Ca",name:"كالسيوم",num:20,cat:"alkaline",mass:40.078,group:2,period:4},
-    {n:"Fe",name:"حديد",num:26,cat:"metal",mass:55.845,group:8,period:4},
-    {n:"Cu",name:"نحاس",num:29,cat:"metal",mass:63.546,group:11,period:4},
-    {n:"Zn",name:"زنك",num:30,cat:"metal",mass:65.38,group:12,period:4},
-    {n:"Au",name:"ذهب",num:79,cat:"metal",mass:196.97,group:11,period:6},
-    {n:"Ag",name:"فضة",num:47,cat:"metal",mass:107.87,group:11,period:5},
-    {n:"U",name:"يورانيوم",num:92,cat:"actinide",mass:238.03,group:3,period:7},
-  ];
-  const catColors={alkali:"#ef4444",alkaline:"#f97316",metal:"#3b82f6",nonmetal:"#10b981",metalloid:"#a78bfa",halogen:"#f59e0b",noble:"#06b6d4",actinide:"#ec4899"};
-  const catNames={alkali:"فلزات قلوية",alkaline:"فلزات قلوية ترابية",metal:"فلزات انتقالية",nonmetal:"لافلزات",metalloid:"أشباه فلزات",halogen:"هالوجينات",noble:"غازات نبيلة",actinide:"أكتينيدات"};
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">📊 الجدول الدوري التفاعلي</div>
-  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;justify-content:center">
-    ${Object.entries(catColors).map(([c,col])=>`<span style="padding:4px 10px;background:${col}22;border:1px solid ${col};border-radius:10px;font-size:0.72rem;cursor:pointer" onclick="ptFilter('${c}')">${catNames[c]}</span>`).join("")}
-    <span style="padding:4px 10px;background:transparent;border:1px solid #666;border-radius:10px;font-size:0.72rem;cursor:pointer" onclick="ptFilter('all')">الكل</span>
-  </div>
-  <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center" id="ptGrid"></div>
-  <div class="info-card" style="margin-top:14px" id="ptInfo">انقر على عنصر لمعرفة تفاصيله</div>
-  </div>`;
-  let filterCat="all";
-  window.ptFilter=(cat)=>{filterCat=cat;renderPT();};
-  function renderPT(){
-    const g=document.getElementById("ptGrid");
-    g.innerHTML=elements.filter(e=>filterCat==="all"||e.cat===filterCat).map(e=>{
-      const col=catColors[e.cat]||"#555";
-      return`<div onclick="ptSelect(${e.num})" style="width:62px;height:62px;background:${col}22;border:1.5px solid ${col};border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-family:'Cairo'" onmouseover="this.style.background='${col}44'" onmouseout="this.style.background='${col}22'">
-        <div style="font-size:0.65rem;color:#888">${e.num}</div>
-        <div style="font-size:1.2rem;font-weight:900;color:${col}">${e.n}</div>
-        <div style="font-size:0.6rem;color:#aaa">${e.mass.toFixed(1)}</div>
-      </div>`;}).join("");
-  }
-  window.ptSelect=(num)=>{
-    const e=elements.find(x=>x.num===num);
-    if(!e)return;
-    const col=catColors[e.cat]||"#555";
-    document.getElementById("ptInfo").innerHTML=`<b style="color:${col};font-size:1.2rem">${e.n} — ${e.name}</b><br>العدد الذري: ${e.num} | الكتلة: ${e.mass} | الفئة: ${catNames[e.cat]}<br>الدورة: ${e.period} | المجموعة: ${e.group}`;
-  };
-  renderPT();
-}
-
-/* ══════════════════════════════════════════════
-   12. CELL
-══════════════════════════════════════════════ */
-function buildCell(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🔬 الخلية الحية</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:340px"><canvas id="clC" height="330"></canvas></div>
-    <div class="sim-panel">
-      <div class="sbtn-row" style="justify-content:flex-start"><button class="sbtn on" id="clTypeBtn" onclick="clToggle()">خلية حيوانية</button></div>
-      <div class="info-card" id="clInfo">
-        <b>انقر على الخلية لاستكشاف أجزائها</b><br>
-        الخلية هي الوحدة الأساسية للحياة. تحتوي على عضيات تؤدي وظائف حيوية.
-      </div>
-      <div style="margin-top:8px">
-        ${[["النواة","#8b5cf6"],["الميتوكوندريا","#ef4444"],["الريبوسومات","#f59e0b"],["جهاز جولجي","#06b6d4"],["الشبكة الإندوبلازمية","#10b981"],["الليزوسومات","#f43f5e"],["جدار الخلية","#84cc16"]].map(([n,c])=>
-          `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="width:10px;height:10px;border-radius:50%;background:${c}"></div><span style="font-size:0.78rem;color:#aaa">${n}</span></div>`).join("")}
-      </div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("clC",330),ctx=c.getContext("2d");
-  let ctype="animal",hov=null,pulse=0;
-  window.clToggle=()=>{ctype=ctype==="animal"?"plant":"animal";document.getElementById("clTypeBtn").textContent=ctype==="animal"?"خلية حيوانية":"خلية نباتية";};
-  const parts={nucleus:{x:.5,y:.45,rx:.13,ry:.12,c:"#8b5cf6",lbl:"النواة",info:"تحتوي على DNA وتتحكم في نشاط الخلية"},
-    mito:{x:.32,y:.28,rx:.09,ry:.05,c:"#ef4444",lbl:"الميتوكوندريا",info:"تنتج الطاقة ATP — محطة الطاقة"},
-    ribo:{x:.7,y:.32,rx:.05,ry:.035,c:"#f59e0b",lbl:"الريبوسومات",info:"توليف البروتينات من الأحماض الأمينية"},
-    golgi:{x:.65,y:.68,rx:.1,ry:.045,c:"#06b6d4",lbl:"جهاز جولجي",info:"تعبئة وإفراز البروتينات والدهون"},
-    lyso:{x:.3,y:.67,rx:.055,ry:.045,c:"#f43f5e",lbl:"الليزوسومات",info:"هضم الفضلات والجراثيم بالإنزيمات"},
-    er:{x:.45,y:.3,rx:.06,ry:.035,c:"#10b981",lbl:"الشبكة الإندوبلازمية",info:"نقل المواد داخل الخلية"},
-  };
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H*0.52;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    pulse+=0.018;
-    const rx=W*0.39+Math.sin(pulse)*2,ry=H*0.43+Math.cos(pulse*.7)*2;
-    if(ctype==="plant"){ctx.strokeStyle="rgba(132,204,22,.5)";ctx.lineWidth=7;ctx.beginPath();ctx.ellipse(cx,cy,rx+9,ry+9,0,0,Math.PI*2);ctx.stroke();}
-    const cg=ctx.createRadialGradient(cx,cy,10,cx,cy,rx);
-    cg.addColorStop(0,"rgba(16,185,129,.07)");cg.addColorStop(1,"rgba(16,185,129,.02)");
-    ctx.fillStyle=cg;ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.fill();
-    ctx.strokeStyle="rgba(16,185,129,.6)";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.stroke();
-    if(ctype==="plant"){[[.22,.38],[.76,.58],[.38,.72]].forEach(([px,py])=>{const ex=cx+(px-.5)*W*.65,ey=cy+(py-.5)*H*.75;ctx.fillStyle="rgba(34,197,94,.6)";ctx.beginPath();ctx.ellipse(ex,ey,18,9,.5,0,Math.PI*2);ctx.fill();});}
-    Object.entries(parts).forEach(([k,p])=>{
-      const ex=cx+(p.x-.5)*W*.65,ey=cy+(p.y-.5)*H*.75;
-      const rxa=W*p.rx,rya=H*p.ry,ih=hov===k;
-      const gg=ctx.createRadialGradient(ex,ey,0,ex,ey,rxa);
-      gg.addColorStop(0,p.c+"cc");gg.addColorStop(1,p.c+"33");
-      ctx.fillStyle=gg;ctx.beginPath();ctx.ellipse(ex,ey,rxa,rya,0,0,Math.PI*2);ctx.fill();
-      if(ih){ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();}
-      ctx.fillStyle=ih?"#fff":p.c+"dd";ctx.font="9px Cairo";ctx.textAlign="center";
-      ctx.fillText(p.lbl,ex,ey+rya+13);
-    });
-    ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  c.addEventListener("click",ev=>{
-    const r=c.getBoundingClientRect(),mx=(ev.clientX-r.left)*(c.width/r.width),my=(ev.clientY-r.top)*(c.height/r.height);
-    const cx2=c.width/2,cy2=c.height*.52;
-    hov=null;
-    Object.entries(parts).forEach(([k,p])=>{
-      const ex=cx2+(p.x-.5)*c.width*.65,ey=cy2+(p.y-.5)*c.height*.75;
-      if(Math.pow((mx-ex)/(c.width*p.rx),2)+Math.pow((my-ey)/(c.height*p.ry),2)<1.4){hov=k;document.getElementById("clInfo").innerHTML=`<b style="color:${p.c}">${p.lbl}</b><br>${p.info}`;}
-    });
-  });
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   13. MITOSIS
-══════════════════════════════════════════════ */
-function buildMitosis(el){
-  const stages=["ما قبل الانقسام (Interphase)","الطور التمهيدي (Prophase)","الطور الاستوائي (Metaphase)","الطور الانفصالي (Anaphase)","الطور النهائي (Telophase)","الانقسام الكامل"];
-  const descs=["الخلية في حالة راحة. تضاعف الحمض النووي DNA. الكروموسومات غير مرئية.","تتكثف الكروموسومات وتصبح مرئية. يتفكك الغشاء النووي. تتشكل خيوط المغزل.","تتصف الكروموسومات في منتصف الخلية على الصفيحة الاستوائية.","تنفصل الكروماتيدات الشقيقة وتتحرك نحو قطبَي الخلية.","تتشكل نواتان جديدتان. تبدأ الكروموسومات بالتفكك.","الانقسام السيتوبلازمي. تنتج خليتان متطابقتان."];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🧬 الانقسام الخلوي (الميتوزا)</div>
-  <div class="sim-canvas-box" style="height:280px"><canvas id="mtC" height="270"></canvas></div>
-  <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:14px" id="mtStages">
-    ${stages.map((s,i)=>`<button class="sbtn ${i===0?"on":""}" onclick="mtGo(${i})" style="font-size:0.72rem;padding:7px 12px">${s}</button>`).join("")}
-  </div>
-  <div class="info-card" style="margin-top:12px" id="mtInfo">${descs[0]}</div>
-  <div class="sbtn-row"><button class="sbtn on" onclick="mtAuto()">▶ تشغيل تلقائي</button><button class="sbtn red" onclick="mtStop()">⏹ إيقاف</button></div>
-  </div>`;
-  const c=mkCanvas("mtC",270),ctx=c.getContext("2d");
-  let stage=0,autoPlay=false,autoT=0;
-  window.mtGo=(s)=>{stage=s;document.getElementById("mtInfo").textContent=descs[s];document.querySelectorAll("[id=mtStages] .sbtn").forEach((b,i)=>b.classList.toggle("on",i===s));};
-  window.mtAuto=()=>{autoPlay=true;};
-  window.mtStop=()=>{autoPlay=false;};
-  let t3=0;
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    t3+=0.02;
-    if(autoPlay){autoT+=0.005;if(autoT>=1){autoT=0;stage=(stage+1)%6;mtGo(stage);}}
-    const cx=W/2,cy=H/2,cr=Math.min(W,H)*0.38;
-    // cell outline
-    const cellShape=stage>=5?0.5:1;
-    if(stage>=4){
-      // two cells forming
-      const sep=(stage-3)*30;
-      ctx.fillStyle="rgba(16,185,129,.05)";ctx.strokeStyle="rgba(16,185,129,.6)";ctx.lineWidth=2;
-      ctx.beginPath();ctx.ellipse(cx-sep,cy,cr*.7,cr*.7,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-      ctx.beginPath();ctx.ellipse(cx+sep,cy,cr*.7,cr*.7,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-    }else{
-      ctx.fillStyle="rgba(16,185,129,.05)";ctx.strokeStyle="rgba(16,185,129,.6)";ctx.lineWidth=2;
-      ctx.beginPath();ctx.ellipse(cx,cy,cr,cr*.8,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-    }
-    // chromosomes
-    const chrColors=["#ef4444","#3b82f6","#10b981","#f59e0b"];
-    if(stage===0){ctx.fillStyle="rgba(139,92,246,.5)";ctx.beginPath();ctx.arc(cx,cy,cr*.4,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#8b5cf6";ctx.lineWidth=1.5;ctx.stroke();}
-    if(stage>=1&&stage<=3){
-      const angleStep=Math.PI*2/4;
-      for(let i=0;i<4;i++){
-        const a=i*angleStep+t3*.3;
-        const spread=stage===2?0:1;
-        const r=(stage===2?cr*.25:(cr*.5+Math.sin(t3)*5));
-        const bx=stage===3?cx+(i<2?-1:1)*r*1.2:cx+Math.cos(a)*r*spread;
-        const by=stage===3?cy+(i%2===0?-1:1)*r*.5:cy+Math.sin(a)*r*spread;
-        ctx.fillStyle=chrColors[i];ctx.shadowColor=chrColors[i];ctx.shadowBlur=8;
-        ctx.beginPath();ctx.ellipse(bx,by,12,6,a,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-      }
-    }
-    if(stage===2){ctx.strokeStyle="rgba(255,255,255,.2)";ctx.lineWidth=1;ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(cx,cy-cr*.7);ctx.lineTo(cx,cy+cr*.7);ctx.stroke();ctx.setLineDash([]);}
-    if(stage>=4){const sep=(stage-3)*30;[-1,1].forEach(s2=>{ctx.fillStyle="rgba(139,92,246,.5)";ctx.beginPath();ctx.arc(cx+s2*sep,cy,cr*.22,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#8b5cf6";ctx.lineWidth=1;ctx.stroke();});}
-    ctx.font="bold 12px Cairo";ctx.fillStyle="rgba(255,255,255,.6)";ctx.textAlign="center";ctx.fillText(stages[stage],W/2,H-8);ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   14. DIGESTION
-══════════════════════════════════════════════ */
-function buildDigestion(el){
-  const organs=[{n:"الفم",desc:"مضغ الطعام وخلطه باللعاب (أميليز)",color:"#f59e0b",y:.1},{n:"المريء",desc:"أنبوب عضلي ينقل الطعام للمعدة بحركات تمعجية",color:"#f97316",y:.25},{n:"المعدة",desc:"حمض HCl وإنزيمات تهضم البروتينات",color:"#ef4444",y:.42},{n:"الأمعاء الدقيقة",desc:"امتصاص العناصر الغذائية — 6 أمتار طول",color:"#10b981",y:.6},{n:"الأمعاء الغليظة",desc:"امتصاص الماء وتشكيل الفضلات",color:"#3b82f6",y:.76},{n:"الشرج",desc:"طرح الفضلات خارج الجسم",color:"#8b5cf6",y:.9}];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🫁 الجهاز الهضمي</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:360px"><canvas id="dgC" height="350"></canvas></div>
-    <div class="sim-panel">
-      <div class="info-card" id="dgInfo">انقر على أي عضو لمعرفة وظيفته</div>
-      <div style="margin-top:10px">
-        ${organs.map(o=>`<div onclick="dgClick('${o.n}')" style="padding:8px 12px;margin-bottom:5px;border-radius:8px;border:1px solid ${o.color}44;background:${o.color}11;cursor:pointer;font-size:0.82rem;color:${o.color};transition:.2s" onmouseover="this.style.background='${o.color}22'" onmouseout="this.style.background='${o.color}11'">${o.n}</div>`).join("")}
-      </div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("dgC",350),ctx=c.getContext("2d");
-  let foodPos=0,hov2=null,t4=0;
-  window.dgClick=(n)=>{const o=organs.find(x=>x.n===n);if(o){hov2=n;document.getElementById("dgInfo").innerHTML=`<b style="color:${o.color}">${o.n}</b><br>${o.desc}`;}};
-  function draw(){
-    const W=c.width,H=c.height,cx=W*.35;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    t4+=0.01;foodPos=(foodPos+0.003)%1;
-    organs.forEach((o,i)=>{
-      const y=H*o.y,isH=hov2===o.n;
-      const wide=i===2?40:i===3?25:20;
-      const fill=ctx.createLinearGradient(cx-wide,y,cx+wide,y+15);
-      fill.addColorStop(0,o.color+"88");fill.addColorStop(1,o.color+"44");
-      ctx.fillStyle=fill;
-      if(i===2){ctx.beginPath();ctx.ellipse(cx,y,wide,25,0,0,Math.PI*2);ctx.fill();}
-      else if(i===3){ctx.strokeStyle=o.color+"99";ctx.lineWidth=8;ctx.beginPath();for(let s=0;s<20;s++){ctx.lineTo(cx+Math.sin(s*.8+t4)*12,y+s*4);}ctx.stroke();}
-      else{ctx.fillStyle=o.color+"66";ctx.beginPath();ctx.roundRect(cx-wide/2,y-8,wide,16,8);ctx.fill();}
-      if(isH){ctx.strokeStyle="#fff";ctx.lineWidth=1.5;ctx.stroke();}
-      ctx.fillStyle=o.color;ctx.font="bold 10px Cairo";ctx.fillText(o.n,cx+45,y+4);
-    });
-    // food particle
-    const fp=foodPos,fy=H*(fp*0.85+0.05);
-    ctx.fillStyle="#ff9800";ctx.shadowColor="#ff9800";ctx.shadowBlur=12;
-    ctx.beginPath();ctx.arc(cx,fy,6,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-    // tube connecting
-    ctx.strokeStyle="rgba(255,255,255,0.06)";ctx.lineWidth=4;
-    ctx.beginPath();organs.forEach(o=>ctx.lineTo(cx,H*o.y));ctx.stroke();
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   15. GENETICS
-══════════════════════════════════════════════ */
-function buildGenetics(el){
-  const traits=[
-    {name:"لون العين",alleles:["بني B","أزرق b"],dom:"B"},
-    {name:"لون الشعر",alleles:["داكن D","فاتح d"],dom:"D"},
-    {name:"شكل الأذن",alleles:["منفصلة E","ملتصقة e"],dom:"E"},
-    {name:"الدم",alleles:["A","B","O"],special:true},
-  ];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🧫 الوراثة وقوانين مندل</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
-    <div class="ctrl-box">
-      <div style="font-weight:700;color:#e2e8f0;margin-bottom:8px">🧑 الأب — اختر الصفة:</div>
-      <select id="gnTrait" style="width:100%;padding:8px;background:#0f172a;border:1px solid #1e3a5f;border-radius:8px;color:#e2e8f0;font-family:'Cairo'" onchange="gnUpdate()">
-        ${traits.map((t,i)=>`<option value="${i}">${t.name}</option>`).join("")}
-      </select>
-      <div style="margin-top:10px">
-        <div class="ctrl-lbl">الجين الأول (أب)</div>
-        <select id="gnA1" style="width:100%;padding:8px;background:#0f172a;border:1px solid #1e3a5f;border-radius:8px;color:#e2e8f0;font-family:'Cairo'" onchange="gnCalc()"></select>
-      </div>
-      <div style="margin-top:8px">
-        <div class="ctrl-lbl">الجين الثاني (أم)</div>
-        <select id="gnA2" style="width:100%;padding:8px;background:#0f172a;border:1px solid #1e3a5f;border-radius:8px;color:#e2e8f0;font-family:'Cairo'" onchange="gnCalc()"></select>
-      </div>
-    </div>
-    <div class="ctrl-box">
-      <div style="font-weight:700;color:#ff9800;margin-bottom:8px">📊 لوحة بانيت (نسب الأبناء)</div>
-      <div id="gnPunnett" style="display:grid;grid-template-columns:1fr 1fr;gap:4px"></div>
-    </div>
-  </div>
-  <div class="info-row" id="gnProbs"></div>
-  <div class="info-card" style="margin-top:12px" id="gnInfo">اختر صفة وراثية لرؤية نسب التوارث</div>
-  </div>`;
-  window.gnUpdate=()=>{
-    const ti=+document.getElementById("gnTrait").value;
-    const t=traits[ti];
-    const opts=t.alleles.map((a,i)=>`<option value="${i}">${a}</option>`).join("");
-    document.getElementById("gnA1").innerHTML=opts;
-    document.getElementById("gnA2").innerHTML=opts;
-    gnCalc();
-  };
-  window.gnCalc=()=>{
-    const ti=+document.getElementById("gnTrait").value;
-    const t=traits[ti];
-    const a1=+document.getElementById("gnA1").value,a2=+document.getElementById("gnA2").value;
-    const g1=t.alleles[a1].split(" ")[t.alleles[a1].includes(" ")?"1":"0"]||t.alleles[a1];
-    const g2=t.alleles[a2].split(" ")[t.alleles[a2].includes(" ")?"1":"0"]||t.alleles[a2];
-    const letter1=t.alleles[a1][0],letter2=t.alleles[a2][0];
-    // Punnett
-    const combos=[[letter1,letter2],[letter1,letter2.toLowerCase()],[letter1.toLowerCase(),letter2],[letter1.toLowerCase(),letter2.toLowerCase()]];
-    const cols=["#8b5cf6","#3b82f6","#3b82f6","#10b981"];
-    document.getElementById("gnPunnett").innerHTML=combos.map(([x,y],i)=>{
-      const isDom=x===x.toUpperCase()||y===y.toUpperCase();
-      return`<div style="background:${isDom?"#8b5cf6":"#10b981"}22;border:1px solid ${isDom?"#8b5cf6":"#10b981"};border-radius:8px;padding:10px;text-align:center;font-size:1.1rem;font-weight:900;color:${isDom?"#8b5cf6":"#10b981"}">${x}${y}<div style="font-size:0.65rem;opacity:0.7">${isDom?"سائد":"متنحٍّ"}</div></div>`;
-    }).join("");
-    const domCount=combos.filter(([x,y])=>x===x.toUpperCase()||y===y.toUpperCase()).length;
-    document.getElementById("gnProbs").innerHTML=`
-      <div class="ibox"><div class="v" style="color:#8b5cf6">${domCount}/4</div><div class="l">صفة سائدة</div></div>
-      <div class="ibox"><div class="v" style="color:#10b981">${4-domCount}/4</div><div class="l">صفة متنحية</div></div>
-      <div class="ibox"><div class="v">${(domCount/4*100).toFixed(0)}%</div><div class="l">احتمال السائد</div></div>`;
-    document.getElementById("gnInfo").innerHTML=`الصفة السائدة: <b>${t.alleles[a1]}</b> × <b>${t.alleles[a2]}</b><br>النسبة المتنحية: ${4-domCount}:${domCount}`;
-  };
-  gnUpdate();
-}
-
-/* ══════════════════════════════════════════════
-   16. PHOTOSYNTHESIS
-══════════════════════════════════════════════ */
-function buildPhotosyn(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🌿 عملية البناء الضوئي</div>
-  <div class="sim-canvas-box" style="height:300px"><canvas id="psC" height="290"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px">
-    <div class="ctrl-box"><div class="ctrl-lbl">شدة الضوء <span id="psLL">50%</span></div><input type="range" id="psL" min="0" max="100" value="50" oninput="psUpdate()"></div>
-    <div class="ctrl-box"><div class="ctrl-lbl">CO₂ <span id="psCL">50%</span></div><input type="range" id="psC2" min="0" max="100" value="50" oninput="psUpdate()"></div>
-    <div class="ctrl-box"><div class="ctrl-lbl">درجة الحرارة <span id="psTL">25°C</span></div><input type="range" id="psT2" min="5" max="45" value="25" oninput="psUpdate()"></div>
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="psO2">50</div><div class="l">إنتاج O₂</div></div>
-    <div class="ibox"><div class="v" id="psGlc">50</div><div class="l">إنتاج جلوكوز</div></div>
-    <div class="ibox"><div class="v" id="psRate">متوسط</div><div class="l">معدل التفاعل</div></div>
-  </div>
-  <div class="info-card" style="margin-top:10px">6CO₂ + 6H₂O + ضوء → C₆H₁₂O₆ + 6O₂</div>
-  </div>`;
-  const c=mkCanvas("psC",290),ctx=c.getContext("2d");
-  let light=50,co2=50,temp=25,t5=0,bubbles2=[];
-  for(let i=0;i<30;i++)bubbles2.push({x:Math.random()*200+100,y:200+Math.random()*50,s:0.5+Math.random()});
-  window.psUpdate=()=>{
-    light=+document.getElementById("psL").value;co2=+document.getElementById("psC2").value;temp=+document.getElementById("psT2").value;
-    document.getElementById("psLL").textContent=light+"%";document.getElementById("psCL").textContent=co2+"%";document.getElementById("psTL").textContent=temp+"°C";
-    const tempFactor=temp<10||temp>40?0.3:temp<15||temp>35?0.7:1;
-    const rate=Math.round((light+co2)/2*tempFactor);
-    document.getElementById("psO2").textContent=rate;document.getElementById("psGlc").textContent=Math.round(rate*.9);
-    document.getElementById("psRate").textContent=rate<20?"بطيء":rate<60?"متوسط":"سريع";
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    t5+=0.03;
-    // sun
-    const lightFrac=light/100;
-    const sunG=ctx.createRadialGradient(W*.15,H*.15,0,W*.15,H*.15,80);
-    sunG.addColorStop(0,`rgba(255,220,60,${lightFrac*.9})`);sunG.addColorStop(1,"transparent");
-    ctx.fillStyle=sunG;ctx.beginPath();ctx.arc(W*.15,H*.15,80,0,Math.PI*2);ctx.fill();
-    // light rays
-    ctx.strokeStyle=`rgba(255,220,60,${lightFrac*.6})`;ctx.lineWidth=1.5;
-    for(let r=0;r<6;r++){const ra=r*Math.PI/3;ctx.beginPath();ctx.moveTo(W*.15+Math.cos(ra)*25,H*.15+Math.sin(ra)*25);ctx.lineTo(W*.15+Math.cos(ra)*60,H*.15+Math.sin(ra)*60);ctx.stroke();}
-    // leaf
-    const lx=W/2,ly=H*.5;
-    ctx.fillStyle="rgba(22,163,74,.8)";ctx.strokeStyle="#16a34a";ctx.lineWidth=2;
-    ctx.beginPath();ctx.ellipse(lx,ly,W*.22,H*.25,Math.PI*.15,0,Math.PI*2);ctx.fill();ctx.stroke();
-    ctx.strokeStyle="rgba(134,239,172,.5)";ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(lx-W*.15,ly+H*.1);ctx.lineTo(lx+W*.15,ly-H*.1);ctx.stroke();
-    for(let v=1;v<4;v++){ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(lx+Math.cos(v*0.6)*60,ly-Math.sin(v*0.4)*40);ctx.stroke();}
-    // bubbles (O2)
-    const rate2=(light+co2)/200;
-    bubbles2.forEach(b=>{
-      b.y-=b.s*rate2*2;if(b.y<H*.1)b.y=H*.65;
-      ctx.fillStyle="rgba(96,165,250,.6)";ctx.beginPath();ctx.arc(b.x,b.y,3,0,Math.PI*2);ctx.fill();
-    });
-    ctx.font="11px Cairo";ctx.fillStyle="rgba(96,165,250,.8)";ctx.fillText("O₂",W*.6,H*.15);
-    // CO2 arrows going in
-    ctx.strokeStyle=`rgba(156,163,175,${co2/200})`;ctx.lineWidth=1.5;
-    for(let ci=0;ci<3;ci++){ctx.beginPath();ctx.moveTo(W*.75,H*.2+ci*30);ctx.lineTo(W*.6,H*.4+ci*20);ctx.stroke();}
-    ctx.font="11px Cairo";ctx.fillStyle="rgba(156,163,175,.6)";ctx.fillText("CO₂",W*.75,H*.2);
-    animFrame=requestAnimationFrame(draw);
-  }
-  psUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   17. EARTH LAYERS
-══════════════════════════════════════════════ */
-function buildLayers(el){
-  const layers=[
-    {name:"القشرة",thick:.04,c1:"#92400e",c2:"#a16207",info:"5–70 km سماكة. تحتوي على القارات والمحيطات. 0–600°C"},
-    {name:"الوشاح",thick:.43,c1:"#7c2d12",c2:"#991b1b",info:"2890 km. صخور شبه مائعة. 600–3700°C"},
-    {name:"اللب الخارجي",thick:.32,c1:"#dc2626",c2:"#b91c1c",info:"سائل — حديد+نيكل. يولّد المجال المغناطيسي. 3700–5000°C"},
-    {name:"اللب الداخلي",thick:.21,c1:"#fbbf24",c2:"#f59e0b",info:"صلب — حديد+نيكل نقيّ. ~5000°C | 360 GPa"},
-  ];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🌍 طبقات الأرض</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:360px"><canvas id="lyC" height="350"></canvas></div>
-    <div class="sim-panel">
-      <div class="info-card" id="lyInfo">انقر على أي طبقة لمعرفة تفاصيلها</div>
-      <div class="info-row" style="margin-top:10px">
-        <div class="ibox"><div class="v">6,371</div><div class="l">نصف القطر (km)</div></div>
-        <div class="ibox"><div class="v">5,000</div><div class="l">الحرارة القصوى °C</div></div>
-      </div>
-      <div style="margin-top:10px">
-        ${layers.map((l,i)=>`<div onclick="lyClick(${i})" style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid ${l.c1}44;background:${l.c1}11;cursor:pointer;margin-bottom:5px">
-          <div style="width:14px;height:14px;border-radius:50%;background:${l.c1}"></div>
-          <span style="font-size:0.82rem;color:${l.c1}">${l.name}</span>
-        </div>`).join("")}
-      </div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("lyC",350),ctx=c.getContext("2d");
-  let hov3=null,rot6=0;
-  window.lyClick=(i)=>{hov3=i;document.getElementById("lyInfo").innerHTML=`<b style="color:${layers[i].c1}">${layers[i].name}</b><br>${layers[i].info}`;};
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H/2;
-    const mr=Math.min(W,H)*.44;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    rot6+=.003;
-    let r=mr;
-    layers.forEach((l,i)=>{
-      const inner=r-l.thick*mr;
-      const g=ctx.createRadialGradient(cx-r*.2,cy-r*.2,inner*.1,cx,cy,r);
-      g.addColorStop(0,l.c2);g.addColorStop(1,l.c1);
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
-      if(hov3===i){ctx.strokeStyle="#fff";ctx.lineWidth=2.5;ctx.stroke();}
-      const lr=(r+inner)/2;
-      const lx=cx+lr*.55*Math.cos(rot6+i),ly=cy+lr*.3*Math.sin(rot6*.5+i);
-      ctx.fillStyle=hov3===i?"#fff":"rgba(255,255,255,.75)";ctx.font="bold 10px Cairo";ctx.textAlign="center";
-      ctx.fillText(l.name,lx,ly);r=inner;
-    });
-    // cross lines
-    ctx.strokeStyle="rgba(255,255,255,.08)";ctx.lineWidth=1;ctx.setLineDash([3,6]);
-    ctx.beginPath();ctx.moveTo(cx,cy-mr);ctx.lineTo(cx,cy+mr);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(cx-mr,cy);ctx.lineTo(cx+mr,cy);ctx.stroke();
-    ctx.setLineDash([]);ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  c.addEventListener("click",ev=>{
-    const r=c.getBoundingClientRect(),mx=(ev.clientX-r.left)*(c.width/r.width)-c.width/2,my=(ev.clientY-r.top)*(c.height/r.height)-c.height/2;
-    const d=Math.sqrt(mx*mx+my*my),mr=Math.min(c.width,c.height)*.44;
-    let rv=mr;
-    for(let i=0;i<layers.length;i++){const inner=rv-layers[i].thick*mr;if(d<=rv&&d>=inner){lyClick(i);break;}rv=inner;}
-  });
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   18. SOLAR SYSTEM
-══════════════════════════════════════════════ */
-function buildSolar(el){
-  const planets=[
-    {name:"عطارد",r:4,orb:.14,c:"#9ca3af",per:.24,info:"أصغر كوكب وأقربه للشمس. يوم عطارد=59 يوم أرضي"},
-    {name:"الزهرة",r:6,orb:.22,c:"#fde68a",per:.62,info:"الأشد حرارة: 465°C. يدور بعكس الاتجاه"},
-    {name:"الأرض",r:7,orb:.31,c:"#3b82f6",per:1,info:"كوكبنا. 149.6 مليون km من الشمس"},
-    {name:"المريخ",r:5.5,orb:.41,c:"#ef4444",per:1.88,info:"الكوكب الأحمر. أعلى بركان في المجموعة الشمسية"},
-    {name:"المشتري",r:17,orb:.57,c:"#f59e0b",per:11.86,info:"أضخم الكواكب. كتلته=317 كتلة أرض"},
-    {name:"زحل",r:14,orb:.71,c:"#eab308",per:29.5,info:"يملك حلقات رائعة. كثافته أقل من الماء"},
-    {name:"أورانوس",r:11,orb:.83,c:"#67e8f9",per:84,info:"يدور على جانبه! محوره مائل 98°"},
-    {name:"نبتون",r:10,orb:.93,c:"#6366f1",per:164.8,info:"أبعد الكواكب. رياحه 2000 km/h"},
-  ];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🪐 النظام الشمسي</div>
-  <div class="sim-canvas-box" style="height:380px"><canvas id="slC" height="370"></canvas></div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div class="ctrl-lbl">سرعة الدوران <span id="slSpLbl">1×</span></div>
-    <input type="range" id="slSp" min="0.1" max="15" step="0.1" value="1" oninput="slSpUpdate()">
-  </div>
-  <div class="info-card" style="margin-top:10px" id="slInfo">انقر على كوكب لمعرفة معلوماته 🪐</div>
-  </div>`;
-  const c=mkCanvas("slC",370),ctx=c.getContext("2d");
-  let speed2=1,angles2=planets.map(()=>Math.random()*Math.PI*2);
-  window.slSpUpdate=()=>{speed2=+document.getElementById("slSp").value;document.getElementById("slSpLbl").textContent=speed2.toFixed(1)+"×";};
-  function draw(){
-    const W=c.width,H=c.height;
-    const ox=W*.12+H*.45,oy=H/2,mr=Math.min(W-ox,H*.46);
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // stars
-    for(let i=0;i<150;i++){const sx=(i*137+7)%W,sy=(i*97+31)%H,sa=.2+((i*53)%10)/10*.8;ctx.fillStyle=`rgba(255,255,255,${sa})`;ctx.beginPath();ctx.arc(sx,sy,.8,0,Math.PI*2);ctx.fill();}
-    // sun
-    const sG=ctx.createRadialGradient(ox,oy,0,ox,oy,26);
-    sG.addColorStop(0,"rgba(255,220,60,.95)");sG.addColorStop(.4,"rgba(255,160,20,.5)");sG.addColorStop(1,"transparent");
-    ctx.fillStyle=sG;ctx.beginPath();ctx.arc(ox,oy,40,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#fbbf24";ctx.beginPath();ctx.arc(ox,oy,22,0,Math.PI*2);ctx.fill();
-    ctx.font="15px serif";ctx.textAlign="center";ctx.fillText("☀️",ox,oy+5);
-    planets.forEach((p,i)=>{
-      angles2[i]+=speed2*.005/p.per;
-      const orb=mr*p.orb;
-      ctx.strokeStyle="rgba(255,255,255,.05)";ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(ox,oy,orb,orb*.4,0,0,Math.PI*2);ctx.stroke();
-      const px=ox+orb*Math.cos(angles2[i]),py=oy+orb*.4*Math.sin(angles2[i]);
-      if(p.name==="زحل"){ctx.strokeStyle="rgba(234,179,8,.5)";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(px,py,p.r*2.4,p.r*.7,0,0,Math.PI*2);ctx.stroke();}
-      const pg=ctx.createRadialGradient(px-p.r*.3,py-p.r*.3,0,px,py,p.r);
-      pg.addColorStop(0,"#fff");pg.addColorStop(.4,p.c);pg.addColorStop(1,"#0008");
-      ctx.fillStyle=pg;ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fill();
-      if(p.name==="الأرض"){const ma=angles2[i]*13;ctx.fillStyle="#cbd5e1";ctx.beginPath();ctx.arc(px+13*Math.cos(ma),py+6*Math.sin(ma),2.5,0,Math.PI*2);ctx.fill();}
-      ctx.fillStyle="rgba(255,255,255,.75)";ctx.font="9px Cairo";ctx.textAlign="center";ctx.fillText(p.name,px,py+p.r+11);
-    });
-    ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  c.addEventListener("click",ev=>{
-    const r=c.getBoundingClientRect(),mx=(ev.clientX-r.left)*(c.width/r.width),my=(ev.clientY-r.top)*(c.height/r.height);
-    const W=c.width,H=c.height,ox=W*.12+H*.45,oy=H/2,mr=Math.min(W-ox,H*.46);
-    planets.forEach((p,i)=>{
-      const px=ox+mr*p.orb*Math.cos(angles2[i]),py=oy+mr*p.orb*.4*Math.sin(angles2[i]);
-      if(Math.hypot(mx-px,my-py)<p.r+10)document.getElementById("slInfo").innerHTML=`<b style="color:${p.c}">${p.name}</b> — ${p.info}`;
-    });
-  });
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   19. EARTHQUAKE
-══════════════════════════════════════════════ */
-function buildEarthquake(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">📳 الزلازل ومقياس ريختر</div>
-  <div class="sim-canvas-box" style="height:280px"><canvas id="eqC" height="270"></canvas></div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div class="ctrl-lbl">قوة الزلزال (ريختر) <span id="eqML">5.0</span></div>
-    <input type="range" id="eqM" min="1" max="9" step="0.1" value="5" oninput="eqUpdate()">
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="eqMag">5.0</div><div class="l">المقياس</div></div>
-    <div class="ibox"><div class="v" id="eqDesc">متوسط</div><div class="l">التوصيف</div></div>
-    <div class="ibox"><div class="v" id="eqEnergy">~10¹²</div><div class="l">الطاقة (J)</div></div>
-  </div>
-  <div class="sbtn-row"><button class="sbtn on" onclick="eqTrigger()">💥 أطلق الزلزال</button></div>
-  </div>`;
-  const c=mkCanvas("eqC",270),ctx=c.getContext("2d");
-  let mag=5,eqActive=false,eqT=0,waves2=[];
-  window.eqUpdate=()=>{
-    mag=+document.getElementById("eqM").value;document.getElementById("eqML").textContent=mag.toFixed(1);
-    document.getElementById("eqMag").textContent=mag.toFixed(1);
-    const descs={1:"ضعيف جداً",2:"ضعيف",3:"خفيف",4:"محسوس",5:"متوسط",6:"قوي",7:"قوي جداً",8:"مدمر",9:"كارثي"};
-    document.getElementById("eqDesc").textContent=descs[Math.round(mag)]||"كارثي";
-    document.getElementById("eqEnergy").textContent="~10^"+Math.round(4.8+1.5*mag);
-  };
-  window.eqTrigger=()=>{waves2=[];eqActive=true;eqT=0;};
-  const seismograph=[];
-  for(let i=0;i<200;i++)seismograph.push(0);
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // ground
-    ctx.fillStyle="#1e3a1e";ctx.fillRect(0,H*.6,W,H*.4);
-    ctx.strokeStyle="#2d6a2d";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,H*.6);ctx.lineTo(W,H*.6);ctx.stroke();
-    // buildings
-    [[.1,60,30],[.25,80,25],[.4,50,35],[.55,90,25],[.7,65,28],[.85,55,30]].forEach(([fx,h,w])=>{
-      const bx=W*fx-w/2,by=H*.6-h;
-      const shake=eqActive?Math.sin(eqT*10)*(mag-1):0;
-      ctx.fillStyle="#1e2d3d";ctx.fillRect(bx+shake,by,w,h);
-      ctx.strokeStyle="#2a5298";ctx.lineWidth=1;ctx.strokeRect(bx+shake,by,w,h);
-      // windows
-      for(let wr=0;wr<3;wr++)for(let wc=0;wc<2;wc++){
-        const lit=Math.random()>.4;
-        ctx.fillStyle=lit?"rgba(255,220,60,.8)":"rgba(0,0,0,.5)";
-        ctx.fillRect(bx+shake+wc*10+4,by+wr*12+4,6,7);
-      }
-    });
-    // seismic waves
-    if(eqActive){
-      eqT+=0.06;
-      if(eqT<1)waves2.push({r:eqT*W*.5,alpha:1-eqT});
-      seismograph.shift();
-      seismograph.push(Math.sin(eqT*20)*mag*(1-Math.min(eqT,1)*.8)*5);
-      if(eqT>3)eqActive=false;
-    }else{seismograph.shift();seismograph.push(0);}
-    waves2.forEach(w=>{
-      ctx.strokeStyle=`rgba(255,152,0,${w.alpha*.6})`;ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(W*.5,H*.6,w.r,0,Math.PI*2);ctx.stroke();
-      ctx.beginPath();ctx.arc(W*.5,H*.6,w.r*.6,0,Math.PI*2);ctx.stroke();
-      w.r+=3;w.alpha-=.02;
-    });
-    waves2=waves2.filter(w=>w.alpha>0);
-    // seismograph
-    ctx.strokeStyle="rgba(255,152,0,.6)";ctx.lineWidth=1.5;
-    ctx.beginPath();seismograph.forEach((v,i)=>{const sx=i*(W/200),sy=H*.3+v;i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);});ctx.stroke();
-    ctx.fillStyle="rgba(255,255,255,.4)";ctx.font="10px Cairo";ctx.fillText("السيزموغراف",5,H*.25);
-    animFrame=requestAnimationFrame(draw);
-  }
-  eqUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   20. MULTIPLICATION
-══════════════════════════════════════════════ */
-function buildMultiplication(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">✖️ تعلّم الضرب بصرياً</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:300px"><canvas id="mlC" height="290"></canvas></div>
-    <div class="sim-panel">
-      <div class="ctrl-box">
-        <div class="ctrl-lbl">العدد الأول <span id="mlN1L">5</span></div>
-        <input type="range" id="mlN1" min="1" max="12" value="5" oninput="mlUpdate()">
-        <div class="ctrl-lbl" style="margin-top:10px">العدد الثاني <span id="mlN2L">3</span></div>
-        <input type="range" id="mlN2" min="1" max="12" value="3" oninput="mlUpdate()">
-      </div>
-      <div style="text-align:center;padding:16px;background:#0f172a;border-radius:12px;border:1px solid #1e3a5f">
-        <span id="mlEq1" style="font-size:2rem;font-weight:900;color:#ff9800">5</span>
-        <span style="font-size:1.5rem;color:#94a3b8"> × </span>
-        <span id="mlEq2" style="font-size:2rem;font-weight:900;color:#00d4ff">3</span>
-        <span style="font-size:1.5rem;color:#94a3b8"> = </span>
-        <span id="mlEqR" style="font-size:2rem;font-weight:900;color:#10b981">15</span>
-      </div>
-      <div class="info-card" id="mlDesc">5 صفوف × 3 أعمدة = 15 نقطة</div>
-      <div style="margin-top:10px;font-size:0.85rem;color:#94a3b8">جدول ضرب العدد <span id="mlTable" style="color:#ff9800"></span></div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("mlC",290),ctx=c.getContext("2d");
-  let n1=5,n2=3;
-  window.mlUpdate=()=>{
-    n1=+document.getElementById("mlN1").value;n2=+document.getElementById("mlN2").value;
-    document.getElementById("mlN1L").textContent=n1;document.getElementById("mlN2L").textContent=n2;
-    document.getElementById("mlEq1").textContent=n1;document.getElementById("mlEq2").textContent=n2;document.getElementById("mlEqR").textContent=n1*n2;
-    document.getElementById("mlDesc").textContent=`${n1} صفوف × ${n2} أعمدة = ${n1*n2} نقطة`;
-    let table="";for(let i=1;i<=10;i++)table+=`${n1}×${i}=${n1*i}  `;
-    document.getElementById("mlTable").textContent=n1;
-    draw();
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    if(!n1||!n2)return;
-    const pd=25,dw=(W-pd*2)/Math.max(n2,1),dh=(H-pd*2)/Math.max(n1,1);
-    const dr=Math.min(dw,dh)*.38;
-    for(let row=0;row<n1;row++)for(let col=0;col<n2;col++){
-      const x=pd+col*dw+dw/2,y=pd+row*dh+dh/2;
-      const hue=120+row*20+col*10;
-      const g=ctx.createRadialGradient(x,y,0,x,y,dr);
-      g.addColorStop(0,`hsl(${hue},90%,80%)`);g.addColorStop(1,`hsl(${hue},80%,35%)`);
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,dr,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle="rgba(255,255,255,.1)";ctx.lineWidth=1;ctx.stroke();
-    }
-    ctx.fillStyle="rgba(255,255,255,.4)";ctx.font="11px Cairo";
-    ctx.fillText(`${n1}×${n2}=${n1*n2}`,8,18);
-  }
-  mlUpdate();
-}
-
-/* ══════════════════════════════════════════════
-   21. SHAPES
-══════════════════════════════════════════════ */
-function buildShapes(el){
-  const shapeList=[
-    {id:"square",name:"مربع",info:(s)=>`المساحة: ${s*s} | المحيط: ${4*s}`},
-    {id:"rect",name:"مستطيل",info:(s)=>`المساحة: ${s*Math.round(s*.6)} | المحيط: ${2*(s+Math.round(s*.6))}`},
-    {id:"circle",name:"دائرة",info:(s)=>`المساحة: ${(Math.PI*(s/2)**2).toFixed(1)} | المحيط: ${(Math.PI*s).toFixed(1)}`},
-    {id:"triangle",name:"مثلث متساوٍ",info:(s)=>`المساحة: ${(Math.sqrt(3)/4*s*s).toFixed(1)} | المحيط: ${3*s}`},
-    {id:"rhombus",name:"معيّن",info:(s)=>`المحيط: ${4*s} | الزوايا: 60° و120°`},
-    {id:"pentagon",name:"خماسي",info:(s)=>`المحيط: ${5*Math.round(s*.6)} | الزوايا الداخلية: 108°`},
-    {id:"hexagon",name:"سداسي",info:(s)=>`المحيط: ${6*Math.round(s*.5)} | الزوايا: 120°`},
-    {id:"ellipse",name:"بيضاوي",info:(s)=>`المساحة ≈ ${(Math.PI*s/2*s*.35).toFixed(1)} | محور رئيسي: ${s}`},
-  ];
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">📐 الأشكال الهندسية</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:300px"><canvas id="shC" height="290"></canvas></div>
-    <div class="sim-panel">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px">
-        ${shapeList.map(s=>`<button class="sbtn" id="shBtn_${s.id}" onclick="shSet('${s.id}')" style="font-size:0.8rem;padding:9px">${s.name}</button>`).join("")}
-      </div>
-      <div class="ctrl-box">
-        <div class="ctrl-lbl">الحجم <span id="shSzL">100</span></div>
-        <input type="range" id="shSz" min="40" max="160" value="100" oninput="shUpdate()">
-      </div>
-      <div class="info-card" style="margin-top:10px" id="shInfo">اختر شكلاً</div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("shC",290),ctx=c.getContext("2d");
-  let shape2="square",sz2=100,rot7=0;
-  window.shSet=(s)=>{shape2=s;document.querySelectorAll("[id^=shBtn_]").forEach(b=>b.classList.remove("on"));document.getElementById("shBtn_"+s)?.classList.add("on");shUpdate();};
-  window.shUpdate=()=>{sz2=+document.getElementById("shSz").value;document.getElementById("shSzL").textContent=sz2;const sl=shapeList.find(x=>x.id===shape2);if(sl)document.getElementById("shInfo").innerHTML=`<b>${sl.name}</b><br>${sl.info(sz2)}`;};
-  shSet("square");
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H/2;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    rot7+=.007;
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(rot7)*.06);
-    const g=ctx.createLinearGradient(-sz2,-sz2,sz2,sz2);
-    g.addColorStop(0,"#ff9800");g.addColorStop(.5,"#f97316");g.addColorStop(1,"#ea580c");
-    ctx.fillStyle=g;ctx.strokeStyle="rgba(255,255,255,.35)";ctx.lineWidth=2;
-    ctx.shadowColor="#ff9800";ctx.shadowBlur=25;
-    const s=sz2;
-    if(shape2==="square"){ctx.beginPath();ctx.roundRect(-s/2,-s/2,s,s,5);ctx.fill();ctx.stroke();}
-    else if(shape2==="rect"){ctx.beginPath();ctx.roundRect(-s/2,-s*.3,s,s*.6,5);ctx.fill();ctx.stroke();}
-    else if(shape2==="circle"){ctx.beginPath();ctx.arc(0,0,s/2,0,Math.PI*2);ctx.fill();ctx.stroke();}
-    else if(shape2==="triangle"){ctx.beginPath();ctx.moveTo(0,-s*.55);ctx.lineTo(s*.5,s*.33);ctx.lineTo(-s*.5,s*.33);ctx.closePath();ctx.fill();ctx.stroke();}
-    else if(shape2==="rhombus"){ctx.beginPath();ctx.moveTo(0,-s*.5);ctx.lineTo(s*.35,0);ctx.lineTo(0,s*.5);ctx.lineTo(-s*.35,0);ctx.closePath();ctx.fill();ctx.stroke();}
-    else if(shape2==="pentagon"){ctx.beginPath();for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;ctx.lineTo(Math.cos(a)*s*.5,Math.sin(a)*s*.5);}ctx.closePath();ctx.fill();ctx.stroke();}
-    else if(shape2==="hexagon"){ctx.beginPath();for(let i=0;i<6;i++){const a=i*Math.PI/3;ctx.lineTo(Math.cos(a)*s*.5,Math.sin(a)*s*.5);}ctx.closePath();ctx.fill();ctx.stroke();}
-    else if(shape2==="ellipse"){ctx.beginPath();ctx.ellipse(0,0,s*.5,s*.3,0,0,Math.PI*2);ctx.fill();ctx.stroke();}
-    ctx.restore();ctx.shadowBlur=0;
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   22. FRACTIONS
-══════════════════════════════════════════════ */
-function buildFractions(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">½ الكسور والنسب</div>
-  <div class="sim-canvas-box" style="height:260px"><canvas id="frC" height="250"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
-    <div class="ctrl-box">
-      <div style="font-weight:700;margin-bottom:6px;color:#e2e8f0">الكسر الأول</div>
-      <div class="ctrl-lbl">البسط (a) <span id="frA1L">1</span></div>
-      <input type="range" id="frA1" min="1" max="10" value="1" oninput="frUpdate()">
-      <div class="ctrl-lbl" style="margin-top:8px">المقام (b) <span id="frB1L">2</span></div>
-      <input type="range" id="frB1" min="1" max="10" value="2" oninput="frUpdate()">
-    </div>
-    <div class="ctrl-box">
-      <div style="font-weight:700;margin-bottom:6px;color:#e2e8f0">الكسر الثاني</div>
-      <div class="ctrl-lbl">البسط (c) <span id="frA2L">1</span></div>
-      <input type="range" id="frA2" min="1" max="10" value="1" oninput="frUpdate()">
-      <div class="ctrl-lbl" style="margin-top:8px">المقام (d) <span id="frB2L">3</span></div>
-      <input type="range" id="frB2" min="1" max="10" value="3" oninput="frUpdate()">
-    </div>
-  </div>
-  <div class="info-row" style="margin-top:12px">
-    <div class="ibox"><div class="v" id="frF1">½</div><div class="l">الكسر الأول</div></div>
-    <div class="ibox"><div class="v" id="frComp">></div><div class="l">المقارنة</div></div>
-    <div class="ibox"><div class="v" id="frF2">⅓</div><div class="l">الكسر الثاني</div></div>
-    <div class="ibox"><div class="v" id="frSum">—</div><div class="l">المجموع</div></div>
-  </div>
-  </div>`;
-  const c=mkCanvas("frC",250),ctx=c.getContext("2d");
-  let a1=1,b1=2,a2=1,b2=3;
-  window.frUpdate=()=>{
-    a1=+document.getElementById("frA1").value;b1=+document.getElementById("frB1").value;
-    a2=+document.getElementById("frA2").value;b2=+document.getElementById("frB2").value;
-    document.getElementById("frA1L").textContent=a1;document.getElementById("frB1L").textContent=b1;
-    document.getElementById("frA2L").textContent=a2;document.getElementById("frB2L").textContent=b2;
-    document.getElementById("frF1").textContent=a1+"/"+b1;document.getElementById("frF2").textContent=a2+"/"+b2;
-    const v1=a1/b1,v2=a2/b2;
-    document.getElementById("frComp").textContent=v1>v2?">":(v1<v2?"<":"=");
-    const sumN=a1*b2+a2*b1,sumD=b1*b2,g=gcd(sumN,sumD);
-    document.getElementById("frSum").textContent=(sumN/g)+"/"+(sumD/g);
-    draw();
-  };
-  function gcd(a,b){return b===0?a:gcd(b,a%b);}
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    [[a1,b1,"#ff9800",W*.18],[a2,b2,"#00d4ff",W*.68]].forEach(([a,b,col,cx2])=>{
-      const r=Math.min(H*.38,W*.12);
-      // full circle
-      ctx.strokeStyle=col+"44";ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx2,H/2,r,0,Math.PI*2);ctx.stroke();
-      // filled slice
-      for(let i=0;i<a;i++){
-        const startA=-Math.PI/2+i*(Math.PI*2/b),endA=startA+(Math.PI*2/b);
-        const sg=ctx.createRadialGradient(cx2,H/2,0,cx2,H/2,r);
-        sg.addColorStop(0,col+"cc");sg.addColorStop(1,col+"55");
-        ctx.fillStyle=sg;ctx.beginPath();ctx.moveTo(cx2,H/2);ctx.arc(cx2,H/2,r,startA,endA);ctx.closePath();ctx.fill();
-        ctx.strokeStyle="rgba(0,0,0,.3)";ctx.lineWidth=1;ctx.stroke();
-      }
-      // dividers
-      for(let i=0;i<b;i++){const a3=-Math.PI/2+i*(Math.PI*2/b);ctx.strokeStyle="rgba(0,0,0,.4)";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(cx2,H/2);ctx.lineTo(cx2+Math.cos(a3)*r,H/2+Math.sin(a3)*r);ctx.stroke();}
-      // label
-      ctx.fillStyle=col;ctx.font="bold 16px Cairo";ctx.textAlign="center";
-      ctx.fillText(a+"/"+b,cx2,H*.88);
-      ctx.fillText((a/b*100).toFixed(0)+"%",cx2,H*.95);
-    });
-    ctx.textAlign="start";
-  }
-  frUpdate();
-}
-
-/* ══════════════════════════════════════════════
-   23. PROBABILITY
-══════════════════════════════════════════════ */
-function buildProbability(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🎲 الاحتمالات التجريبية</div>
-  <div class="sim-canvas-box" style="height:240px"><canvas id="pbC" height="230"></canvas></div>
-  <div class="sbtn-row" style="margin-top:14px">
-    <button class="sbtn on" id="pbMode" onclick="pbToggle()">نرد 🎲</button>
-    <button class="sbtn" onclick="pbRoll(1)">رمية واحدة</button>
-    <button class="sbtn" onclick="pbRoll(10)">10 رميات</button>
-    <button class="sbtn" onclick="pbRoll(100)">100 رمية</button>
-    <button class="sbtn red" onclick="pbReset()">مسح</button>
-  </div>
-  <div class="info-row" style="margin-top:10px" id="pbResults"></div>
-  <div class="info-card" style="margin-top:10px" id="pbInfo">قانون الأعداد الكبيرة: كلما زادت التجارب اقتربت النسب من الاحتمال النظري</div>
-  </div>`;
-  const c=mkCanvas("pbC",230),ctx=c.getContext("2d");
-  let mode3="dice",counts=[0,0,0,0,0,0],total=0,coinH=0,coinT=0;
-  window.pbToggle=()=>{mode3=mode3==="dice"?"coin":"dice";document.getElementById("pbMode").textContent=mode3==="dice"?"نرد 🎲":"عملة 🪙";pbReset();};
-  window.pbReset=()=>{counts=[0,0,0,0,0,0];total=0;coinH=0;coinT=0;draw();document.getElementById("pbResults").innerHTML="";};
-  window.pbRoll=(n)=>{
-    for(let i=0;i<n;i++){
-      if(mode3==="dice"){const r=Math.floor(Math.random()*6);counts[r]++;total++;}
-      else{Math.random()>.5?coinH++:coinT++;total++;}
-    }
-    const ri=document.getElementById("pbResults");
-    if(mode3==="dice"){ri.innerHTML=counts.map((v,i)=>`<div class="ibox"><div class="v" style="color:#ff9800">${v}</div><div class="l">${i+1} (${total?Math.round(v/total*100):0}%)</div></div>`).join("");}
-    else{ri.innerHTML=`<div class="ibox"><div class="v" style="color:#ff9800">${coinH}</div><div class="l">وجه (${total?Math.round(coinH/total*100):0}%)</div></div><div class="ibox"><div class="v" style="color:#00d4ff">${coinT}</div><div class="l">ظهر (${total?Math.round(coinT/total*100):0}%)</div></div>`;}
-    draw();
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    if(mode3==="dice"){
-      const pd=30,bw=(W-pd*2)/6,maxC=Math.max(...counts,1);
-      counts.forEach((v,i)=>{
-        const bh=(v/maxC)*(H-pd*2),bx=pd+i*bw;
-        const bg=ctx.createLinearGradient(bx,H-pd-bh,bx,H-pd);
-        bg.addColorStop(0,"#ff9800");bg.addColorStop(1,"#f97316");
-        ctx.fillStyle=bg;ctx.fillRect(bx+4,H-pd-bh,bw-8,bh);
-        ctx.fillStyle="rgba(255,255,255,.6)";ctx.font="bold 12px Cairo";ctx.textAlign="center";
-        ctx.fillText(i+1,bx+bw/2,H-pd+14);
-        if(v>0)ctx.fillText(v,bx+bw/2,H-pd-bh-5);
-        // theoretical line
-        const th=(total/6/maxC)*(H-pd*2);
-        ctx.strokeStyle="rgba(0,212,255,.5)";ctx.lineWidth=1;ctx.setLineDash([4,6]);
-        ctx.beginPath();ctx.moveTo(pd,H-pd-th);ctx.lineTo(W-pd,H-pd-th);ctx.stroke();ctx.setLineDash([]);
-      });
-    }else{
-      const tot=coinH+coinT||1;
-      [[coinH,"صورة","#ff9800",.25],[coinT,"ظهر","#00d4ff",.75]].forEach(([v,lbl,col,cx2])=>{
-        const ang=v/tot*Math.PI*2,r=H*.35;
-        const ga=ctx.createRadialGradient(W*cx2,H/2,0,W*cx2,H/2,r);
-        ga.addColorStop(0,col+"cc");ga.addColorStop(1,col+"44");
-        ctx.fillStyle=ga;ctx.beginPath();ctx.moveTo(W*cx2,H/2);ctx.arc(W*cx2,H/2,r,-Math.PI/2,-Math.PI/2+ang);ctx.closePath();ctx.fill();
-        ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();ctx.arc(W*cx2,H/2,r,0,Math.PI*2);ctx.stroke();
-        ctx.fillStyle=col;ctx.font="bold 13px Cairo";ctx.textAlign="center";ctx.fillText(lbl+" "+v,W*cx2,H*.85);ctx.fillText((v/tot*100).toFixed(1)+"%",W*cx2,H*.93);
-      });
-    }
-    ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   24. GRAPHING
-══════════════════════════════════════════════ */
-function buildGraphing(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">📈 رسم الدوال الرياضية</div>
-  <div class="sim-canvas-box" style="height:300px"><canvas id="grC" height="290"></canvas></div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div style="font-weight:700;margin-bottom:8px">اختر الدالة أو أدخلها:</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-      ${[["y=x","y=x"],["y=x²","y=x*x"],["y=x³","y=x*x*x"],["y=sin(x)","Math.sin(x)"],["y=cos(x)","Math.cos(x)"],["y=|x|","Math.abs(x)"],["y=√x","Math.sqrt(Math.abs(x))"],["y=1/x","1/x"]].map(([n,f])=>`<button class="sbtn" style="font-size:0.78rem;padding:7px 12px" onclick="grSetFn('${f}')">${n}</button>`).join("")}
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-      <div><div class="ctrl-lbl">a <span id="grAL">1</span></div><input type="range" id="grA" min="-5" max="5" step=".5" value="1" oninput="grUpdate()"></div>
-      <div><div class="ctrl-lbl">b <span id="grBL">0</span></div><input type="range" id="grB" min="-5" max="5" step=".5" value="0" oninput="grUpdate()"></div>
-      <div><div class="ctrl-lbl">c <span id="grCL">0</span></div><input type="range" id="grC2" min="-5" max="5" step=".5" value="0" oninput="grUpdate()"></div>
-    </div>
-  </div>
-  <div class="info-card" style="margin-top:10px" id="grInfo">اختر دالة أو غيّر معاملات a و b و c</div>
-  </div>`;
-  const c=mkCanvas("grC",290),ctx=c.getContext("2d");
-  let fn="x",a=1,b2=0,c2b=0;
-  window.grSetFn=(f)=>{fn=f;grUpdate();};
-  window.grUpdate=()=>{
-    a=+document.getElementById("grA").value;b2=+document.getElementById("grB").value;c2b=+document.getElementById("grC2").value;
-    document.getElementById("grAL").textContent=a;document.getElementById("grBL").textContent=b2;document.getElementById("grCL").textContent=c2b;
-    draw();
-  };
-  function eval2(x){try{return eval(fn.replace(/x/g,`(${x})`))*a+b2*x+c2b;}catch{return NaN;}}
-  function draw(){
-    const W=c.width,H=c.height,cx=W/2,cy=H/2,scale=30;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    // grid
-    ctx.strokeStyle="rgba(255,255,255,.05)";ctx.lineWidth=1;
-    for(let gx=-W/2;gx<=W/2;gx+=scale){ctx.beginPath();ctx.moveTo(cx+gx,0);ctx.lineTo(cx+gx,H);ctx.stroke();}
-    for(let gy=-H/2;gy<=H/2;gy+=scale){ctx.beginPath();ctx.moveTo(0,cy+gy);ctx.lineTo(W,cy+gy);ctx.stroke();}
-    // axes
-    ctx.strokeStyle="rgba(255,255,255,.3)";ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(0,cy);ctx.lineTo(W,cy);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,H);ctx.stroke();
-    ctx.fillStyle="rgba(255,255,255,.4)";ctx.font="10px Cairo";ctx.fillText("x",W-12,cy-6);ctx.fillText("y",cx+6,10);
-    // axis labels
-    for(let i=-5;i<=5;i++){if(i===0)continue;ctx.fillStyle="rgba(255,255,255,.3)";ctx.font="9px Cairo";ctx.textAlign="center";ctx.fillText(i,cx+i*scale,cy+12);ctx.fillText(-i,cx-4,cy+i*scale+3);}
-    // function curve
-    ctx.strokeStyle="#ff9800";ctx.lineWidth=2.5;ctx.shadowColor="#ff9800";ctx.shadowBlur=8;
-    ctx.beginPath();let first=true;
-    for(let px=0;px<=W;px++){
-      const x=(px-cx)/scale;const y=eval2(x);
-      if(isNaN(y)||!isFinite(y)||Math.abs(y)>20){first=true;continue;}
-      const sy=cy-y*scale;
-      if(first){ctx.moveTo(px,sy);first=false;}else ctx.lineTo(px,sy);
-    }
-    ctx.stroke();ctx.shadowBlur=0;ctx.textAlign="start";
-  }
-  grSetFn("x");
-}
-
-/* ══════════════════════════════════════════════
-   25. SEQUENCES
-══════════════════════════════════════════════ */
-function buildSequences(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🔢 المتتاليات والأنماط</div>
-  <div class="sbtn-row">
-    <button class="sbtn on" onclick="sqSet('arith')">حسابية</button>
-    <button class="sbtn" onclick="sqSet('geo')">هندسية</button>
-    <button class="sbtn" onclick="sqSet('fib')">فيبوناتشي</button>
-    <button class="sbtn" onclick="sqSet('square')">مربعات</button>
-    <button class="sbtn" onclick="sqSet('prime')">أعداد أولية</button>
-  </div>
-  <div class="sim-canvas-box" style="height:220px;margin-top:14px"><canvas id="sqC" height="210"></canvas></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px" id="sqCtrls"></div>
-  <div class="info-card" style="margin-top:12px" id="sqInfo"></div>
-  <div style="background:#0f172a;border:1px solid #1e3a5f;border-radius:12px;padding:14px;margin-top:10px;font-size:0.9rem;font-family:monospace;color:#ff9800;word-break:break-all" id="sqTerms"></div>
-  </div>`;
-  const c=mkCanvas("sqC",210),ctx=c.getContext("2d");
-  let sqType="arith",sqA=1,sqD=2,sqR=2;
-  function getSeq(){
-    if(sqType==="arith")return Array.from({length:12},(_,i)=>sqA+i*sqD);
-    if(sqType==="geo")return Array.from({length:10},(_,i)=>sqA*Math.pow(sqR,i));
-    if(sqType==="fib"){let s=[1,1];for(let i=2;i<12;i++)s.push(s[i-1]+s[i-2]);return s;}
-    if(sqType==="square")return Array.from({length:12},(_,i)=>(i+1)*(i+1));
-    if(sqType==="prime"){const p=[];let n=2;while(p.length<12){let ok=true;for(let f=2;f<=Math.sqrt(n);f++)if(n%f===0){ok=false;break;}if(ok)p.push(n);n++;}return p;}
-    return [];
-  }
-  window.sqSet=(t)=>{
-    sqType=t;
-    const ctrls={
-      arith:`<div class="ctrl-box"><div class="ctrl-lbl">الحد الأول a <span id="sqAL">1</span></div><input type="range" id="sqA" min="-10" max="20" value="1" oninput="sqUpdate()"></div><div class="ctrl-box"><div class="ctrl-lbl">الأساس d <span id="sqDL">2</span></div><input type="range" id="sqD" min="-10" max="20" value="2" oninput="sqUpdate()"></div>`,
-      geo:`<div class="ctrl-box"><div class="ctrl-lbl">الحد الأول a <span id="sqAL">1</span></div><input type="range" id="sqA" min="1" max="10" value="1" oninput="sqUpdate()"></div><div class="ctrl-box"><div class="ctrl-lbl">الأساس r <span id="sqRL">2</span></div><input type="range" id="sqR" min="1" max="5" step=".5" value="2" oninput="sqUpdate()"></div>`,
-      fib:"",square:"",prime:""
-    };
-    document.getElementById("sqCtrls").innerHTML=ctrls[t]||"";
-    const infos={arith:"a_n = a₁ + (n-1)×d",geo:"a_n = a₁ × rⁿ⁻¹",fib:"F_n = F_{n-1} + F_{n-2}",square:"a_n = n²",prime:"أعداد لا تقبل القسمة إلا على 1 وعلى نفسها"};
-    document.getElementById("sqInfo").textContent=infos[t];
-    sqUpdate();
-  };
-  window.sqUpdate=()=>{
-    if(document.getElementById("sqA"))sqA=+document.getElementById("sqA").value;
-    if(document.getElementById("sqD"))sqD=+document.getElementById("sqD").value;if(document.getElementById("sqAL"))document.getElementById("sqAL").textContent=sqA;if(document.getElementById("sqDL"))document.getElementById("sqDL").textContent=sqD;
-    if(document.getElementById("sqR"))sqR=+document.getElementById("sqR").value;if(document.getElementById("sqRL"))document.getElementById("sqRL").textContent=sqR;
-    const seq=getSeq();
-    document.getElementById("sqTerms").textContent=seq.map((v,i)=>`a${i+1}=${typeof v==="number"&&v>1e6?v.toExponential(1):v}`).join(" , ");
-    draw();
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    const seq=getSeq();
-    if(!seq.length)return;
-    const min2=Math.min(...seq.filter(v=>v<Infinity)),max2=Math.max(...seq.filter(v=>v<Infinity));
-    const rng=max2-min2||1;
-    const pd=30,w=(W-pd*2)/seq.length;
-    seq.forEach((v,i)=>{
-      if(!isFinite(v))return;
-      const bh=((v-min2)/rng)*(H-pd*2);
-      const bx=pd+i*w;
-      const bg=ctx.createLinearGradient(bx,H-pd-bh,bx,H-pd);
-      bg.addColorStop(0,"#ff9800");bg.addColorStop(1,"#f97316");
-      ctx.fillStyle=bg;ctx.fillRect(bx+2,H-pd-bh,w-4,bh);
-      ctx.fillStyle="rgba(255,255,255,.6)";ctx.font="9px Cairo";ctx.textAlign="center";
-      if(i<10)ctx.fillText(v>999?v.toExponential(0):v,bx+w/2,H-pd-bh-5);
-    });
-    // line
-    ctx.strokeStyle="rgba(0,212,255,.5)";ctx.lineWidth=1.5;ctx.beginPath();
-    seq.forEach((v,i)=>{if(!isFinite(v))return;const x=pd+i*w+w/2,y=H-pd-((v-min2)/rng)*(H-pd*2);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.stroke();ctx.textAlign="start";
-  }
-  sqSet("arith");
-}
-
-/* ══════════════════════════════════════════════
-   26. LOOPS (PROGRAMMING)
-══════════════════════════════════════════════ */
-function buildLoops(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">💻 حلقة for — البرمجة</div>
-  <div class="sim-layout">
-    <div class="sim-canvas-box" style="height:320px"><canvas id="loC" height="310"></canvas></div>
-    <div class="sim-panel">
-      <div class="ctrl-box">
-        <div style="font-weight:700;color:#e2e8f0;margin-bottom:8px">برمجة حلقة for:</div>
-        <div style="background:#0f172a;border-radius:10px;padding:12px;font-family:monospace;font-size:0.88rem;color:#10b981;line-height:1.8">
-          <span style="color:#7c3aed">for</span> (<span style="color:#ff9800">i</span>=<span id="loStartD">0</span>; <span style="color:#ff9800">i</span>&lt;<span id="loEndD">5</span>; <span style="color:#ff9800">i</span>++) {<br>
-          &nbsp;&nbsp;<span id="loBodyD" style="color:#00d4ff">print(i)</span><br>
-          }
-        </div>
-        <div class="ctrl-lbl" style="margin-top:12px">البداية <span id="loStL">0</span></div>
-        <input type="range" id="loSt" min="0" max="5" value="0" oninput="loUpdate()">
-        <div class="ctrl-lbl" style="margin-top:8px">النهاية <span id="loEnL">5</span></div>
-        <input type="range" id="loEn" min="1" max="15" value="5" oninput="loUpdate()">
-        <div class="ctrl-lbl" style="margin-top:8px">الخطوة step <span id="loSpL">1</span></div>
-        <input type="range" id="loSp" min="1" max="5" value="1" oninput="loUpdate()">
-      </div>
-      <div class="sbtn-row">
-        <button class="sbtn on" onclick="loRun()">▶ تشغيل</button>
-        <button class="sbtn red" onclick="loReset()">↺</button>
-      </div>
-      <div class="info-card" id="loOutput" style="font-family:monospace;font-size:0.85rem;max-height:100px;overflow-y:auto"></div>
-    </div>
-  </div></div>`;
-  const c=mkCanvas("loC",310),ctx=c.getContext("2d");
-  let loStart=0,loEnd=5,loStep=1,loRunning=false,loI=0,loDelay=0;
-  window.loUpdate=()=>{
-    loStart=+document.getElementById("loSt").value;loEnd=+document.getElementById("loEn").value;loStep=+document.getElementById("loSp").value;
-    document.getElementById("loStL").textContent=loStart;document.getElementById("loEnL").textContent=loEnd;document.getElementById("loSpL").textContent=loStep;
-    document.getElementById("loStartD").textContent=loStart;document.getElementById("loEndD").textContent=loEnd;
-    loReset();
-  };
-  window.loRun=()=>{loRunning=true;loI=loStart;document.getElementById("loOutput").textContent="";};
-  window.loReset=()=>{loRunning=false;loI=loStart;document.getElementById("loOutput").textContent="";};
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    if(loRunning){loDelay++;if(loDelay%18===0){
-      if(loI<loEnd){
-        document.getElementById("loOutput").textContent+="i = "+loI+"\n";
-        document.getElementById("loOutput").scrollTop=9999;
-        loI+=loStep;
-      }else{loRunning=false;}
-    }}
-    // visual: draw circles for each iteration done
-    const total=Math.ceil((loEnd-loStart)/loStep);
-    const done=Math.ceil((loI-loStart)/loStep);
-    const cols=Math.ceil(Math.sqrt(total));
-    const sz=Math.min((W-40)/cols,35);
-    for(let idx=0;idx<total;idx++){
-      const col=idx%cols,row=Math.floor(idx/cols);
-      const x=20+col*sz+sz/2,y=20+row*sz+sz/2,val=loStart+idx*loStep;
-      const isDone=idx<done;
-      ctx.fillStyle=isDone?"rgba(255,152,0,.8)":"rgba(30,58,138,.4)";
-      ctx.strokeStyle=isDone?"#ff9800":"rgba(255,255,255,.2)";
-      ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,sz*.4,0,Math.PI*2);ctx.fill();ctx.stroke();
-      ctx.fillStyle=isDone?"#fff":"rgba(255,255,255,.4)";ctx.font=`${sz*.3}px Cairo`;ctx.textAlign="center";ctx.textBaseline="middle";
-      ctx.fillText(val,x,y);
-    }
-    ctx.textAlign="start";ctx.textBaseline="alphabetic";
-    // progress bar
-    ctx.fillStyle="#1e3a5f";ctx.fillRect(20,H-25,W-40,10);
-    ctx.fillStyle="#ff9800";ctx.fillRect(20,H-25,(W-40)*(done/Math.max(total,1)),10);
-    ctx.font="11px Cairo";ctx.fillStyle="rgba(255,255,255,.5)";ctx.fillText(`التكرار: ${done} / ${total}`,20,H-8);
-    animFrame=requestAnimationFrame(draw);
-  }
-  loUpdate();draw();
-}
-
-/* ══════════════════════════════════════════════
-   27. SORTING
-══════════════════════════════════════════════ */
-function buildSorting(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">🔀 خوارزمية الفرز (Bubble Sort)</div>
-  <div class="sim-canvas-box" style="height:280px"><canvas id="bsC" height="270"></canvas></div>
-  <div class="sbtn-row" style="margin-top:14px">
-    <button class="sbtn on" onclick="bsStart()">▶ ابدأ الفرز</button>
-    <button class="sbtn" onclick="bsShuffle()">🔀 اخلط</button>
-    <button class="sbtn red" onclick="bsReset()">↺</button>
-  </div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div class="ctrl-lbl">عدد العناصر <span id="bsSzL">12</span></div>
-    <input type="range" id="bsSz" min="5" max="25" value="12" oninput="bsSzUpdate()">
-    <div class="ctrl-lbl" style="margin-top:8px">السرعة <span id="bsSpL">متوسط</span></div>
-    <input type="range" id="bsSp" min="1" max="10" value="5" oninput="bsSpUpdate()">
-  </div>
-  <div class="info-row" style="margin-top:10px">
-    <div class="ibox"><div class="v" id="bsSwaps">0</div><div class="l">التبادلات</div></div>
-    <div class="ibox"><div class="v" id="bsComps">0</div><div class="l">المقارنات</div></div>
-    <div class="ibox"><div class="v" id="bsStatus">—</div><div class="l">الحالة</div></div>
-  </div></div>`;
-  const c=mkCanvas("bsC",270),ctx=c.getContext("2d");
-  let arr=[],n=12,sorting=false,si=0,sj=0,swaps=0,comps=0,speed3=5,done2=false,delay2=0;
-  function init(){arr=Array.from({length:n},(_,i)=>Math.floor(Math.random()*90)+10);si=0;sj=0;swaps=0;comps=0;done2=false;document.getElementById("bsSwaps").textContent=0;document.getElementById("bsComps").textContent=0;document.getElementById("bsStatus").textContent="جاهز";}
-  window.bsStart=()=>{sorting=true;document.getElementById("bsStatus").textContent="يفرز...";};
-  window.bsShuffle=()=>{sorting=false;init();};
-  window.bsReset=()=>{sorting=false;init();};
-  window.bsSzUpdate=()=>{n=+document.getElementById("bsSz").value;document.getElementById("bsSzL").textContent=n;init();};
-  window.bsSpUpdate=()=>{speed3=+document.getElementById("bsSp").value;const spLbl=speed3<4?"بطيء":speed3<7?"متوسط":"سريع";document.getElementById("bsSpL").textContent=spLbl;};
-  init();
-  function step(){
-    if(!sorting||done2)return;
-    delay2++;if(delay2<11-speed3)return;delay2=0;
-    if(si<n-1){
-      comps++;document.getElementById("bsComps").textContent=comps;
-      if(arr[sj]>arr[sj+1]){[arr[sj],arr[sj+1]]=[arr[sj+1],arr[sj]];swaps++;document.getElementById("bsSwaps").textContent=swaps;}
-      sj++;
-      if(sj>=n-1-si){sj=0;si++;}
-    }else{done2=true;sorting=false;document.getElementById("bsStatus").textContent="✅ مرتّب!";}
-  }
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    step();
-    const pd=20,bw=(W-pd*2)/arr.length;
-    arr.forEach((v,i)=>{
-      const bh=(v/100)*(H-pd*2);
-      const isA=i===sj,isB=i===sj+1;
-      const col=done2?"#10b981":isA||isB?"#ff9800":"#2a5298";
-      const bg=ctx.createLinearGradient(pd+i*bw,H-pd-bh,pd+i*bw,H-pd);
-      bg.addColorStop(0,col);bg.addColorStop(1,col+"88");
-      ctx.fillStyle=bg;ctx.fillRect(pd+i*bw+2,H-pd-bh,bw-4,bh);
-      if(isA||isB){ctx.strokeStyle="#ff9800";ctx.lineWidth=1.5;ctx.strokeRect(pd+i*bw+2,H-pd-bh,bw-4,bh);}
-      if(bw>20){ctx.fillStyle="rgba(255,255,255,.6)";ctx.font="9px Cairo";ctx.textAlign="center";ctx.fillText(v,pd+i*bw+bw/2,H-pd+12);}
-    });
-    ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  draw();
-}
-
-/* ══════════════════════════════════════════════
-   28. BINARY
-══════════════════════════════════════════════ */
-function buildBinary(el){
-  el.innerHTML=`<div class="sim-wrap">
-  <div class="sim-h">01 البيانات الثنائية (Binary)</div>
-  <div class="sim-canvas-box" style="height:220px"><canvas id="bnC" height="210"></canvas></div>
-  <div class="ctrl-box" style="margin-top:12px">
-    <div class="ctrl-lbl">الرقم العشري (Decimal) <span id="bnDL">42</span></div>
-    <input type="range" id="bnD" min="0" max="255" value="42" oninput="bnUpdate()">
-  </div>
-  <div class="info-row" style="margin-top:12px">
-    <div class="ibox"><div class="v" id="bnDec">42</div><div class="l">عشري (Dec)</div></div>
-    <div class="ibox"><div class="v" id="bnBin" style="font-size:1rem">00101010</div><div class="l">ثنائي (Bin)</div></div>
-    <div class="ibox"><div class="v" id="bnHex">2A</div><div class="l">سداسي (Hex)</div></div>
-    <div class="ibox"><div class="v" id="bnOct">52</div><div class="l">ثماني (Oct)</div></div>
-  </div>
-  <div style="margin-top:14px">
-    <div style="font-weight:700;color:#e2e8f0;margin-bottom:8px">انقر على البتات لتبديلها يدوياً:</div>
-    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap" id="bnBits"></div>
-  </div>
-  <div class="info-card" style="margin-top:12px">البيانات في الكمبيوتر تُمثَّل بصورة 0 و1 فقط. كل خانة (bit) تمثل قوة من قوى 2.</div>
-  </div>`;
-  const c=mkCanvas("bnC",210),ctx=c.getContext("2d");
-  let dec=42;
-  window.bnUpdate=()=>{dec=+document.getElementById("bnD").value;document.getElementById("bnDL").textContent=dec;bnRefresh();};
-  function bnRefresh(){
-    document.getElementById("bnDec").textContent=dec;
-    document.getElementById("bnBin").textContent=dec.toString(2).padStart(8,"0");
-    document.getElementById("bnHex").textContent=dec.toString(16).toUpperCase();
-    document.getElementById("bnOct").textContent=dec.toString(8);
-    // interactive bits
-    const bits=dec.toString(2).padStart(8,"0");
-    document.getElementById("bnBits").innerHTML=bits.split("").map((b,i)=>{
-      const pow=Math.pow(2,7-i);
-      return`<div onclick="bnToggle(${i})" style="width:52px;height:60px;background:${b==="1"?"rgba(255,152,0,.2)":"rgba(30,58,138,.2)"};border:2px solid ${b==="1"?"#ff9800":"#1e3a5f"};border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.2s">
-        <div style="font-size:1.2rem;font-weight:900;color:${b==="1"?"#ff9800":"#94a3b8"}">${b}</div>
-        <div style="font-size:0.65rem;color:#64748b">2^${7-i}</div>
-        <div style="font-size:0.65rem;color:#64748b">${pow}</div>
-      </div>`;}).join("");
-    draw();
-  }
-  window.bnToggle=(i)=>{
-    const bits=dec.toString(2).padStart(8,"0").split("");
-    bits[i]=bits[i]==="1"?"0":"1";
-    dec=parseInt(bits.join(""),2);
-    document.getElementById("bnD").value=dec;document.getElementById("bnDL").textContent=dec;
-    bnRefresh();
-  };
-  function draw(){
-    const W=c.width,H=c.height;
-    ctx.clearRect(0,0,W,H);ctx.fillStyle="#060d1a";ctx.fillRect(0,0,W,H);
-    const bits=dec.toString(2).padStart(8,"0");
-    const bw=(W-40)/8,by=H*.25;
-    bits.split("").forEach((b,i)=>{
-      const bx=20+i*bw;const isOne=b==="1";
-      const bg=ctx.createLinearGradient(bx,by-30,bx,by+30);
-      bg.addColorStop(0,isOne?"#ff9800":"#1e3a5f");bg.addColorStop(1,isOne?"#f97316":"#0f172a");
-      ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(bx+3,by-25,bw-6,50,6);ctx.fill();
-      ctx.strokeStyle=isOne?"#ff9800":"rgba(255,255,255,.1)";ctx.lineWidth=1.5;ctx.stroke();
-      ctx.fillStyle=isOne?"#fff":"#64748b";ctx.font=`bold ${Math.min(bw*.6,22)}px monospace`;ctx.textAlign="center";
-      ctx.fillText(b,bx+bw/2,by+7);
-      ctx.fillStyle="rgba(255,255,255,.4)";ctx.font="9px Cairo";
-      ctx.fillText("2^"+(7-i),bx+bw/2,by+35);
-    });
-    // value display
-    ctx.font="bold 20px Cairo";ctx.fillStyle="#ff9800";ctx.textAlign="center";
-    ctx.fillText(dec+" = "+bits,W/2,H-15);
-    ctx.textAlign="start";
-    animFrame=requestAnimationFrame(draw);
-  }
-  bnRefresh();
-}
-
-renderCards();
+updateGrid();
 </script>
 </body>
 </html>

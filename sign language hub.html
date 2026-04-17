@@ -296,39 +296,93 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;b
 <!-- OVERLAY -->
 <div id="OVERLAY" onclick="toggleMenu()"></div>
 
-<!-- SIDE NAV -->
-<div id="SIDENAV">
-  <div class="sn-deco"></div>
-  <div class="sn-body">
-    <div class="sn-top">
-      <div class="sn-logo-txt">SITAJ</div>
-      <div class="sn-x" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
+    <div class="sn-head">
+        <h2>القائمة</h2>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
-    <a href="profile.html" class="sn-profile">
-      <div class="sn-av"><i class="fas fa-user"></i></div>
-      <div class="sn-info"><h3 id="sideUser">ملفك الشخصي</h3><p>عرض وتعديل البيانات</p></div>
-    </a>
-    <div class="sn-label">القائمة الرئيسية</div>
-    <ul class="sn-ul">
-      <li class="sn-li"><a href="index.html" class="sn-a"><span>الصفحة الرئيسية</span><div class="ic"><i class="fas fa-home"></i></div></a></li>
-      <li class="sn-li"><a href="videos.html" class="sn-a"><span>الفيديوهات التعليمية</span><div class="ic"><i class="fas fa-play-circle"></i></div></a></li>
-      <li class="sn-li"><a href="articals.html" class="sn-a"><span>المقالات الحصرية</span><div class="ic"><i class="fas fa-feather-alt"></i></div></a></li>
-      <li class="sn-li"><a href="games.html" class="sn-a"><span>ساحة الألعاب</span><div class="ic"><i class="fas fa-chess"></i></div></a></li>
-      <li class="sn-li"><a href="exams.html" class="sn-a"><span>مركز الاختبارات</span><div class="ic"><i class="fas fa-pen-fancy"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li active"><a href="sign language hub.html" class="sn-a"><span>مركز لغة الإشارة</span><div class="ic"><i class="fas fa-hands"></i></div></a></li>
-      <li class="sn-li"><a href="masarat.html" class="sn-a"><span>هندسة المسارات</span><div class="ic"><i class="fas fa-road"></i></div></a></li>
-      <li class="sn-li"><a href="quraan.html" class="sn-a"><span>إسلاميات</span><div class="ic"><i class="fas fa-book-quran"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li"><a href="partys.html" class="sn-a"><span>الغرف الصوتية</span><div class="ic"><i class="fas fa-microphone-alt"></i></div></a></li>
-      <li class="sn-li"><a href="questions.html" class="sn-a"><span>الاستفسارات</span><div class="ic"><i class="fas fa-comment-dots"></i></div></a></li>
-      <li class="sn-li"><a href="AI.html" class="sn-a"><span>المساعد الذكي</span><div class="ic"><i class="fas fa-robot"></i></div></a></li>
-      <li class="sn-li"><a href="family.html" class="sn-a"><span>الرقابة الأبوية</span><div class="ic"><i class="fas fa-users"></i></div></a></li>
-      <li class="sn-li"><a href="support.html" class="sn-a"><span>الشركاء والرعاة</span><div class="ic"><i class="fas fa-handshake"></i></div></a></li>
-      <div class="sn-hr"></div>
-      <li class="sn-li out"><a href="#" class="sn-a" onclick="doLogout()"><span>تسجيل خروج</span><div class="ic"><i class="fas fa-power-off"></i></div></a></li>
+
+    <div class="sn-user">
+        <div class="sn-avatar" id="snAvatar">👤</div>
+        <div>
+            <div class="sn-uname" id="snUserName">مرحباً بك</div>
+            <div class="sn-urole" id="snUserRole">زائر</div>
+        </div>
+    </div>
+
+    <ul class="sn-links">
+        <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+        <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
+        <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+        <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+
+        <li id="dashDivider" style="display:none;">
+            <div class="dash-divider"></div>
+            <div class="dash-section-label">لوحات التحكم</div>
+        </li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
+            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
+        </li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin">
+            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
+        </li>
     </ul>
-  </div>
+
+    <div style="margin-top:12px;">
+        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
+            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
+        </div>
+        <div class="sn-settings-panel" id="snSettingsPanel">
+            <div class="sn-settings-inner">
+                <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
+                <div class="sn-theme-row">
+                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+                        <div class="sn-t-preview sn-t-light"></div>
+                        <div class="sn-t-label">فاتح</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+                        <div class="sn-t-preview sn-t-dark"></div>
+                        <div class="sn-t-label">داكن</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                </div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
+                <div class="sn-g-row">
+                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')"><span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')"><span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')"><span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                </div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
+                <div>
+                    <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)">
+                    <div class="sn-font-labels">
+                        <span onclick="snSetFont(0)" data-idx="0">S</span>
+                        <span onclick="snSetFont(1)" data-idx="1">M</span>
+                        <span onclick="snSetFont(2)" data-idx="2">L</span>
+                        <span onclick="snSetFont(3)" data-idx="3">XL</span>
+                    </div>
+                </div>
+                <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+
+    <ul class="sn-links sn-logout" style="margin-top:16px;">
+        <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+    </ul>
 </div>
 
 <!-- NAVBAR -->

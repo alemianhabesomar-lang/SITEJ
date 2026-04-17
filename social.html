@@ -100,7 +100,73 @@
             background: var(--gold-gradient); color: black; border: none;
             padding: 8px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
         }
-    </style>
+    
+/* ══ UNIVERSAL WHITE HEADER ══ */
+nav.top-bar, header.top-bar, header#navbar, header#header, nav#navbar, header {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    border-bottom: 2px solid rgba(74,144,226,0.25) !important;
+    box-shadow: 0 2px 20px rgba(26,41,66,0.10) !important;
+}
+nav.top-bar.scrolled, header.top-bar.scrolled, header#navbar.scrolled, header#header.scrolled {
+    background: #ffffff !important;
+    border-bottom: 2px solid #4a90e2 !important;
+    box-shadow: 0 4px 30px rgba(26,41,66,0.14) !important;
+}
+/* Logo on right side of header */
+.logo-school-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    gap: 4px;
+}
+.logo-school-name {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4a90e2;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    font-family: 'Cairo','Tajawal',sans-serif;
+}
+/* Sign out hidden when not logged in */
+.sn-logout-item { display: none; }
+body.user-logged-in .sn-logout-item { display: block; }
+
+
+/* ══ SIDENAV FROM LEFT ══ */
+.sidenav, .side-nav, #snDrawer {
+    right: auto !important;
+    left: -430px !important;
+    border-inline-start: none !important;
+    border-inline-end: none !important;
+    border-right: 3px solid #4a90e2 !important;
+    border-left: none !important;
+    box-shadow: 12px 0 50px rgba(26,41,66,0.15) !important;
+    transition: left 0.55s cubic-bezier(0.68,-0.55,0.265,1.55) !important;
+}
+.sidenav.show, .side-nav.active, #snDrawer.show {
+    left: 0 !important;
+    right: auto !important;
+}
+/* Links in sidenav: hover moves right (LTR direction) */
+.sn-links a:hover, .side-nav a:hover {
+    transform: translateX(8px) !important;
+}
+.sn-links a::before, .side-nav a::before {
+    transform: translateX(-110%) !important;
+}
+.sn-links a:hover::before, .side-nav a:hover::before {
+    transform: translateX(0) !important;
+}
+/* Sidenav on mobile */
+@media(max-width:768px){
+    .sidenav,.side-nav,#snDrawer{width:100% !important;left:-100% !important;}
+    .sidenav.show,.side-nav.active,#snDrawer.show{left:0 !important;}
+}
+/* snOpen/snClose JS patching done in script below */
+
+</style>
 </head>
 <body>
 
@@ -237,5 +303,75 @@
         });
     });
 </script>
+
+<script>
+// Patch sidenav to open from LEFT
+(function(){
+    var _origSnOpen = window.snOpen;
+    var _origSnClose = window.snClose;
+    var _origSnToggle = window.snToggle;
+    
+    function patchSn(){
+        var d = document.getElementById('snDrawer') || document.getElementById('sideNav') || document.querySelector('.side-nav') || document.querySelector('.sidenav');
+        if(!d) return;
+        // Remove right classes, use left
+        d.style.right = 'auto';
+        if(d.classList.contains('show') || d.classList.contains('active')){
+            d.style.left = '0';
+        } else {
+            d.style.left = '-430px';
+        }
+    }
+    
+    var orig_snClose = window.snClose;
+    window.snClose = function(){
+        if(orig_snClose) orig_snClose();
+        // ensure left-based
+        var d = document.getElementById('snDrawer');
+        if(d){ d.style.right='auto'; }
+    };
+    
+    document.addEventListener('DOMContentLoaded', patchSn);
+})();
+</script>
+
+
+<script>
+// Check login state and show/hide logout
+(function(){
+    // Check multiple possible auth signals
+    var isLoggedIn = false;
+    try {
+        if(localStorage.getItem('eliteUser') || localStorage.getItem('userToken') || 
+           localStorage.getItem('uid') || sessionStorage.getItem('uid') ||
+           sessionStorage.getItem('eliteUser')) {
+            isLoggedIn = true;
+        }
+    } catch(e){}
+    
+    // Also check Firebase auth state if available
+    if(typeof firebase !== 'undefined' && firebase.auth && firebase.auth().currentUser) {
+        isLoggedIn = true;
+    }
+    
+    if(isLoggedIn) {
+        document.body.classList.add('user-logged-in');
+    }
+    
+    // Listen for Firebase auth changes
+    document.addEventListener('DOMContentLoaded', function(){
+        if(typeof firebase !== 'undefined' && firebase.auth) {
+            firebase.auth().onAuthStateChanged(function(user){
+                if(user) {
+                    document.body.classList.add('user-logged-in');
+                } else {
+                    document.body.classList.remove('user-logged-in');
+                }
+            });
+        }
+    });
+})();
+</script>
+
 </body>
 </html>

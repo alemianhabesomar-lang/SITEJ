@@ -380,66 +380,94 @@
 
 <div class="sn-overlay" id="snOverlay" onclick="snClose()" aria-hidden="true"></div>
 
-<!-- SIDENAV - تفتح من الشمال -->
-<nav class="sidenav" id="snDrawer" aria-label="القائمة الجانبية" aria-hidden="true">
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
+<div class="sidenav" id="snDrawer">
     <div class="sn-head">
         <h2>القائمة</h2>
-        <button class="sn-close" onclick="snClose()" aria-label="إغلاق القائمة"><i class="fas fa-times" aria-hidden="true"></i></button>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
-    <div class="sn-user" aria-label="معلومات المستخدم">
-        <div class="sn-avatar" aria-hidden="true">👤</div>
-        <div><div class="sn-uname">مرحباً بك</div><div class="sn-urole">طالب متميز</div></div>
+
+    <div class="sn-user">
+        <div class="sn-avatar" id="snAvatar">👤</div>
+        <div>
+            <div class="sn-uname" id="snUserName">مرحباً بك</div>
+            <div class="sn-urole" id="snUserRole">زائر</div>
+        </div>
     </div>
-    <ul class="sn-links" role="list">
-        <li role="listitem"><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i><span>الصفحة الرئيسية</span></a></li>
-        <li role="listitem"><a href="videos.html"><i class="fas fa-play-circle" aria-hidden="true"></i><span>الفيديوهات</span></a></li>
-        <li role="listitem"><a href="articals.html" aria-current="page"><i class="fas fa-feather-alt" aria-hidden="true"></i><span>المقالات</span></a></li>
-        <li role="listitem"><a href="lab.html"><i class="fas fa-comment-dots" aria-hidden="true"></i><span>مختبر العلوم</span></a></li>
-        <li role="listitem"><a href="games.html"><i class="fas fa-chess" aria-hidden="true"></i><span>الألعاب</span></a></li>
-        <li role="listitem"><a href="exams.html"><i class="fas fa-pen-fancy" aria-hidden="true"></i><span>الاختبارات</span></a></li>
-        <li role="listitem"><a href="sign_language_hub.html"><i class="fas fa-hands" aria-hidden="true"></i><span>لغة الإشارة</span></a></li>
-        <li role="listitem"><a href="quraan.html"><i class="fas fa-book-quran" aria-hidden="true"></i><span>اسلاميات</span></a></li>
-        <li role="listitem"><a href="partys.html"><i class="fas fa-microphone-alt" aria-hidden="true"></i><span>الغرف الصوتية</span></a></li>
-        <li role="listitem"><a href="questions.html"><i class="fas fa-comment-dots" aria-hidden="true"></i><span>الاستفسارات</span></a></li>
-        <li role="listitem"><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
-        <li role="listitem"><a href="family.html"><i class="fas fa-users" aria-hidden="true"></i><span>الرقابة الأبوية</span></a></li>
-        <li role="listitem"><a href="support.html"><i class="fas fa-headset" aria-hidden="true"></i><span>تعريف عن الراعي</span></a></li>
-        <li role="listitem"><a href="marks.html"><i class="fas fa-award" aria-hidden="true"></i><span>النتائج</span></a></li>
+
+    <ul class="sn-links">
+        <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
+        <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
+        <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
+        <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
+        <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
+        <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
+        <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
+        <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
+        <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+        <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
+        <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
+        <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
+        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+
+        <li id="dashDivider" style="display:none;">
+            <div class="dash-divider"></div>
+            <div class="dash-section-label">لوحات التحكم</div>
+        </li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
+            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
+        </li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin">
+            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
+        </li>
     </ul>
 
     <div style="margin-top:12px;">
-        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()" role="button" tabindex="0" aria-expanded="false" aria-controls="snSettingsPanel">
-            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h" aria-hidden="true"></i> الإعدادات</span>
-            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron" aria-hidden="true"></i>
+        <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
+            <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
+            <i class="fas fa-chevron-down sn-settings-chevron" id="snChevron"></i>
         </div>
         <div class="sn-settings-panel" id="snSettingsPanel">
             <div class="sn-settings-inner">
-                <div class="sn-s-label"><i class="fas fa-circle-half-stroke" aria-hidden="true"></i> المظهر</div>
+                <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
                 <div class="sn-theme-row">
-                    <div class="sn-t-opt sel" id="sn-th-light" onclick="snPickTheme('light')" role="radio" aria-checked="true"><div class="sn-t-preview sn-t-light"></div><div class="sn-t-label">فاتح</div><div class="sn-t-check" aria-hidden="true"><i class="fas fa-check"></i></div></div>
-                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')" role="radio" aria-checked="false"><div class="sn-t-preview sn-t-dark"></div><div class="sn-t-label">داكن</div><div class="sn-t-check" aria-hidden="true"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
+                        <div class="sn-t-preview sn-t-light"></div>
+                        <div class="sn-t-label">فاتح</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
+                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
+                        <div class="sn-t-preview sn-t-dark"></div>
+                        <div class="sn-t-label">داكن</div>
+                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
+                    </div>
                 </div>
-                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> الجرافيك</div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
                 <div class="sn-g-row">
-                    <div class="sn-g-opt sel" id="sn-gr-full" onclick="snPickGraphics('full')" role="radio" aria-checked="true"><span class="sn-g-icon" aria-hidden="true">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk" aria-hidden="true"><i class="fas fa-check"></i></div></div>
-                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')" role="radio" aria-checked="false"><span class="sn-g-icon" aria-hidden="true">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk" aria-hidden="true"><i class="fas fa-check"></i></div></div>
-                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')" role="radio" aria-checked="false"><span class="sn-g-icon" aria-hidden="true">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk" aria-hidden="true"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-full" onclick="snPickGraphics('full')"><span class="sn-g-icon">✨</span><div class="sn-g-name">كامل</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-reduced" onclick="snPickGraphics('reduced')"><span class="sn-g-icon">🌤</span><div class="sn-g-name">مخفف</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-g-opt" id="sn-gr-minimal" onclick="snPickGraphics('minimal')"><span class="sn-g-icon">⚡</span><div class="sn-g-name">بسيط</div><div class="sn-g-chk"><i class="fas fa-check"></i></div></div>
                 </div>
-                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height" aria-hidden="true"></i> حجم الخط</div>
+                <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
                 <div>
-                    <label for="snFontSlider" class="sr-only">حجم الخط</label>
-                    <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)" aria-label="ضبط حجم الخط">
-                    <div class="sn-font-labels" aria-hidden="true">
+                    <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)">
+                    <div class="sn-font-labels">
                         <span onclick="snSetFont(0)" data-idx="0">S</span>
-                        <span onclick="snSetFont(1)" data-idx="1" class="act">M</span>
+                        <span onclick="snSetFont(1)" data-idx="1">M</span>
                         <span onclick="snSetFont(2)" data-idx="2">L</span>
                         <span onclick="snSetFont(3)" data-idx="3">XL</span>
                     </div>
                 </div>
-                <button class="sn-save-btn" onclick="snSave()"><i class="fas fa-floppy-disk" aria-hidden="true"></i> حفظ الإعدادات</button>
+                <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
             </div>
         </div>
     </div>
+
+    <ul class="sn-links sn-logout" style="margin-top:16px;">
+        <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
+    </ul>
+</div>
 
     <ul class="sn-links sn-logout" style="margin-top:16px;" role="list">
         <li role="listitem"><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt" aria-hidden="true"></i><span>تسجيل الخروج</span></a></li>

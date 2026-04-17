@@ -305,36 +305,49 @@
 
 <div class="sn-overlay" id="snOverlay" onclick="snClose()"></div>
 
-<!-- SIDENAV - تفتح من الشمال -->
+<div class="overlay" id="snOverlay" onclick="snClose()"></div>
 <div class="sidenav" id="snDrawer">
     <div class="sn-head">
         <h2>القائمة</h2>
-        <button class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></button>
+        <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
+
     <div class="sn-user">
-        <div class="sn-avatar">👤</div>
+        <div class="sn-avatar" id="snAvatar">👤</div>
         <div>
-            <div class="sn-uname">مرحباً بك</div>
-            <div class="sn-urole">طالب متميز</div>
+            <div class="sn-uname" id="snUserName">مرحباً بك</div>
+            <div class="sn-urole" id="snUserRole">زائر</div>
         </div>
     </div>
+
     <ul class="sn-links">
         <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
         <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
         <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
+        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
         <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
         <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
         <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
         <li><a href="quraan.html"><i class="fas fa-book-quran"></i><span>اسلاميات</span></a></li>
         <li><a href="partys.html"><i class="fas fa-microphone-alt"></i><span>الغرف الصوتية</span></a></li>
         <li><a href="questions.html"><i class="fas fa-comment-dots"></i><span>الاستفسارات</span></a></li>
+        <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
         <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
         <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
-        <li><a href="settings.html"><i class="fas fa-sliders-h"></i><span>الإعدادات</span></a></li>
         <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
+
+        <li id="dashDivider" style="display:none;">
+            <div class="dash-divider"></div>
+            <div class="dash-section-label">لوحات التحكم</div>
+        </li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
+            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
+        </li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin">
+            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
+        </li>
     </ul>
 
-    <!-- SETTINGS TOGGLE -->
     <div style="margin-top:12px;">
         <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
             <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
@@ -371,7 +384,7 @@
                         <span onclick="snSetFont(3)" data-idx="3">XL</span>
                     </div>
                 </div>
-                <button class="sn-save-btn" onclick="snSave()"><i class="fas fa-floppy-disk"></i> حفظ الإعدادات</button>
+                <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChemLab 3D PRO — Advanced Reaction Simulator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050811;--panel:#0a1120cc;--border:#1e3a5f;--accent:#00d4ff;--accent2:#7b2fff;
+  --hot:#ff6b35;--cold:#4af;--text:#c8e6ff;--dim:#4a7fa5;--success:#00ff9d;--warn:#ffb800;
+  --danger:#ff3366;--glass:rgba(8,16,36,0.88);
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;height:100vh;width:100vw}
+#canvas-container{position:fixed;inset:0;z-index:0}
+canvas{display:block}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* PANELS */
+.panel{
+  position:fixed;background:var(--glass);
+  border:1px solid var(--border);
+  backdrop-filter:blur(24px);
+  border-radius:14px;z-index:10;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.panel-header{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  color:var(--accent);letter-spacing:2px;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;
+  user-select:none;
+}
+.panel-header::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 2s infinite;flex-shrink:0}
+.collapse-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:14px;padding:0 4px;transition:transform .3s}
+.panel.collapsed .panel-body{display:none}
+.panel.collapsed .collapse-btn{transform:rotate(180deg)}
+
+/* PERIODIC TABLE PANEL */
+#periodic-panel{left:12px;top:12px;width:340px;max-height:calc(100vh - 24px)}
+#periodic-panel .panel-body{padding:8px;overflow-y:auto;max-height:calc(100vh - 110px)}
+.period-row{display:flex;gap:2px;margin-bottom:2px}
+.elem-btn{
+  width:36px;height:36px;border-radius:5px;border:1px solid transparent;
+  font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:all .15s;position:relative;user-select:none;
+  background:rgba(10,25,50,0.8);color:var(--text);flex-shrink:0;
+}
+.elem-btn:hover{transform:scale(1.2);z-index:20;border-color:var(--accent);box-shadow:0 0 14px var(--accent)55}
+.elem-btn.selected{border-color:var(--success);box-shadow:0 0 10px var(--success)66}
+.elem-btn .sym{font-size:13px;font-weight:700;line-height:1}
+.elem-btn .num{font-size:7px;opacity:.6;line-height:1}
+.cat-alkali{background:rgba(100,20,150,.7);border-color:#7b2fff44}
+.cat-alkali-earth{background:rgba(0,80,160,.7);border-color:#00d4ff44}
+.cat-transition{background:rgba(0,60,100,.7);border-color:#0088cc44}
+.cat-post-trans{background:rgba(0,80,60,.7);border-color:#00ff9d44}
+.cat-metalloid{background:rgba(40,80,20,.7);border-color:#88cc0044}
+.cat-nonmetal{background:rgba(180,60,0,.7);border-color:#ff6b3544}
+.cat-noble{background:rgba(80,0,80,.7);border-color:#ff336644}
+.cat-halogen{background:rgba(0,100,80,.7);border-color:#00ffcc44}
+.cat-lanthan{background:rgba(60,40,0,.7);border-color:#ffb80044}
+.cat-actinide{background:rgba(60,10,10,.7);border-color:#ff337744}
+
+/* LEGEND */
+.legend-row{display:flex;flex-wrap:wrap;gap:4px;padding:6px 0 0}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--dim)}
+.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* REACTION LOG PANEL */
+#log-panel{right:12px;top:12px;width:300px;max-height:48vh}
+#log-panel .panel-body{padding:8px;overflow-y:auto;max-height:calc(48vh - 50px)}
+.log-entry{
+  padding:6px 8px;margin-bottom:4px;border-radius:6px;
+  font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.5;
+  border-left:3px solid var(--accent);background:rgba(0,212,255,.05);
+  animation:slideIn .3s ease;
+}
+.log-entry.reaction{border-color:var(--success);background:rgba(0,255,157,.05)}
+.log-entry.error{border-color:var(--danger);background:rgba(255,51,102,.05)}
+.log-entry.warn{border-color:var(--warn);background:rgba(255,184,0,.05)}
+.log-entry .time{color:var(--dim);font-size:9px}
+.log-entry .eq{color:var(--warn);font-size:11px;margin-top:2px}
+
+/* PROPERTIES PANEL */
+#props-panel{right:12px;top:calc(48vh + 24px);width:300px}
+#props-panel .panel-body{padding:12px}
+.prop-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(30,58,95,.3)}
+.prop-label{font-size:11px;color:var(--dim);letter-spacing:.5px}
+.prop-val{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent)}
+
+/* CONTROL PANEL */
+#control-panel{
+  bottom:12px;left:50%;transform:translateX(-50%);
+  width:700px;max-width:calc(100vw - 340px - 24px);
+}
+#control-panel .panel-body{padding:14px 18px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.ctrl-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:110px}
+.ctrl-label{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;display:flex;justify-content:space-between}
+.ctrl-label span{color:var(--accent);font-family:'Share Tech Mono',monospace}
+input[type=range]{
+  width:100%;-webkit-appearance:none;height:4px;
+  background:linear-gradient(90deg,var(--accent) var(--pct,50%),var(--border) var(--pct,50%));
+  border-radius:2px;outline:none;cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 8px var(--accent);cursor:pointer;
+}
+.btn{
+  padding:7px 13px;border-radius:6px;border:1px solid var(--border);
+  background:rgba(0,212,255,.08);color:var(--accent);cursor:pointer;
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:1px;transition:all .15s;text-transform:uppercase;white-space:nowrap;
+}
+.btn:hover{background:rgba(0,212,255,.22);box-shadow:0 0 16px var(--accent)44}
+.btn.danger{border-color:var(--danger);color:var(--danger);background:rgba(255,51,102,.08)}
+.btn.danger:hover{background:rgba(255,51,102,.22);box-shadow:0 0 16px var(--danger)44}
+.btn.success{border-color:var(--success);color:var(--success);background:rgba(0,255,157,.08)}
+.btn.success:hover{background:rgba(0,255,157,.22)}
+.btn.warn{border-color:var(--warn);color:var(--warn);background:rgba(255,184,0,.08)}
+.btn.warn:hover{background:rgba(255,184,0,.2)}
+.btn.active{background:rgba(0,212,255,.3);box-shadow:0 0 12px var(--accent)66}
+
+/* TOOLTIP */
+#tooltip{
+  position:fixed;z-index:100;pointer-events:none;
+  background:var(--glass);border:1px solid var(--accent);
+  border-radius:12px;padding:14px;backdrop-filter:blur(24px);
+  min-width:200px;transition:opacity .15s;opacity:0;
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+}
+#tooltip.visible{opacity:1}
+#tooltip .tt-sym{font-size:36px;font-weight:700;color:var(--accent);line-height:1}
+#tooltip .tt-name{color:var(--text);font-size:13px;margin-bottom:8px;margin-top:2px}
+.tt-row{display:flex;justify-content:space-between;gap:16px;color:var(--dim);padding:2px 0;border-bottom:1px solid rgba(30,58,95,.2)}
+.tt-row span:last-child{color:var(--text)}
+.tt-hint{color:var(--dim);font-size:9px;margin-top:6px;opacity:.7}
+
+/* MOLECULE ANALYSIS MODAL */
+#mol-modal{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:200;background:var(--glass);border:1px solid var(--accent);
+  border-radius:16px;padding:20px;backdrop-filter:blur(30px);
+  min-width:380px;max-width:520px;width:90%;display:none;
+}
+#mol-modal.visible{display:block;animation:modalIn .3s ease}
+#mol-modal h2{font-family:'Share Tech Mono',monospace;color:var(--accent);font-size:14px;letter-spacing:2px;margin-bottom:12px}
+#mol-canvas{width:100%;height:200px;border:1px solid var(--border);border-radius:8px;background:rgba(0,5,15,.9);margin-bottom:12px;display:block}
+.mol-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.mol-info-item{background:rgba(0,212,255,.06);border:1px solid var(--border);border-radius:8px;padding:8px}
+.mol-info-item .label{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+.mol-info-item .value{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent);margin-top:2px;word-break:break-all}
+#mol-close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;transition:color .15s}
+#mol-close:hover{color:var(--danger)}
+.mol-hazard{margin-bottom:8px;padding:6px 10px;border-radius:6px;font-size:10px;font-family:'Share Tech Mono',monospace}
+.mol-hazard.danger{background:rgba(255,51,102,.1);border:1px solid var(--danger);color:var(--danger)}
+.mol-hazard.warn{background:rgba(255,184,0,.1);border:1px solid var(--warn);color:var(--warn)}
+.mol-hazard.safe{background:rgba(0,255,157,.1);border:1px solid var(--success);color:var(--success)}
+
+/* STATE & DROP */
+#state-indicator{
+  position:fixed;bottom:108px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:12px;
+  color:var(--accent);letter-spacing:2px;z-index:10;pointer-events:none;
+  text-align:center;text-shadow:0 0 12px var(--accent);
+}
+#drop-ring{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:210px;height:210px;border-radius:50%;
+  border:2px dashed rgba(0,212,255,.4);pointer-events:none;z-index:5;
+  transition:all .3s;
+}
+#drop-ring.active{border-color:var(--accent);box-shadow:0 0 40px var(--accent)33;animation:spin 3s linear infinite}
+#drag-ghost{
+  position:fixed;pointer-events:none;z-index:200;
+  width:50px;height:50px;border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Share Tech Mono',monospace;border:2px solid var(--accent);
+  background:rgba(0,212,255,.15);backdrop-filter:blur(10px);
+  color:var(--accent);font-size:14px;font-weight:700;
+  opacity:0;transition:opacity .1s;transform:translate(-50%,-50%);
+}
+#flash-overlay{
+  position:fixed;inset:0;z-index:50;pointer-events:none;
+  background:radial-gradient(circle at center,rgba(0,212,255,.35) 0%,transparent 60%);
+  left:50%;top:50%;width:400px;height:400px;transform:translate(-50%,-50%);
+  opacity:0;transition:opacity .05s;border-radius:50%;
+}
+
+/* SEARCH & TABS */
+#elem-search{
+  width:100%;padding:6px 10px;background:rgba(0,212,255,.05);
+  border:1px solid var(--border);border-radius:6px;color:var(--text);
+  font-family:'Share Tech Mono',monospace;font-size:11px;margin-bottom:6px;
+  outline:none;transition:border-color .2s;
+}
+#elem-search:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,212,255,.1)}
+#elem-search::placeholder{color:var(--dim)}
+.tab-row{display:flex;gap:2px;padding:6px 8px 0;border-bottom:1px solid var(--border)}
+.tab{
+  padding:4px 10px;font-size:10px;letter-spacing:1px;cursor:pointer;
+  border-radius:4px 4px 0 0;border:1px solid transparent;color:var(--dim);
+  transition:all .15s;text-transform:uppercase;font-weight:600;
+}
+.tab.active{border-color:var(--border);border-bottom-color:transparent;color:var(--accent);background:rgba(0,212,255,.08)}
+.preset-btn{
+  padding:4px 9px;border-radius:4px;border:1px solid var(--border);
+  background:rgba(123,47,255,.1);color:var(--accent2);cursor:pointer;
+  font-size:10px;font-family:'Share Tech Mono',monospace;transition:all .15s;
+}
+.preset-btn:hover{background:rgba(123,47,255,.28);border-color:var(--accent2)}
+
+/* ENERGY METER */
+#energy-meter{
+  position:fixed;left:12px;bottom:108px;z-index:10;
+  font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);
+  letter-spacing:1px;
+}
+.e-bar-bg{width:130px;height:4px;background:var(--border);border-radius:2px;margin-top:3px}
+.e-bar{height:4px;border-radius:2px;background:var(--accent);transition:width .4s,background .4s}
+
+/* MINI HUD top-center */
+#mini-hud{
+  position:fixed;top:12px;left:50%;transform:translateX(-50%);
+  z-index:10;display:flex;gap:8px;
+  font-family:'Share Tech Mono',monospace;font-size:10px;
+}
+.hud-chip{
+  padding:5px 10px;background:var(--glass);border:1px solid var(--border);
+  border-radius:6px;backdrop-filter:blur(10px);letter-spacing:1px;
+  white-space:nowrap;
+}
+.hud-chip span{color:var(--accent)}
+
+/* NOTIFICATION TOAST */
+#toast{
+  position:fixed;top:55px;left:50%;transform:translateX(-50%);
+  z-index:300;background:var(--glass);border:1px solid var(--success);
+  border-radius:8px;padding:8px 16px;
+  font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--success);
+  opacity:0;transition:opacity .3s;pointer-events:none;backdrop-filter:blur(20px);
+  white-space:nowrap;
+}
+#toast.visible{opacity:1}
+
+/* REACTION TRACKER BADGE */
+#rxn-badge{
+  position:fixed;right:318px;top:12px;z-index:15;
+  font-family:'Share Tech Mono',monospace;font-size:11px;
+  background:var(--glass);border:1px solid var(--success);
+  border-radius:20px;padding:4px 12px;color:var(--success);
+  backdrop-filter:blur(10px);display:none;
+  animation:badgePop .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes flashAnim{0%{opacity:.9}100%{opacity:0}}
+@keyframes modalIn{from{opacity:0;transform:translate(-50%,-48%)}to{opacity:1;transform:translate(-50%,-50%)}}
+@keyframes badgePop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes toastOut{to{opacity:0}}
+</style>
+</head>
+<body>
+
+<div id="canvas-container"><canvas id="three-canvas"></canvas></div>
+<div id="drop-ring"></div>
+<div id="flash-overlay"></div>
+<div id="state-indicator">◈ SOLID PHASE ◈</div>
+<div id="drag-ghost"></div>
+<div id="toast"></div>
+<div id="rxn-badge">⚗ 0 Reactions</div>
+
+<!-- TOP HUD -->
+<div id="mini-hud">
+  <div class="hud-chip">ATOMS <span id="hud-atoms">0</span></div>
+  <div class="hud-chip">TEMP <span id="hud-temp">298 K</span></div>
+  <div class="hud-chip">PHASE <span id="hud-phase">SOLID</span></div>
+  <div class="hud-chip">REACTIONS <span id="hud-rxns">0</span></div>
+</div>
+
+<!-- MOLECULE ANALYSIS MODAL -->
+<div id="mol-modal">
+  <button id="mol-close" onclick="closeMolModal()">✕</button>
+  <h2 id="mol-title">⬡ MOLECULE ANALYSIS</h2>
+  <canvas id="mol-canvas" width="480" height="200"></canvas>
+  <div id="mol-hazard-box"></div>
+  <div class="mol-info-grid" id="mol-info-grid"></div>
+  <button class="btn" style="width:100%" onclick="closeMolModal()">CLOSE ANALYSIS</button>
+</div>
+
+<!-- TOOLTIP -->
+<div id="tooltip">
+  <div class="tt-sym" id="tt-sym">H</div>
+  <div class="tt-name" id="tt-name">Hydrogen</div>
+  <div class="tt-row"><span>Atomic Mass</span><span id="tt-mass">—</span></div>
+  <div class="tt-row"><span>Valency</span><span id="tt-val">—</span></div>
+  <div class="tt-row"><span>Electronegativity</span><span id="tt-en">—</span></div>
+  <div class="tt-row"><span>Atomic Radius</span><span id="tt-ar">—</span></div>
+  <div class="tt-row"><span>Category</span><span id="tt-cat">—</span></div>
+  <div class="tt-row"><span>Bond Type</span><span id="tt-bond">—</span></div>
+  <div class="tt-hint" id="tt-hint"></div>
+</div>
+
+<!-- ENERGY METER -->
+<div id="energy-meter">
+  SYSTEM ENERGY
+  <div class="e-bar-bg"><div class="e-bar" id="e-bar" style="width:20%"></div></div>
+</div>
+
+<!-- PERIODIC TABLE -->
+<div class="panel" id="periodic-panel">
+  <div class="panel-header" onclick="togglePanel('periodic-panel')">
+    <span>⬡ Periodic Table</span>
+    <button class="collapse-btn">▲</button>
+  </div>
+  <div class="tab-row">
+    <div class="tab active" onclick="setTab('all',this)">All</div>
+    <div class="tab" onclick="setTab('common',this)">Common</div>
+    <div class="tab" onclick="setTab('organic',this)">Organic</div>
+  </div>
+  <div class="panel-body">
+    <input type="text" id="elem-search" placeholder="Search element or symbol..." oninput="filterElements(this.value)">
+    <div style="margin-bottom:6px;display:flex;gap:4px;flex-wrap:wrap" id="preset-row">
+      <div class="preset-btn" onclick="runPreset('water')">💧 H₂O</div>
+      <div class="preset-btn" onclick="runPreset('nacl')">🧂 NaCl</div>
+      <div class="preset-btn" onclick="runPreset('combustion')">🔥 CH₄</div>
+      <div class="preset-btn" onclick="runPreset('rust')">🦠 Fe+O₂</div>
+      <div class="preset-btn" onclick="runPreset('ammonia')">💨 NH₃</div>
+      <div class="preset-btn" onclick="runPreset('hno3')">⚗ HNO₃</div>
+    </div>
+    <div id="elem-grid"></div>
+    <div class="legend-row" id="legend"></div>
+  </div>
+</div>
+
+<!-- REACTION LOG -->
+<div class="panel" id="log-panel">
+  <div class="panel-header" onclick="togglePanel('log-panel')">
+    <span>⬡ Reaction Log</span>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn" style="padding:2px 8px;font-size:9px;border-color:var(--accent2);color:var(--accent2)" onclick="event.stopPropagation();exportLog()">EXP</button>
+      <button class="btn danger" style="padding:2px 8px;font-size:9px" onclick="event.stopPropagation();clearLog()">CLR</button>
+      <button class="collapse-btn">▲</button>
+    </div>
+  </div>
+  <div class="panel-body" id="log-body">
+    <div class="log-entry"><span class="time">00:00:00</span><br>System initialized. Click compounds to analyze.</div>
+  </div>
+</div>
+
+<!-- CHAMBER STATUS -->
+<div class="panel" id="props-panel">
+  <div class="panel-header" onclick="togglePanel('props-panel')">
+    <span>⬡ Chamber Status</span>
+    <button class="collapse-btn">▲</button>
+  </div>
+  <div class="panel-body">
+    <div class="prop-row"><span class="prop-label">ATOMS IN CHAMBER</span><span class="prop-val" id="atom-count">0</span></div>
+    <div class="prop-row"><span class="prop-label">TEMPERATURE</span><span class="prop-val" id="temp-display">298 K</span></div>
+    <div class="prop-row"><span class="prop-label">PRESSURE</span><span class="prop-val" id="press-display">1.0 atm</span></div>
+    <div class="prop-row"><span class="prop-label">PHASE</span><span class="prop-val" id="phase-display">SOLID</span></div>
+    <div class="prop-row"><span class="prop-label">REACTIONS</span><span class="prop-val" id="rxn-count">0</span></div>
+    <div class="prop-row"><span class="prop-label">AVG KINETIC E</span><span class="prop-val" id="ke-display">—</span></div>
+    <div class="prop-row"><span class="prop-label">TOTAL MASS</span><span class="prop-val" id="mass-display">—</span></div>
+    <div class="prop-row" style="border:none;margin-top:8px;gap:6px">
+      <button class="btn danger" style="flex:1;font-size:11px" onclick="clearChamber()">⊗ CLEAR</button>
+      <button class="btn warn" style="flex:1;font-size:11px" onclick="saveSnapshot()">📷 SNAP</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="panel" id="control-panel">
+  <div class="panel-header" onclick="togglePanel('control-panel')">
+    <span>⬡ Environmental Controls</span>
+    <button class="collapse-btn">▲</button>
+  </div>
+  <div class="panel-body">
+    <div class="ctrl-group">
+      <div class="ctrl-label">Temperature <span id="temp-val">298 K</span></div>
+      <input type="range" id="temp-slider" min="0" max="5000" value="298" oninput="setTemperature(this.value)">
+    </div>
+    <div class="ctrl-group">
+      <div class="ctrl-label">Pressure <span id="press-val">1.0 atm</span></div>
+      <input type="range" id="press-slider" min="1" max="300" value="10" oninput="setPressure(this.value)">
+    </div>
+    <div class="ctrl-group">
+      <div class="ctrl-label">Atom Speed <span id="speed-val">1.0×</span></div>
+      <input type="range" id="speed-slider" min="1" max="50" value="10" oninput="setSpeed(this.value)">
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="btn" id="rot-btn" onclick="toggleRotation()">⟳ ROTATE</button>
+      <button class="btn" onclick="resetCamera()">⊕ CAM</button>
+      <button class="btn danger" onclick="triggerExplosion()">⚡ REACT ALL</button>
+      <button class="btn success" id="bond-btn" onclick="toggleBonds()">⬡ BONDS ON</button>
+      <button class="btn warn" onclick="addRandomAtoms(5)">+ RANDOM ×5</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// AUDIO SYSTEM
+// ═══════════════════════════════════════════
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getAudio(){if(!audioCtx){try{audioCtx=new AudioCtx();}catch(e){}}return audioCtx;}
+
+function playTone(freq,type,dur,vol=0.3,delay=0){
+  const ctx=getAudio();if(!ctx)return;
+  try{
+    const o=ctx.createOscillator();const g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);
+    g.gain.setValueAtTime(0,ctx.currentTime+delay);
+    g.gain.linearRampToValueAtTime(vol,ctx.currentTime+delay+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+dur);
+    o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+dur);
+  }catch(e){}
+}
+
+function playSciClick(){playTone(800,'square',.08,.1);playTone(1200,'sine',.1,.07,.05);}
+
+function playReactionSound(type){
+  if(type==='combustion'){
+    playTone(100,'sawtooth',.4,.2);playTone(280,'square',.25,.12,.06);
+    playTone(60,'triangle',.6,.15,.12);
+  } else if(type==='synthesis'){
+    [440,660,880].forEach((f,i)=>playTone(f,'sine',.15-.02*i,.18-.02*i,i*.06));
+  } else {
+    playTone(600,'square',.1,.12);playTone(900,'sine',.15,.1,.05);
+  }
+}
+
+function playDropSound(){playTone(500,'triangle',.12,.18);playTone(700,'sine',.1,.08,.06);}
+function playAddSound(){playTone(660,'sine',.08,.12);playTone(880,'sine',.06,.08,.05);}
+
+// ═══════════════════════════════════════════
+// ELEMENT DATABASE (extended, deduplicated)
+// ═══════════════════════════════════════════
+const ELEMENTS = {
+  H:{n:1,sym:'H',name:'Hydrogen',mass:1.008,valency:1,en:2.20,cat:'nonmetal',color:0xffffff,r:.25,ar:53,bond:'covalent',hazard:'safe',desc:'Most abundant element in universe'},
+  He:{n:2,sym:'He',name:'Helium',mass:4.003,valency:0,en:null,cat:'noble',color:0xd9ffff,r:.28,ar:31,bond:'none',hazard:'safe',desc:'Noble gas, non-reactive'},
+  Li:{n:3,sym:'Li',name:'Lithium',mass:6.941,valency:1,en:.98,cat:'alkali',color:0xcc80ff,r:.45,ar:167,bond:'ionic',hazard:'warn',desc:'Reacts violently with water'},
+  Be:{n:4,sym:'Be',name:'Beryllium',mass:9.012,valency:2,en:1.57,cat:'alkali-earth',color:0xc2ff00,r:.35,ar:112,bond:'covalent',hazard:'danger',desc:'Toxic dust, carcinogen'},
+  B:{n:5,sym:'B',name:'Boron',mass:10.811,valency:3,en:2.04,cat:'metalloid',color:0xffb5b5,r:.30,ar:87,bond:'covalent',hazard:'safe',desc:'Used in semiconductors'},
+  C:{n:6,sym:'C',name:'Carbon',mass:12.011,valency:4,en:2.55,cat:'nonmetal',color:0x404040,r:.28,ar:67,bond:'covalent',hazard:'safe',desc:'Basis of all organic life'},
+  N:{n:7,sym:'N',name:'Nitrogen',mass:14.007,valency:3,en:3.04,cat:'nonmetal',color:0x3050f8,r:.26,ar:56,bond:'covalent',hazard:'safe',desc:'78% of Earth atmosphere'},
+  O:{n:8,sym:'O',name:'Oxygen',mass:15.999,valency:2,en:3.44,cat:'nonmetal',color:0xff0d0d,r:.26,ar:48,bond:'covalent',hazard:'safe',desc:'Essential for respiration'},
+  F:{n:9,sym:'F',name:'Fluorine',mass:18.998,valency:1,en:3.98,cat:'halogen',color:0x90e050,r:.24,ar:42,bond:'covalent',hazard:'danger',desc:'Most electronegative element'},
+  Ne:{n:10,sym:'Ne',name:'Neon',mass:20.180,valency:0,en:null,cat:'noble',color:0xb3e3f5,r:.30,ar:38,bond:'none',hazard:'safe',desc:'Noble gas, used in lighting'},
+  Na:{n:11,sym:'Na',name:'Sodium',mass:22.990,valency:1,en:.93,cat:'alkali',color:0xab5cf2,r:.40,ar:190,bond:'ionic',hazard:'warn',desc:'Ignites on contact with water'},
+  Mg:{n:12,sym:'Mg',name:'Magnesium',mass:24.305,valency:2,en:1.31,cat:'alkali-earth',color:0x8aff00,r:.36,ar:145,bond:'metallic',hazard:'warn',desc:'Burns with bright white flame'},
+  Al:{n:13,sym:'Al',name:'Aluminium',mass:26.982,valency:3,en:1.61,cat:'post-trans',color:0xbfa6a6,r:.35,ar:118,bond:'metallic',hazard:'safe',desc:'Lightweight structural metal'},
+  Si:{n:14,sym:'Si',name:'Silicon',mass:28.086,valency:4,en:1.90,cat:'metalloid',color:0xf0c8a0,r:.33,ar:111,bond:'covalent',hazard:'safe',desc:'Second most common element in crust'},
+  P:{n:15,sym:'P',name:'Phosphorus',mass:30.974,valency:3,en:2.19,cat:'nonmetal',color:0xff8000,r:.31,ar:98,bond:'covalent',hazard:'warn',desc:'White phosphorus highly toxic'},
+  S:{n:16,sym:'S',name:'Sulfur',mass:32.065,valency:2,en:2.58,cat:'nonmetal',color:0xffff30,r:.31,ar:88,bond:'covalent',hazard:'safe',desc:'Found near volcanoes'},
+  Cl:{n:17,sym:'Cl',name:'Chlorine',mass:35.453,valency:1,en:3.16,cat:'halogen',color:0x1ff01f,r:.30,ar:79,bond:'covalent',hazard:'danger',desc:'Toxic yellow-green gas'},
+  Ar:{n:18,sym:'Ar',name:'Argon',mass:39.948,valency:0,en:null,cat:'noble',color:0x80d1e3,r:.33,ar:71,bond:'none',hazard:'safe',desc:'Noble gas, used in welding'},
+  K:{n:19,sym:'K',name:'Potassium',mass:39.098,valency:1,en:.82,cat:'alkali',color:0x8f40d4,r:.48,ar:243,bond:'ionic',hazard:'warn',desc:'Reacts explosively with water'},
+  Ca:{n:20,sym:'Ca',name:'Calcium',mass:40.078,valency:2,en:1.00,cat:'alkali-earth',color:0x3dff00,r:.40,ar:194,bond:'ionic',hazard:'safe',desc:'Essential for bones and teeth'},
+  Sc:{n:21,sym:'Sc',name:'Scandium',mass:44.956,valency:3,en:1.36,cat:'transition',color:0xe6e6e6,r:.38,ar:184,bond:'metallic',hazard:'safe',desc:'Rare transition metal'},
+  Ti:{n:22,sym:'Ti',name:'Titanium',mass:47.867,valency:4,en:1.54,cat:'transition',color:0xbfc2c7,r:.36,ar:176,bond:'metallic',hazard:'safe',desc:'Strongest lightweight metal'},
+  V:{n:23,sym:'V',name:'Vanadium',mass:50.942,valency:5,en:1.63,cat:'transition',color:0xa6a6ab,r:.35,ar:171,bond:'metallic',hazard:'warn',desc:'Used in steel alloys'},
+  Cr:{n:24,sym:'Cr',name:'Chromium',mass:51.996,valency:6,en:1.66,cat:'transition',color:0x8a99c7,r:.35,ar:166,bond:'metallic',hazard:'warn',desc:'Cr(VI) is a known carcinogen'},
+  Mn:{n:25,sym:'Mn',name:'Manganese',mass:54.938,valency:2,en:1.55,cat:'transition',color:0x9c7ac7,r:.35,ar:161,bond:'metallic',hazard:'safe',desc:'Essential trace element'},
+  Fe:{n:26,sym:'Fe',name:'Iron',mass:55.845,valency:3,en:1.83,cat:'transition',color:0xe06633,r:.35,ar:156,bond:'metallic',hazard:'safe',desc:'Most used metal, prone to rust'},
+  Co:{n:27,sym:'Co',name:'Cobalt',mass:58.933,valency:2,en:1.88,cat:'transition',color:0xf090a0,r:.33,ar:152,bond:'metallic',hazard:'warn',desc:'Radioactive isotopes used in therapy'},
+  Ni:{n:28,sym:'Ni',name:'Nickel',mass:58.693,valency:2,en:1.91,cat:'transition',color:0x50d050,r:.33,ar:149,bond:'metallic',hazard:'warn',desc:'Common allergen'},
+  Cu:{n:29,sym:'Cu',name:'Copper',mass:63.546,valency:2,en:1.90,cat:'transition',color:0xc88033,r:.33,ar:145,bond:'metallic',hazard:'safe',desc:'Excellent electrical conductor'},
+  Zn:{n:30,sym:'Zn',name:'Zinc',mass:65.38,valency:2,en:1.65,cat:'transition',color:0x7d80b0,r:.33,ar:142,bond:'metallic',hazard:'safe',desc:'Essential trace mineral'},
+  Ga:{n:31,sym:'Ga',name:'Gallium',mass:69.723,valency:3,en:1.81,cat:'post-trans',color:0xc28f8f,r:.35,ar:136,bond:'metallic',hazard:'safe',desc:'Melts at room temperature'},
+  Ge:{n:32,sym:'Ge',name:'Germanium',mass:72.630,valency:4,en:2.01,cat:'metalloid',color:0x668f8f,r:.33,ar:125,bond:'covalent',hazard:'safe',desc:'Used in semiconductors'},
+  As:{n:33,sym:'As',name:'Arsenic',mass:74.922,valency:3,en:2.18,cat:'metalloid',color:0xbd80e3,r:.31,ar:114,bond:'covalent',hazard:'danger',desc:'Highly toxic, classic poison'},
+  Se:{n:34,sym:'Se',name:'Selenium',mass:78.971,valency:2,en:2.55,cat:'nonmetal',color:0xffa100,r:.31,ar:103,bond:'covalent',hazard:'warn',desc:'Essential trace element'},
+  Br:{n:35,sym:'Br',name:'Bromine',mass:79.904,valency:1,en:2.96,cat:'halogen',color:0xa62929,r:.30,ar:94,bond:'covalent',hazard:'danger',desc:'Only liquid nonmetal at room temp'},
+  Kr:{n:36,sym:'Kr',name:'Krypton',mass:83.798,valency:0,en:3.00,cat:'noble',color:0x5cb8d1,r:.35,ar:88,bond:'none',hazard:'safe',desc:'Noble gas, used in photography'},
+  Rb:{n:37,sym:'Rb',name:'Rubidium',mass:85.468,valency:1,en:.82,cat:'alkali',color:0x702eb0,r:.50,ar:265,bond:'ionic',hazard:'danger',desc:'Ignites spontaneously in air'},
+  Sr:{n:38,sym:'Sr',name:'Strontium',mass:87.62,valency:2,en:.95,cat:'alkali-earth',color:0x00ff00,r:.42,ar:219,bond:'ionic',hazard:'warn',desc:'Used in fireworks (red color)'},
+  Y:{n:39,sym:'Y',name:'Yttrium',mass:88.906,valency:3,en:1.22,cat:'transition',color:0x94ffff,r:.40,ar:212,bond:'metallic',hazard:'safe',desc:'Used in superconductors'},
+  Zr:{n:40,sym:'Zr',name:'Zirconium',mass:91.224,valency:4,en:1.33,cat:'transition',color:0x94e0e0,r:.38,ar:206,bond:'metallic',hazard:'safe',desc:'Used in nuclear reactors'},
+  Ag:{n:47,sym:'Ag',name:'Silver',mass:107.868,valency:1,en:1.93,cat:'transition',color:0xc0c0c0,r:.34,ar:165,bond:'metallic',hazard:'safe',desc:'Best electrical conductor'},
+  I:{n:53,sym:'I',name:'Iodine',mass:126.904,valency:1,en:2.66,cat:'halogen',color:0x940094,r:.34,ar:115,bond:'covalent',hazard:'warn',desc:'Essential thyroid trace element'},
+  Xe:{n:54,sym:'Xe',name:'Xenon',mass:131.293,valency:0,en:2.60,cat:'noble',color:0x429eb0,r:.38,ar:108,bond:'none',hazard:'safe',desc:'Noble gas, used in anesthesia'},
+  Ba:{n:56,sym:'Ba',name:'Barium',mass:137.327,valency:2,en:.89,cat:'alkali-earth',color:0x00c900,r:.45,ar:253,bond:'ionic',hazard:'warn',desc:'Used in green fireworks'},
+  Au:{n:79,sym:'Au',name:'Gold',mass:196.967,valency:3,en:2.54,cat:'transition',color:0xffd123,r:.34,ar:174,bond:'metallic',hazard:'safe',desc:'Most malleable metal'},
+  Hg:{n:80,sym:'Hg',name:'Mercury',mass:200.592,valency:2,en:2.00,cat:'transition',color:0xb8b8d0,r:.35,ar:171,bond:'metallic',hazard:'danger',desc:'Only liquid metal at room temp'},
+  Pb:{n:82,sym:'Pb',name:'Lead',mass:207.2,valency:2,en:2.33,cat:'post-trans',color:0x575961,r:.38,ar:202,bond:'metallic',hazard:'danger',desc:'Highly toxic, causes neurological damage'},
+};
+
+// ═══════════════════════════════════════════
+// REACTION DATABASE (extended)
+// ═══════════════════════════════════════════
+const REACTIONS = [
+  {r:['H','H'],p:'H₂',name:'Hydrogen molecule',eq:'2H → H₂',type:'synthesis',energy:-436,structure:'linear'},
+  {r:['O','O'],p:'O₂',name:'Oxygen molecule',eq:'2O → O₂',type:'synthesis',energy:-498,structure:'linear'},
+  {r:['H','H','O'],p:'H₂O',name:'Water',eq:'2H + O → H₂O',type:'synthesis',energy:-926,structure:'bent'},
+  {r:['Na','Cl'],p:'NaCl',name:'Sodium Chloride',eq:'Na + Cl → NaCl',type:'synthesis',energy:-411,structure:'ionic'},
+  {r:['H','Cl'],p:'HCl',name:'Hydrochloric Acid',eq:'H + Cl → HCl',type:'synthesis',energy:-432,structure:'linear'},
+  {r:['Na','O','H'],p:'NaOH',name:'Sodium Hydroxide',eq:'Na + O + H → NaOH',type:'synthesis',energy:-470,structure:'linear'},
+  {r:['Fe','O'],p:'Fe₂O₃',name:'Iron Oxide (Rust)',eq:'4Fe + 3O₂ → 2Fe₂O₃',type:'synthesis',energy:-824,structure:'ionic'},
+  {r:['C','O'],p:'CO₂',name:'Carbon Dioxide',eq:'C + O₂ → CO₂',type:'combustion',energy:-393,structure:'linear'},
+  {r:['N','H'],p:'NH₃',name:'Ammonia',eq:'N + 3H → NH₃',type:'synthesis',energy:-92,structure:'trigonal'},
+  {r:['S','O'],p:'SO₂',name:'Sulfur Dioxide',eq:'S + O₂ → SO₂',type:'combustion',energy:-297,structure:'bent'},
+  {r:['Ca','O'],p:'CaO',name:'Calcium Oxide',eq:'2Ca + O₂ → 2CaO',type:'synthesis',energy:-1270,structure:'ionic'},
+  {r:['Mg','O'],p:'MgO',name:'Magnesium Oxide',eq:'2Mg + O₂ → 2MgO',type:'combustion',energy:-1203,structure:'ionic'},
+  {r:['Cu','O'],p:'CuO',name:'Copper Oxide',eq:'2Cu + O₂ → 2CuO',type:'synthesis',energy:-310,structure:'ionic'},
+  {r:['Au','Cl'],p:'AuCl₃',name:'Gold Chloride',eq:'2Au + 3Cl₂ → 2AuCl₃',type:'synthesis',energy:-118,structure:'trigonal'},
+  {r:['Al','O'],p:'Al₂O₃',name:'Aluminium Oxide',eq:'4Al + 3O₂ → 2Al₂O₃',type:'synthesis',energy:-3352,structure:'ionic'},
+  {r:['K','O'],p:'K₂O',name:'Potassium Oxide',eq:'4K + O₂ → 2K₂O',type:'synthesis',energy:-363,structure:'ionic'},
+  {r:['Li','F'],p:'LiF',name:'Lithium Fluoride',eq:'2Li + F₂ → 2LiF',type:'synthesis',energy:-617,structure:'ionic'},
+  {r:['Zn','S'],p:'ZnS',name:'Zinc Sulfide',eq:'Zn + S → ZnS',type:'synthesis',energy:-477,structure:'ionic'},
+  {r:['Si','O'],p:'SiO₂',name:'Silicon Dioxide',eq:'Si + O₂ → SiO₂',type:'synthesis',energy:-910,structure:'linear'},
+  {r:['Ag','Cl'],p:'AgCl',name:'Silver Chloride',eq:'2Ag + Cl₂ → 2AgCl',type:'synthesis',energy:-254,structure:'ionic'},
+  {r:['N','O'],p:'NO₂',name:'Nitrogen Dioxide',eq:'N + 2O → NO₂',type:'synthesis',energy:-33,structure:'bent'},
+  {r:['H','N','O'],p:'HNO₃',name:'Nitric Acid',eq:'3H + N + 3O → HNO₃',type:'synthesis',energy:-174,structure:'trigonal'},
+  {r:['Ba','O'],p:'BaO',name:'Barium Oxide',eq:'2Ba + O₂ → 2BaO',type:'synthesis',energy:-554,structure:'ionic'},
+  {r:['Zn','Cu'],p:'CuZn',name:'Brass Alloy',eq:'Cu + Zn → CuZn (Brass)',type:'synthesis',energy:-10,structure:'metallic'},
+  {r:['Fe','S'],p:'FeS',name:'Iron Sulfide',eq:'Fe + S → FeS',type:'synthesis',energy:-100,structure:'ionic'},
+];
+
+// ═══════════════════════════════════════════
+// MOLECULE DATA FOR ANALYSIS (extended)
+// ═══════════════════════════════════════════
+const MOLECULE_DATA = {
+  'H₂O':{formula:'H₂O',name:'Water',mw:18.015,bp:100,mp:0,shape:'Bent (104.5°)',polarity:'Polar (1.85 D)',hazard:'safe',hazardMsg:'Safe — essential for life',bonds:[{type:'O-H covalent',order:1},{type:'O-H covalent',order:1}],atoms:['O','H','H'],uses:'Solvent, coolant, life support'},
+  'CO₂':{formula:'CO₂',name:'Carbon Dioxide',mw:44.009,bp:-78.5,mp:-56.6,shape:'Linear (180°)',polarity:'Nonpolar',hazard:'warn',hazardMsg:'Warning — asphyxiant at high concentrations',bonds:[{type:'C=O double covalent',order:2},{type:'C=O double covalent',order:2}],atoms:['C','O','O'],uses:'Photosynthesis, fire suppression, carbonation'},
+  'NaCl':{formula:'NaCl',name:'Sodium Chloride',mw:58.443,bp:1413,mp:801,shape:'Ionic Crystal',polarity:'Ionic',hazard:'safe',hazardMsg:'Safe — common table salt',bonds:[{type:'Na⁺—Cl⁻ ionic',order:1}],atoms:['Na','Cl'],uses:'Food preservative, electrolyte, chemical feedstock'},
+  'NH₃':{formula:'NH₃',name:'Ammonia',mw:17.031,bp:-33.3,mp:-77.7,shape:'Trigonal Pyramidal',polarity:'Polar (1.47 D)',hazard:'danger',hazardMsg:'Danger — toxic gas, irritates respiratory system',bonds:[{type:'N-H covalent',order:1},{type:'N-H covalent',order:1},{type:'N-H covalent',order:1}],atoms:['N','H','H','H'],uses:'Fertilizer, refrigerant, cleaning agents'},
+  'HCl':{formula:'HCl',name:'Hydrochloric Acid',mw:36.461,bp:-85.1,mp:-114.2,shape:'Linear',polarity:'Polar (1.08 D)',hazard:'danger',hazardMsg:'Danger — strong acid, corrosive to tissue',bonds:[{type:'H-Cl polar covalent',order:1}],atoms:['H','Cl'],uses:'Metal cleaning, pH adjustment, gastric acid'},
+  'H₂':{formula:'H₂',name:'Hydrogen Gas',mw:2.016,bp:-252.9,mp:-259.2,shape:'Linear',polarity:'Nonpolar',hazard:'warn',hazardMsg:'Warning — highly flammable and explosive',bonds:[{type:'H-H covalent',order:1}],atoms:['H','H'],uses:'Fuel cells, ammonia synthesis, rocket fuel'},
+  'O₂':{formula:'O₂',name:'Oxygen Gas',mw:31.998,bp:-183,mp:-218.8,shape:'Linear',polarity:'Nonpolar',hazard:'warn',hazardMsg:'Warning — oxidizer, accelerates combustion',bonds:[{type:'O=O double covalent',order:2}],atoms:['O','O'],uses:'Respiration, combustion, medical therapy'},
+  'Fe₂O₃':{formula:'Fe₂O₃',name:'Iron Oxide (Rust)',mw:159.687,bp:3414,mp:1565,shape:'Ionic Crystal',polarity:'Ionic',hazard:'safe',hazardMsg:'Safe — common rust, non-toxic',bonds:[{type:'Fe-O ionic',order:1}],atoms:['Fe','Fe','O','O','O'],uses:'Pigment, thermite, iron ore'},
+  'SO₂':{formula:'SO₂',name:'Sulfur Dioxide',mw:64.065,bp:-10,mp:-72,shape:'Bent (119°)',polarity:'Polar (1.63 D)',hazard:'danger',hazardMsg:'Danger — toxic, causes acid rain',bonds:[{type:'S=O double covalent',order:2}],atoms:['S','O','O'],uses:'Food preservative, sulfuric acid production'},
+  'MgO':{formula:'MgO',name:'Magnesium Oxide',mw:40.304,bp:3600,mp:2852,shape:'Ionic Crystal',polarity:'Ionic',hazard:'safe',hazardMsg:'Safe — used in antacids',bonds:[{type:'Mg²⁺—O²⁻ ionic',order:1}],atoms:['Mg','O'],uses:'Refractory material, antacid, cement'},
+  'NO₂':{formula:'NO₂',name:'Nitrogen Dioxide',mw:46.006,bp:21.2,mp:-11.2,shape:'Bent (134°)',polarity:'Polar',hazard:'danger',hazardMsg:'Danger — toxic reddish-brown gas, air pollutant',bonds:[{type:'N=O double covalent',order:2}],atoms:['N','O','O'],uses:'Nitric acid production, polymerization inhibitor'},
+  'HNO₃':{formula:'HNO₃',name:'Nitric Acid',mw:63.013,bp:83,mp:-42,shape:'Planar',polarity:'Polar',hazard:'danger',hazardMsg:'Danger — highly corrosive strong acid',bonds:[{type:'N-O and N=O bonds',order:1}],atoms:['H','N','O','O','O'],uses:'Fertilizers, explosives (TNT), metal etching'},
+  'CuO':{formula:'CuO',name:'Copper Oxide',mw:79.545,bp:1326,mp:1326,shape:'Ionic Crystal',polarity:'Ionic',hazard:'warn',hazardMsg:'Warning — irritant, avoid inhalation',bonds:[{type:'Cu²⁺—O²⁻ ionic',order:1}],atoms:['Cu','O'],uses:'Pigment, fungicide, heat absorber'},
+  'NaOH':{formula:'NaOH',name:'Sodium Hydroxide',mw:40.00,bp:1388,mp:318,shape:'Linear',polarity:'Ionic',hazard:'danger',hazardMsg:'Danger — strong base, causes severe chemical burns',bonds:[{type:'Na⁺—OH⁻ ionic',order:1}],atoms:['Na','O','H'],uses:'Drain cleaner, soap making, paper production'},
+};
+
+// ═══════════════════════════════════════════
+// THREE.JS SETUP
+// ═══════════════════════════════════════════
+const canvas = document.getElementById('three-canvas');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, .01, 1000);
+camera.position.set(0, 3, 9);
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+scene.fog = new THREE.FogExp2(0x050811, 0.032);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0x081828, 1.2);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0x00d4ff, 1.8);
+dirLight.position.set(5, 10, 5); dirLight.castShadow = true;
+scene.add(dirLight);
+const pointLight1 = new THREE.PointLight(0x7b2fff, 2.5, 25);
+pointLight1.position.set(-5, 2, 0); scene.add(pointLight1);
+const pointLight2 = new THREE.PointLight(0x00d4ff, 2, 25);
+pointLight2.position.set(5, 2, 0); scene.add(pointLight2);
+const reactionLight = new THREE.PointLight(0xffffff, 0, 15);
+reactionLight.position.set(0, 0, 0); scene.add(reactionLight);
+
+// Grid
+const gridHelper = new THREE.GridHelper(30, 30, 0x1e3a5f, 0x0a1a2a);
+gridHelper.position.y = -2.5; scene.add(gridHelper);
+
+// Chamber glass sphere
+const chamberGeo = new THREE.SphereGeometry(2.6, 64, 64);
+const chamberMat = new THREE.MeshPhysicalMaterial({
+  color:0x004466,transparent:true,opacity:.05,roughness:0,metalness:.1,transmission:0.9,thickness:0.5
+});
+const chamberMesh = new THREE.Mesh(chamberGeo, chamberMat);
+scene.add(chamberMesh);
+
+// Chamber rings
+function makeRing(r,tube,color,opacity,rx,ry,rz){
+  const g=new THREE.TorusGeometry(r,tube,12,80);
+  const m=new THREE.MeshBasicMaterial({color,transparent:true,opacity});
+  const mesh=new THREE.Mesh(g,m);
+  if(rx) mesh.rotation.x=rx;
+  if(ry) mesh.rotation.y=ry;
+  if(rz) mesh.rotation.z=rz;
+  return mesh;
+}
+const ring1=makeRing(2.6,.018,0x00d4ff,.35); scene.add(ring1);
+const ring2=makeRing(2.6,.018,0x00d4ff,.25,Math.PI/2); scene.add(ring2);
+const ring3=makeRing(2.6,.018,0x7b2fff,.20,0,0,Math.PI/2); scene.add(ring3);
+
+// ═══════════════════════════════════════════
+// CAMERA CONTROLS
+// ═══════════════════════════════════════════
+let isDragging=false, prevMouse={x:0,y:0}, camTheta=.3, camPhi=Math.PI/4, camDist=9;
+let autoRotate=false;
+
+canvas.addEventListener('mousedown',e=>{isDragging=true;prevMouse={x:e.clientX,y:e.clientY}});
+window.addEventListener('mouseup',()=>isDragging=false);
+window.addEventListener('mousemove',e=>{
+  if(!isDragging)return;
+  camTheta-=(e.clientX-prevMouse.x)*.005;
+  camPhi=Math.max(.1,Math.min(Math.PI-.1,camPhi+(e.clientY-prevMouse.y)*.005));
+  prevMouse={x:e.clientX,y:e.clientY};
+  updateCamera();
+});
+canvas.addEventListener('wheel',e=>{
+  camDist=Math.max(3,Math.min(22,camDist+e.deltaY*.01));
+  updateCamera();
+},{passive:true});
+
+function updateCamera(){
+  camera.position.x=camDist*Math.sin(camPhi)*Math.sin(camTheta);
+  camera.position.y=camDist*Math.cos(camPhi);
+  camera.position.z=camDist*Math.sin(camPhi)*Math.cos(camTheta);
+  camera.lookAt(0,0,0);
+}
+
+// Touch support
+canvas.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){isDragging=true;prevMouse={x:e.touches[0].clientX,y:e.touches[0].clientY}}
+},{passive:true});
+canvas.addEventListener('touchend',()=>isDragging=false,{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  if(!isDragging||e.touches.length!==1)return;
+  camTheta-=(e.touches[0].clientX-prevMouse.x)*.005;
+  camPhi=Math.max(.1,Math.min(Math.PI-.1,camPhi+(e.touches[0].clientY-prevMouse.y)*.005));
+  prevMouse={x:e.touches[0].clientX,y:e.touches[0].clientY};
+  updateCamera();
+},{passive:true});
+
+// ═══════════════════════════════════════════
+// ATOM MANAGEMENT
+// ═══════════════════════════════════════════
+const atoms = [];
+let reactionCount=0, showBonds=true;
+const bondLines = [];
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function getMaterialForElement(el){
+  const c = el.color;
+  const cat = el.cat;
+  if(cat==='noble'){
+    return new THREE.MeshPhysicalMaterial({
+      color:c,emissive:c,emissiveIntensity:.4,transparent:true,opacity:.55,
+      roughness:0,metalness:0,transmission:0.6,thickness:1
+    });
+  } else if(cat==='transition'||cat==='alkali-earth'||cat==='post-trans'){
+    return new THREE.MeshPhysicalMaterial({
+      color:c,emissive:c,emissiveIntensity:.15,
+      roughness:.1,metalness:.85,clearcoat:1,clearcoatRoughness:0,reflectivity:1
+    });
+  } else if(cat==='nonmetal'){
+    return new THREE.MeshPhongMaterial({
+      color:c,emissive:c,emissiveIntensity:.3,shininess:180,specular:0xffffff,
+      transparent:true,opacity:.88
+    });
+  } else if(cat==='alkali'){
+    return new THREE.MeshPhysicalMaterial({
+      color:c,emissive:c,emissiveIntensity:.25,roughness:.3,metalness:.6,clearcoat:.5
+    });
+  } else {
+    return new THREE.MeshPhongMaterial({
+      color:c,emissive:c,emissiveIntensity:.25,shininess:140,specular:0xaaaaaa,
+      transparent:true,opacity:.92
+    });
+  }
+}
+
+function createAtomMesh(sym, atPos){
+  if(atoms.length >= 60){showToast('⚠ Chamber full! Max 60 atoms.');return null;}
+  const el = ELEMENTS[sym];
+  if(!el) return null;
+  const r = el.r * 0.58;
+  const geo = new THREE.SphereGeometry(r, 48, 48);
+  const mat = getMaterialForElement(el);
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true; mesh.receiveShadow = true;
+
+  // Glow sphere
+  const glowGeo = new THREE.SphereGeometry(r*1.6, 16, 16);
+  const glowMat = new THREE.MeshBasicMaterial({color:el.color,transparent:true,opacity:.08,side:THREE.BackSide});
+  mesh.add(new THREE.Mesh(glowGeo, glowMat));
+
+  // Label sprite
+  const labelCanvas = document.createElement('canvas');
+  labelCanvas.width=128;labelCanvas.height=64;
+  const lCtx = labelCanvas.getContext('2d');
+  lCtx.fillStyle = 'rgba(0,0,0,0)';
+  lCtx.font = 'bold 40px monospace';
+  lCtx.fillStyle = '#'+el.color.toString(16).padStart(6,'0')+'cc';
+  lCtx.textAlign='center';lCtx.textBaseline='middle';
+  lCtx.fillText(sym, 64, 32);
+  const labelTex = new THREE.CanvasTexture(labelCanvas);
+  const labelMat = new THREE.SpriteMaterial({map:labelTex,transparent:true,depthTest:false});
+  const label = new THREE.Sprite(labelMat);
+  label.scale.set(r*4, r*2, 1);
+  label.position.y = r+0.18;
+  mesh.add(label);
+
+  // Position
+  if(atPos){
+    mesh.position.copy(atPos);
+  } else {
+    const phi=Math.random()*Math.PI*2, theta=Math.random()*Math.PI, rr=Math.random()*1.8;
+    mesh.position.set(rr*Math.sin(theta)*Math.cos(phi), rr*Math.cos(theta), rr*Math.sin(theta)*Math.sin(phi));
+  }
+
+  const spd = parseFloat(document.getElementById('speed-slider').value)/10*0.025;
+  mesh.userData = {
+    sym, el, id:Date.now()+Math.random(),
+    vel: new THREE.Vector3((Math.random()-.5)*spd,(Math.random()-.5)*spd,(Math.random()-.5)*spd),
+    angularVel: new THREE.Vector3((Math.random()-.5)*.02,(Math.random()-.5)*.02,(Math.random()-.5)*.02),
+    reacted:false, mass:el.mass||1, radius:r, label
+  };
+  scene.add(mesh);
+  atoms.push(mesh);
+  updateUI();
+  playAddSound();
+  return mesh;
+}
+
+function removeAtom(atom){
+  const idx=atoms.indexOf(atom);
+  if(idx>-1) atoms.splice(idx,1);
+  scene.remove(atom);
+  updateUI();
+}
+
+function clearChamber(){
+  while(atoms.length) scene.remove(atoms.pop());
+  bondLines.forEach(l=>scene.remove(l));
+  bondLines.length=0;
+  updateUI();
+  addLog('Chamber cleared.','info');
+  showToast('🧪 Chamber cleared');
+}
+
+function updateUI(){
+  const cnt = atoms.length;
+  document.getElementById('atom-count').textContent = cnt;
+  document.getElementById('rxn-count').textContent = reactionCount;
+  document.getElementById('hud-atoms').textContent = cnt;
+  document.getElementById('hud-rxns').textContent = reactionCount;
+  
+  let totalKE=0, totalMass=0;
+  atoms.forEach(a=>{
+    if(a.userData.vel) totalKE+=a.userData.vel.lengthSq()*(a.userData.mass||1);
+    totalMass += a.userData.mass||1;
+  });
+  document.getElementById('ke-display').textContent = totalKE>0?(totalKE*1000).toFixed(2)+' eV':'—';
+  document.getElementById('mass-display').textContent = totalMass>0?totalMass.toFixed(1)+' u':'—';
+  
+  const ePct = Math.min(100, totalKE*5000);
+  const bar = document.getElementById('e-bar');
+  bar.style.width = ePct.toFixed(1)+'%';
+  bar.style.background = ePct>70?'#ff3366':ePct>40?'#ffb800':'#00d4ff';
+  
+  // Badge
+  const badge = document.getElementById('rxn-badge');
+  if(reactionCount>0){
+    badge.style.display='block';
+    badge.textContent = `⚗ ${reactionCount} Reaction${reactionCount>1?'s':''}`;
+  } else badge.style.display='none';
+}
+
+// ═══════════════════════════════════════════
+// PARTICLE SYSTEM
+// ═══════════════════════════════════════════
+const particlePool = [];
+
+function spawnParticles(pos, color, count=25, speed=.07, type='spark'){
+  for(let i=0;i<count;i++){
+    const geo = type==='smoke'
+      ? new THREE.SphereGeometry(.08+Math.random()*.06, 5, 5)
+      : new THREE.SphereGeometry(.03+Math.random()*.04, 4, 4);
+    const col = type==='smoke' ? new THREE.Color(.3,.3,.3) : new THREE.Color(color);
+    const mat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:type==='smoke'?.4:.9});
+    const p = new THREE.Mesh(geo, mat);
+    p.position.copy(pos).add(new THREE.Vector3(
+      (Math.random()-.5)*.3,(Math.random()-.5)*.3,(Math.random()-.5)*.3));
+    const phi=Math.random()*Math.PI*2, theta=Math.random()*Math.PI, spd=speed*(0.5+Math.random());
+    p.userData={
+      vel:new THREE.Vector3(spd*Math.sin(theta)*Math.cos(phi),spd*(type==='smoke'?Math.abs(Math.cos(theta)):Math.cos(theta)),spd*Math.sin(theta)*Math.sin(phi)),
+      life:1.0,maxLife:1.0,type,decay:type==='smoke'?.008:.028
+    };
+    scene.add(p); particlePool.push(p);
+  }
+}
+
+function spawnBubbles(pos, count=8){
+  for(let i=0;i<count;i++){
+    const r=.04+Math.random()*.06;
+    const geo=new THREE.SphereGeometry(r,8,8);
+    const mat=new THREE.MeshPhysicalMaterial({color:0x88ccff,transparent:true,opacity:.35,roughness:0,metalness:0,transmission:.8,thickness:.5});
+    const p=new THREE.Mesh(geo,mat);
+    p.position.copy(pos).add(new THREE.Vector3((Math.random()-.5)*.4,0,(Math.random()-.5)*.4));
+    p.userData={vel:new THREE.Vector3((Math.random()-.5)*.01,.025+Math.random()*.03,(Math.random()-.5)*.01),life:1,maxLife:1,type:'bubble',decay:.012};
+    scene.add(p); particlePool.push(p);
+  }
+}
+
+function updateParticles(){
+  for(let i=particlePool.length-1;i>=0;i--){
+    const p=particlePool[i];
+    p.position.add(p.userData.vel);
+    if(p.userData.type==='smoke'){
+      p.userData.vel.multiplyScalar(.98);p.userData.vel.y+=.001;p.scale.multiplyScalar(1.008);
+    } else if(p.userData.type==='bubble'){
+      p.userData.vel.y-=.0002;
+    } else {
+      p.userData.vel.y-=.002;p.userData.vel.multiplyScalar(.97);
+    }
+    p.userData.life-=p.userData.decay;
+    p.material.opacity=p.userData.life*(p.userData.type==='smoke'?.4:p.userData.type==='bubble'?.35:.9);
+    if(p.userData.life<=0){scene.remove(p);particlePool.splice(i,1);}
+  }
+}
+
+// ═══════════════════════════════════════════
+// REACTION FLASH & LIGHTING
+// ═══════════════════════════════════════════
+let reactionLightIntensity=0;
+
+function flashReaction(pos, type){
+  const fl=document.getElementById('flash-overlay');
+  fl.style.animation='none';fl.offsetHeight;
+  fl.style.animation='flashAnim .5s ease-out forwards';
+  if(type==='combustion') fl.style.background='radial-gradient(circle at center,rgba(255,100,30,.45) 0%,transparent 60%)';
+  else fl.style.background='radial-gradient(circle at center,rgba(0,212,255,.38) 0%,transparent 60%)';
+  reactionLightIntensity=3.5;
+  reactionLight.color.setHex(type==='combustion'?0xff6b35:0x00d4ff);
+  const flashGeo=new THREE.SphereGeometry(.2,12,12);
+  const flashMat=new THREE.MeshBasicMaterial({color:type==='combustion'?0xff8833:0x00d4ff,transparent:true,opacity:.9});
+  const flashMesh=new THREE.Mesh(flashGeo,flashMat);
+  flashMesh.position.copy(pos); scene.add(flashMesh);
+  let t=0;
+  const expand=()=>{t+=.06;flashMesh.scale.setScalar(1+t*5);flashMat.opacity=Math.max(0,.9-t*1.8);if(t<.55)requestAnimationFrame(expand);else scene.remove(flashMesh);};
+  expand();
+}
+
+// ═══════════════════════════════════════════
+// BOND VISUALIZATION
+// ═══════════════════════════════════════════
+function updateBondLines(){
+  bondLines.forEach(l=>scene.remove(l));bondLines.length=0;
+  if(!showBonds||atoms.length<2) return;
+  for(let i=0;i<atoms.length;i++){
+    for(let j=i+1;j<atoms.length;j++){
+      const a=atoms[i], b=atoms[j];
+      const dist=a.position.distanceTo(b.position);
+      const enA=a.userData.el.en||2, enB=b.userData.el.en||2;
+      const threshold=(a.userData.el.r+b.userData.el.r)*0.6*3.5;
+      if(dist<threshold){
+        const enDiff=Math.abs(enA-enB);
+        const bondColor=enDiff>1.7?0xffcc44:enDiff>0.4?0x88ccff:0xaaffaa;
+        const points=[a.position.clone(),b.position.clone()];
+        const geo=new THREE.BufferGeometry().setFromPoints(points);
+        const mat=new THREE.LineBasicMaterial({color:bondColor,transparent:true,opacity:Math.max(.2,1-dist/threshold)*.6,linewidth:2});
+        const line=new THREE.Line(geo,mat);
+        scene.add(line); bondLines.push(line);
+      }
+    }
+  }
+}
+
+function toggleBonds(){
+  showBonds=!showBonds;
+  const btn=document.getElementById('bond-btn');
+  if(!showBonds){
+    bondLines.forEach(l=>scene.remove(l));bondLines.length=0;
+    btn.textContent='⬡ BONDS OFF';btn.classList.remove('success');
+  } else {
+    btn.textContent='⬡ BONDS ON';btn.classList.add('success');
+  }
+}
+
+// ═══════════════════════════════════════════
+// PHYSICS & COLLISION
+// ═══════════════════════════════════════════
+const CHAMBER_RADIUS=2.3;
+let temperature=298, pressure=1.0;
+let showLabels=true;
+
+function updateAtoms(){
+  const tempFactor=temperature/298;
+  const speedMult=parseFloat(document.getElementById('speed-slider').value)/10;
+  const baseSpd=0.008*Math.sqrt(tempFactor)*speedMult;
+
+  for(let i=0;i<atoms.length;i++){
+    const atom=atoms[i];
+
+    // Brownian thermal motion
+    if(Math.random()<.07){
+      const bMag=baseSpd*(0.3+Math.random()*.7);
+      atom.userData.vel.add(new THREE.Vector3((Math.random()-.5)*bMag,(Math.random()-.5)*bMag,(Math.random()-.5)*bMag));
+    }
+
+    // EN-based ionic attraction
+    for(let j=i+1;j<atoms.length;j++){
+      const other=atoms[j];
+      const diff=other.position.clone().sub(atom.position);
+      const dist=diff.length();
+      if(dist<3.5&&dist>0.5){
+        const enA=atom.userData.el.en||2, enB=other.userData.el.en||2;
+        const enDiff=Math.abs(enA-enB);
+        if(enDiff>1.2){
+          const f=0.0002*enDiff/dist;
+          const force=diff.normalize().multiplyScalar(f);
+          atom.userData.vel.add(force.clone().multiplyScalar(1/atom.userData.mass));
+          other.userData.vel.add(force.clone().multiplyScalar(-1/other.userData.mass));
+        }
+      }
+    }
+
+    // Move
+    atom.position.add(atom.userData.vel);
+
+    // Sphere boundary elastic collision
+    const dist=atom.position.length();
+    const r=atom.userData.radius||.2;
+    if(dist+r>CHAMBER_RADIUS){
+      const normal=atom.position.clone().normalize();
+      const dot=atom.userData.vel.dot(normal);
+      if(dot>0){atom.userData.vel.sub(normal.multiplyScalar(2*dot*1.02));}
+      atom.position.setLength(CHAMBER_RADIUS-r);
+    }
+
+    // Damping & speed cap
+    atom.userData.vel.multiplyScalar(.994);
+    const maxSpd=0.15*Math.sqrt(tempFactor)*speedMult;
+    if(atom.userData.vel.length()>maxSpd) atom.userData.vel.setLength(maxSpd);
+
+    // Angular rotation
+    atom.rotation.x+=atom.userData.angularVel.x;
+    atom.rotation.y+=atom.userData.angularVel.y;
+  }
+
+  // Atom-atom elastic collisions with reaction check
+  for(let i=0;i<atoms.length;i++){
+    for(let j=i+1;j<atoms.length;j++){
+      const a=atoms[i], b=atoms[j];
+      if(a.userData.reacted||b.userData.reacted) continue;
+      const diff=a.position.clone().sub(b.position);
+      const dist=diff.length();
+      const minDist=(a.userData.radius||.2)+(b.userData.radius||.2);
+      if(dist<minDist&&dist>0.001){
+        const normal=diff.normalize();
+        const relVel=a.userData.vel.clone().sub(b.userData.vel);
+        const dot=relVel.dot(normal);
+        if(dot<0){
+          const mA=a.userData.mass||1, mB=b.userData.mass||1;
+          const impulse=2*dot/(mA+mB);
+          a.userData.vel.sub(normal.clone().multiplyScalar(impulse*mB));
+          b.userData.vel.add(normal.clone().multiplyScalar(impulse*mA));
+        }
+        const overlap=minDist-dist;
+        a.position.add(normal.clone().multiplyScalar(overlap*.5));
+        b.position.sub(normal.clone().multiplyScalar(overlap*.5));
+        const relSpeed=relVel.length();
+        const activationE=temperature>800?0.01:temperature>400?0.025:0.05;
+        if(relSpeed>activationE) tryReact(a,b);
+      }
+    }
+  }
+
+  updateParticles();
+  if(showBonds) updateBondLines();
+}
+
+// ═══════════════════════════════════════════
+// REACTION ENGINE (fixed & improved)
+// ═══════════════════════════════════════════
+function findReaction(symbols){
+  // Sort the symbols array for comparison
+  const sorted = [...symbols].sort();
+  for(const rxn of REACTIONS){
+    const needed = [...rxn.r].sort();
+    // Check if ALL needed reactants are present in our symbols (subset match)
+    if(needed.length <= sorted.length){
+      const sortedCopy = [...sorted];
+      let match = true;
+      for(const s of needed){
+        const idx = sortedCopy.indexOf(s);
+        if(idx === -1){match=false;break;}
+        sortedCopy.splice(idx,1);
+      }
+      if(match) return rxn;
+    }
+  }
+  return null;
+}
+
+// Track pending reactions to prevent double-firing
+const pendingReactions = new Set();
+
+function tryReact(a, b){
+  if(a.userData.reacted||b.userData.reacted) return;
+  if(temperature<40&&a.userData.el.cat!=='alkali'&&b.userData.el.cat!=='alkali') return;
+  
+  const key = [a.userData.id, b.userData.id].sort().join('|');
+  if(pendingReactions.has(key)) return;
+  
+  const nearby=atoms.filter(x=>x!==a&&x!==b&&!x.userData.reacted&&x.position.distanceTo(a.position)<2.2);
+  const allSyms=[a.userData.sym, b.userData.sym, ...nearby.slice(0,3).map(x=>x.userData.sym)];
+  
+  // Try 3-atom then 2-atom reactions
+  let rxn = null;
+  for(let len=3;len>=2;len--){
+    rxn = findReaction(allSyms.slice(0,len));
+    if(rxn) break;
+  }
+  if(rxn){
+    pendingReactions.add(key);
+    performReaction(a, b, rxn);
+  }
+}
+
+function performReaction(a, b, rxn){
+  a.userData.reacted=true; b.userData.reacted=true;
+  const midPos=a.position.clone().add(b.position).multiplyScalar(.5);
+  flashReaction(midPos, rxn.type);
+  playReactionSound(rxn.type);
+
+  if(rxn.type==='combustion'){
+    spawnParticles(midPos, 0xff6b35, 35, .1, 'spark');
+    spawnParticles(midPos, 0xffcc44, 18, .06, 'spark');
+    setTimeout(()=>spawnParticles(midPos, 0x444444, 22, .04, 'smoke'), 100);
+    setTimeout(()=>spawnParticles(midPos, 0x333333, 12, .03, 'smoke'), 250);
+  } else if(rxn.type==='synthesis'){
+    spawnParticles(midPos, a.userData.el.color, 18, .07, 'spark');
+    spawnParticles(midPos, b.userData.el.color, 18, .07, 'spark');
+    if(rxn.p==='H₂O'||rxn.p==='MgO') setTimeout(()=>spawnBubbles(midPos, 10), 150);
+  }
+
+  setTimeout(()=>{
+    const key = [a.userData.id, b.userData.id].sort().join('|');
+    pendingReactions.delete(key);
+    removeAtom(a); removeAtom(b);
+    // Remove any nearby atoms consumed in the reaction (for 3+ atom reactions)
+    // For simplicity we only remove a and b and create product
+    const product = createProductAtom(rxn.p, midPos, rxn.structure);
+    if(product){
+      reactionCount++;
+      updateUI();
+      addLog(rxn.eq, 'reaction', rxn.name, rxn.energy||0);
+      showToast(`⚗ ${rxn.name} formed!`);
+    }
+  }, 280);
+}
+
+function createProductAtom(formula, pos, structure){
+  const geo=new THREE.SphereGeometry(.5, 48, 48);
+  const color=getFormulaColor(formula);
+  const mat=new THREE.MeshPhysicalMaterial({
+    color,emissive:color,emissiveIntensity:.45,
+    roughness:.05,metalness:.1,clearcoat:1,clearcoatRoughness:0,transparent:true,opacity:.95
+  });
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.position.copy(pos);
+
+  // Glow
+  const glowGeo=new THREE.SphereGeometry(.75,16,16);
+  const glowMat=new THREE.MeshBasicMaterial({color,transparent:true,opacity:.12,side:THREE.BackSide});
+  mesh.add(new THREE.Mesh(glowGeo,glowMat));
+
+  // Label sprite for compound
+  const labelCanvas=document.createElement('canvas');
+  labelCanvas.width=256;labelCanvas.height=64;
+  const lCtx=labelCanvas.getContext('2d');
+  lCtx.font='bold 32px monospace';
+  lCtx.fillStyle='#'+color.toString(16).padStart(6,'0')+'dd';
+  lCtx.textAlign='center';lCtx.textBaseline='middle';
+  lCtx.fillText(formula,128,32);
+  const labelTex=new THREE.CanvasTexture(labelCanvas);
+  const labelMat=new THREE.SpriteMaterial({map:labelTex,transparent:true,depthTest:false});
+  const label=new THREE.Sprite(labelMat);
+  label.scale.set(1.2,.4,1);label.position.y=0.72;
+  mesh.add(label);
+
+  const spd=0.012;
+  mesh.userData={
+    sym:formula,el:{r:.5,color,cat:'compound',en:2,ar:100,mass:50},
+    id:Date.now()+Math.random(),
+    vel:new THREE.Vector3((Math.random()-.5)*spd,(Math.random()-.5)*spd,(Math.random()-.5)*spd),
+    angularVel:new THREE.Vector3((Math.random()-.5)*.015,(Math.random()-.5)*.015,(Math.random()-.5)*.015),
+    reacted:false,isCompound:true,formula,structure,mass:50,radius:.5,label
+  };
+  scene.add(mesh);atoms.push(mesh);
+
+  // Entrance animation
+  mesh.scale.set(0,0,0);let t=0;
+  const grow=()=>{t+=.08;mesh.scale.setScalar(Math.min(1,t));if(t<1.2)requestAnimationFrame(grow)};
+  grow();
+  updateUI();
+  return mesh;
+}
+
+function getFormulaColor(f){
+  const map={
+    'H₂O':0x4fa8e8,'NaCl':0xffffff,'HCl':0x90e050,'H₂':0xdddddd,'O₂':0xff5555,
+    'NH₃':0x4444ff,'CO₂':0x777777,'Fe₂O₃':0xcd7f32,'SO₂':0xffff22,'MgO':0xeeeeee,
+    'CuO':0x6b3300,'NaOH':0xaaddff,'Al₂O₃':0xd4c5a9,'K₂O':0x9966cc,'LiF':0xff99ff,
+    'ZnS':0xffcc44,'AgCl':0xddddcc,'AuCl₃':0xffd700,'CaO':0xeeeebb,'SiO₂':0xddccaa,
+    'NO₂':0xcc4400,'HNO₃':0xff8844,'BaO':0x66ff66,'CuZn':0xd4af37,'FeS':0x8b7355
+  };
+  return map[f]||0x00ff9d;
+}
+
+// ═══════════════════════════════════════════
+// MOLECULE ANALYSIS MODAL
+// ═══════════════════════════════════════════
+function openMolModal(atom){
+  const f=atom.userData.formula||atom.userData.sym;
+  const data=MOLECULE_DATA[f];
+  const modal=document.getElementById('mol-modal');
+  document.getElementById('mol-title').textContent='⬡ '+f+' — ANALYSIS';
+  
+  drawMolecule2D(f, data);
+  
+  // Hazard box
+  const hbox=document.getElementById('mol-hazard-box');
+  if(data){
+    const hClass=data.hazard||'safe';
+    hbox.innerHTML=`<div class="mol-hazard ${hClass}">${hClass==='danger'?'☢':'⚠'} ${data.hazardMsg||''}</div>`;
+  } else hbox.innerHTML='';
+  
+  const grid=document.getElementById('mol-info-grid');
+  grid.innerHTML='';
+  if(data){
+    const items=[
+      {l:'Molecular Weight',v:data.mw+' g/mol'},
+      {l:'Shape / Geometry',v:data.shape},
+      {l:'Boiling Point',v:data.bp+'°C'},
+      {l:'Melting Point',v:data.mp+'°C'},
+      {l:'Polarity',v:data.polarity},
+      {l:'Bond Type',v:(data.bonds[0]?.type||'—')},
+      {l:'Uses',v:data.uses||'—'},
+      {l:'Atoms Count',v:data.atoms.length},
+    ];
+    items.forEach(({l,v})=>{
+      const d=document.createElement('div');
+      d.className='mol-info-item';
+      d.innerHTML=`<div class="label">${l}</div><div class="value">${v}</div>`;
+      grid.appendChild(d);
+    });
+  } else {
+    grid.innerHTML=`<div class="mol-info-item" style="grid-column:1/-1"><div class="label">Formula</div><div class="value">${f}</div><div class="label" style="margin-top:8px">Status</div><div class="value">Compound (no detailed data)</div></div>`;
+  }
+  modal.classList.add('visible');
+}
+
+function closeMolModal(){document.getElementById('mol-modal').classList.remove('visible');}
+
+function drawMolecule2D(formula, data){
+  const cv=document.getElementById('mol-canvas');
+  const ctx=cv.getContext('2d');
+  cv.width=480;cv.height=200;
+  ctx.clearRect(0,0,480,200);
+  ctx.fillStyle='rgba(0,5,15,1)';ctx.fillRect(0,0,480,200);
+
+  const cx=240, cy=100;
+  const ELEM_COLORS={H:'#ffffff',O:'#ff5555',C:'#aaaaaa',N:'#4488ff',Cl:'#44ff44',Na:'#cc88ff',
+    S:'#ffff44',Fe:'#ff8833',Mg:'#88ff44',Ca:'#44ff44',F:'#88ff44',default:'#00ff9d',
+    Cu:'#c88033',Al:'#bfa6a6',Si:'#f0c8a0',P:'#ff8000',K:'#8f40d4',Ag:'#c0c0c0',
+    Au:'#ffd700',Pb:'#777777',Ba:'#00cc00',Zn:'#7d80b0',I:'#940094',Br:'#a62929'};
+
+  function atomCol(sym){return ELEM_COLORS[sym]||ELEM_COLORS.default;}
+
+  function drawAtom(x,y,sym,r=22){
+    const c=atomCol(sym);
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=c+'2a';ctx.fill();
+    ctx.strokeStyle=c;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=c;ctx.font=`bold ${r>18?15:12}px Share Tech Mono,monospace`;
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(sym,x,y);
+  }
+  
+  function drawBond(x1,y1,x2,y2,order,color='#4488cc'){
+    ctx.strokeStyle=color;
+    if(order===2){
+      const dx=y2-y1, dy=x1-x2, len=Math.sqrt(dx*dx+dy*dy)||1;
+      const nx=dx/len*3, ny=dy/len*3;
+      ctx.lineWidth=2;
+      [[nx,ny],[-nx,-ny]].forEach(([ox,oy])=>{ctx.beginPath();ctx.moveTo(x1+ox,y1+oy);ctx.lineTo(x2+ox,y2+oy);ctx.stroke();});
+    } else if(order===3){
+      const dx=y2-y1, dy=x1-x2, len=Math.sqrt(dx*dx+dy*dy)||1;
+      const nx=dx/len*4, ny=dy/len*4;
+      ctx.lineWidth=1.5;
+      [[0,0],[nx,ny],[-nx,-ny]].forEach(([ox,oy])=>{ctx.beginPath();ctx.moveTo(x1+ox,y1+oy);ctx.lineTo(x2+ox,y2+oy);ctx.stroke();});
+    } else {
+      ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    }
+  }
+
+  function label2D(text,x,y,color='#4488cc66'){
+    ctx.fillStyle=color;ctx.font='11px Share Tech Mono,monospace';ctx.textAlign='center';
+    ctx.fillText(text,x,y);
+  }
+
+  // Molecule-specific drawings
+  if(formula==='H₂O'){
+    drawBond(cx-55,cy-25,cx,cy,1,'#4488cc');drawBond(cx+55,cy-25,cx,cy,1,'#4488cc');
+    drawAtom(cx-55,cy-25,'H',18);drawAtom(cx+55,cy-25,'H',18);drawAtom(cx,cy,'O',26);
+    label2D('104.5°',cx,cy+42);
+  } else if(formula==='CO₂'){
+    drawBond(cx-90,cy,cx-28,cy,2,'#ff8844');drawBond(cx+28,cy,cx+90,cy,2,'#ff8844');
+    drawAtom(cx-90,cy,'O',22);drawAtom(cx,cy,'C',24);drawAtom(cx+90,cy,'O',22);
+    label2D('180° — Linear',cx,cy+52);
+  } else if(formula==='NH₃'){
+    for(let i=0;i<3;i++){const a=(i/3)*Math.PI*2-Math.PI/2+.3;const hx=cx+Math.cos(a)*72,hy=cy+Math.sin(a)*72;drawBond(cx,cy,hx,hy,1,'#6688ff');drawAtom(hx,hy,'H',18);}
+    drawAtom(cx,cy,'N',26);label2D('Trigonal pyramidal',cx,cy+62);
+  } else if(formula==='NaCl'){
+    drawBond(cx-65,cy,cx+65,cy,1,'#ffcc44');drawAtom(cx-65,cy,'Na',26);drawAtom(cx+65,cy,'Cl',26);
+    label2D('Ionic bond (Na⁺ — Cl⁻)',cx,cy+52);
+  } else if(formula==='HCl'){
+    drawBond(cx-70,cy,cx+70,cy,1,'#44aa44');drawAtom(cx-70,cy,'H',18);drawAtom(cx+70,cy,'Cl',26);
+    label2D('Polar covalent',cx,cy+52);
+  } else if(formula==='SO₂'){
+    drawBond(cx-65,cy,cx,cy,2,'#aaaa00');drawBond(cx,cy,cx+65,cy-30,1,'#aaaa00');
+    drawAtom(cx-65,cy,'O',22);drawAtom(cx,cy,'S',26);drawAtom(cx+65,cy-30,'O',22);
+    label2D('119° — Bent',cx,cy+52);
+  } else if(formula==='H₂'||formula==='O₂'){
+    const sym=formula[0];const col=atomCol(sym);
+    drawBond(cx-60,cy,cx+60,cy,formula==='O₂'?2:1,col);
+    drawAtom(cx-60,cy,sym,24);drawAtom(cx+60,cy,sym,24);
+    label2D(formula==='O₂'?'Double bond — diatomic':'Single bond — diatomic',cx,cy+52);
+  } else if(formula==='NO₂'){
+    drawBond(cx-70,cy,cx,cy,2,'#cc4400');drawBond(cx,cy,cx+70,cy-30,1,'#cc4400');
+    drawAtom(cx-70,cy,'O',22);drawAtom(cx,cy,'N',26);drawAtom(cx+70,cy-30,'O',22);
+    label2D('134° — Bent',cx,cy+52);
+  } else if(formula==='NaOH'){
+    drawBond(cx-90,cy,cx-20,cy,1,'#aaddff');drawBond(cx-20,cy,cx+50,cy,1,'#ff5555');drawBond(cx+50,cy,cx+105,cy,1,'#ffffff');
+    drawAtom(cx-90,cy,'Na',24);drawAtom(cx-20,cy,'O',24);drawAtom(cx+50,cy,'H',18);
+    label2D('Ionic — Na⁺ + OH⁻',cx,cy+52);
+  } else {
+    // Generic
+    const syms=data?data.atoms:(formula.match(/[A-Z][a-z]?/g)||[formula]);
+    const unique=[...new Set(syms)].slice(0,6);
+    const step=Math.min(80,380/Math.max(unique.length,1));
+    const startX=cx-(unique.length-1)*step/2;
+    unique.forEach((s,i)=>{
+      if(i>0) drawBond(startX+(i-1)*step,cy,startX+i*step,cy,1,'#4488cc');
+      drawAtom(startX+i*step,cy,s,22);
+    });
+    label2D(formula,cx,cy+52);
+  }
+
+  // Formula label top-left
+  ctx.fillStyle='#00d4ff99';ctx.font='bold 13px Share Tech Mono';
+  ctx.textAlign='left';ctx.fillText(formula,12,20);
+  if(data){
+    ctx.fillStyle='#4a7fa5';ctx.font='10px Share Tech Mono';
+    ctx.fillText(data.name,12,36);
+  }
+}
+
+// ═══════════════════════════════════════════
+// ENVIRONMENT CONTROLS
+// ═══════════════════════════════════════════
+function setTemperature(v){
+  temperature=parseFloat(v);
+  document.getElementById('temp-val').textContent=temperature+' K';
+  document.getElementById('temp-display').textContent=temperature+' K';
+  document.getElementById('hud-temp').textContent=temperature+' K';
+  document.getElementById('temp-slider').style.setProperty('--pct',(v/5000*100).toFixed(1)+'%');
+  const heat=Math.min(1,temperature/2000);
+  chamberMat.color.setRGB(heat*.25,heat*.1+.05,1-heat*.4);
+  pointLight1.color.setRGB(heat*.7+.1,heat*.1,1-heat*.7);
+  updatePhaseDisplay(temperature);
+}
+
+function setPressure(v){
+  pressure=parseFloat(v)/10;
+  document.getElementById('press-val').textContent=pressure.toFixed(1)+' atm';
+  document.getElementById('press-display').textContent=pressure.toFixed(1)+' atm';
+  document.getElementById('press-slider').style.setProperty('--pct',((v-1)/299*100).toFixed(1)+'%');
+}
+
+function setSpeed(v){
+  const spd=parseFloat(v)/10;
+  document.getElementById('speed-val').textContent=spd.toFixed(1)+'×';
+  document.getElementById('speed-slider').style.setProperty('--pct',((v-1)/49*100).toFixed(1)+'%');
+}
+
+function getPhase(t){if(t<273)return'SOLID';if(t<373)return'LIQUID';return'GAS';}
+
+function updatePhaseDisplay(t){
+  const phase=getPhase(t);
+  const si=document.getElementById('state-indicator');
+  const pd=document.getElementById('phase-display');
+  const hp=document.getElementById('hud-phase');
+  const colors={SOLID:'#4af',LIQUID:'#00ff9d',GAS:'#ff6b35'};
+  si.textContent=`◈ ${phase} PHASE ◈`;
+  si.style.color=colors[phase];si.style.textShadow=`0 0 12px ${colors[phase]}`;
+  pd.textContent=phase;pd.style.color=colors[phase];
+  hp.textContent=phase;hp.style.color=colors[phase];
+  for(const atom of atoms){
+    if(atom.userData.isCompound||!atom.material)continue;
+    if(phase==='GAS'){atom.material.opacity=.65;if(atom.material.emissiveIntensity!=null)atom.material.emissiveIntensity=.6;}
+    else if(phase==='LIQUID'){atom.material.opacity=.85;if(atom.material.emissiveIntensity!=null)atom.material.emissiveIntensity=.35;}
+    else{atom.material.opacity=1;if(atom.material.emissiveIntensity!=null)atom.material.emissiveIntensity=.2;}
+  }
+}
+
+function toggleRotation(){
+  autoRotate=!autoRotate;
+  document.getElementById('rot-btn').classList.toggle('active',autoRotate);
+}
+
+function resetCamera(){
+  camTheta=.3;camPhi=Math.PI/4;camDist=9;updateCamera();
+  showToast('📷 Camera reset');
+}
+
+function triggerExplosion(){
+  if(atoms.length<2){addLog('Need ≥2 atoms to react!','error');return;}
+  playReactionSound('synthesis');
+  const copy=[...atoms];
+  for(let i=0;i<copy.length-1;i+=2){
+    if(copy[i]&&copy[i+1]&&!copy[i].userData.reacted)
+      setTimeout(()=>tryReact(copy[i],copy[i+1]),i*80);
+  }
+  spawnParticles(new THREE.Vector3(0,0,0),0xff6b35,50,.1,'spark');
+}
+
+function addRandomAtoms(count){
+  const syms=Object.keys(ELEMENTS);
+  for(let i=0;i<count;i++){
+    const sym=syms[Math.floor(Math.random()*syms.length)];
+    createAtomMesh(sym);
+  }
+  showToast(`+ Added ${count} random atoms`);
+}
+
+// ═══════════════════════════════════════════
+// SNAPSHOT / EXPORT
+// ═══════════════════════════════════════════
+function saveSnapshot(){
+  const data={
+    timestamp:new Date().toISOString(),
+    temperature,pressure,
+    phase:getPhase(temperature),
+    atoms:atoms.map(a=>({sym:a.userData.sym,pos:[a.position.x.toFixed(2),a.position.y.toFixed(2),a.position.z.toFixed(2)]})),
+    reactionCount
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='chemlab_snapshot.json';a.click();
+  URL.revokeObjectURL(url);
+  showToast('📸 Snapshot saved!');
+}
+
+function exportLog(){
+  const entries=Array.from(document.querySelectorAll('.log-entry')).map(e=>e.textContent.trim()).join('\n---\n');
+  const blob=new Blob([entries],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='chemlab_log.txt';a.click();
+  URL.revokeObjectURL(url);
+  showToast('📄 Log exported!');
+}
+
+// ═══════════════════════════════════════════
+// LOG & TOAST
+// ═══════════════════════════════════════════
+let logStart=Date.now();
+function addLog(msg,type='info',name='',energy=0){
+  const e=((Date.now()-logStart)/1000);
+  const pad=n=>String(Math.floor(n)).padStart(2,'0');
+  const ts=`${pad(e/60)}:${pad(e%60)}`;
+  const div=document.createElement('div');
+  div.className='log-entry '+(type==='reaction'?'reaction':type==='error'?'error':type==='warn'?'warn':'');
+  if(type==='reaction'){
+    div.innerHTML=`<span class="time">${ts}</span> <b>${name}</b><br><span class="eq">${msg}</span><br><span style="color:#4a7fa5;font-size:9px">ΔH = ${energy} kJ/mol</span>`;
+  } else {
+    div.innerHTML=`<span class="time">${ts}</span><br>${msg}`;
+  }
+  const body=document.getElementById('log-body');
+  body.insertBefore(div,body.firstChild);
+  if(body.children.length>80)body.removeChild(body.lastChild);
+}
+
+function clearLog(){document.getElementById('log-body').innerHTML='';showToast('Log cleared');}
+
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('visible');
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('visible'),2200);
+}
+
+// ═══════════════════════════════════════════
+// TOOLTIP & INTERACTION
+// ═══════════════════════════════════════════
+let hoveredAtom=null;
+window.addEventListener('mousemove',e=>{
+  const panels=document.querySelectorAll('.panel');
+  for(const p of panels){if(p.contains(e.target)){hideTooltip();return;}}
+  if(document.getElementById('mol-modal').classList.contains('visible'))return;
+  mouse.x=(e.clientX/window.innerWidth)*2-1;
+  mouse.y=-(e.clientY/window.innerHeight)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(atoms,false);
+  if(hits.length>0){
+    const atom=hits[0].object;
+    showTooltip(e.clientX,e.clientY,atom.userData.sym,atom.userData.el,atom.userData.isCompound);
+    if(hoveredAtom!==atom){
+      if(hoveredAtom&&hoveredAtom.material)hoveredAtom.material.emissiveIntensity=hoveredAtom.userData.isCompound?.45:.25;
+      hoveredAtom=atom;
+      if(atom.material)atom.material.emissiveIntensity=.95;
+    }
+    document.body.style.cursor='pointer';
+  } else {
+    if(hoveredAtom&&hoveredAtom.material){hoveredAtom.material.emissiveIntensity=hoveredAtom.userData.isCompound?.45:.25;hoveredAtom=null;}
+    hideTooltip();document.body.style.cursor='default';
+  }
+});
+
+canvas.addEventListener('click',e=>{
+  const panels=document.querySelectorAll('.panel');
+  for(const p of panels){if(p.contains(e.target))return;}
+  if(document.getElementById('mol-modal').classList.contains('visible'))return;
+  mouse.x=(e.clientX/window.innerWidth)*2-1;
+  mouse.y=-(e.clientY/window.innerHeight)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(atoms,false);
+  if(hits.length>0){
+    const atom=hits[0].object;
+    openMolModal(atom);playSciClick();
+  }
+});
+
+// Keyboard shortcuts
+window.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='Escape') closeMolModal();
+  if(e.key==='r'||e.key==='R') toggleRotation();
+  if(e.key==='c'||e.key==='C') clearChamber();
+  if(e.key==='b'||e.key==='B') toggleBonds();
+  if(e.key==='Enter') triggerExplosion();
+});
+
+function showTooltip(x,y,sym,el,isCompound){
+  const tt=document.getElementById('tooltip');
+  document.getElementById('tt-sym').textContent=sym;
+  document.getElementById('tt-name').textContent=el.name||sym;
+  document.getElementById('tt-mass').textContent=el.mass?el.mass.toFixed(3)+' u':'—';
+  document.getElementById('tt-val').textContent=el.valency!=null?el.valency:'—';
+  document.getElementById('tt-en').textContent=el.en!=null?el.en.toFixed(2):'—';
+  document.getElementById('tt-ar').textContent=el.ar?el.ar+' pm':'—';
+  document.getElementById('tt-cat').textContent=el.cat||'compound';
+  document.getElementById('tt-bond').textContent=el.bond||'—';
+  document.getElementById('tt-hint').textContent=isCompound?'Click to analyze molecule':'Drag to chamber or click to add';
+  const r='#'+el.color.toString(16).padStart(6,'0');
+  document.getElementById('tt-sym').style.color=r;
+  tt.style.border=`1px solid ${r}`;
+  const tx=Math.min(x+18,window.innerWidth-230), ty=Math.min(y-10,window.innerHeight-250);
+  tt.style.left=tx+'px';tt.style.top=Math.max(10,ty)+'px';
+  tt.classList.add('visible');
+}
+function hideTooltip(){document.getElementById('tooltip').classList.remove('visible');}
+
+// ═══════════════════════════════════════════
+// DRAG & DROP
+// ═══════════════════════════════════════════
+let dragSym=null, dragEl=null;
+const ghost=document.getElementById('drag-ghost');
+const dropRing=document.getElementById('drop-ring');
+
+function startDrag(sym,el,event){
+  dragSym=sym;dragEl=el;
+  ghost.innerHTML=`<span style="font-size:14px;font-weight:700">${sym}</span><span style="font-size:8px;opacity:.7">${el.name}</span>`;
+  const c='#'+el.color.toString(16).padStart(6,'0');
+  ghost.style.borderColor=c;ghost.style.color=c;ghost.style.background=`${c}22`;ghost.style.opacity='1';
+  ghost.style.left=event.clientX+'px';ghost.style.top=event.clientY+'px';
+  dropRing.classList.add('active');
+  window.addEventListener('mousemove',onDragMove);
+  window.addEventListener('mouseup',onDragDrop);
+}
+function onDragMove(e){ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';}
+function onDragDrop(e){
+  const cx=window.innerWidth/2,cy=window.innerHeight/2;
+  const dx=e.clientX-cx,dy=e.clientY-cy;
+  if(Math.sqrt(dx*dx+dy*dy)<130&&dragSym){
+    const atom=createAtomMesh(dragSym);
+    if(atom){
+      playDropSound();
+      addLog(`Added ${ELEMENTS[dragSym]?.name||dragSym} (${dragSym})`,'info');
+      atom.scale.set(0,0,0);
+      let t=0;const grow=()=>{t+=.1;atom.scale.setScalar(Math.min(1,t));if(t<1.1)requestAnimationFrame(grow)};grow();
+    }
+  }
+  dragSym=null;dragEl=null;ghost.style.opacity='0';dropRing.classList.remove('active');
+  window.removeEventListener('mousemove',onDragMove);window.removeEventListener('mouseup',onDragDrop);
+}
+
+// ═══════════════════════════════════════════
+// PRESETS (extended)
+// ═══════════════════════════════════════════
+function runPreset(name){
+  clearChamber();
+  const presets={
+    water:()=>{for(let i=0;i<4;i++)createAtomMesh('H');for(let i=0;i<2;i++)createAtomMesh('O');setTemperature(400);document.getElementById('temp-slider').value=400;},
+    nacl:()=>{for(let i=0;i<4;i++){createAtomMesh('Na');createAtomMesh('Cl');}setTemperature(500);document.getElementById('temp-slider').value=500;},
+    combustion:()=>{createAtomMesh('C');for(let i=0;i<4;i++)createAtomMesh('H');for(let i=0;i<4;i++)createAtomMesh('O');setTemperature(900);document.getElementById('temp-slider').value=900;},
+    rust:()=>{for(let i=0;i<4;i++)createAtomMesh('Fe');for(let i=0;i<6;i++)createAtomMesh('O');setTemperature(350);document.getElementById('temp-slider').value=350;},
+    ammonia:()=>{createAtomMesh('N');for(let i=0;i<3;i++)createAtomMesh('H');setTemperature(600);document.getElementById('temp-slider').value=600;},
+    hno3:()=>{createAtomMesh('H');createAtomMesh('N');for(let i=0;i<3;i++)createAtomMesh('O');setTemperature(500);document.getElementById('temp-slider').value=500;},
+  };
+  if(presets[name]){
+    presets[name]();
+    addLog(`Preset: ${name} loaded`,'info');
+    showToast(`🧪 Preset "${name}" loaded`);
+  }
+}
+
+// ═══════════════════════════════════════════
+// PANEL COLLAPSE
+// ═══════════════════════════════════════════
+function togglePanel(id){
+  document.getElementById(id).classList.toggle('collapsed');
+  playSciClick();
+}
+
+// ═══════════════════════════════════════════
+// PERIODIC TABLE UI (with legend)
+// ═══════════════════════════════════════════
+const catClass={
+  'alkali':'cat-alkali','alkali-earth':'cat-alkali-earth','transition':'cat-transition',
+  'post-trans':'cat-post-trans','metalloid':'cat-metalloid','nonmetal':'cat-nonmetal',
+  'noble':'cat-noble','lanthan':'cat-lanthan','actinide':'cat-actinide','halogen':'cat-halogen'
+};
+const catColors={
+  'alkali':'rgba(100,20,150,.8)','alkali-earth':'rgba(0,80,160,.8)','transition':'rgba(0,80,130,.8)',
+  'post-trans':'rgba(0,80,60,.8)','metalloid':'rgba(40,80,20,.8)','nonmetal':'rgba(180,60,0,.8)',
+  'noble':'rgba(80,0,80,.8)','halogen':'rgba(0,100,80,.8)'
+};
+const commonElems=['H','He','Li','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca','Fe','Cu','Zn','Ag','Au','Hg','Pb','I','Br','Mn','Cr','Ni','Ba','Xe'];
+const organicElems=['H','C','N','O','P','S','F','Cl','Br','I','Ca','Mg','Fe','Zn','Cu','Na','K'];
+let currentTab='all', currentFilter='';
+
+function buildGrid(filter='', tab='all'){
+  const grid=document.getElementById('elem-grid');grid.innerHTML='';
+  const syms=tab==='common'?commonElems:tab==='organic'?organicElems:Object.keys(ELEMENTS);
+  if(tab==='all'&&!filter){
+    buildStandardLayout(grid);
+    buildLegend();
+  } else {
+    const wrap=document.createElement('div');wrap.style.cssText='display:flex;flex-wrap:wrap;gap:2px';
+    for(const sym of syms){
+      const el=ELEMENTS[sym];if(!el)continue;
+      if(filter&&!sym.toLowerCase().includes(filter)&&!el.name.toLowerCase().includes(filter))continue;
+      wrap.appendChild(makeElemBtn(sym,el));
+    }
+    grid.appendChild(wrap);
+    buildLegend();
+  }
+}
+
+function buildLegend(){
+  const leg=document.getElementById('legend');
+  if(!leg) return;
+  leg.innerHTML='';
+  const cats=[['alkali','Alkali'],['alkali-earth','Alk. Earth'],['transition','Transition'],
+    ['nonmetal','Nonmetal'],['halogen','Halogen'],['metalloid','Metalloid'],
+    ['noble','Noble'],['post-trans','Post-Trans']];
+  cats.forEach(([cat,label])=>{
+    const item=document.createElement('div');item.className='legend-item';
+    item.innerHTML=`<div class="legend-dot" style="background:${catColors[cat]||'#555'}"></div><span>${label}</span>`;
+    leg.appendChild(item);
+  });
+}
+
+function buildStandardLayout(grid){
+  const layout=[
+    ['H',null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'He'],
+    ['Li','Be',null,null,null,null,null,null,null,null,null,null,'B','C','N','O','F','Ne'],
+    ['Na','Mg',null,null,null,null,null,null,null,null,null,null,'Al','Si','P','S','Cl','Ar'],
+    ['K','Ca','Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn','Ga','Ge','As','Se','Br','Kr'],
+    ['Rb','Sr','Y','Zr',null,null,null,null,null,null,'Ag',null,null,null,null,null,'I','Xe'],
+    [null,'Ba',null,null,null,null,null,null,null,null,'Au','Hg',null,'Pb',null,null,null,null],
+  ];
+  for(const row of layout){
+    const rowDiv=document.createElement('div');rowDiv.className='period-row';
+    for(const sym of row){
+      if(!sym){const sp=document.createElement('div');sp.style.cssText='width:36px;height:36px;flex-shrink:0';rowDiv.appendChild(sp);}
+      else{const el=ELEMENTS[sym];if(el)rowDiv.appendChild(makeElemBtn(sym,el));}
+    }
+    grid.appendChild(rowDiv);
+  }
+}
+
+function makeElemBtn(sym,el){
+  const btn=document.createElement('div');
+  btn.className='elem-btn '+(catClass[el.cat]||'');
+  btn.innerHTML=`<span class="sym">${sym}</span><span class="num">${el.n}</span>`;
+  btn.title=`${el.name} — ${el.desc||''}`;
+  btn.addEventListener('mousedown',e=>{e.preventDefault();startDrag(sym,el,e);});
+  btn.addEventListener('click',()=>{
+    const atom=createAtomMesh(sym);
+    if(atom){
+      playSciClick();
+      addLog(`Added ${el.name} (${sym})`);
+      // Brief highlight
+      btn.classList.add('selected');
+      setTimeout(()=>btn.classList.remove('selected'),400);
+    }
+  });
+  return btn;
+}
+
+function setTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  buildGrid(currentFilter,tab);
+}
+function filterElements(val){currentFilter=val.toLowerCase();buildGrid(currentFilter,currentTab);}
+
+// ═══════════════════════════════════════════
+// BACKGROUND PARTICLES
+// ═══════════════════════════════════════════
+const bgParticles=[];
+function spawnBgParticle(){
+  const geo=new THREE.SphereGeometry(.02,4,4);
+  const c=Math.random()>.5?0x00d4ff:0x7b2fff;
+  const mat=new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.25+Math.random()*.25});
+  const p=new THREE.Mesh(geo,mat);
+  const theta=Math.random()*Math.PI*2, phi=Math.random()*Math.PI;
+  p.position.set(12*Math.sin(phi)*Math.cos(theta),(Math.random()-.5)*10,12*Math.sin(phi)*Math.sin(theta));
+  p.userData.vel=new THREE.Vector3(0,.006+Math.random()*.009,0);
+  scene.add(p);bgParticles.push(p);
+  if(bgParticles.length>120){scene.remove(bgParticles.shift());}
+}
+
+// ═══════════════════════════════════════════
+// ANIMATION LOOP
+// ═══════════════════════════════════════════
+let frame=0;
+function animate(){
+  requestAnimationFrame(animate);frame++;
+  if(autoRotate)camTheta+=.003;
+  updateCamera();
+
+  if(reactionLightIntensity>0){
+    reactionLightIntensity=Math.max(0,reactionLightIntensity-.08);
+    reactionLight.intensity=reactionLightIntensity;
+  }
+
+  // Chamber pulse
+  const pulse=.025*Math.sin(frame*.025);
+  ring1.material.opacity=.22+pulse;ring2.material.opacity=.16+pulse;ring3.material.opacity=.12+pulse;
+  ring1.rotation.y+=.004;ring2.rotation.z+=.003;ring3.rotation.x+=.002;
+
+  updateAtoms();
+
+  if(frame%12===0) spawnBgParticle();
+  for(const p of bgParticles){
+    p.position.add(p.userData.vel);
+    if(p.position.y>7) p.position.y=-7;
+  }
+
+  renderer.render(scene,camera);
+}
+
+// ═══════════════════════════════════════════
+// RESIZE
+// ═══════════════════════════════════════════
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+buildGrid('','all');
+setTemperature(298);setPressure(10);updateCamera();animate();
+document.getElementById('bond-btn').classList.add('success');
+
+// Welcome atoms
+setTimeout(()=>{
+  createAtomMesh('H');
+  setTimeout(()=>createAtomMesh('O'),200);
+  setTimeout(()=>createAtomMesh('H'),400);
+},600);
+
+addLog('ChemLab 3D PRO v2.0 — Loaded','info');
+addLog('Shortcuts: R=Rotate | B=Bonds | C=Clear | Enter=React All | Click atom to analyze','info');
+showToast('🧪 Welcome to ChemLab 3D PRO!');
+</script>
+</body>
+</html>
