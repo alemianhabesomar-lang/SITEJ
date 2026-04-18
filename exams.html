@@ -605,10 +605,22 @@ async function loadExams(userId) {
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
+        // كادر مسجل دخول عبر Firebase Auth
         window._currentUserId = user.uid;
         loadExams(user.uid);
     } else {
-        window.location.href = 'login.html';
+        // تحقق إذا كان طالب مسجل دخول عبر localStorage
+        const role = localStorage.getItem('userRole');
+        const studentId = localStorage.getItem('studentId');
+        const studentName = localStorage.getItem('studentName');
+
+        if (role === 'student' && studentId) {
+            window._currentUserId = studentId;
+            loadExams(studentId);
+        } else {
+            // لا أحد مسجل دخول
+            window.location.href = 'login.html';
+        }
     }
 });
 </script>
