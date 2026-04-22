@@ -24,6 +24,13 @@
             --border-blue:rgba(74,144,226,0.3);--border-white:rgba(255,255,255,0.3);
             --shadow-blue:rgba(74,144,226,0.2);--shadow-glow:rgba(74,144,226,0.5);
             --text-navy:#0a1628;--text-gray:#6b7c93;
+
+            /* Section colors */
+            --physics-color:#7c3aed;--physics-light:rgba(124,58,237,0.12);--physics-border:rgba(124,58,237,0.3);
+            --math-color:#0891b2;--math-light:rgba(8,145,178,0.12);--math-border:rgba(8,145,178,0.3);
+            --chemistry-color:#059669;--chemistry-light:rgba(5,150,105,0.12);--chemistry-border:rgba(5,150,105,0.3);
+            --earth-color:#d97706;--earth-light:rgba(217,119,6,0.12);--earth-border:rgba(217,119,6,0.3);
+            --biology-color:#dc2626;--biology-light:rgba(220,38,38,0.12);--biology-border:rgba(220,38,38,0.3);
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
         html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
@@ -49,8 +56,6 @@
         .logo{font-size:1.9rem;font-weight:900;letter-spacing:3px;background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
         .logo-tagline{font-size:0.75rem;color:var(--text-gray);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
         .nav-actions{display:flex;align-items:center;gap:16px;}
-
-        /* ══ LANG SELECTOR ══ */
         .lang-selector-wrap{position:relative;user-select:none;}
         .lang-trigger-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--glass-light);border:1px solid var(--border-blue);border-radius:14px;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:600;color:var(--accent-blue);white-space:nowrap;min-width:110px;justify-content:space-between;transition:background .3s,transform .3s,box-shadow .3s;}
         .lang-trigger-btn:hover{background:rgba(74,144,226,0.14);border-color:var(--accent-blue);transform:translateY(-2px);}
@@ -66,7 +71,6 @@
         .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity .2s;}
         .lang-option-item.lang-active .lang-check{opacity:1;}
         .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
-
         .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s,box-shadow .35s;flex-shrink:0;}
         .profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px var(--shadow-glow);}
         .profile-nav-btn i{color:#fff;font-size:1.1rem;}
@@ -79,29 +83,10 @@
         .burger.active .bline:nth-child(1){transform:rotate(45deg) translate(9px,9px);}
         .burger.active .bline:nth-child(2){opacity:0;transform:translateX(20px);}
         .burger.active .bline:nth-child(3){transform:rotate(-45deg) translate(9px,-9px);}
-
-        /* ══ OVERLAY ══ */
         .overlay{position:fixed;inset:0;background:rgba(26,41,66,0.65);backdrop-filter:blur(8px);z-index:2500;opacity:0;pointer-events:none;transition:opacity .45s;}
         .overlay.show{opacity:1;pointer-events:all;}
-
-        /* ══ SIDENAV — من اليسار ══ */
-        .sidenav{
-            position:fixed;
-            top:0;
-            left:-430px; /* من اليسار */
-            width:400px;
-            height:100%;
-            z-index:3000;
-            background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
-            backdrop-filter:blur(35px);
-            border-right:3px solid var(--accent-blue); /* حد يمين لأنها من اليسار */
-            padding:28px 24px;
-            overflow-y:auto;
-            transition:left .55s cubic-bezier(.68,-.55,.265,1.55);
-            box-shadow:12px 0 50px rgba(26,41,66,0.15);
-        }
+        .sidenav{position:fixed;top:0;left:-430px;width:400px;height:100%;z-index:3000;background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);backdrop-filter:blur(35px);border-right:3px solid var(--accent-blue);padding:28px 24px;overflow-y:auto;transition:left .55s cubic-bezier(.68,-.55,.265,1.55);box-shadow:12px 0 50px rgba(26,41,66,0.15);}
         .sidenav.show{left:0!important;}
-
         .sn-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid var(--border-blue);}
         .sn-head h2{background:var(--gradient-navy-soft);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;font-size:1.5rem;}
         .sn-close{width:42px;height:42px;border-radius:50%;background:rgba(74,144,226,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent-blue);font-size:1.4rem;transition:all .4s;}
@@ -159,7 +144,7 @@
 
         /* ══ PAGE CONTENT ══ */
         .page-wrap{padding-top:120px;min-height:100vh;position:relative;z-index:1;}
-        .content-area{max-width:1300px;margin:0 auto;padding:0 50px 80px;}
+        .content-area{max-width:1380px;margin:0 auto;padding:0 50px 80px;}
 
         /* ══ HERO LAB ══ */
         .hero-lab{
@@ -171,94 +156,205 @@
         .hero-lab::after{content:'';position:absolute;bottom:-30px;left:100px;width:140px;height:140px;background:rgba(74,144,226,0.08);border-radius:50%;}
         .hero-lab h2{font-size:1.8rem;font-weight:800;position:relative;z-index:1;}
         .hero-lab p{color:rgba(255,255,255,0.7);margin-top:10px;position:relative;z-index:1;font-size:1rem;}
-        .count-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:0.82rem;font-weight:700;padding:6px 18px;border-radius:30px;margin-top:14px;position:relative;z-index:1;}
         .topbar-date-lab{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;position:relative;z-index:1;}
+        .count-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:0.82rem;font-weight:700;padding:6px 18px;border-radius:30px;margin-top:14px;position:relative;z-index:1;}
+
+        /* ══ SECTION TABS ══ */
+        .sections-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+        .tab-btn{
+            display:flex;align-items:center;gap:8px;
+            padding:11px 20px;border-radius:16px;border:2px solid transparent;
+            font-family:'Cairo','Tajawal',sans-serif;font-size:0.88rem;font-weight:700;
+            cursor:pointer;transition:all .35s;background:rgba(255,255,255,0.85);
+            color:var(--text-gray);
+        }
+        .tab-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,41,66,0.12);}
+        .tab-btn.active-tab{color:#fff;transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+        .tab-btn[data-section="all"].active-tab{background:linear-gradient(135deg,#1a2942,#3d5a7f);border-color:#3d5a7f;}
+        .tab-btn[data-section="physics"].active-tab{background:linear-gradient(135deg,#5b21b6,#7c3aed);border-color:#7c3aed;}
+        .tab-btn[data-section="math"].active-tab{background:linear-gradient(135deg,#0e7490,#0891b2);border-color:#0891b2;}
+        .tab-btn[data-section="chemistry"].active-tab{background:linear-gradient(135deg,#047857,#059669);border-color:#059669;}
+        .tab-btn[data-section="earth"].active-tab{background:linear-gradient(135deg,#b45309,#d97706);border-color:#d97706;}
+        .tab-btn[data-section="biology"].active-tab{background:linear-gradient(135deg,#b91c1c,#dc2626);border-color:#dc2626;}
+        .tab-icon{font-size:1.1rem;}
+
+        /* ══ SECTION BLOCK ══ */
+        .section-block{margin-bottom:50px;display:none;animation:fadeInSection .4s ease;}
+        .section-block.visible{display:block;}
+        @keyframes fadeInSection{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+        /* Section Header */
+        .section-header{
+            display:flex;align-items:center;gap:16px;
+            padding:20px 28px;border-radius:22px;margin-bottom:26px;
+            position:relative;overflow:hidden;
+        }
+        .section-header::after{
+            content:'';position:absolute;top:-30px;left:-30px;
+            width:120px;height:120px;border-radius:50%;opacity:0.2;
+        }
+        .sec-physics .section-header{background:linear-gradient(135deg,rgba(91,33,182,0.1),rgba(124,58,237,0.06));border:2px solid var(--physics-border);}
+        .sec-physics .section-header::after{background:var(--physics-color);}
+        .sec-math .section-header{background:linear-gradient(135deg,rgba(14,116,144,0.1),rgba(8,145,178,0.06));border:2px solid var(--math-border);}
+        .sec-math .section-header::after{background:var(--math-color);}
+        .sec-chemistry .section-header{background:linear-gradient(135deg,rgba(4,120,87,0.1),rgba(5,150,105,0.06));border:2px solid var(--chemistry-border);}
+        .sec-chemistry .section-header::after{background:var(--chemistry-color);}
+        .sec-earth .section-header{background:linear-gradient(135deg,rgba(180,83,9,0.1),rgba(217,119,6,0.06));border:2px solid var(--earth-border);}
+        .sec-earth .section-header::after{background:var(--earth-color);}
+        .sec-biology .section-header{background:linear-gradient(135deg,rgba(185,28,28,0.1),rgba(220,38,38,0.06));border:2px solid var(--biology-border);}
+        .sec-biology .section-header::after{background:var(--biology-color);}
+
+        .section-icon-wrap{
+            width:58px;height:58px;border-radius:18px;
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.8rem;position:relative;z-index:1;flex-shrink:0;
+        }
+        .sec-physics .section-icon-wrap{background:linear-gradient(135deg,#5b21b6,#7c3aed);box-shadow:0 8px 20px rgba(124,58,237,0.3);}
+        .sec-math .section-icon-wrap{background:linear-gradient(135deg,#0e7490,#0891b2);box-shadow:0 8px 20px rgba(8,145,178,0.3);}
+        .sec-chemistry .section-icon-wrap{background:linear-gradient(135deg,#047857,#059669);box-shadow:0 8px 20px rgba(5,150,105,0.3);}
+        .sec-earth .section-icon-wrap{background:linear-gradient(135deg,#b45309,#d97706);box-shadow:0 8px 20px rgba(217,119,6,0.3);}
+        .sec-biology .section-icon-wrap{background:linear-gradient(135deg,#b91c1c,#dc2626);box-shadow:0 8px 20px rgba(220,38,38,0.3);}
+
+        .section-info{flex:1;position:relative;z-index:1;}
+        .section-title{font-size:1.35rem;font-weight:900;color:var(--text-navy);}
+        .section-subtitle{font-size:0.82rem;color:var(--text-gray);margin-top:3px;}
+        .section-count-pill{
+            padding:6px 16px;border-radius:30px;font-size:0.76rem;font-weight:700;
+            position:relative;z-index:1;
+        }
+        .sec-physics .section-count-pill{background:var(--physics-light);color:var(--physics-color);border:1px solid var(--physics-border);}
+        .sec-math .section-count-pill{background:var(--math-light);color:var(--math-color);border:1px solid var(--math-border);}
+        .sec-chemistry .section-count-pill{background:var(--chemistry-light);color:var(--chemistry-color);border:1px solid var(--chemistry-border);}
+        .sec-earth .section-count-pill{background:var(--earth-light);color:var(--earth-color);border:1px solid var(--earth-border);}
+        .sec-biology .section-count-pill{background:var(--biology-light);color:var(--biology-color);border:1px solid var(--biology-border);}
+
+        /* ══ EMPTY STATE ══ */
+        .empty-state{
+            text-align:center;padding:50px 30px;
+            background:rgba(255,255,255,0.7);border-radius:20px;
+            border:2px dashed rgba(74,144,226,0.25);
+        }
+        .empty-state-icon{font-size:3rem;margin-bottom:14px;display:block;opacity:0.5;}
+        .empty-state p{color:var(--text-gray);font-size:0.92rem;line-height:1.7;}
 
         /* ══ SIMULATOR GRID ══ */
-        #simGrid{display:grid;gap:28px;transition:grid-template-columns .4s ease;}
-        #simGrid.count-1{grid-template-columns:minmax(0,560px);justify-content:center;}
-        #simGrid.count-1 .sim-card-header{height:220px;}
-        #simGrid.count-1 .sim-icon-wrapper{width:110px;height:110px;font-size:3.8rem;border-radius:30px;}
-        #simGrid.count-1 .sim-card-body{padding:32px;}
-        #simGrid.count-1 .sim-title{font-size:1.4rem;}
-        #simGrid.count-1 .sim-desc{font-size:0.9rem;}
-        #simGrid.count-1 .sim-features{display:flex!important;}
-        #simGrid.count-1 .sim-subject-tag{display:inline-flex!important;}
-        #simGrid.count-1 .btn-launch{padding:17px;font-size:1rem;}
-        #simGrid.count-1 .btn-launch .arrow-icon{width:34px;height:34px;}
-        #simGrid.count-1 .pulse-wrapper{display:block!important;}
-        #simGrid.count-2{grid-template-columns:repeat(2,1fr);}
-        #simGrid.count-2 .sim-card-header{height:165px;}
-        #simGrid.count-2 .sim-icon-wrapper{width:80px;height:80px;font-size:2.8rem;border-radius:22px;}
-        #simGrid.count-2 .sim-card-body{padding:22px;}
-        #simGrid.count-2 .sim-title{font-size:1.15rem;}
-        #simGrid.count-2 .sim-features{display:flex!important;}
-        #simGrid.count-3{grid-template-columns:repeat(3,1fr);}
-        #simGrid.count-3 .sim-card-header{height:135px;}
-        #simGrid.count-3 .sim-icon-wrapper{width:64px;height:64px;font-size:2.2rem;border-radius:18px;}
-        #simGrid.count-3 .sim-card-body{padding:18px;}
-        #simGrid.count-3 .sim-title{font-size:1rem;}
-        #simGrid.count-3 .sim-features{display:none!important;}
-        #simGrid.count-4plus{grid-template-columns:repeat(4,1fr);}
-        #simGrid.count-4plus .sim-card-header{height:110px;}
-        #simGrid.count-4plus .sim-icon-wrapper{width:52px;height:52px;font-size:1.8rem;border-radius:14px;animation:none;}
-        #simGrid.count-4plus .sim-card-body{padding:14px;}
-        #simGrid.count-4plus .sim-title{font-size:0.86rem;}
-        #simGrid.count-4plus .sim-features{display:none!important;}
-        #simGrid.count-4plus .sim-subject-tag{display:none!important;}
-        #simGrid.count-4plus .btn-launch{padding:9px;font-size:0.78rem;}
+        .sim-grid{display:grid;gap:24px;transition:grid-template-columns .4s ease;}
+        .sim-grid.count-0{display:none;}
+        .sim-grid.count-1{grid-template-columns:minmax(0,540px);justify-content:center;}
+        .sim-grid.count-1 .sim-card-header{height:210px;}
+        .sim-grid.count-1 .sim-icon-wrapper{width:105px;height:105px;font-size:3.6rem;border-radius:28px;}
+        .sim-grid.count-1 .sim-card-body{padding:30px;}
+        .sim-grid.count-1 .sim-title{font-size:1.35rem;}
+        .sim-grid.count-1 .sim-desc{font-size:0.9rem;}
+        .sim-grid.count-1 .sim-features{display:flex!important;}
+        .sim-grid.count-1 .sim-subject-tag{display:inline-flex!important;}
+        .sim-grid.count-1 .btn-launch{padding:16px;font-size:1rem;}
+        .sim-grid.count-2{grid-template-columns:repeat(2,1fr);}
+        .sim-grid.count-2 .sim-card-header{height:155px;}
+        .sim-grid.count-2 .sim-icon-wrapper{width:76px;height:76px;font-size:2.6rem;border-radius:20px;}
+        .sim-grid.count-2 .sim-card-body{padding:22px;}
+        .sim-grid.count-2 .sim-title{font-size:1.12rem;}
+        .sim-grid.count-2 .sim-features{display:flex!important;}
+        .sim-grid.count-3{grid-template-columns:repeat(3,1fr);}
+        .sim-grid.count-3 .sim-card-header{height:130px;}
+        .sim-grid.count-3 .sim-icon-wrapper{width:62px;height:62px;font-size:2.1rem;border-radius:17px;}
+        .sim-grid.count-3 .sim-card-body{padding:18px;}
+        .sim-grid.count-3 .sim-title{font-size:1rem;}
+        .sim-grid.count-3 .sim-features{display:none!important;}
+        .sim-grid.count-4plus{grid-template-columns:repeat(4,1fr);}
+        .sim-grid.count-4plus .sim-card-header{height:105px;}
+        .sim-grid.count-4plus .sim-icon-wrapper{width:50px;height:50px;font-size:1.7rem;border-radius:13px;animation:none;}
+        .sim-grid.count-4plus .sim-card-body{padding:14px;}
+        .sim-grid.count-4plus .sim-title{font-size:0.85rem;}
+        .sim-grid.count-4plus .sim-features{display:none!important;}
+        .sim-grid.count-4plus .sim-subject-tag{display:none!important;}
+        .sim-grid.count-4plus .btn-launch{padding:9px;font-size:0.77rem;}
 
         /* ══ CARD ══ */
-        .sim-card-wrap{position:relative;}
-        .sim-card{background:rgba(255,255,255,0.97);border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(26,41,66,0.1);border:1.5px solid rgba(74,144,226,0.2);transition:transform .35s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow .35s ease,border-color .35s ease;width:100%;}
-        .sim-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 24px 60px rgba(74,144,226,0.2);border-color:#4a90e2;}
-        .sim-card-header{background:linear-gradient(135deg,#0a1628 0%,#1a3a5c 55%,#0e4d6e 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:height .4s ease;}
-        .sim-card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(74,144,226,0.25) 0%,transparent 65%);}
-        .sim-card-header::after{content:'';position:absolute;top:-15px;right:-15px;width:90px;height:90px;border:1.5px solid rgba(74,144,226,0.15);border-radius:50%;}
-        .sim-icon-wrapper{position:relative;z-index:2;background:rgba(255,255,255,0.08);border:1.5px solid rgba(74,144,226,0.35);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.1);animation:float 3s ease-in-out infinite;transition:width .4s ease,height .4s ease,font-size .4s ease,border-radius .4s ease;}
+        .sim-card{background:rgba(255,255,255,0.97);border-radius:22px;overflow:hidden;box-shadow:0 8px 32px rgba(26,41,66,0.09);border:1.5px solid rgba(74,144,226,0.18);transition:transform .35s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow .35s ease,border-color .35s ease;width:100%;}
+        .sim-card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 24px 60px rgba(74,144,226,0.18);border-color:#4a90e2;}
+
+        /* Colored card tops per section */
+        .sec-physics .sim-card-header{background:linear-gradient(135deg,#1e1040 0%,#3b1a78 55%,#5b21b6 100%);}
+        .sec-math .sim-card-header{background:linear-gradient(135deg,#062030 0%,#0c4a6e 55%,#0e7490 100%);}
+        .sec-chemistry .sim-card-header{background:linear-gradient(135deg,#052e16 0%,#064e3b 55%,#065f46 100%);}
+        .sec-earth .sim-card-header{background:linear-gradient(135deg,#1c1008 0%,#431407 55%,#78350f 100%);}
+        .sec-biology .sim-card-header{background:linear-gradient(135deg,#1f0808 0%,#4c0519 55%,#881337 100%);}
+
+        .sim-card-header{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:height .4s ease;}
+        .sim-card-header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,0.12) 0%,transparent 65%);}
+        .sim-card-header::after{content:'';position:absolute;top:-15px;right:-15px;width:90px;height:90px;border:1.5px solid rgba(255,255,255,0.1);border-radius:50%;}
+        .sim-icon-wrapper{position:relative;z-index:2;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.15);animation:float 3s ease-in-out infinite;transition:all .4s ease;}
         @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
-        .sim-badge{position:absolute;top:12px;right:12px;z-index:3;background:linear-gradient(135deg,#4a90e2,#6fa8ec);color:white;font-size:0.62rem;font-weight:700;padding:5px 12px;border-radius:30px;box-shadow:0 3px 10px rgba(74,144,226,0.35);}
+        .sim-badge{position:absolute;top:12px;right:12px;z-index:3;font-size:0.62rem;font-weight:700;padding:5px 12px;border-radius:30px;box-shadow:0 3px 10px rgba(0,0,0,0.2);}
+        .sec-physics .sim-badge{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:white;}
+        .sec-math .sim-badge{background:linear-gradient(135deg,#0891b2,#38bdf8);color:white;}
+        .sec-chemistry .sim-badge{background:linear-gradient(135deg,#059669,#34d399);color:white;}
+        .sec-earth .sim-badge{background:linear-gradient(135deg,#d97706,#fbbf24);color:white;}
+        .sec-biology .sim-badge{background:linear-gradient(135deg,#dc2626,#f87171);color:white;}
+
         .sim-card-body{transition:padding .4s ease;}
-        .sim-subject-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(74,144,226,0.08);color:#4a90e2;font-size:0.72rem;font-weight:700;padding:5px 14px;border-radius:30px;border:1px solid rgba(74,144,226,0.2);margin-bottom:12px;}
+        .sim-subject-tag{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:700;padding:5px 14px;border-radius:30px;border:1px solid;margin-bottom:12px;}
+        .sec-physics .sim-subject-tag{background:var(--physics-light);color:var(--physics-color);border-color:var(--physics-border);}
+        .sec-math .sim-subject-tag{background:var(--math-light);color:var(--math-color);border-color:var(--math-border);}
+        .sec-chemistry .sim-subject-tag{background:var(--chemistry-light);color:var(--chemistry-color);border-color:var(--chemistry-border);}
+        .sec-earth .sim-subject-tag{background:var(--earth-light);color:var(--earth-color);border-color:var(--earth-border);}
+        .sec-biology .sim-subject-tag{background:var(--biology-light);color:var(--biology-color);border-color:var(--biology-border);}
+
         .sim-title{font-weight:900;color:#1a2942;margin-bottom:8px;line-height:1.35;transition:font-size .4s ease;}
         .sim-desc{color:#6b7c93;line-height:1.6;margin-bottom:16px;transition:all .4s;}
         .sim-features{gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-        .sim-feature{background:#f0f4f8;color:#3d5a7f;font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:20px;}
-        .btn-launch{width:100%;background:linear-gradient(135deg,#1a2942,#3d5a7f);border:none;border-radius:14px;color:white;font-weight:800;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;text-decoration:none;position:relative;overflow:hidden;}
-        .btn-launch::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#4a90e2,#6fa8ec);opacity:0;transition:opacity .3s;}
+        .sim-feature{font-size:0.7rem;font-weight:600;padding:4px 12px;border-radius:20px;}
+        .sec-physics .sim-feature{background:rgba(124,58,237,0.07);color:#5b21b6;}
+        .sec-math .sim-feature{background:rgba(8,145,178,0.07);color:#0e7490;}
+        .sec-chemistry .sim-feature{background:rgba(5,150,105,0.07);color:#047857;}
+        .sec-earth .sim-feature{background:rgba(217,119,6,0.07);color:#b45309;}
+        .sec-biology .sim-feature{background:rgba(220,38,38,0.07);color:#b91c1c;}
+
+        .btn-launch{width:100%;border:none;border-radius:14px;color:white;font-weight:800;cursor:pointer;font-family:'Cairo','Tajawal',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .3s;text-decoration:none;position:relative;overflow:hidden;}
+        .btn-launch::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
         .btn-launch:hover::before{opacity:1;}
         .btn-launch>*{position:relative;z-index:1;}
-        .btn-launch:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,144,226,0.35);}
+        .btn-launch:hover{transform:translateY(-2px);}
+        .sec-physics .btn-launch{background:linear-gradient(135deg,#3b1a78,#5b21b6);}
+        .sec-physics .btn-launch::before{background:linear-gradient(135deg,#7c3aed,#a78bfa);}
+        .sec-physics .btn-launch:hover{box-shadow:0 8px 24px rgba(124,58,237,0.4);}
+        .sec-math .btn-launch{background:linear-gradient(135deg,#0c4a6e,#0e7490);}
+        .sec-math .btn-launch::before{background:linear-gradient(135deg,#0891b2,#38bdf8);}
+        .sec-math .btn-launch:hover{box-shadow:0 8px 24px rgba(8,145,178,0.4);}
+        .sec-chemistry .btn-launch{background:linear-gradient(135deg,#064e3b,#047857);}
+        .sec-chemistry .btn-launch::before{background:linear-gradient(135deg,#059669,#34d399);}
+        .sec-chemistry .btn-launch:hover{box-shadow:0 8px 24px rgba(5,150,105,0.4);}
+        .sec-earth .btn-launch{background:linear-gradient(135deg,#431407,#92400e);}
+        .sec-earth .btn-launch::before{background:linear-gradient(135deg,#d97706,#fbbf24);}
+        .sec-earth .btn-launch:hover{box-shadow:0 8px 24px rgba(217,119,6,0.4);}
+        .sec-biology .btn-launch{background:linear-gradient(135deg,#4c0519,#881337);}
+        .sec-biology .btn-launch::before{background:linear-gradient(135deg,#dc2626,#f87171);}
+        .sec-biology .btn-launch:hover{box-shadow:0 8px 24px rgba(220,38,38,0.4);}
+
         .arrow-icon{background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .4s;}
-        .pulse-wrapper{position:absolute;inset:-20px;pointer-events:none;display:none;z-index:-1;}
-        .pulse-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;border:1px solid rgba(74,144,226,0.13);border-radius:28px;animation:pulse-ring 3.5s ease-out infinite;}
-        .pulse-ring:nth-child(2){animation-delay:1.1s;width:108%;height:108%;}
-        .pulse-ring:nth-child(3){animation-delay:2.2s;width:116%;height:116%;}
-        @keyframes pulse-ring{0%{opacity:.5;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05);}}
 
         /* ══ FOOTER ══ */
-        .footer{background:linear-gradient(180deg,rgba(26,41,66,0.98) 0%,rgba(10,22,40,1) 100%);border-top:2px solid var(--accent-blue);padding:60px 50px 35px;position:relative;z-index:1;}
-        .footer-content{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:50px;margin-bottom:40px;}
-        .footer-section h3{color:var(--accent-light-blue);font-size:1.3rem;margin-bottom:22px;font-weight:800;}
-        .footer-section p,.footer-section a{color:var(--blue-lightest);line-height:2.2;text-decoration:none;display:block;font-size:1rem;transition:transform .3s,color .3s;}
-        .footer-section a:hover{color:#fff;transform:translateX(-8px);}
-        .footer-bottom{text-align:center;padding-top:30px;border-top:1px solid var(--border-white);color:var(--blue-lightest);font-size:1rem;}
-
         .scroll-top{position:fixed;bottom:100px;left:35px;width:55px;height:55px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:all .4s;z-index:900;box-shadow:0 6px 20px var(--shadow-blue);}
         .scroll-top.visible{opacity:1;pointer-events:all;}
         .scroll-top i{color:#fff;font-size:1.4rem;}
 
-        @media(max-width:1100px){#simGrid.count-4plus{grid-template-columns:repeat(3,1fr);}}
+        @media(max-width:1100px){.sim-grid.count-4plus{grid-template-columns:repeat(3,1fr);}}
         @media(max-width:768px){
             nav.top-bar{padding:16px 20px!important;}
             .content-area{padding:0 20px 60px;}
             .hero-lab{padding:24px 22px;}
             .hero-lab h2{font-size:1.3rem;}
-            #simGrid.count-4plus,#simGrid.count-3{grid-template-columns:repeat(2,1fr);}
+            .sim-grid.count-4plus,.sim-grid.count-3{grid-template-columns:repeat(2,1fr);}
             .sidenav{width:100%;left:-100%!important;}
+            .sections-tabs{gap:8px;}
+            .tab-btn{padding:9px 14px;font-size:0.8rem;}
         }
         @media(max-width:500px){
-            #simGrid.count-4plus,#simGrid.count-3,#simGrid.count-2{grid-template-columns:1fr;}
+            .sim-grid.count-4plus,.sim-grid.count-3,.sim-grid.count-2{grid-template-columns:1fr;}
+            .sections-tabs{gap:6px;}
+            .tab-btn span:not(.tab-icon){display:none;}
+            .tab-btn{padding:10px 14px;}
         }
     </style>
 </head>
@@ -315,7 +411,6 @@
         <h2>القائمة</h2>
         <div class="sn-close" onclick="snClose()"><i class="fas fa-times"></i></div>
     </div>
-
     <div class="sn-user">
         <div class="sn-avatar" id="snAvatar">👤</div>
         <div>
@@ -323,12 +418,11 @@
             <div class="sn-urole" id="snUserRole">زائر</div>
         </div>
     </div>
-
     <ul class="sn-links">
         <li><a href="index.html"><i class="fas fa-home"></i><span>الصفحة الرئيسية</span></a></li>
         <li><a href="videos.html"><i class="fas fa-play-circle"></i><span>الفيديوهات</span></a></li>
         <li><a href="articals.html"><i class="fas fa-feather-alt"></i><span>المقالات</span></a></li>
-        <li><a href="lab.html"><i class="fas fa-comment-dots"></i><span>مختبر العلوم</span></a></li>
+        <li><a href="lab.html" class="active-page"><i class="fas fa-flask"></i><span>مختبر العلوم</span></a></li>
         <li><a href="games.html"><i class="fas fa-chess"></i><span>الألعاب</span></a></li>
         <li><a href="exams.html"><i class="fas fa-pen-fancy"></i><span>الاختبارات</span></a></li>
         <li><a href="sign_language_hub.html"><i class="fas fa-hands"></i><span>لغة الإشارة</span></a></li>
@@ -339,19 +433,10 @@
         <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
         <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
         <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
-
-        <li id="dashDivider" style="display:none;">
-            <div class="dash-divider"></div>
-            <div class="dash-section-label">لوحات التحكم</div>
-        </li>
-        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher">
-            <a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a>
-        </li>
-        <li id="adminDashLink" style="display:none;" class="dash-link-admin">
-            <a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a>
-        </li>
+        <li id="dashDivider" style="display:none;"><div class="dash-divider"></div><div class="dash-section-label">لوحات التحكم</div></li>
+        <li id="teacherDashLink" style="display:none;" class="dash-link-teacher"><a href="Teacher-dashboard.html"><i class="fas fa-chalkboard-teacher"></i><span>لوحة المعلم</span></a></li>
+        <li id="adminDashLink" style="display:none;" class="dash-link-admin"><a href="Principal-dashboard.html"><i class="fas fa-user-shield"></i><span>لوحة الإدارة</span></a></li>
     </ul>
-
     <div style="margin-top:12px;">
         <div class="sn-settings-toggle" id="snSettingsToggle" onclick="snToggleSettings()">
             <span style="display:flex;align-items:center;gap:10px;"><i class="fas fa-sliders-h"></i> الإعدادات</span>
@@ -361,16 +446,8 @@
             <div class="sn-settings-inner">
                 <div class="sn-s-label"><i class="fas fa-circle-half-stroke"></i> المظهر</div>
                 <div class="sn-theme-row">
-                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')">
-                        <div class="sn-t-preview sn-t-light"></div>
-                        <div class="sn-t-label">فاتح</div>
-                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
-                    </div>
-                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')">
-                        <div class="sn-t-preview sn-t-dark"></div>
-                        <div class="sn-t-label">داكن</div>
-                        <div class="sn-t-check"><i class="fas fa-check"></i></div>
-                    </div>
+                    <div class="sn-t-opt" id="sn-th-light" onclick="snPickTheme('light')"><div class="sn-t-preview sn-t-light"></div><div class="sn-t-label">فاتح</div><div class="sn-t-check"><i class="fas fa-check"></i></div></div>
+                    <div class="sn-t-opt" id="sn-th-dark" onclick="snPickTheme('dark')"><div class="sn-t-preview sn-t-dark"></div><div class="sn-t-label">داكن</div><div class="sn-t-check"><i class="fas fa-check"></i></div></div>
                 </div>
                 <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-wand-magic-sparkles"></i> الجرافيك</div>
                 <div class="sn-g-row">
@@ -381,18 +458,12 @@
                 <div class="sn-s-label" style="margin-top:14px;"><i class="fas fa-text-height"></i> حجم الخط</div>
                 <div>
                     <input type="range" class="sn-font-slider" id="snFontSlider" min="0" max="3" step="1" value="1" oninput="snFontInput(this.value)">
-                    <div class="sn-font-labels">
-                        <span onclick="snSetFont(0)" data-idx="0">S</span>
-                        <span onclick="snSetFont(1)" data-idx="1">M</span>
-                        <span onclick="snSetFont(2)" data-idx="2">L</span>
-                        <span onclick="snSetFont(3)" data-idx="3">XL</span>
-                    </div>
+                    <div class="sn-font-labels"><span onclick="snSetFont(0)">S</span><span onclick="snSetFont(1)">M</span><span onclick="snSetFont(2)">L</span><span onclick="snSetFont(3)">XL</span></div>
                 </div>
                 <button class="sn-save-btn" onclick="snSave()">💾 حفظ الإعدادات</button>
             </div>
         </div>
     </div>
-
     <ul class="sn-links sn-logout" style="margin-top:16px;">
         <li><a href="#" onclick="snLogout()"><i class="fas fa-sign-out-alt"></i><span>تسجيل الخروج</span></a></li>
     </ul>
@@ -406,31 +477,65 @@
 
         <div class="hero-lab">
             <h2>🔬 المختبر التفاعلي</h2>
-            <p>اكتشف العلوم بطريقة مختلفة — محاكاة تفاعلية مبنية بعناية</p>
+            <p>اكتشف العلوم بطريقة مختلفة — محاكاة تفاعلية مبنية بعناية في خمسة أقسام علمية</p>
             <div class="topbar-date-lab" id="currentDate"></div>
             <div class="count-badge">
                 <i class="fas fa-layer-group" style="font-size:0.7rem"></i>
-                <span id="heroCount">١ محاكي متاح</span>
+                <span id="heroCount">٥ أقسام علمية</span>
             </div>
         </div>
 
-        <div id="simGrid">
+        <!-- ══ SECTION TABS ══ -->
+        <div class="sections-tabs" id="sectionTabs">
+            <button class="tab-btn active-tab" data-section="all" onclick="showSection('all')">
+                <span class="tab-icon">🔬</span><span>الكل</span>
+            </button>
+            <button class="tab-btn" data-section="physics" onclick="showSection('physics')">
+                <span class="tab-icon">⚛️</span><span>Physics</span>
+            </button>
+            <button class="tab-btn" data-section="math" onclick="showSection('math')">
+                <span class="tab-icon">📐</span><span>Math & Statistics</span>
+            </button>
+            <button class="tab-btn" data-section="chemistry" onclick="showSection('chemistry')">
+                <span class="tab-icon">🧪</span><span>Chemistry</span>
+            </button>
+            <button class="tab-btn" data-section="earth" onclick="showSection('earth')">
+                <span class="tab-icon">🌍</span><span>Earth & Space</span>
+            </button>
+            <button class="tab-btn" data-section="biology" onclick="showSection('biology')">
+                <span class="tab-icon">🧬</span><span>Biology</span>
+            </button>
+        </div>
 
-            <!-- ===== المحاكي 1 ===== -->
-            <div class="sim-card-wrap">
-                <div class="sim-card">
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- ██ SECTION 1 — PHYSICS ██ -->
+        <!-- ══════════════════════════════════════════════ -->
+        <div class="section-block sec-physics visible" id="section-physics">
+            <div class="section-header">
+                <div class="section-icon-wrap">⚛️</div>
+                <div class="section-info">
+                    <div class="section-title">Physics</div>
+                    <div class="section-subtitle">ميكانيكا · كهرباء · موجات · ضوء · حرارة</div>
+                </div>
+                <div class="section-count-pill" id="count-physics">٠ محاكيات</div>
+            </div>
+
+            <!-- ═══ أضف محاكيات الفيزياء هنا ═══ -->
+            <div class="sim-grid" id="grid-physics">
+                                <div class="sim-card">
                     <div class="sim-card-header">
-                        <div class="sim-badge">🧪 كيمياء</div>
-                        <div class="sim-icon-wrapper">🧪</div>
+                        <div class="sim-badge">⚛️ Physics</div>
+                        <div class="sim-icon-wrapper">🔭</div>
                     </div>
                     <div class="sim-card-body">
-                        <div class="sim-subject-tag">كيمياء</div>
+                        <div class="sim-subject-tag">Physics</div>
                         <div class="sim-title">اسم المحاكي</div>
                         <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
                         <div class="sim-features" style="display:flex">
                             <span class="sim-feature">🖱️ تفاعلي</span>
+                            <span class="sim-feature">📊 رسوم بيانية</span>
                         </div>
-                        <a href="sim1.html" class="btn-launch">
+                        <a href="sim1.html" class="btn-launch" style="padding:14px">
                             <span>تشغيل المحاكي</span>
                             <div class="arrow-icon" style="width:32px;height:32px">
                                 <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
@@ -438,25 +543,24 @@
                         </a>
                     </div>
                 </div>
-            </div>
 
-            <!--
-            لإضافة محاكي جديد، انسخ الكود أدناه وعدّل البيانات:
+                <!--
+                مثال محاكي فيزياء — انسخ الكود التالي وعدّل البيانات:
 
-            <div class="sim-card-wrap">
                 <div class="sim-card">
                     <div class="sim-card-header">
-                        <div class="sim-badge">🧪 كيمياء</div>
-                        <div class="sim-icon-wrapper">🧪</div>
+                        <div class="sim-badge">⚛️ Physics</div>
+                        <div class="sim-icon-wrapper">🔭</div>
                     </div>
                     <div class="sim-card-body">
-                        <div class="sim-subject-tag">كيمياء</div>
+                        <div class="sim-subject-tag">Physics</div>
                         <div class="sim-title">اسم المحاكي</div>
                         <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
                         <div class="sim-features" style="display:flex">
                             <span class="sim-feature">🖱️ تفاعلي</span>
+                            <span class="sim-feature">📊 رسوم بيانية</span>
                         </div>
-                        <a href="simulator2.html" class="btn-launch">
+                        <a href="your-simulator.html" class="btn-launch" style="padding:14px">
                             <span>تشغيل المحاكي</span>
                             <div class="arrow-icon" style="width:32px;height:32px">
                                 <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
@@ -464,21 +568,217 @@
                         </a>
                     </div>
                 </div>
+                -->
+
             </div>
-            -->
-
+            <div class="empty-state" id="empty-physics">
+                <span class="empty-state-icon">⚛️</span>
+                <p>لا توجد محاكيات في قسم الفيزياء حتى الآن.<br>أضف محاكياتك بتعديل الكود في هذا القسم.</p>
+            </div>
         </div>
-    </div>
-</div>
 
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- ██ SECTION 2 — MATH & STATISTICS ██ -->
+        <!-- ══════════════════════════════════════════════ -->
+        <div class="section-block sec-math visible" id="section-math">
+            <div class="section-header">
+                <div class="section-icon-wrap">📐</div>
+                <div class="section-info">
+                    <div class="section-title">Math & Statistics</div>
+                    <div class="section-subtitle">جبر · هندسة · تفاضل وتكامل · إحصاء · احتمالات</div>
+                </div>
+                <div class="section-count-pill" id="count-math">٠ محاكيات</div>
+            </div>
+
+            <!-- ═══ أضف محاكيات الرياضيات هنا ═══ -->
+            <div class="sim-grid" id="grid-math">
+
+                <!--
+                مثال محاكي رياضيات — انسخ الكود التالي وعدّل البيانات:
+
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">📐 Math</div>
+                        <div class="sim-icon-wrapper">📊</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">Math & Statistics</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">📈 رسوم بيانية</span>
+                        </div>
+                        <a href="your-simulator.html" class="btn-launch" style="padding:14px">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="empty-state" id="empty-math">
+                <span class="empty-state-icon">📐</span>
+                <p>لا توجد محاكيات في قسم الرياضيات والإحصاء حتى الآن.<br>أضف محاكياتك بتعديل الكود في هذا القسم.</p>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- ██ SECTION 3 — CHEMISTRY ██ -->
+        <!-- ══════════════════════════════════════════════ -->
+        <div class="section-block sec-chemistry visible" id="section-chemistry">
+            <div class="section-header">
+                <div class="section-icon-wrap">🧪</div>
+                <div class="section-info">
+                    <div class="section-title">Chemistry</div>
+                    <div class="section-subtitle">تفاعلات · عناصر · جزيئات · أحماض وقواعد · كيمياء عضوية</div>
+                </div>
+                <div class="section-count-pill" id="count-chemistry">٠ محاكيات</div>
+            </div>
+
+            <!-- ═══ أضف محاكيات الكيمياء هنا ═══ -->
+            <div class="sim-grid" id="grid-chemistry">
+
+                <!--
+                مثال محاكي كيمياء — انسخ الكود التالي وعدّل البيانات:
+
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">🧪 Chemistry</div>
+                        <div class="sim-icon-wrapper">⚗️</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">Chemistry</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">🧫 تجربة افتراضية</span>
+                        </div>
+                        <a href="your-simulator.html" class="btn-launch" style="padding:14px">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="empty-state" id="empty-chemistry">
+                <span class="empty-state-icon">🧪</span>
+                <p>لا توجد محاكيات في قسم الكيمياء حتى الآن.<br>أضف محاكياتك بتعديل الكود في هذا القسم.</p>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- ██ SECTION 4 — EARTH & SPACE ██ -->
+        <!-- ══════════════════════════════════════════════ -->
+        <div class="section-block sec-earth visible" id="section-earth">
+            <div class="section-header">
+                <div class="section-icon-wrap">🌍</div>
+                <div class="section-info">
+                    <div class="section-title">Earth & Space</div>
+                    <div class="section-subtitle">فلك · جيولوجيا · مناخ · كواكب · نجوم</div>
+                </div>
+                <div class="section-count-pill" id="count-earth">٠ محاكيات</div>
+            </div>
+
+            <!-- ═══ أضف محاكيات الأرض والفضاء هنا ═══ -->
+            <div class="sim-grid" id="grid-earth">
+
+                <!--
+                مثال محاكي أرض وفضاء — انسخ الكود التالي وعدّل البيانات:
+
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">🌍 Earth & Space</div>
+                        <div class="sim-icon-wrapper">🪐</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">Earth & Space</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">🚀 استكشاف</span>
+                        </div>
+                        <a href="your-simulator.html" class="btn-launch" style="padding:14px">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="empty-state" id="empty-earth">
+                <span class="empty-state-icon">🌍</span>
+                <p>لا توجد محاكيات في قسم الأرض والفضاء حتى الآن.<br>أضف محاكياتك بتعديل الكود في هذا القسم.</p>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════ -->
+        <!-- ██ SECTION 5 — BIOLOGY ██ -->
+        <!-- ══════════════════════════════════════════════ -->
+        <div class="section-block sec-biology visible" id="section-biology">
+            <div class="section-header">
+                <div class="section-icon-wrap">🧬</div>
+                <div class="section-info">
+                    <div class="section-title">Biology</div>
+                    <div class="section-subtitle">خلايا · وراثة · تشريح · بيئة · تطور</div>
+                </div>
+                <div class="section-count-pill" id="count-biology">٠ محاكيات</div>
+            </div>
+
+            <!-- ═══ أضف محاكيات الأحياء هنا ═══ -->
+            <div class="sim-grid" id="grid-biology">
+
+                <!--
+                مثال محاكي أحياء — انسخ الكود التالي وعدّل البيانات:
+
+                <div class="sim-card">
+                    <div class="sim-card-header">
+                        <div class="sim-badge">🧬 Biology</div>
+                        <div class="sim-icon-wrapper">🔬</div>
+                    </div>
+                    <div class="sim-card-body">
+                        <div class="sim-subject-tag">Biology</div>
+                        <div class="sim-title">اسم المحاكي</div>
+                        <div class="sim-desc">وصف مختصر للمحاكي هنا.</div>
+                        <div class="sim-features" style="display:flex">
+                            <span class="sim-feature">🔬 مجهر رقمي</span>
+                        </div>
+                        <a href="your-simulator.html" class="btn-launch" style="padding:14px">
+                            <span>تشغيل المحاكي</span>
+                            <div class="arrow-icon" style="width:32px;height:32px">
+                                <i class="fas fa-arrow-left" style="font-size:0.8rem"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                -->
+
+            </div>
+            <div class="empty-state" id="empty-biology">
+                <span class="empty-state-icon">🧬</span>
+                <p>لا توجد محاكيات في قسم الأحياء حتى الآن.<br>أضف محاكياتك بتعديل الكود في هذا القسم.</p>
+            </div>
+        </div>
+
+    </div><!-- /content-area -->
+</div><!-- /page-wrap -->
 
 <div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></div>
 
 <script>
-/* ══ التاريخ ══ */
+/* ══ DATE ══ */
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-/* ══ الصلاحيات ══ */
+/* ══ AUTH ══ */
 (function(){
     var role=localStorage.getItem('userRole')||'';
     var uid=localStorage.getItem('userUid')||'';
@@ -503,23 +803,9 @@ window.addEventListener('scroll',function(){
     document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400);
 },{passive:true});
 
-/* ══ SIDENAV — من اليسار ══ */
-function snToggle(){
-    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
-    if(!d)return;
-    var op=!d.classList.contains('show');
-    d.classList.toggle('show',op);
-    if(o)o.classList.toggle('show',op);
-    if(b){b.classList.toggle('active',op);b.setAttribute('aria-expanded',op);}
-    document.body.style.overflow=op?'hidden':'';
-}
-function snClose(){
-    var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
-    if(d)d.classList.remove('show');
-    if(o)o.classList.remove('show');
-    if(b){b.classList.remove('active');b.setAttribute('aria-expanded','false');}
-    document.body.style.overflow='';
-}
+/* ══ SIDENAV ══ */
+function snToggle(){var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');if(!d)return;var op=!d.classList.contains('show');d.classList.toggle('show',op);if(o)o.classList.toggle('show',op);if(b){b.classList.toggle('active',op);b.setAttribute('aria-expanded',op);}document.body.style.overflow=op?'hidden':'';}
+function snClose(){var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');if(d)d.classList.remove('show');if(o)o.classList.remove('show');if(b){b.classList.remove('active');b.setAttribute('aria-expanded','false');}document.body.style.overflow='';}
 function snToggleSettings(){var p=document.getElementById('snSettingsPanel'),t=document.getElementById('snSettingsToggle'),c=document.getElementById('snChevron');if(!p)return;var op=p.classList.toggle('open');if(t)t.classList.toggle('open',op);if(c)c.style.transform=op?'rotate(180deg)':'';}
 function snPickTheme(t){['light','dark'].forEach(function(id){var el=document.getElementById('sn-th-'+id);if(el)el.classList.toggle('sel',id===t);});document.documentElement.setAttribute('data-theme',t);try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.theme=t;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}}
 function snPickGraphics(g){['full','reduced','minimal'].forEach(function(id){var el=document.getElementById('sn-gr-'+id);if(el)el.classList.toggle('sel',id===g);});}
@@ -534,16 +820,7 @@ var currentLang='ar';
 var langWrap=document.getElementById('langSelectorWrap');
 document.getElementById('langTriggerBtn').addEventListener('click',function(e){e.stopPropagation();langWrap.classList.toggle('open');});
 document.addEventListener('click',function(e){if(!langWrap.contains(e.target))langWrap.classList.remove('open');});
-function setLang(lang){
-    if(lang===currentLang){langWrap.classList.remove('open');return;}
-    currentLang=lang;
-    document.documentElement.setAttribute('lang',lang);
-    document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');
-    document.getElementById('langFlag').textContent=lang==='ar'?'🇸🇦':'🇬🇧';
-    document.getElementById('langLabelText').textContent=lang==='ar'?'العربية':'English';
-    document.querySelectorAll('.lang-option-item').forEach(function(el){el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);});
-    langWrap.classList.remove('open');
-}
+function setLang(lang){if(lang===currentLang){langWrap.classList.remove('open');return;}currentLang=lang;document.documentElement.setAttribute('lang',lang);document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');document.getElementById('langFlag').textContent=lang==='ar'?'🇸🇦':'🇬🇧';document.getElementById('langLabelText').textContent=lang==='ar'?'العربية':'English';document.querySelectorAll('.lang-option-item').forEach(function(el){el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);});langWrap.classList.remove('open');}
 
 /* ══ NOTIFICATIONS ══ */
 function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');}
@@ -551,21 +828,72 @@ function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 
 /* ══ KEYBOARD ══ */
 document.addEventListener('keydown',function(e){if(e.key==='Escape')snClose();});
 
-/* ══ SMART GRID ══ */
-function updateGrid(){
-    var grid=document.getElementById('simGrid');
-    var cards=grid.querySelectorAll('.sim-card-wrap');
-    var count=cards.length;
-    grid.classList.remove('count-1','count-2','count-3','count-4plus');
-    if(count===1)grid.classList.add('count-1');
-    else if(count===2)grid.classList.add('count-2');
-    else if(count===3)grid.classList.add('count-3');
-    else grid.classList.add('count-4plus');
-    var labels={1:'١ محاكي متاح',2:'٢ محاكيات',3:'٣ محاكيات',4:'٤ محاكيات'};
-    document.getElementById('heroCount').textContent=labels[count]||count+' محاكياً';
-    grid.querySelectorAll('.pulse-wrapper').forEach(function(pw){pw.style.display=(count===1)?'block':'none';});
+/* ══ SECTIONS + GRID LOGIC ══ */
+var SECTIONS = ['physics','math','chemistry','earth','biology'];
+
+function getGridClass(count){
+    if(count===0)return 'count-0';
+    if(count===1)return 'count-1';
+    if(count===2)return 'count-2';
+    if(count===3)return 'count-3';
+    return 'count-4plus';
 }
-updateGrid();
+
+var arabicNums = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩','١٠','١١','١٢'];
+function toArabicNum(n){return arabicNums[n] !== undefined ? arabicNums[n] : n;}
+
+function updateSectionGrids(){
+    SECTIONS.forEach(function(sec){
+        var grid = document.getElementById('grid-'+sec);
+        var emptyState = document.getElementById('empty-'+sec);
+        var countPill = document.getElementById('count-'+sec);
+        if(!grid) return;
+        var cards = grid.querySelectorAll('.sim-card');
+        var count = cards.length;
+        // Remove all count classes
+        grid.classList.remove('count-0','count-1','count-2','count-3','count-4plus');
+        grid.classList.add(getGridClass(count));
+        // Show/hide empty state
+        if(emptyState) emptyState.style.display = count===0 ? 'block' : 'none';
+        // Update count pill
+        if(countPill){
+            var label = count===1 ? 'محاكي واحد' : count===0 ? '٠ محاكيات' : toArabicNum(count)+' محاكيات';
+            countPill.textContent = label;
+        }
+        // btn-launch padding fix
+        cards.forEach(function(card){
+            var btn = card.querySelector('.btn-launch');
+            if(btn && !btn.style.padding){
+                if(count<=2) btn.style.padding='14px';
+                else btn.style.padding='10px';
+            }
+        });
+    });
+}
+
+/* ══ TAB SWITCHING ══ */
+function showSection(sec){
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(function(btn){
+        btn.classList.toggle('active-tab', btn.getAttribute('data-section')===sec);
+    });
+    if(sec==='all'){
+        SECTIONS.forEach(function(s){
+            var block = document.getElementById('section-'+s);
+            if(block){block.classList.add('visible');block.style.display='block';}
+        });
+    } else {
+        SECTIONS.forEach(function(s){
+            var block = document.getElementById('section-'+s);
+            if(!block) return;
+            if(s===sec){block.classList.add('visible');block.style.display='block';}
+            else{block.classList.remove('visible');block.style.display='none';}
+        });
+    }
+}
+
+/* ══ INIT ══ */
+updateSectionGrids();
 </script>
 </body>
 </html>
