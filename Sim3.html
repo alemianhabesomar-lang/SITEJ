@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Magnetic Field</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            overflow: hidden; 
+            background-color: #06060f; 
+            font-family: 'JetBrains Mono', monospace;
+            cursor: default;
+        }
+        
+        #info {
+            position: absolute;
+            top: 12px;
+            width: 100%;
+            text-align: center;
+            color: #c0c0d0;
+            pointer-events: none;
+            z-index: 10;
+            font-size: 0.7em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        #info h2 { 
+            font-size: 1.4em; 
+            color: #e0e0f0; 
+            margin-bottom: 4px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+        #info p { opacity: 0.6; font-size: 0.85em; }
+
+        /* Mode indicator */
+        #modeIndicator {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            z-index: 10;
+            pointer-events: none;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        #modeIndicator.animate { background: rgba(76, 175, 80, 0.3); border: 1px solid rgba(76, 175, 80, 0.5); }
+        #modeIndicator.drag { background: rgba(255, 152, 0, 0.3); border: 1px solid rgba(255, 152, 0, 0.5); }
+
+        /* Position readout */
+        #posReadout {
+            position: absolute;
+            top: 105px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 0.65em;
+            letter-spacing: 1px;
+            z-index: 10;
+            pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Controls panel */
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(10, 10, 20, 0.92);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            width: 300px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            z-index: 20;
+        }
+        
+        .section-label {
+            font-size: 0.6em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .control-group { 
+            margin-bottom: 14px; 
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-size: 0.7em; 
+            color: #888; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        input[type=range] { 
+            width: 100%; 
+            cursor: pointer; 
+            accent-color: #4a9eff;
+            height: 4px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 7px 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75em;
+        }
+        select:hover { border-color: rgba(255,255,255,0.2); }
+
+        input[type=number] {
+            width: 100%;
+            padding: 7px 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc;
+            border-radius: 6px;
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75em;
+        }
+
+        /* Button styles */
+        .btn-row { display: flex; gap: 6px; }
+        
+        button {
+            border: none;
+            color: #aaa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+            font-size: 0.7em;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            flex: 1;
+        }
+        button:hover { background: rgba(255,255,255,0.1); color: #ddd; }
+        
+        button.active-proton { 
+            background: rgba(255, 82, 82, 0.2); 
+            border-color: rgba(255, 82, 82, 0.5); 
+            color: #FF5252;
+        }
+        button.active-electron { 
+            background: rgba(33, 150, 243, 0.2); 
+            border-color: rgba(33, 150, 243, 0.5); 
+            color: #2196F3;
+        }
+        button.active-mode {
+            background: rgba(255, 152, 0, 0.2);
+            border-color: rgba(255, 152, 0, 0.5);
+            color: #FF9800;
+        }
+        button.active-animate {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+        }
+
+        .toggle-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            cursor: pointer; 
+        }
+        .toggle-row input { width: auto; accent-color: #4a9eff; cursor: pointer; }
+        .toggle-row span { font-size: 0.75em; color: #aaa; }
+
+        .row { display: flex; gap: 6px; align-items: center; }
+        .row > * { flex: 1; }
+        
+        .legend {
+            background: linear-gradient(to right, #2196F3, #00bcd4, #4caf50, #ffeb3b, #ff5252);
+            height: 4px;
+            border-radius: 2px;
+            width: 100%;
+            margin-top: 4px;
+        }
+        .legend-labels { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.6em; 
+            color: #555; 
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+        
+        .note { 
+            font-size: 0.6em; 
+            color: #555; 
+            font-style: italic; 
+            margin-top: 4px; 
+        }
+
+        .keybind {
+            display: inline-block;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 3px;
+            padding: 1px 5px;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .help-text {
+            font-size: 0.65em;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+
+        /* Scrollbar */
+        #controls::-webkit-scrollbar { width: 4px; }
+        #controls::-webkit-scrollbar-track { background: transparent; }
+        #controls::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    </style>
+<script defer src="/~flock.js" data-proxy-url="/~api/analytics"></script><meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0198ce67-fa54-4931-ae27-7873ecc7bd78/id-preview-3c47ce70--cb81dee1-bc3c-4d92-897d-ff75eac5c4d5.lovable.app-1771126615244.png"><meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0198ce67-fa54-4931-ae27-7873ecc7bd78/id-preview-3c47ce70--cb81dee1-bc3c-4d92-897d-ff75eac5c4d5.lovable.app-1771126615244.png"></head>
+<body>
+
+<div id="info">
+    <h2>Magnetic Field — Interactive</h2>
+    <p>B ∝ q(v × r̂) / r²</p>
+</div>
+
+<div id="modeIndicator" class="animate">▶ Animate</div>
+<div id="posReadout">x: 0.0 &nbsp; y: 0.0 &nbsp; z: 0.0</div>
+
+<div id="controls">
+    <!-- Interaction Mode -->
+    <div class="section-label">Interaction</div>
+    <div class="control-group">
+        <label>Mode</label>
+        <div class="btn-row">
+            <button id="btnAnimate" class="active-animate" onclick="setMode('animate')">▶ Animate</button>
+            <button id="btnDrag" onclick="setMode('drag')">✋ Drag</button>
+        </div>
+        <div class="help-text" id="modeHelp">
+            Particle moves along velocity direction automatically.
+        </div>
+    </div>
+
+    <!-- Velocity Direction (for drag mode) -->
+    <div class="control-group" id="velDirGroup">
+        <label>Velocity Direction</label>
+        <select id="velDirSelect" onchange="setVelDirection(this.value)">
+            <option value="+x" selected>+X (right)</option>
+            <option value="-x">−X (left)</option>
+            <option value="+y">+Y (up)</option>
+            <option value="-y">−Y (down)</option>
+            <option value="+z">+Z (toward camera)</option>
+            <option value="-z">−Z (away)</option>
+        </select>
+        <div class="note">B-field depends on velocity direction</div>
+    </div>
+
+    <div class="control-group">
+        <label>Particle Speed: <span id="speedVal">3.0</span></label>
+        <input type="range" id="speedSlider" min="0" max="10" step="0.1" value="3">
+    </div>
+
+    <div class="control-group">
+        <label>Field Smoothing: <span id="smoothVal">0.08</span></label>
+        <input type="range" id="smoothSlider" min="0.01" max="0.35" step="0.01" value="0.08">
+        <div class="note">Low = smooth trail &nbsp;|&nbsp; High = snappy</div>
+    </div>
+
+    <div class="control-group">
+        <label>Focus Radius (3D drag): <span id="sigmaVal">10</span></label>
+        <input type="range" id="sigmaSlider" min="4" max="25" step="1" value="10">
+        <div class="note">Gaussian falloff — smaller = tighter spotlight</div>
+    </div>
+
+    <div class="control-group">
+        <label class="toggle-row">
+            <input type="checkbox" id="corridorToggle" checked onchange="corridorEnabled = this.checked">
+            <span>Sight-Line Corridor</span>
+        </label>
+        <div style="margin-top: 6px;">
+            <label>Corridor Width: <span id="corridorVal">15</span>°</label>
+            <input type="range" id="corridorSlider" min="3" max="35" step="1" value="15">
+            <div class="note">Clears arrows between you and the particle</div>
+        </div>
+    </div>
+
+    <!-- Charge -->
+    <div class="section-label" style="margin-top: 16px;">Physics</div>
+    <div class="control-group">
+        <label>Charge</label>
+        <div class="btn-row">
+            <button id="btnProton" class="active-proton" onclick="setParticle(true)">+ Proton</button>
+            <button id="btnElectron" onclick="setParticle(false)">− Electron</button>
+        </div>
+    </div>
+
+    <!-- Primary Slice -->
+    <div class="section-label" style="margin-top: 16px;">View</div>
+    <div class="control-group">
+        <label>Primary Slice</label>
+        <select id="sliceSelect" onchange="setSliceMode(this.value)">
+            <option value="3d">Full 3D Volume</option>
+            <option value="x">Slice X = 0</option>
+            <option value="y">Slice Y = 0</option>
+            <option value="z" selected>Slice Z = 0</option>
+        </select>
+    </div>
+
+    <!-- Secondary Slice -->
+    <div class="control-group">
+        <label class="toggle-row">
+            <input type="checkbox" id="secSliceToggle" onchange="toggleSecSlice()">
+            <span>Second Slice</span>
+        </label>
+        <div id="secSliceControls" style="margin-top: 6px; opacity: 0.3; pointer-events: none; transition: opacity 0.3s;">
+            <div class="row">
+                <select id="secAxis" onchange="updateSecSliceParams()">
+                    <option value="x">X</option>
+                    <option value="y">Y</option>
+                    <option value="z" selected>Z</option>
+                </select>
+                <input type="number" id="secOffset" value="3" step="1" onchange="updateSecSliceParams()" placeholder="Offset">
+            </div>
+            <div class="note">Snaps to nearest grid layer (spacing: 3)</div>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="control-group">
+        <label>Field Strength</label>
+        <div class="legend"></div>
+        <div class="legend-labels">
+            <span>Weak</span>
+            <span>Strong</span>
+        </div>
+    </div>
+
+    <!-- Drag Help -->
+    <div class="control-group" id="dragHelp" style="display: none;">
+        <div class="section-label">Drag Controls</div>
+        <div class="help-text">
+            <span class="keybind">Click + Drag</span> particle on ground plane (XZ)<br>
+            <span class="keybind">Shift + Drag</span> move vertically (Y axis)<br>
+            <span class="keybind">Right-click + Drag</span> orbit camera<br>
+            <span class="keybind">Scroll</span> zoom
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===================== CONFIG =====================
+    let scene, camera, renderer;
+    let particle, particleLight, particleGlow;
+    let velocityArrow;
+    let arrowHelpers = [];
+    let isProton = true;
+    let interactionMode = 'animate'; // 'animate' or 'drag'
+    
+    // View state
+    let sliceMode = 'z';
+    let secSliceActive = false;
+    let secSliceAxis = 'z';
+    let secSliceOffset = 3;
+    
+    // Physics
+    const VISUAL_MU = 150.0;
+    let gridDimension = 9;
+    let spacing = 3;
+
+    const state = {
+        velocity: 3.0,
+        position: new THREE.Vector3(-20, 0, 0),
+        direction: new THREE.Vector3(1, 0, 0),
+        time: 0
+    };
+
+    // Velocity tracking (for drag mode)
+    let prevParticlePos = new THREE.Vector3();
+    let measuredVelocity = new THREE.Vector3();
+    let particleIsMoving = false;
+    const VELOCITY_SMOOTHING = 0.15; // blend factor — lower = smoother velocity
+    const VELOCITY_THRESHOLD = 0.01;
+
+    // Arrow smoothing
+    let fieldSmoothingFactor = 0.08; // 0.01 = very smooth/laggy, 0.3 = snappy. Controllable via slider.
+    
+    // Gaussian focus (drag mode + 3D only): sigma controls how tight the bright zone is
+    let gaussianSigma = 10; // in world units. ~10 means arrows at 10 units are at ~60% brightness
+    
+    // Corridor: clears arrows between camera and particle so you can see it
+    let corridorEnabled = true;
+    let corridorAngle = 15; // degrees — half-angle of the cone from camera through particle
+    // Only cull arrows BETWEEN camera and particle (not behind the particle)
+
+    // Drag state
+    let isDraggingParticle = false;
+    let isHoveringParticle = false;
+    let dragPlane = new THREE.Plane();
+    let dragOffset = new THREE.Vector3();
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    let shiftHeld = false;
+
+    // Camera orbit state
+    let isCameraOrbiting = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let orbitRadius = 40;
+    let orbitTheta = 0.5;
+    let orbitPhi = 1.0;
+
+    // Axis labels
+    let axisLabels = [];
+
+    // ===================== INIT =====================
+    function init() {
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x06060f, 0.012);
+
+        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(15, 20, 30);
+        camera.lookAt(0, 0, 0);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x06060f);
+        document.body.appendChild(renderer.domElement);
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0x404060, 0.8));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.3);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+
+        // ---- Particle ----
+        const geo = new THREE.SphereGeometry(0.8, 32, 32);
+        const mat = new THREE.MeshPhongMaterial({ 
+            color: 0xFF5252, 
+            emissive: 0x441111,
+            shininess: 100 
+        });
+        particle = new THREE.Mesh(geo, mat);
+        scene.add(particle);
+
+        // Glow sprite
+        const glowCanvas = document.createElement('canvas');
+        glowCanvas.width = 64;
+        glowCanvas.height = 64;
+        const gctx = glowCanvas.getContext('2d');
+        const gradient = gctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gradient.addColorStop(0, 'rgba(255,82,82,0.6)');
+        gradient.addColorStop(0.4, 'rgba(255,82,82,0.15)');
+        gradient.addColorStop(1, 'rgba(255,82,82,0)');
+        gctx.fillStyle = gradient;
+        gctx.fillRect(0, 0, 64, 64);
+        const glowTexture = new THREE.CanvasTexture(glowCanvas);
+        const glowMat = new THREE.SpriteMaterial({ map: glowTexture, transparent: true, depthWrite: false });
+        particleGlow = new THREE.Sprite(glowMat);
+        particleGlow.scale.set(5, 5, 1);
+        particle.add(particleGlow);
+
+        particleLight = new THREE.PointLight(0xFF5252, 1.2, 25);
+        particle.add(particleLight);
+
+        // ---- Velocity Arrow ----
+        velocityArrow = new THREE.ArrowHelper(
+            state.direction.clone(), 
+            new THREE.Vector3(0, 0, 0), 
+            4, 0x4CAF50, 0.8, 0.5
+        );
+        velocityArrow.line.material.linewidth = 2;
+        particle.add(velocityArrow);
+
+        // ---- Grid + Axes ----
+        const gridHelper = new THREE.GridHelper(60, 20, 0x1a1a2e, 0x111122);
+        scene.add(gridHelper);
+
+        // Axis lines
+        const axLen = 18;
+        const axes = [
+            { dir: [axLen, 0, 0], color: 0xff4444, label: 'X' },
+            { dir: [0, axLen, 0], color: 0x44ff44, label: 'Y' },
+            { dir: [0, 0, axLen], color: 0x4488ff, label: 'Z' },
+        ];
+        axes.forEach(ax => {
+            const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(...ax.dir)];
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMat = new THREE.LineBasicMaterial({ color: ax.color, transparent: true, opacity: 0.35 });
+            scene.add(new THREE.Line(lineGeo, lineMat));
+
+            // Axis label sprite
+            const canvas = document.createElement('canvas');
+            canvas.width = 64; canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.font = 'bold 48px JetBrains Mono, monospace';
+            ctx.fillStyle = '#' + ax.color.toString(16).padStart(6, '0');
+            ctx.globalAlpha = 0.6;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(ax.label, 32, 32);
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
+            const sprite = new THREE.Sprite(spriteMat);
+            sprite.position.set(ax.dir[0] * 1.1, ax.dir[1] * 1.1, ax.dir[2] * 1.1);
+            sprite.scale.set(3, 3, 1);
+            scene.add(sprite);
+        });
+
+        // ---- Vector Field ----
+        generateVectorField();
+
+        // ---- Events ----
+        window.addEventListener('resize', onWindowResize);
+        document.getElementById('speedSlider').addEventListener('input', (e) => {
+            state.velocity = parseFloat(e.target.value);
+            document.getElementById('speedVal').textContent = state.velocity.toFixed(1);
+            updateVelocityArrow();
+        });
+
+        document.getElementById('smoothSlider').addEventListener('input', (e) => {
+            fieldSmoothingFactor = parseFloat(e.target.value);
+            document.getElementById('smoothVal').textContent = fieldSmoothingFactor.toFixed(2);
+        });
+
+        document.getElementById('sigmaSlider').addEventListener('input', (e) => {
+            gaussianSigma = parseFloat(e.target.value);
+            document.getElementById('sigmaVal').textContent = gaussianSigma.toFixed(0);
+        });
+
+        document.getElementById('corridorSlider').addEventListener('input', (e) => {
+            corridorAngle = parseFloat(e.target.value);
+            document.getElementById('corridorVal').textContent = corridorAngle.toFixed(0);
+        });
+
+        document.addEventListener('keydown', (e) => { 
+            if (e.key === 'Shift') shiftHeld = true; 
+        });
+        document.addEventListener('keyup', (e) => { 
+            if (e.key === 'Shift') shiftHeld = false; 
+        });
+
+        setupInteraction();
+        updateCamera();
+        animate();
+    }
+
+    // ===================== VECTOR FIELD =====================
+    function generateVectorField() {
+        arrowHelpers.forEach(a => scene.remove(a));
+        arrowHelpers = [];
+        const offset = ((gridDimension - 1) * spacing) / 2;
+
+        for (let x = 0; x < gridDimension; x++) {
+            for (let y = 0; y < gridDimension; y++) {
+                for (let z = 0; z < gridDimension; z++) {
+                    const posX = (x * spacing) - offset;
+                    const posY = (y * spacing) - offset;
+                    const posZ = (z * spacing) - offset;
+                    const origin = new THREE.Vector3(posX, posY, posZ);
+                    const dir = new THREE.Vector3(0, 1, 0);
+                    const arrow = new THREE.ArrowHelper(dir, origin, 1, 0xffffff, 0.5, 0.3);
+                    arrow.userData = { 
+                        originalPos: origin.clone(),
+                        // Grid indices for density culling
+                        gridIdx: { x: x, y: y, z: z },
+                        // Smoothed state
+                        smoothDir: new THREE.Vector3(0, 1, 0),
+                        smoothMag: 0,
+                        smoothOpacity: 0,
+                        smoothHue: 0.66,
+                        targetVisible: false,
+                    };
+                    scene.add(arrow);
+                    arrowHelpers.push(arrow);
+                }
+            }
+        }
+    }
+
+    // ===================== PHYSICS =====================
+    function updatePhysics() {
+        // ---- Compute actual particle velocity from frame-to-frame movement ----
+        const frameDelta = new THREE.Vector3().subVectors(particle.position, prevParticlePos);
+        
+        // Smooth the measured velocity to avoid jitter
+        measuredVelocity.lerp(frameDelta.multiplyScalar(60), VELOCITY_SMOOTHING); // scale to ~per-second
+        prevParticlePos.copy(particle.position);
+
+        // Auto-move in animate mode
+        if (interactionMode === 'animate') {
+            const moveStep = 0.08 * state.velocity;
+            particle.position.add(state.direction.clone().multiplyScalar(moveStep));
+            
+            if (particle.position.length() > 35) {
+                particle.position.copy(state.direction.clone().multiplyScalar(-30));
+                prevParticlePos.copy(particle.position); // reset so we don't get a huge spike
+            }
+        }
+
+        // Update position readout
+        const p = particle.position;
+        document.getElementById('posReadout').textContent = 
+            `x: ${p.x.toFixed(1)}  y: ${p.y.toFixed(1)}  z: ${p.z.toFixed(1)}`;
+
+        // ---- Determine effective velocity vector for B-field ----
+        let effectiveVelocity;
+        if (interactionMode === 'animate') {
+            effectiveVelocity = state.direction.clone().multiplyScalar(state.velocity);
+            particleIsMoving = state.velocity > VELOCITY_THRESHOLD;
+        } else {
+            // Drag mode: scale down raw velocity and cap it
+            // Raw measured velocity is way too high from mouse flicks — 
+            // scale to 0.3x and hard-cap magnitude at the animate-mode max (10)
+            effectiveVelocity = measuredVelocity.clone().multiplyScalar(0.3);
+            const mag = effectiveVelocity.length();
+            if (mag > 10) {
+                effectiveVelocity.multiplyScalar(10 / mag);
+            }
+            particleIsMoving = mag > VELOCITY_THRESHOLD;
+        }
+
+        // Update velocity arrow to reflect actual movement direction in drag mode
+        if (interactionMode === 'drag' && particleIsMoving) {
+            const dir = effectiveVelocity.clone().normalize();
+            const len = Math.min(effectiveVelocity.length() * 0.4, 6);
+            if (len > 0.3) {
+                velocityArrow.visible = true;
+                velocityArrow.setDirection(dir);
+                velocityArrow.setLength(Math.max(len, 1.5), len * 0.2, len * 0.12);
+            }
+        } else if (interactionMode === 'drag') {
+            velocityArrow.visible = false;
+        } else {
+            velocityArrow.visible = true;
+        }
+
+        const q = isProton ? 1 : -1;
+
+        const primaryEpsilon = 0.1;
+        const secondaryTolerance = (spacing / 2) + 0.01;
+
+        // Precompute corridor geometry (camera → particle sight-line)
+        const camPos = camera.position;
+        const camToParticle = new THREE.Vector3().subVectors(particle.position, camPos);
+        const camToParticleDist = camToParticle.length();
+        const camToParticleDir = camToParticle.clone().normalize();
+        const corridorCosAngle = Math.cos(corridorAngle * Math.PI / 180);
+
+        arrowHelpers.forEach(arrow => {
+            const arrowPos = arrow.userData.originalPos;
+            const ud = arrow.userData;
+            const lerpF = fieldSmoothingFactor;
+            
+            let showPrimary = false;
+            let showSecondary = false;
+
+            if (sliceMode === '3d') {
+                showPrimary = true;
+            } else if (sliceMode === 'x') {
+                if (Math.abs(arrowPos.x) < primaryEpsilon) showPrimary = true;
+            } else if (sliceMode === 'y') {
+                if (Math.abs(arrowPos.y) < primaryEpsilon) showPrimary = true;
+            } else if (sliceMode === 'z') {
+                if (Math.abs(arrowPos.z) < primaryEpsilon) showPrimary = true;
+            }
+
+            if (secSliceActive) {
+                const comp = secSliceAxis === 'x' ? arrowPos.x : secSliceAxis === 'y' ? arrowPos.y : arrowPos.z;
+                if (Math.abs(comp - secSliceOffset) < secondaryTolerance) showSecondary = true;
+            }
+
+            // Not in any visible slice — hard hide
+            if (!showPrimary && !showSecondary) {
+                arrow.visible = false;
+                return;
+            }
+
+            // Half-density in drag mode + 3D: skip arrows where (x+y+z) is odd
+            if (interactionMode === 'drag' && sliceMode === '3d') {
+                const g = ud.gridIdx;
+                if ((g.x + g.y + g.z) % 2 !== 0) {
+                    arrow.visible = false;
+                    return;
+                }
+            }
+
+            const rVec = new THREE.Vector3().subVectors(arrowPos, particle.position);
+            const dist = rVec.length();
+
+            // Compute target B regardless, then decide visibility
+            let targetMag = 0;
+            let targetDir = ud.smoothDir.clone();
+            let targetHue = 0.66;
+
+            if (particleIsMoving && dist > 1.0) {
+                const B = new THREE.Vector3().crossVectors(effectiveVelocity, rVec);
+                B.multiplyScalar(q * VISUAL_MU);
+                B.divideScalar(Math.pow(dist, 3));
+                targetMag = B.length();
+                if (targetMag > 0.0001) {
+                    targetDir = B.normalize();
+                }
+                let targetIntensity = Math.min(targetMag * 0.5, 1.0);
+                targetHue = (1.0 - targetIntensity) * 0.66;
+            }
+
+            // Lerp all smoothed values toward targets
+            ud.smoothMag += (targetMag - ud.smoothMag) * lerpF;
+            ud.smoothDir.lerp(targetDir, lerpF);
+            ud.smoothDir.normalize();
+            ud.smoothHue += (targetHue - ud.smoothHue) * lerpF;
+
+            // Target opacity: full when there's field, zero when not
+            const targetOpacity = (targetMag > 0.0001 && particleIsMoving) ? 1.0 : 0.0;
+            ud.smoothOpacity += (targetOpacity - ud.smoothOpacity) * lerpF;
+
+            // If effectively invisible, hide to save rendering
+            if (ud.smoothOpacity < 0.01 && ud.smoothMag < 0.01) {
+                arrow.visible = false;
+                return;
+            }
+            arrow.visible = true;
+
+            // Apply smoothed direction
+            arrow.setDirection(ud.smoothDir);
+
+            // Apply smoothed length
+            let visualLength = Math.min(ud.smoothMag, 4.0);
+            visualLength = Math.max(visualLength, 0.2) * ud.smoothOpacity;
+            if (visualLength < 0.05) { arrow.visible = false; return; }
+            arrow.setLength(visualLength, visualLength * 0.25, visualLength * 0.15);
+
+            // Apply smoothed color + opacity
+            let finalOpacity = ud.smoothOpacity;
+
+            // Gaussian focus: in drag mode + 3D view, fade arrows by distance from particle
+            if (interactionMode === 'drag' && sliceMode === '3d') {
+                const gaussFactor = Math.exp(-(dist * dist) / (2 * gaussianSigma * gaussianSigma));
+                finalOpacity *= gaussFactor;
+            }
+
+            // Corridor: fade arrows between camera and particle
+            if (corridorEnabled && interactionMode === 'drag' && sliceMode === '3d') {
+                const camToArrow = new THREE.Vector3().subVectors(arrowPos, camPos);
+                const camToArrowDist = camToArrow.length();
+                const camToArrowDir = camToArrow.clone().normalize();
+                
+                // Dot product gives cosine of angle between camera→particle and camera→arrow
+                const cosAngle = camToArrowDir.dot(camToParticleDir);
+                
+                // Only cull if arrow is BETWEEN camera and particle (not behind particle)
+                if (cosAngle > corridorCosAngle && camToArrowDist < camToParticleDist * 1.05) {
+                    // Smooth falloff at corridor edge rather than hard cut
+                    // Map from [corridorCosAngle, 1.0] → [1.0, 0.0]
+                    const t = (cosAngle - corridorCosAngle) / (1.0 - corridorCosAngle);
+                    const corridorFade = 1.0 - (t * t); // quadratic ease — soft edge
+                    finalOpacity *= corridorFade;
+                }
+            }
+
+            if (finalOpacity < 0.02) { arrow.visible = false; return; }
+
+            if (arrow.line && arrow.line.material) {
+                arrow.line.material.opacity = finalOpacity;
+                arrow.line.material.transparent = true;
+            }
+            if (arrow.cone && arrow.cone.material) {
+                arrow.cone.material.opacity = finalOpacity;
+                arrow.cone.material.transparent = true;
+            }
+
+            arrow.setColor(new THREE.Color().setHSL(ud.smoothHue, 1.0, 0.5));
+        });
+    }
+
+    // ===================== INTERACTION =====================
+    function setupInteraction() {
+        const canvas = renderer.domElement;
+
+        canvas.addEventListener('mousedown', onMouseDown);
+        canvas.addEventListener('mousemove', onMouseMove);
+        canvas.addEventListener('mouseup', onMouseUp);
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        canvas.addEventListener('wheel', onWheel);
+
+        // Touch support
+        canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+        canvas.addEventListener('touchend', onTouchEnd);
+    }
+
+    function getMouseNDC(e) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        return new THREE.Vector2(
+            ((e.clientX - rect.left) / rect.width) * 2 - 1,
+            -((e.clientY - rect.top) / rect.height) * 2 + 1
+        );
+    }
+
+    function hitTestParticle(ndc) {
+        raycaster.setFromCamera(ndc, camera);
+        // Use a larger sphere for easier clicking
+        const hitSphere = new THREE.Sphere(particle.position, 2.0);
+        const ray = raycaster.ray;
+        return ray.intersectsSphere(hitSphere);
+    }
+
+    function getDragPlane() {
+        if (shiftHeld) {
+            // Vertical plane facing camera
+            const camDir = new THREE.Vector3();
+            camera.getWorldDirection(camDir);
+            camDir.y = 0;
+            camDir.normalize();
+            // Plane normal is the camera's horizontal look direction
+            return new THREE.Plane().setFromNormalAndCoplanarPoint(camDir, particle.position);
+        } else {
+            // Horizontal plane at particle's Y
+            return new THREE.Plane(new THREE.Vector3(0, 1, 0), -particle.position.y);
+        }
+    }
+
+    function onMouseDown(e) {
+        // Don't handle if clicking UI
+        if (e.target.closest('#controls')) return;
+
+        const ndc = getMouseNDC(e);
+
+        // Right click or middle click = always orbit
+        if (e.button === 2 || e.button === 1) {
+            isCameraOrbiting = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+            return;
+        }
+
+        // Left click in drag mode: try to grab particle
+        if (interactionMode === 'drag' && e.button === 0) {
+            if (hitTestParticle(ndc)) {
+                isDraggingParticle = true;
+                dragPlane = getDragPlane();
+                
+                // Calculate offset so particle doesn't jump
+                const intersection = new THREE.Vector3();
+                raycaster.setFromCamera(ndc, camera);
+                raycaster.ray.intersectPlane(dragPlane, intersection);
+                dragOffset.subVectors(particle.position, intersection);
+                
+                renderer.domElement.style.cursor = 'grabbing';
+                return;
+            }
+        }
+
+        // Left click = orbit camera (in animate mode, or if not grabbing particle)
+        if (e.button === 0) {
+            isCameraOrbiting = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+    }
+
+    function onMouseMove(e) {
+        const ndc = getMouseNDC(e);
+
+        // Hover detection for cursor
+        if (interactionMode === 'drag' && !isDraggingParticle && !isCameraOrbiting) {
+            if (hitTestParticle(ndc)) {
+                if (!isHoveringParticle) {
+                    isHoveringParticle = true;
+                    renderer.domElement.style.cursor = 'grab';
+                }
+            } else {
+                if (isHoveringParticle) {
+                    isHoveringParticle = false;
+                    renderer.domElement.style.cursor = 'default';
+                }
+            }
+        }
+
+        // Dragging particle
+        if (isDraggingParticle) {
+            // Recalculate plane if shift state changed
+            dragPlane = getDragPlane();
+            
+            raycaster.setFromCamera(ndc, camera);
+            const intersection = new THREE.Vector3();
+            if (raycaster.ray.intersectPlane(dragPlane, intersection)) {
+                const newPos = intersection.add(dragOffset);
+                // Clamp to reasonable bounds
+                newPos.x = Math.max(-25, Math.min(25, newPos.x));
+                newPos.y = Math.max(-25, Math.min(25, newPos.y));
+                newPos.z = Math.max(-25, Math.min(25, newPos.z));
+                particle.position.copy(newPos);
+            }
+            return;
+        }
+
+        // Camera orbit
+        if (isCameraOrbiting) {
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+            orbitTheta -= deltaX * 0.008;
+            orbitPhi -= deltaY * 0.008;
+            orbitPhi = Math.max(0.1, Math.min(Math.PI - 0.1, orbitPhi));
+            updateCamera();
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+    }
+
+    function onMouseUp(e) {
+        if (isDraggingParticle) {
+            isDraggingParticle = false;
+            renderer.domElement.style.cursor = isHoveringParticle ? 'grab' : 'default';
+        }
+        isCameraOrbiting = false;
+    }
+
+    function onWheel(e) {
+        orbitRadius += e.deltaY * 0.04;
+        orbitRadius = Math.max(8, Math.min(100, orbitRadius));
+        updateCamera();
+    }
+
+    // Touch support
+    let touchStartPos = null;
+    let touchStartTime = 0;
+    let isTouchDragging = false;
+
+    function onTouchStart(e) {
+        if (e.target.closest('#controls')) return;
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        const ndc = getMouseNDC(touch);
+        touchStartPos = { x: touch.clientX, y: touch.clientY };
+        touchStartTime = Date.now();
+
+        if (interactionMode === 'drag' && hitTestParticle(ndc)) {
+            isDraggingParticle = true;
+            isTouchDragging = true;
+            dragPlane = getDragPlane();
+            const intersection = new THREE.Vector3();
+            raycaster.setFromCamera(ndc, camera);
+            raycaster.ray.intersectPlane(dragPlane, intersection);
+            dragOffset.subVectors(particle.position, intersection);
+        } else {
+            isCameraOrbiting = true;
+            previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        }
+    }
+
+    function onTouchMove(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+
+        if (isDraggingParticle && isTouchDragging) {
+            const ndc = getMouseNDC(touch);
+            raycaster.setFromCamera(ndc, camera);
+            const intersection = new THREE.Vector3();
+            if (raycaster.ray.intersectPlane(dragPlane, intersection)) {
+                const newPos = intersection.add(dragOffset);
+                newPos.x = Math.max(-25, Math.min(25, newPos.x));
+                newPos.y = Math.max(-25, Math.min(25, newPos.y));
+                newPos.z = Math.max(-25, Math.min(25, newPos.z));
+                particle.position.copy(newPos);
+            }
+            return;
+        }
+
+        if (isCameraOrbiting) {
+            const deltaX = touch.clientX - previousMousePosition.x;
+            const deltaY = touch.clientY - previousMousePosition.y;
+            orbitTheta -= deltaX * 0.008;
+            orbitPhi -= deltaY * 0.008;
+            orbitPhi = Math.max(0.1, Math.min(Math.PI - 0.1, orbitPhi));
+            updateCamera();
+            previousMousePosition = { x: touch.clientX, y: touch.clientY };
+        }
+    }
+
+    function onTouchEnd(e) {
+        isDraggingParticle = false;
+        isTouchDragging = false;
+        isCameraOrbiting = false;
+    }
+
+    // ===================== CAMERA =====================
+    function updateCamera() {
+        camera.position.x = orbitRadius * Math.sin(orbitPhi) * Math.sin(orbitTheta);
+        camera.position.y = orbitRadius * Math.cos(orbitPhi);
+        camera.position.z = orbitRadius * Math.sin(orbitPhi) * Math.cos(orbitTheta);
+        camera.lookAt(0, 0, 0);
+    }
+
+    // ===================== UI CONTROLS =====================
+    function setMode(mode) {
+        interactionMode = mode;
+        const btnA = document.getElementById('btnAnimate');
+        const btnD = document.getElementById('btnDrag');
+        const indicator = document.getElementById('modeIndicator');
+        const helpText = document.getElementById('modeHelp');
+        const dragHelpPanel = document.getElementById('dragHelp');
+
+        btnA.className = mode === 'animate' ? 'active-animate' : '';
+        btnD.className = mode === 'drag' ? 'active-mode' : '';
+
+        if (mode === 'animate') {
+            indicator.textContent = '▶ Animate';
+            indicator.className = 'animate';
+            helpText.textContent = 'Particle moves along velocity direction automatically.';
+            dragHelpPanel.style.display = 'none';
+            renderer.domElement.style.cursor = 'default';
+        } else {
+            indicator.textContent = '✋ Drag Mode';
+            indicator.className = 'drag';
+            helpText.textContent = 'Click and drag the particle. Shift+drag for vertical movement.';
+            dragHelpPanel.style.display = 'block';
+        }
+    }
+
+    function setVelDirection(val) {
+        const dirs = {
+            '+x': [1, 0, 0], '-x': [-1, 0, 0],
+            '+y': [0, 1, 0], '-y': [0, -1, 0],
+            '+z': [0, 0, 1], '-z': [0, 0, -1],
+        };
+        const d = dirs[val];
+        state.direction.set(d[0], d[1], d[2]);
+        updateVelocityArrow();
+    }
+
+    function updateVelocityArrow() {
+        if (velocityArrow) {
+            particle.remove(velocityArrow);
+        }
+        const len = Math.max(state.velocity * 1.2, 1.5);
+        velocityArrow = new THREE.ArrowHelper(
+            state.direction.clone(), 
+            new THREE.Vector3(0, 0, 0), 
+            len, 0x4CAF50, len * 0.2, len * 0.12
+        );
+        particle.add(velocityArrow);
+    }
+
+    function setParticle(proton) {
+        isProton = proton;
+        const btnP = document.getElementById('btnProton');
+        const btnE = document.getElementById('btnElectron');
+        
+        if (isProton) {
+            particle.material.color.setHex(0xFF5252);
+            particle.material.emissive.setHex(0x441111);
+            particleLight.color.setHex(0xFF5252);
+            btnP.className = 'active-proton';
+            btnE.className = '';
+            // Update glow color
+            updateGlowColor(0xFF5252);
+        } else {
+            particle.material.color.setHex(0x2196F3);
+            particle.material.emissive.setHex(0x111144);
+            particleLight.color.setHex(0x2196F3);
+            btnP.className = '';
+            btnE.className = 'active-electron';
+            updateGlowColor(0x2196F3);
+        }
+    }
+
+    function updateGlowColor(hexColor) {
+        const r = (hexColor >> 16) & 255;
+        const g = (hexColor >> 8) & 255;
+        const b = hexColor & 255;
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = 64; canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+        const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gradient.addColorStop(0, `rgba(${r},${g},${b},0.6)`);
+        gradient.addColorStop(0.4, `rgba(${r},${g},${b},0.15)`);
+        gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 64, 64);
+        particleGlow.material.map = new THREE.CanvasTexture(canvas);
+        particleGlow.material.needsUpdate = true;
+    }
+
+    function setSliceMode(mode) { sliceMode = mode; }
+
+    function toggleSecSlice() {
+        secSliceActive = document.getElementById('secSliceToggle').checked;
+        const panel = document.getElementById('secSliceControls');
+        panel.style.opacity = secSliceActive ? '1' : '0.3';
+        panel.style.pointerEvents = secSliceActive ? 'auto' : 'none';
+    }
+
+    function updateSecSliceParams() {
+        secSliceAxis = document.getElementById('secAxis').value;
+        const val = parseFloat(document.getElementById('secOffset').value);
+        secSliceOffset = isNaN(val) ? 3 : val;
+    }
+
+    // ===================== ANIMATION LOOP =====================
+    function animate() {
+        requestAnimationFrame(animate);
+        updatePhysics();
+        renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // ===================== START =====================
+    init();
+</script>
+</body>
+</html>

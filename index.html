@@ -25,6 +25,10 @@
             --border-blue:rgba(74,144,226,0.3);--border-white:rgba(255,255,255,0.3);
             --shadow-blue:rgba(74,144,226,0.2);--shadow-glow:rgba(74,144,226,0.5);
             --text-navy:#0a1628;--text-gray:#6b7c93;
+            --login-green: #10b981;
+            --login-green-dark: #059669;
+            --logout-red: #ef4444;
+            --logout-red-dark: #dc2626;
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
         html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
@@ -63,9 +67,40 @@
         .lang-option-item .lang-check{margin-left:auto;width:15px;height:15px;color:var(--accent-blue);opacity:0;transition:opacity .2s;}
         .lang-option-item.lang-active .lang-check{opacity:1;}
         .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
-        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s,box-shadow .35s;flex-shrink:0;}
-        .profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px var(--shadow-glow);}
-        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+        /* استبدال أيقونة البروفايل بـ أزرار تسجيل الدخول والخروج */
+        .auth-btn {
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-family: 'Cairo','Tajawal',sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .login-btn {
+            background: var(--login-green);
+            color: white;
+        }
+        .login-btn:hover {
+            background: var(--login-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+        }
+        .logout-btn {
+            background: var(--logout-red);
+            color: white;
+        }
+        .logout-btn:hover {
+            background: var(--logout-red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239,68,68,0.3);
+        }
         .notification-btn{position:relative;width:46px;height:46px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .35s;}
         .notification-btn:hover{background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);box-shadow:0 8px 22px var(--shadow-blue);}
         .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
@@ -240,7 +275,7 @@
             .section-title{font-size:2.2rem;}
             .grid-container{grid-template-columns:1fr;gap:22px;padding:0 22px 60px;}
             .card{height:340px;}
-            #snDrawer{width:100%;left:-100%!important;}  /* موبايل: يفتح من الشمال */
+            #snDrawer{width:100%;left:-100%!important;}
         }
     </style>
     <script src="settings-apply.js"></script>
@@ -281,7 +316,8 @@
             </div>
         </div>
 
-        <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
+        <!-- منطقة الأزرار الديناميكية بدلاً من أيقونة البروفايل -->
+        <div id="authButtonContainer"></div>
 
         <div class="notification-btn" onclick="showNotifications()">
             <i class="fas fa-bell"></i>
@@ -322,7 +358,6 @@
         <li><a href="masarat.html"><i class="fa-solid fa-left-right"></i><span>قسم المسارات</span></a></li>
         <li><a href="family.html"><i class="fas fa-users"></i><span>الرقابة الأبوية</span></a></li>
         <li><a href="support.html"><i class="fas fa-headset"></i><span>تعريف عن الراعي</span></a></li>
-        <li><a href="marks.html"><i class="fas fa-award"></i><span>النتائج</span></a></li>
 
         <li id="dashDivider" style="display:none;">
             <div class="dash-divider"></div>
@@ -449,6 +484,30 @@
 </div>
 
 <script>
+// دالة لتحديث واجهة الأزرار بناءً على حالة تسجيل الدخول
+function updateAuthButtons() {
+    const container = document.getElementById('authButtonContainer');
+    if (!container) return;
+    const isLoggedIn = !!(localStorage.getItem('userRole') || localStorage.getItem('userUid'));
+    if (isLoggedIn) {
+        container.innerHTML = `<button class="auth-btn logout-btn" onclick="performLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>`;
+    } else {
+        container.innerHTML = `<a href="login.html" class="auth-btn login-btn"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a>`;
+    }
+}
+// تسجيل الخروج مع إعادة تحميل الصفحة
+function performLogout() {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userUid');
+    localStorage.removeItem('studentName');
+    localStorage.removeItem('studentId');
+    localStorage.removeItem('teacherSubject');
+    localStorage.removeItem('teacherClasses');
+    updateAuthButtons();
+    window.location.reload();
+}
+// الوظائف الأصلية للثلاثي الهيدر (سايد بار، إلخ)
 (function () {
     var role = localStorage.getItem('userRole') || '';
     var uid  = localStorage.getItem('userUid')  || '';
@@ -472,12 +531,6 @@
             avatarEl.style.fontWeight = '800';
         }
     }
-    var profileBtn = document.getElementById('profileNavBtn');
-    if (profileBtn) {
-        if (role === 'student') profileBtn.href = 'student-profile.html';
-        else if (role && uid)   profileBtn.href = 'profile.html';
-        else                    profileBtn.href = 'login.html';
-    }
     if (role === 'teacher') {
         var tl = document.getElementById('teacherDashLink');
         var dd = document.getElementById('dashDivider');
@@ -494,6 +547,7 @@
         var logoutList = document.querySelector('.sn-logout');
         if (logoutList) logoutList.style.display = 'none';
     }
+    updateAuthButtons();
 })();
 
 /* ══ SETTINGS PANEL ══ */
@@ -527,14 +581,7 @@ function snSetFont(idx){document.documentElement.style.fontSize=_snFontSizes[idx
 function snFontInput(val){snSetFont(parseInt(val));}
 function snSave(){var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');if(m)m.textContent='تم حفظ الإعدادات ✓';if(t){t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}}
 function snLogout(){
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userUid');
-    localStorage.removeItem('studentName');
-    localStorage.removeItem('studentId');
-    localStorage.removeItem('teacherSubject');
-    localStorage.removeItem('teacherClasses');
-    window.location.href='login.html';
+    performLogout();
 }
 
 /* ══ NOTIFICATIONS ══ */
