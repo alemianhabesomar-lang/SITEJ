@@ -24,6 +24,10 @@
             --border-blue:rgba(74,144,226,0.3);--border-white:rgba(255,255,255,0.3);
             --shadow-blue:rgba(74,144,226,0.2);--shadow-glow:rgba(74,144,226,0.5);
             --text-navy:#0a1628;--text-gray:#6b7c93;
+            --login-green: #10b981;
+            --login-green-dark: #059669;
+            --logout-red: #ef4444;
+            --logout-red-dark: #dc2626;
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
         html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
@@ -67,9 +71,41 @@
         .lang-option-item.lang-active .lang-check{opacity:1;}
         .lang-divider-line{height:1px;background:var(--border-blue);margin:0 12px;}
 
-        .profile-nav-btn{width:42px;height:42px;background:var(--gradient-blue-glow);border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 15px var(--shadow-blue);transition:transform .35s,box-shadow .35s;flex-shrink:0;}
-        .profile-nav-btn:hover{transform:translateY(-3px) scale(1.12);box-shadow:0 10px 28px var(--shadow-glow);}
-        .profile-nav-btn i{color:#fff;font-size:1.1rem;}
+        /* ══ AUTH BUTTONS ══ */
+        .auth-btn {
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-family: 'Cairo','Tajawal',sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .login-btn {
+            background: var(--login-green);
+            color: white;
+        }
+        .login-btn:hover {
+            background: var(--login-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+        }
+        .logout-btn {
+            background: var(--logout-red);
+            color: white;
+        }
+        .logout-btn:hover {
+            background: var(--logout-red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239,68,68,0.3);
+        }
+
         .notification-btn{position:relative;width:46px;height:46px;background:rgba(255,255,255,0.7);border:1.5px solid var(--border-blue);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .35s;}
         .notification-btn:hover{background:rgba(255,255,255,0.95);transform:translateY(-3px) rotate(-12deg);box-shadow:0 8px 22px var(--shadow-blue);}
         .notification-btn i{color:var(--accent-blue);font-size:1.2rem;}
@@ -88,13 +124,13 @@
         .sidenav{
             position:fixed;
             top:0;
-            left:-430px; /* من اليسار */
+            left:-430px;
             width:400px;
             height:100%;
             z-index:3000;
             background:linear-gradient(180deg,rgba(255,255,255,0.99) 0%,rgba(232,238,245,0.99) 100%);
             backdrop-filter:blur(35px);
-            border-right:3px solid var(--accent-blue); /* حد يمين لأنها من اليسار */
+            border-right:3px solid var(--accent-blue);
             padding:28px 24px;
             overflow-y:auto;
             transition:left .55s cubic-bezier(.68,-.55,.265,1.55);
@@ -298,7 +334,10 @@
                 </div>
             </div>
         </div>
-        <a href="login.html" class="profile-nav-btn" id="profileNavBtn"><i class="fas fa-user"></i></a>
+
+        <!-- منطقة الأزرار الديناميكية (من الصفحة الرئيسية) -->
+        <div id="authButtonContainer"></div>
+
         <div class="notification-btn" onclick="showNotifications()">
             <i class="fas fa-bell"></i>
             <span class="notification-badge" id="notifBadge">3</span>
@@ -439,7 +478,7 @@
                 </div>
             </div>
 
-                        <!-- ===== المحاكي 2 ===== -->
+            <!-- ===== المحاكي 2 ===== -->
             <div class="sim-card-wrap">
                 <div class="sim-card">
                     <div class="sim-card-header">
@@ -497,23 +536,70 @@
 /* ══ التاريخ ══ */
 document.getElementById('currentDate').textContent = new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-/* ══ الصلاحيات ══ */
+/* ══ أزرار تسجيل الدخول / الخروج (من الصفحة الرئيسية) ══ */
+function updateAuthButtons() {
+    var container = document.getElementById('authButtonContainer');
+    if (!container) return;
+    var isLoggedIn = !!(localStorage.getItem('userRole') || localStorage.getItem('userUid'));
+    if (isLoggedIn) {
+        container.innerHTML = '<button class="auth-btn logout-btn" onclick="performLogout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>';
+    } else {
+        container.innerHTML = '<a href="login.html" class="auth-btn login-btn"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</a>';
+    }
+}
+function performLogout() {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userUid');
+    localStorage.removeItem('studentName');
+    localStorage.removeItem('studentId');
+    localStorage.removeItem('teacherSubject');
+    localStorage.removeItem('teacherClasses');
+    updateAuthButtons();
+    window.location.reload();
+}
+
+/* ══ الصلاحيات والرتب (من الصفحة الرئيسية) ══ */
 (function(){
-    var role=localStorage.getItem('userRole')||'';
-    var uid=localStorage.getItem('userUid')||'';
-    var userName=role==='student'?(localStorage.getItem('studentName')||''):(localStorage.getItem('userName')||'');
-    var roleLabels={teacher:'معلم',vice_principal:'مساعد مدير',principal:'مدير المدرسة',student:'طالب'};
-    var unameEl=document.getElementById('snUserName');
-    var uroleEl=document.getElementById('snUserRole');
-    var avatarEl=document.getElementById('snAvatar');
-    if(unameEl)unameEl.textContent=userName||'مرحباً بك';
-    if(uroleEl)uroleEl.textContent=roleLabels[role]||'زائر';
-    if(avatarEl&&userName){var fc=userName.trim().charAt(0);if(fc&&fc!=='👤'){avatarEl.textContent=fc;avatarEl.style.fontSize='1.4rem';avatarEl.style.fontWeight='800';}}
-    var profileBtn=document.getElementById('profileNavBtn');
-    if(profileBtn){if(role==='student')profileBtn.href='student-profile.html';else if(role&&uid)profileBtn.href='profile.html';else profileBtn.href='login.html';}
-    if(role==='teacher'){var tl=document.getElementById('teacherDashLink');var dd=document.getElementById('dashDivider');if(tl)tl.style.display='block';if(dd)dd.style.display='block';}
-    if(role==='principal'||role==='vice_principal'){var al=document.getElementById('adminDashLink');var dd2=document.getElementById('dashDivider');if(al)al.style.display='block';if(dd2)dd2.style.display='block';}
-    if(!role&&!uid){var logoutList=document.querySelector('.sn-logout');if(logoutList)logoutList.style.display='none';}
+    var role = localStorage.getItem('userRole') || '';
+    var uid  = localStorage.getItem('userUid')  || '';
+    var userName = '';
+    if (role === 'student') {
+        userName = localStorage.getItem('studentName') || '';
+    } else {
+        userName = localStorage.getItem('userName') || '';
+    }
+    var roleLabels = {teacher:'معلم',vice_principal:'مساعد مدير',principal:'مدير المدرسة',student:'طالب'};
+    var unameEl  = document.getElementById('snUserName');
+    var uroleEl  = document.getElementById('snUserRole');
+    var avatarEl = document.getElementById('snAvatar');
+    if (unameEl) unameEl.textContent = userName || 'مرحباً بك';
+    if (uroleEl) uroleEl.textContent = roleLabels[role] || 'زائر';
+    if (avatarEl && userName) {
+        var firstChar = userName.trim().charAt(0);
+        if (firstChar && firstChar !== '👤') {
+            avatarEl.textContent      = firstChar;
+            avatarEl.style.fontSize   = '1.4rem';
+            avatarEl.style.fontWeight = '800';
+        }
+    }
+    if (role === 'teacher') {
+        var tl = document.getElementById('teacherDashLink');
+        var dd = document.getElementById('dashDivider');
+        if (tl) tl.style.display = 'block';
+        if (dd) dd.style.display = 'block';
+    }
+    if (role === 'principal' || role === 'vice_principal') {
+        var al  = document.getElementById('adminDashLink');
+        var dd2 = document.getElementById('dashDivider');
+        if (al)  al.style.display  = 'block';
+        if (dd2) dd2.style.display = 'block';
+    }
+    if (!role && !uid) {
+        var logoutList = document.querySelector('.sn-logout');
+        if (logoutList) logoutList.style.display = 'none';
+    }
+    updateAuthButtons();
 })();
 
 /* ══ NAVBAR SCROLL ══ */
@@ -522,7 +608,7 @@ window.addEventListener('scroll',function(){
     document.getElementById('scrollTop').classList.toggle('visible',window.scrollY>400);
 },{passive:true});
 
-/* ══ SIDENAV — من اليسار ══ */
+/* ══ SIDENAV ══ */
 function snToggle(){
     var d=document.getElementById('snDrawer'),o=document.getElementById('snOverlay'),b=document.getElementById('snBurger');
     if(!d)return;
@@ -543,10 +629,18 @@ function snToggleSettings(){var p=document.getElementById('snSettingsPanel'),t=d
 function snPickTheme(t){['light','dark'].forEach(function(id){var el=document.getElementById('sn-th-'+id);if(el)el.classList.toggle('sel',id===t);});document.documentElement.setAttribute('data-theme',t);try{var s=JSON.parse(localStorage.getItem('siteSettings')||'{}');s.theme=t;localStorage.setItem('siteSettings',JSON.stringify(s));}catch(e){}}
 function snPickGraphics(g){['full','reduced','minimal'].forEach(function(id){var el=document.getElementById('sn-gr-'+id);if(el)el.classList.toggle('sel',id===g);});}
 var _snFontSizes=['13px','15px','17px','20px'];
-function snSetFont(idx){document.documentElement.style.fontSize=_snFontSizes[idx]||'15px';var sl=document.getElementById('snFontSlider');if(sl)sl.value=idx;}
+function snSetFont(idx){document.documentElement.style.fontSize=_snFontSizes[idx]||'15px';var sl=document.getElementById('snFontSlider');if(sl)sl.value=idx;document.querySelectorAll('.sn-font-labels span').forEach(function(s){s.classList.toggle('act',parseInt(s.getAttribute('data-idx'))===idx);});}
 function snFontInput(val){snSetFont(parseInt(val));}
 function snSave(){var t=document.getElementById('snToast'),m=document.getElementById('snToastMsg');if(m)m.textContent='تم حفظ الإعدادات ✓';if(t){t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}}
-function snLogout(){localStorage.removeItem('userRole');localStorage.removeItem('userName');localStorage.removeItem('userUid');localStorage.removeItem('studentName');localStorage.removeItem('studentId');window.location.href='login.html';}
+function snLogout(){
+    performLogout();
+}
+
+/* ══ NOTIFICATIONS ══ */
+function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');}
+
+/* ══ KEYBOARD ══ */
+document.addEventListener('keydown',function(e){if(e.key==='Escape')snClose();});
 
 /* ══ LANGUAGE ══ */
 var currentLang='ar';
@@ -563,12 +657,6 @@ function setLang(lang){
     document.querySelectorAll('.lang-option-item').forEach(function(el){el.classList.toggle('lang-active',el.getAttribute('data-lang')===lang);});
     langWrap.classList.remove('open');
 }
-
-/* ══ NOTIFICATIONS ══ */
-function showNotifications(){alert('لديك 3 إشعارات جديدة:\n\n1. 📚 درس جديد متاح\n2. ✅ تم تقييم اختبارك\n3. 💬 رسالة جديدة من المعلم');}
-
-/* ══ KEYBOARD ══ */
-document.addEventListener('keydown',function(e){if(e.key==='Escape')snClose();});
 
 /* ══ SMART GRID ══ */
 function updateGrid(){
